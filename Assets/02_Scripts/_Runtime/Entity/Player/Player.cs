@@ -27,6 +27,7 @@ public class Player : BaseEntity {
     [HideInInspector] public PlayerLocomotionHandler locomotion;
     [HideInInspector] public PlayerAnimationHandler animation;
     [HideInInspector] public PlayerAttributeHandler attribute;
+    [HideInInspector] public PlayerInventoryHandler inventory;
     [HideInInspector] public EntityStatusFxHandler effect;
     
 
@@ -40,6 +41,8 @@ public class Player : BaseEntity {
         locomotion = GetComponent<PlayerLocomotionHandler>();
         animation = GetComponent<PlayerAnimationHandler>();
         attribute = GetComponent<PlayerAttributeHandler>();
+        inventory = GetComponent<PlayerInventoryHandler>();
+        effect = GetComponent<EntityStatusFxHandler>();
 
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerEquipmentHandler : MonoBehaviour {
 
-	public Transform rightHand;
+	public Transform rightHandTransform;
 
 
 

@@ -7,9 +7,12 @@ using UnityEngine;
 public abstract class Weapon : Equipment {
 
 	public GameObject weaponPrefab;
-
+	
 	[Header("[ Weapon Status ]")]
-	public SpiritAffinity requiredAffinity;
+	public SpiritAffinity weaponRequiredAffinity;
 	[Space(5)]
-	public Damage damage;
+	public Damage weaponDamage;
+
+	[Header("[ Setting ]")]
+	public WeaponType weaponType;
 }

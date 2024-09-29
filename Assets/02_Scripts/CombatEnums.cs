@@ -16,4 +16,11 @@ namespace MinD.Combat {
 		Left
 	}
 
+
+	public enum WeaponType {
+		Staff,
+		Wand,
+		Stigma
+	}
+
 }
