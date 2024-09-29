@@ -5,6 +5,20 @@ using UnityEngine;
 
 namespace MinD.Combat {
 
+[Serializable]
+public struct Damage {
+
+	public int physical;
+	public int magic;
+	public int fire;
+	public int frost;
+	public int lightning;
+	public int holy;
+
+}
+
+
+
 	[Serializable]
 	public struct DamageNegation {
 	
@@ -16,15 +30,15 @@ namespace MinD.Combat {
 		[Range(0, 1)] public float lightning;
 		[Range(0, 1)] public float holy;
 	
-		public int GetFinalDamage(TakeHealthDamage damage) {
+		public int GetCalculatedDamage(TakeHealthDamage damageEffect) {
 	
 			int finalDamage = 0;
-			finalDamage += (int)((1 - physical) * damage.physicalDamage);
-			finalDamage += (int)((1 - magic) * damage.magicDamage);
-			finalDamage += (int)((1 - fire) * damage.fireDamage);
-			finalDamage += (int)((1 - frost) * damage.frostDamage);
-			finalDamage += (int)((1 - lightning) * damage.lightningDamage);
-			finalDamage += (int)((1 - holy) * damage.holyDamage);
+			finalDamage += (int)((1 - physical) * damageEffect.damage.physical);
+			finalDamage += (int)((1 - magic) * damageEffect.damage.magic);
+			finalDamage += (int)((1 - fire) * damageEffect.damage.fire);
+			finalDamage += (int)((1 - frost) * damageEffect.damage.frost);
+			finalDamage += (int)((1 - lightning) * damageEffect.damage.lightning);
+			finalDamage += (int)((1 - holy) * damageEffect.damage.holy);
 	
 			return finalDamage;
 		}

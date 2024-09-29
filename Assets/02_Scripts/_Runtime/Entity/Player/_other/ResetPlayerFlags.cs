@@ -13,7 +13,8 @@ public class ResetPlayerFlags : StateMachineBehaviour {
     [SerializeField] private bool isJumping = false;
 
     [SerializeField] private bool setIsPerformingAction, setApplyRootMotion, setCanRotate, setCanMove, setIsJumping;
-        // 
+    
+    
     
     public Player owner;
 

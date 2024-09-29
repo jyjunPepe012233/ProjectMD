@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MinD;
 using MinD.Combat;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ public class PlayerAttributeHandler : MonoBehaviour {
     public float divine;
     [Space(7)]
     public DamageNegation damageNegation;
+    [Space(7)]
+    public SpiritAffinity elementalAffinity;
 
     #region Debug
     [Header("[ Debug ]")]

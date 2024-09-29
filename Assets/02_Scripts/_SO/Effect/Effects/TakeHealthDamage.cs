@@ -7,12 +7,7 @@ using UnityEngine.SearchService;
 namespace MinD.StatusFx {
 	public class TakeHealthDamage : InstantEffect {
 
-		public int physicalDamage = 0;
-		public int magicDamage = 0;
-		public int fireDamage = 0;
-		public int frostDamage = 0;
-		public int lightningDamage = 0;
-		public int holyDamage = 0;
+		public Damage damage;
 
 		public PoiseBreakAmount poiseBreakAmount;
 		public HitDirection hitDirection;
@@ -21,7 +16,7 @@ namespace MinD.StatusFx {
 	
 		protected override void OnInstantiateAs(Player player) {
 			
-			player.curHp -= player.attribute.damageNegation.GetFinalDamage(this);
+			player.curHp -= player.attribute.damageNegation.GetCalculatedDamage(this);
 
 			string stateName = "";
 			switch (hitDirection) {

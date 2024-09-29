@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.Serialization;
 using UnityEngine.TextCore.Text;
 
@@ -45,8 +46,6 @@ public class Player : BaseEntity {
     void Update() {
         
         locomotion.HandleAllLocomotion();
-        
-        
-        
+
     }
 }

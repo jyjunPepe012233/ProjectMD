@@ -7,14 +7,9 @@ using MinD.StatusFx;
 
 [RequireComponent(typeof(Collider))]
 public class DamageCollider : MonoBehaviour {
-	
+
 	[Header("[ Damage Setting ]")]
-	public int physicalDamage;
-	public int magicDamage;
-	public int fireDamage;
-	public int frostDamage;
-	public int lightningDamage;
-	public int holyDamage;
+	public Damage damage;
 	[Space(5)]
 	[SerializeField] private bool againWhenExit;
 	[Space(10)]
@@ -30,12 +25,7 @@ public class DamageCollider : MonoBehaviour {
 		collider = GetComponent<Collider>();
  
 		damageEffect = new TakeHealthDamage();
-		damageEffect.physicalDamage = physicalDamage;
-		damageEffect.magicDamage = magicDamage;
-		damageEffect.fireDamage = fireDamage;
-		damageEffect.frostDamage = frostDamage;
-		damageEffect.lightningDamage = lightningDamage;
-		damageEffect.holyDamage = holyDamage;
+		damageEffect.damage = damage;
 	}
 
 
