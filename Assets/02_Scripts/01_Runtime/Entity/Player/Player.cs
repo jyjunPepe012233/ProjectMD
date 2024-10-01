@@ -44,8 +44,7 @@ public class Player : BaseEntity {
         attribute = GetComponent<PlayerAttributeHandler>();
         inventory = GetComponent<PlayerInventoryHandler>();
         equipment = GetComponent<PlayerEquipmentHandler>(); 
-        effect = GetComponent<EntityStatusFxHandler>();
-
+        
     }
 
     void Update() {

@@ -2,7 +2,7 @@
 
 namespace MinD {
 
-	public enum InventorySlots {
+	public enum EquipmentSlots {
 		Weapon,
 		Protection,
 		Talisman_01,
