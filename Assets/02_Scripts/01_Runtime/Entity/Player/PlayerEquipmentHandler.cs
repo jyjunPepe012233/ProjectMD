@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class PlayerEquipmentHandler : MonoBehaviour {
 
-	public Transform rightHandTransform;
+	private Player owner;
 
-
-
-	public void SetPlayerWeapon() {
-		
-		
-	}
+	public Transform rightHand;
+	
+	
 }

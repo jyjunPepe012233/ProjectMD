@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Item : ScriptableObject {
 	
-	[HideInInspector] public int itemId; // ITEM'S ID IS GENERATE AUTOMATICALLY IN ItemDataList	
+	[HideInInspector] public int itemId; // ITEM'S ID IS GENERATE AUTOMATICALLY IN ItemDataList
 
 	[Header("[ Setting ]")]
 	public string itemName;
@@ -15,5 +15,4 @@ public abstract class Item : ScriptableObject {
 
 	[Header("[ Runtime Data ]")]
 	public int itemCount = 0;
-
 }

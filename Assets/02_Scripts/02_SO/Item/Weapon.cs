@@ -7,6 +7,8 @@ using UnityEngine;
 public abstract class Weapon : Equipment {
 
 	public GameObject weaponPrefab;
+	public Vector3 weaponPositionOffset;
+	public Vector3 weaponAngleOffset;
 	
 	[Header("[ Weapon Status ]")]
 	public SpiritAffinity weaponRequiredAffinity;

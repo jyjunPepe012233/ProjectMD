@@ -28,6 +28,7 @@ public class Player : BaseEntity {
     [HideInInspector] public PlayerAnimationHandler animation;
     [HideInInspector] public PlayerAttributeHandler attribute;
     [HideInInspector] public PlayerInventoryHandler inventory;
+    [HideInInspector] public PlayerEquipmentHandler equipment;
     [HideInInspector] public EntityStatusFxHandler effect;
     
 
@@ -42,6 +43,7 @@ public class Player : BaseEntity {
         animation = GetComponent<PlayerAnimationHandler>();
         attribute = GetComponent<PlayerAttributeHandler>();
         inventory = GetComponent<PlayerInventoryHandler>();
+        equipment = GetComponent<PlayerEquipmentHandler>(); 
         effect = GetComponent<EntityStatusFxHandler>();
 
     }

@@ -5,8 +5,11 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "Item Data List", menuName = "MinD/Item/SO List", order = int.MinValue)]
-public class ItemSOList : ScriptableObject {
+public class ItemSoList : ScriptableObject {
 
 	public List<Weapon> weaponList;
-
+	public List<Protection> protectionList;
+	public List<Talisman> talismanList;
+	public List<Tool> toolList;
+	
 }
