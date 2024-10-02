@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimationHandler : MonoBehaviour {
 
-	private Player owner;
+	[HideInInspector] public Player owner;
 
 	[SerializeField] private float moveBlendLerpSpeed = 6;
 	

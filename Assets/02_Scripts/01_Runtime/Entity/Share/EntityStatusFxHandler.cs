@@ -6,7 +6,7 @@ using MinD.StatusFx;
 
 public class EntityStatusFxHandler : MonoBehaviour {
 
-	private BaseEntity owner;
+	[HideInInspector] public BaseEntity owner;
 
 	[Header("[ Owned Effect List ]")]
 	[SerializeField] private List<StaticEffect> staticEffects;

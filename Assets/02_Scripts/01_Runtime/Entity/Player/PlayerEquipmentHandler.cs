@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class PlayerEquipmentHandler : MonoBehaviour {
 
-	private Player owner;
+	[HideInInspector] public Player owner;
 
 	public Transform rightHand;
 
 	private GameObject currentInstantiatedWeapon;
-	
 
 
 	public void ChangeWeapon(Weapon weapon) {

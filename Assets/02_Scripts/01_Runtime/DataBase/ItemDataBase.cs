@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemDataBase : Singleton<ItemDataBase> {
 
-	private ItemSoList itemSoList;
+	[SerializeField] private ItemSoList itemSoList;
 	
 
 	void OnEnable() {
@@ -28,7 +28,10 @@ public class ItemDataBase : Singleton<ItemDataBase> {
 		int count = 0;
 
 		count += itemSoList.weaponList.Count;
-
+		count += itemSoList.protectionList.Count;
+		count += itemSoList.talismanList.Count;
+		count += itemSoList.toolList.Count;
+		
 		return count;
 	}
 

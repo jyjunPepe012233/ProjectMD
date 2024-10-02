@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerInventoryHandler : MonoBehaviour {
 
-	private Player owner;
+	[HideInInspector] public Player owner;
 
 	// INVENTORY
 	private Weapon weaponSlot;
@@ -14,15 +14,14 @@ public class PlayerInventoryHandler : MonoBehaviour {
 	private Talisman[] talismanSlots = new Talisman[5];
 	private Tool[] toolSlots = new Tool[10];
 	
-	private List<Item> playerItemList;
+	private Item[] playerItemList;
 
 
 
-	private void LoadItemData() {
+	public void LoadItemData() {
 		
 		// SET DATA LIST LENGTH
-		playerItemList = new List<Item>(ItemDataBase.Instance.GetAllItemsCount());
-		
+		playerItemList = new Item[ItemDataBase.Instance.GetAllItemsCount()]; 
 		
 		// TODO: LOAD THE ITEM FROM SAVE DAT
 	}

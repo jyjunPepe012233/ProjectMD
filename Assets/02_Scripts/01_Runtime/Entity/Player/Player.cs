@@ -39,11 +39,23 @@ public class Player : BaseEntity {
         base.Awake();
 
         camera = FindObjectOfType<PlayerCamera>();
+        
         locomotion = GetComponent<PlayerLocomotionHandler>();
+        locomotion.owner = this;
         animation = GetComponent<PlayerAnimationHandler>();
+        animation.owner = this;
         attribute = GetComponent<PlayerAttributeHandler>();
+        attribute.owner = this;
         inventory = GetComponent<PlayerInventoryHandler>();
+        inventory.owner = this;
         equipment = GetComponent<PlayerEquipmentHandler>(); 
+        equipment.owner = this;
+        
+    }
+
+    void OnEnable() {
+        
+        inventory.LoadItemData();
         
     }
 

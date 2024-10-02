@@ -13,6 +13,7 @@ public abstract class BaseEntity : MonoBehaviour {
 	protected virtual void Awake() {
 		
 		statusFx = GetComponent<EntityStatusFxHandler>();
+		statusFx.owner = this;
 		
 		cc = GetComponent<CharacterController>();
 		animator = GetComponent<Animator>();

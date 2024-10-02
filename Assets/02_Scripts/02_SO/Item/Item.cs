@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MinD;
 using UnityEngine;
 
 
@@ -10,6 +11,8 @@ public abstract class Item : ScriptableObject {
 	[Header("[ Setting ]")]
 	public string itemName;
 	[TextArea(20, 20)] public string itemDescription;
+	[Space(5)]
+	public ItemRarityEnum itemRarity;
 	[Space(5)]
 	public int itemMaxCount = 1;
 
