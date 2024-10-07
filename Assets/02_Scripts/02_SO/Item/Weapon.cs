@@ -10,11 +10,11 @@ public abstract class Weapon : Equipment {
 	public Vector3 weaponPositionOffset;
 	public Vector3 weaponAngleOffset;
 	
+	[Header("[ Weapon Setting ]")]
+	public WeaponType weaponType;
+	
 	[Header("[ Weapon Status ]")]
 	public SpiritAffinity weaponRequiredAffinity;
-	[Space(5)]
 	public Damage weaponDamage;
-
-	[Header("[ Setting ]")]
-	public WeaponType weaponType;
+	
 }

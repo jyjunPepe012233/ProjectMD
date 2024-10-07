@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerAttributeHandler : MonoBehaviour {
 
-    private Player owner;
+    [HideInInspector] public Player owner;
 
     [Header("[ Stats ]")]
     public int vitality;

@@ -7,18 +7,18 @@ using UnityEngine.InputSystem;
 
 public class PlayerLocomotionHandler : MonoBehaviour {
 	
-	private Player owner;
+	[HideInInspector] public Player owner;
 	
 	[Header("[ Setting ]")]
 	[SerializeField] private float walkSpeed = 3;
 	[SerializeField] private float runningSpeed = 5;
-	[SerializeField] private float jumpForce = 5;
+	[SerializeField] private float jumpForce = 3.5f;
 	[SerializeField] private float jumpSpeedMultiplier = 0.75f;
 	[SerializeField] private float rotationSpeed = 15;
 	[Space(5)]
 	[SerializeField] private float gravityForce = 9.8f;
 	[SerializeField] private float groundedGravityForce = 20;
-	[SerializeField] private float groundedCheckRadius = 0.17f;
+	[SerializeField] private float groundedCheckRadius = 0.2f;
 	[Header("Flags")]
 	public bool isSprinting;
 
@@ -31,8 +31,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	private Vector3 jumpDirx;
 	
 
-	void Awake() {
-		owner = GetComponent<Player>();
+	void OnEnable() {
 		groundLayerMask = LayerMask.GetMask("Default");
 	}
 	
