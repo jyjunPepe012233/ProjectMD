@@ -15,7 +15,7 @@ MonoBehaviour:
   itemId: 0
   itemName: Dummy Staff
   itemDescription: 
-  itemRarity: 0
+  itemRarity: 2
   itemMaxCount: 1
   itemCount: 0
   weaponPrefab: {fileID: 6419165690001192968, guid: 742b7c14a7c424bba83041964b11dcd0,

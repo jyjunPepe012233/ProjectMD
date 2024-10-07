@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.Serialization;
 using UnityEngine.TextCore.Text;
 
-[RequireComponent(typeof(PlayerLocomotionHandler), typeof(PlayerAnimationHandler))]
-[RequireComponent(typeof(PlayerAttributeHandler), typeof(EntityStatusFxHandler))]
+#region RequireComponent
+[RequireComponent(typeof(PlayerLocomotionHandler))]
+[RequireComponent(typeof(PlayerAnimationHandler))]
+[RequireComponent(typeof(PlayerAttributeHandler))]
+[RequireComponent(typeof(PlayerInventoryHandler))]
+[RequireComponent(typeof(PlayerEquipmentHandler))]
+[RequireComponent(typeof(PlayerInteractionHandler))]
+[RequireComponent(typeof(EntityStatusFxHandler))]
+#endregion
+
 public class Player : BaseEntity {
 
     [Header("[ Attributes ]")]
@@ -29,6 +38,7 @@ public class Player : BaseEntity {
     [HideInInspector] public PlayerAttributeHandler attribute;
     [HideInInspector] public PlayerInventoryHandler inventory;
     [HideInInspector] public PlayerEquipmentHandler equipment;
+    [HideInInspector] public PlayerInteractionHandler interaction;
     [HideInInspector] public EntityStatusFxHandler effect;
     
 
@@ -41,16 +51,19 @@ public class Player : BaseEntity {
         camera = FindObjectOfType<PlayerCamera>();
         
         locomotion = GetComponent<PlayerLocomotionHandler>();
-        locomotion.owner = this;
         animation = GetComponent<PlayerAnimationHandler>();
-        animation.owner = this;
         attribute = GetComponent<PlayerAttributeHandler>();
-        attribute.owner = this;
         inventory = GetComponent<PlayerInventoryHandler>();
-        inventory.owner = this;
-        equipment = GetComponent<PlayerEquipmentHandler>(); 
-        equipment.owner = this;
+        equipment = GetComponent<PlayerEquipmentHandler>();
+        interaction = GetComponent<PlayerInteractionHandler>();
         
+        locomotion.owner = this;
+        animation.owner = this;
+        attribute.owner = this;
+        inventory.owner = this;
+        equipment.owner = this;
+        interaction.owner = this;
+
     }
 
     void OnEnable() {
@@ -62,6 +75,9 @@ public class Player : BaseEntity {
     void Update() {
         
         locomotion.HandleAllLocomotion();
+
+        if (Input.GetKeyDown(KeyCode.E))
+            interaction.Interact();
 
     }
 }

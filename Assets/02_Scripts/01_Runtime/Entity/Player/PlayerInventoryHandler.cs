@@ -9,12 +9,12 @@ public class PlayerInventoryHandler : MonoBehaviour {
 	[HideInInspector] public Player owner;
 
 	// INVENTORY
-	private Weapon weaponSlot;
-	private Protection protectionSlot;
-	private Talisman[] talismanSlots = new Talisman[5];
-	private Tool[] toolSlots = new Tool[10];
+	[SerializeField] private Weapon weaponSlot;
+	[SerializeField] private Protection protectionSlot;
+	[SerializeField] private Talisman[] talismanSlots = new Talisman[5];
+	[SerializeField] private Tool[] toolSlots = new Tool[10];
 	
-	private Item[] playerItemList;
+	[SerializeField] private Item[] playerItemList;
 
 
 
