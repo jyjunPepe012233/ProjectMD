@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-[CreateAssetMenu(fileName = "Item Data List", menuName = "MinD/Item/SO List", order = int.MinValue)]
+[CreateAssetMenu(fileName = "Item SO List", menuName = "MinD/Item/SO List", order = int.MinValue)]
 public class ItemSoList : ScriptableObject {
 
 	public List<Weapon> weaponList;

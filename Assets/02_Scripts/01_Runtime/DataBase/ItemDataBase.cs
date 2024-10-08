@@ -1,22 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ItemDataBase : Singleton<ItemDataBase> {
 
 	[SerializeField] private ItemSoList itemSoList;
-	private List<Item> indexedItemList;
+	[SerializeField] private List<Item> indexedItemList;
 	
 	
-
-	void OnEnable() {
-
-		IndexingItemList();
-
-	}
-
+	
 	void IndexingItemList() {
 
+		indexedItemList = new List<Item>();
 		int settingId = 0;
 
 		foreach (Weapon item in itemSoList.weaponList) {
@@ -50,12 +46,20 @@ public class ItemDataBase : Singleton<ItemDataBase> {
 
 
 	public int GetAllItemsCount() {
+		
+		if (!indexedItemList.Any())
+			IndexingItemList();
+		
 		return indexedItemList.Count;
 	}
 
 	
 	// GET ORIGINAL DATA SO OF ITEM TO ITEM ID
 	public Item GetItemSo(int itemId) {
+		
+		if (!indexedItemList.Any())
+			IndexingItemList();
+		
 
 		Item item = indexedItemList[itemId];
 		

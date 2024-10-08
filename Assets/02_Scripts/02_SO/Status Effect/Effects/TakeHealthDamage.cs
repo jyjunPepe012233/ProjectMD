@@ -5,6 +5,8 @@ using MinD.Combat;
 using UnityEngine.SearchService;
 
 namespace MinD.StatusFx {
+
+	[CreateAssetMenu(fileName = "TakeHealthDamage", menuName = "MinD/Status Effect/Effects/TakeHealthDamage")]
 	public class TakeHealthDamage : InstantEffect {
 
 		public Damage damage;

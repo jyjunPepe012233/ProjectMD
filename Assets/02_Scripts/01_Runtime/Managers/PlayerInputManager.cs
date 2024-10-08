@@ -22,7 +22,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
     // if scene is not a world scene, disable the input
 
 
-    void OnEnable() {
+    private void OnEnable() {
 
         if (playerControls == null) {
             

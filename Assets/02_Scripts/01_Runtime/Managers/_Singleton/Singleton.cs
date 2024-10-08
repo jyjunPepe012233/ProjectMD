@@ -28,7 +28,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
         }
     }
 
-    public void Awake() {
+    private void Awake() {
         DontDestroyOnLoad(this);
     }
 }
