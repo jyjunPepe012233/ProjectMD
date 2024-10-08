@@ -3999,7 +3999,7 @@ MonoBehaviour:
   canInteraction: 1
   interactionText: 
   item: {fileID: 11400000, guid: e0191d9f3e3cf4ad293fcea0c7bc01bc, type: 2}
-  itemCount: 0
+  itemCount: 1
 --- !u!4 &2074704354
 Transform:
   m_ObjectHideFlags: 0
