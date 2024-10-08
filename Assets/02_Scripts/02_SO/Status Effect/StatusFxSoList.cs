@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace MinD.StatusFx {
-	public class StatusEffectDataList : ScriptableObject {
+	public class StatusFxSoList : ScriptableObject {
 
 		public List<InstantEffect> instantEffects;
 		public List<StaticEffect> staticEffects;

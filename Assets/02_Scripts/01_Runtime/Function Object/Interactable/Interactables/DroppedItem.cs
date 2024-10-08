@@ -44,9 +44,8 @@ public class DroppedItem : Interactable {
 			interactor.interaction.RefreshInteractableList();
 			
 			canInteraction = false;
-			GetComponentInChildren<ParticleSystem>().Stop();
 			
-			Destroy(gameObject, 1f);
+			StartCoroutine(FadeOutDestroy(2));
 
 		} else { // IF ADD ITEM IS CANCELED CAUSE ITEM IS EXCEEDED MAX COUNT OF ITEM
 			
@@ -54,5 +53,28 @@ public class DroppedItem : Interactable {
 
 		}
 		
+	}
+
+	public IEnumerator FadeOutDestroy(float fadeTime) {
+		
+		GetComponentInChildren<ParticleSystem>().Stop();
+		
+		Light lightFx = GetComponentInChildren<Light>();
+		float lightStartIntensity = lightFx.intensity;
+
+		float fadeOutElapsed = 0;
+
+		while (true) {
+			
+			fadeOutElapsed += Time.deltaTime;
+			if (fadeOutElapsed > 2)
+				break;
+
+			lightFx.intensity -= lightStartIntensity / fadeTime;
+
+			yield return null;
+		}
+		
+		Destroy(gameObject);
 	}
 }

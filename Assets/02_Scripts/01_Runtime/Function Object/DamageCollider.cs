@@ -24,7 +24,7 @@ public class DamageCollider : MonoBehaviour {
 	private void Awake() {
 		collider = GetComponent<Collider>();
  
-		damageEffect = (TakeHealthDamage)WorldStatusFxManager.Instance.InstantiateInstantEffect(InstantEffectType.TakeHealthDamage);
+		damageEffect = (TakeHealthDamage)StatusFxDataBase.Instance.GetEffectData(InstantEffectType.TakeHealthDamage);
 		damageEffect.damage = damage;
 	}
 

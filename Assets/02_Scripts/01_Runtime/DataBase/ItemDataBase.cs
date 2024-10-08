@@ -5,61 +5,63 @@ using UnityEngine;
 public class ItemDataBase : Singleton<ItemDataBase> {
 
 	[SerializeField] private ItemSoList itemSoList;
+	private List<Item> indexedItemList;
+	
 	
 
 	void OnEnable() {
 
-		GenerateItemId();
-		
+		IndexingItemList();
+
 	}
-	
-	void GenerateItemId() {
+
+	void IndexingItemList() {
 
 		int settingId = 0;
 
-		foreach (Weapon weapon in itemSoList.weaponList) {
-			weapon.itemId = settingId;
+		foreach (Weapon item in itemSoList.weaponList) {
+			item.itemId = settingId;
+			indexedItemList.Add(item);
+			
+			settingId += 1;
+		}
+
+		foreach (Protection item in itemSoList.protectionList) {
+			item.itemId = settingId;
+			indexedItemList.Add(item);
+			
+			settingId += 1;
+		}
+
+		foreach (Talisman item in itemSoList.talismanList) {
+			item.itemId = settingId;
+			indexedItemList.Add(item);
+
+			settingId += 1;
+		}
+
+		foreach (Tool item in itemSoList.toolList) {
+			item.itemId = settingId;
+			indexedItemList.Add(item);
+
 			settingId += 1;
 		}
 	}
-	
+
+
 	public int GetAllItemsCount() {
-
-		int count = 0;
-
-		count += itemSoList.weaponList.Count;
-		count += itemSoList.protectionList.Count;
-		count += itemSoList.talismanList.Count;
-		count += itemSoList.toolList.Count;
-		
-		return count;
+		return indexedItemList.Count;
 	}
 
 	
 	// GET ORIGINAL DATA SO OF ITEM TO ITEM ID
 	public Item GetItemSo(int itemId) {
 
-		foreach (Item item in itemSoList.weaponList) {
-			
-			if (item.itemId == itemId)
-				return item;
-		}
-		foreach (Item item in itemSoList.protectionList) {
-
-			if (item.itemId == itemId)
-				return item;
-		}
-		foreach (Item item in itemSoList.talismanList) {
-
-			if (item.itemId == itemId)
-				return item;
-		}
-		foreach (Item item in itemSoList.toolList) {
-
-			if (item.itemId == itemId)
-				return item;
-		}
-
+		Item item = indexedItemList[itemId];
+		
+		if (item != null)
+			return item;
+		
 		Debug.LogError("Can't Find The Item That Has Id " + itemId);
 		return null;
 	}
