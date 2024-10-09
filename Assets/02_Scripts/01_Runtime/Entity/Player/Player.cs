@@ -15,7 +15,6 @@ using UnityEngine.TextCore.Text;
 [RequireComponent(typeof(PlayerInventoryHandler))]
 [RequireComponent(typeof(PlayerEquipmentHandler))]
 [RequireComponent(typeof(PlayerInteractionHandler))]
-[RequireComponent(typeof(EntityStatusFxHandler))]
 #endregion
 
 public class Player : BaseEntity {
@@ -45,8 +44,6 @@ public class Player : BaseEntity {
 
 
     void Awake() {
-
-        base.Awake();
 
         camera = FindObjectOfType<PlayerCamera>();
         
