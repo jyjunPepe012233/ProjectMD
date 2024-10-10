@@ -43,7 +43,9 @@ public class Player : BaseEntity {
 
 
 
-    void Awake() {
+    protected override void Awake() {
+
+        base.Awake();
 
         camera = FindObjectOfType<PlayerCamera>();
         

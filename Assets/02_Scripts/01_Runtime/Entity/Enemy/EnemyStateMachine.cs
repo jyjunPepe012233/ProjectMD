@@ -4,7 +4,7 @@ namespace MinD {
 
 	public class EnemyStateMachine : MonoBehaviour {
 
-		public Enemy owner;
+		[HideInInspector] public Enemy owner;
 
 
 
@@ -17,8 +17,10 @@ namespace MinD {
 			
 		}
 		
-		public void ChangeState(EnemyState newState) {
+		public void ChangeState(int stateIndex) {
 
+			EnemyState newState = owner.states[stateIndex];
+			
 			if (newState == null)
 				return;
 

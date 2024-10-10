@@ -17,14 +17,24 @@ namespace MinD {
 		public EnemyState currentState;
 		public EnemyState previousState;
 		public EnemyState[] states;
+
+		[Header("[ Current Status ]")]
+		public float curHp;
+
+		[Header("[ Attribute Settings ]")]
+		public float maxHp;
 		
 		public EnemyStateMachine stateMachine;
+		public EnemyCollisionHandler collision;
 		
 		
 		private void Awake() {
 
 			stateMachine = GetComponent<EnemyStateMachine>();
+			collision = GetComponent<EnemyCollisionHandler>();
+			
 			stateMachine.owner = this;
+			collision.owner = this;
 			
 			Setup();
 		}

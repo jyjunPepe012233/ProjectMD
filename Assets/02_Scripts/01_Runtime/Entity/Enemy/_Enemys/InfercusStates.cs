@@ -1,25 +1,51 @@
 using MinD.Enemys;
+using UnityEngine;
 
 namespace MinD.Enemys {
 
 	public partial class Infercus {
 
+		
 		public enum States {
-			Idle
+			SleepIdle,
+			Idle,
 		}
-		
-		public class Idle : EnemyState {
-		
+
+		public class SleepIdle : EnemyState {
+			
 			public override void Enter(Enemy enemy) {
-				throw new System.NotImplementedException();
 			}
 
 			public override void Tick(Enemy enemy) {
-				throw new System.NotImplementedException();
 			}
 
 			public override void Exit(Enemy enemy) {
-				throw new System.NotImplementedException();
+			}
+			
+		}
+		
+		public class Idle : EnemyState {
+
+			public float elapsedInIdle;
+				
+				
+			public override void Enter(Enemy enemy) {
+			}
+
+			public override void Tick(Enemy enemy) {
+
+				elapsedInIdle += Time.deltaTime;
+
+				if (elapsedInIdle > 15) {
+					enemy.stateMachine.ChangeState((int)States.SleepIdle);
+				}
+			}
+
+			public override void Exit(Enemy enemy) {
+				
+				elapsedInIdle = 0;
+				
+				
 			}
 			
 		}
