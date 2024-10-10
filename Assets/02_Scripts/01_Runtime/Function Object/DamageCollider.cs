@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using MinD.Combat;
 using UnityEngine;
 using MinD.StatusFx;
+using UnityEditor;
 
-[RequireComponent(typeof(Collider))]
 public class DamageCollider : MonoBehaviour {
 
 	[Header("[ Damage Setting ]")]
