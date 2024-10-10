@@ -1,26 +1,34 @@
 using MinD.Enemys;
 
-namespace MinD.Enemys.InfercusState {
+namespace MinD.Enemys {
 
-	public enum States {
-		Idle,
-	} 
+	public partial class Infercus {
 
-	public class Idle : EnemyState {
+		public enum States {
+			Idle
+		}
 		
-		public override void Enter(Enemy enemy) {
-			throw new System.NotImplementedException();
-		}
+		public class Idle : EnemyState {
+		
+			public override void Enter(Enemy enemy) {
+				throw new System.NotImplementedException();
+			}
 
-		public override void Tick(Enemy enemy) {
-			throw new System.NotImplementedException();
-		}
+			public override void Tick(Enemy enemy) {
+				throw new System.NotImplementedException();
+			}
 
-		public override void Exit(Enemy enemy) {
-			throw new System.NotImplementedException();
+			public override void Exit(Enemy enemy) {
+				throw new System.NotImplementedException();
+			}
+			
 		}
+		
 		
 		
 	}
+
+	
+	
 
 }
