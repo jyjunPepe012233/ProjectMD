@@ -7,25 +7,23 @@ using MinD.StatusFx;
 using UnityEditor;
 
 public class DamageCollider : MonoBehaviour {
-
-	[Header("[ Damage Setting ]")]
-	public Damage damage;
-	[Space(5)]
-	[SerializeField] private bool againWhenExit;
-	[Space(10)]
-	public List<BaseEntity> blackList; // IGNORE THIS DAMAGE COLLIDER
-
-	private List<BaseEntity> damagedEntity = new List<BaseEntity>(); 
+	
+	[HideInInspector] public Damage damage;
+	[HideInInspector] public bool againWhenExit;
+	
+	[HideInInspector] public List<BaseEntity> blackList; // IGNORE THIS DAMAGE COLLIDER
+	
+	
+	private List<BaseEntity> damagedEntity = new List<BaseEntity>();
 	
 	private TakeHealthDamage damageEffect;
-	private Collider collider;
 
 	
 	private void Awake() {
-		collider = GetComponent<Collider>();
- 
+		
 		damageEffect = (TakeHealthDamage)StatusFxDataBase.Instance.GetEffectData(InstantEffectType.TakeHealthDamage);
 		damageEffect.damage = damage;
+		
 	}
 
 

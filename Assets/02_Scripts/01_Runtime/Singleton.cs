@@ -17,7 +17,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
                     
                     GameObject newSingleton = new GameObject(typeof(T).Name, typeof(T));
                     instance = newSingleton.GetComponent<T>();
-                    DontDestroyOnLoad(instance);
+                    
+                    if (instance.transform != instance.transform.root)
+                        DontDestroyOnLoad(instance.transform.root);
+                    else 
+                        DontDestroyOnLoad(instance);
                     
                 }
                 
@@ -29,6 +33,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
     }
 
     private void Awake() {
-        DontDestroyOnLoad(this);
+        
+        if (transform != transform.root)
+            DontDestroyOnLoad(transform.root);
+        else 
+            DontDestroyOnLoad(this);
     }
 }
