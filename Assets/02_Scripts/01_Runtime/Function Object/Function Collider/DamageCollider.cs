@@ -97,17 +97,5 @@ public class DamageCollider : MonoBehaviour {
 	private void OnDisable() {
 		damagedEntity.Clear();
 	}
-
-
-	private void OnDrawGizmosSelected() {
-
-		Gizmos.color = Color.blue;
-		
-		Gizmos.DrawSphere(transform.position, 0.5f);
-		Gizmos.DrawRay(transform.position, transform.forward * 2);
-		Gizmos.DrawSphere(transform.position + (transform.forward * 2), 0.2f);
-		
-		Gizmos.DrawWireSphere(transform.position, 2f);
-		
-	}
+	
 }

@@ -1,6 +1,6 @@
 namespace MinD {
 
-	public enum ShowGizmosMode {
+	public enum ShowGizmoMode {
 		Always,
 		Selected,
 		Disabled

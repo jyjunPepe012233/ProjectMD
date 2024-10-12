@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using MinD;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.PackageManager.UI;
@@ -15,15 +16,10 @@ using PopupWindow = UnityEditor.PopupWindow;
 
 public class FunctionColliderWindow : EditorWindow {
 	
-	public enum ColliderType {
-		Box,
-		Sphere,
-		Capsule
-	}
-
 	public FunctionColliderHandler ownedInfo;
+
+	private float curComponentHeight;
 	
-	public ColliderType colliderType;
 		
 	
 	public void Open(FunctionColliderHandler ownedInfo) {
@@ -45,30 +41,46 @@ public class FunctionColliderWindow : EditorWindow {
 
 	public void OnGUI() {
 
+		curComponentHeight = 0;
+
+		GUILayout.BeginArea(new Rect(10, 5f, position.width - 20, 50));
+		
+		ownedInfo.showGizmoMode = (ShowGizmoMode)EditorGUILayout.EnumPopup("Gizmos Mode", ownedInfo.showGizmoMode);
+		ownedInfo.showGizmosColor = EditorGUILayout.ColorField("Gizmos Color", ownedInfo.showGizmosColor);
+		curComponentHeight += 50;
+		
+		GUILayout.EndArea();
+		
+		BeginComponent<DamageCollider>("Damage Collider", ref ownedInfo.damageCollider, 250);
 		CreateDamageColliderOption();
+		EndComponent();
 
 	}
-	
-	private void CreateDamageColliderOption() {
+
+	private void BeginComponent<T>(string componentName, ref T component, float componentHeight) where T : MonoBehaviour {
 		
-		#region OptionUpperBar
+		// START COMPONENT AREA
+		GUILayout.BeginArea(new Rect(5, 5 + this.curComponentHeight, position.width-10, 250));
+		this.curComponentHeight += componentHeight;
+		
+		
 		var style = GUI.skin.GetStyle("Label");
 		style.fontStyle = FontStyle.Bold;
 		
-		
-		GUILayout.BeginArea(new Rect(5, 5, position.width - 10, 25));
+		// DRAW COMPONENT CONTROL BAR
+		GUILayout.BeginArea(new Rect(0, 0, position.width - 10, 25));
 		EditorGUI.DrawRect(new Rect(0, 0, position.width - 10, 25), new Color(0.2f, 0.2f, 0.2f));
-		EditorGUI.LabelField(new Rect(5, 0, position.width - 20, 25), "Damage Collider", style);
+		EditorGUI.LabelField(new Rect(5, 0, position.width - 20, 25), componentName, style);
 		
 		GUILayout.BeginArea(new Rect(position.width - 55, 2.5f, 30, 20));
-		if (ownedInfo.damageCollider == null) {
+		if (component == null) {
 			// ADD FUNCTION BUTTON
 			if (GUILayout.Button(" + ", GUILayout.Width(30), GUILayout.Height(20))) {
 
-				if (ownedInfo.GetComponent<DamageCollider>() == null) {
-					ownedInfo.damageCollider = ownedInfo.AddComponent<DamageCollider>();
-					UnityEditorInternal.ComponentUtility.MoveComponentUp(ownedInfo.damageCollider);
-						// MOVE ABOVE COLLIDER COMPONENT
+				if (ownedInfo.GetComponent<T>() == null) {
+					component = ownedInfo.AddComponent<T>();
+					UnityEditorInternal.ComponentUtility.MoveComponentUp(component);
+					// MOVE ABOVE COLLIDER COMPONENT
 				}
 			}
 
@@ -76,20 +88,30 @@ public class FunctionColliderWindow : EditorWindow {
 			// REMOVE FUNCTION BUTTON
 			if (GUILayout.Button(" - ", GUILayout.Width(30), GUILayout.Height(20))) {
 				
-				if (ownedInfo.GetComponent<DamageCollider>() != null)
-					DestroyImmediate(ownedInfo.GetComponent<DamageCollider>());
-				ownedInfo.damageCollider = null;
+				if (ownedInfo.GetComponent<T>() != null)
+					DestroyImmediate(ownedInfo.GetComponent<T>());
+				component = null;
 				
 			}
-		}
+		} GUILayout.EndArea();
+		
+		// CLOSE COMPONENT CONTROL BAR
 		GUILayout.EndArea();
 		
+	}
+
+	private void EndComponent() {
+		
 		GUILayout.EndArea();
-		#endregion
+		
+	}
+	
+	private void CreateDamageColliderOption() {
+		
 
 		if (ownedInfo.damageCollider != null) {
 			
-			GUILayout.BeginArea(new Rect(5, 35, position.width - 5, 200));
+			GUILayout.BeginArea(new Rect(0, 30, position.width - 5, 200));
 			EditorGUI.DrawRect(new Rect(0, 0, position.width - 10, 200), new Color(0.2f, 0.2f, 0.2f));
 			
 			
@@ -109,54 +131,14 @@ public class FunctionColliderWindow : EditorWindow {
 			GUILayout.EndArea();
 			#endregion
 			
+			
+			
 			#region Collider Setting
 			GUILayout.BeginArea(new Rect(position.width / 2, 5, (position.width / 2) - 20, 200));
 			GUILayout.Label("Collider Setting");
 			EditorGUI.indentLevel++;
 			
-			#region ColliderShapeSetting
-
-			switch (ownedInfo.GetComponent<Collider>()) {
-				case BoxCollider:
-					colliderType = ColliderType.Box;
-					break;
-				case SphereCollider:
-					colliderType = ColliderType.Sphere;
-					break;
-				case CapsuleCollider:
-					colliderType = ColliderType.Capsule;
-					break;
-			}
-			
-			colliderType = (ColliderType)EditorGUILayout.EnumPopup("ColliderType", colliderType);
-
-			Collider ownedCollider = ownedInfo.GetComponent<Collider>();
-			switch (colliderType) {
-				
-				case ColliderType.Box:
-					if (!(ownedCollider is BoxCollider)) {
-						DestroyImmediate(ownedCollider);
-						ownedInfo.AddComponent<BoxCollider>();
-					}
-					break;
-				
-				case ColliderType.Sphere:
-					if (!(ownedCollider is SphereCollider)) {
-						DestroyImmediate(ownedCollider);
-						ownedInfo.AddComponent<SphereCollider>();
-					}
-					break;
-				
-				case ColliderType.Capsule:
-					if (!(ownedCollider is CapsuleCollider)) {
-						DestroyImmediate(ownedCollider);
-						ownedInfo.AddComponent<CapsuleCollider>();
-					}
-					break;
-				
-			}
-				
-			#endregion
+			CreateDamageColliderTypeSetting();
 			
 			GUILayout.Space(10);
 			
@@ -164,7 +146,7 @@ public class FunctionColliderWindow : EditorWindow {
 				EditorGUILayout.Toggle(
 					new GUIContent("Dynamic Target Set", "if entity is exit, can damage again without reactivated"), 
 					ownedInfo.damageCollider.againWhenExit
-					);
+				);
 			
 			EditorGUI.indentLevel--;
 			GUILayout.EndArea();
@@ -173,6 +155,62 @@ public class FunctionColliderWindow : EditorWindow {
 
 			GUILayout.EndArea();
 		}
+	}
+
+
+	private void CreateDamageColliderTypeSetting() {
+		
+		// CHECK CURRENT COLLIDER TYPE
+		switch (ownedInfo.GetComponent<Collider>()) {
+			case BoxCollider:
+				ownedInfo.colliderType = FunctionColliderHandler.ColliderType.Box;
+				break;
+			case SphereCollider:
+				ownedInfo.colliderType = FunctionColliderHandler.ColliderType.Sphere;
+				break;
+			case CapsuleCollider:
+				ownedInfo.colliderType = FunctionColliderHandler.ColliderType.Capsule;
+				break;
+		}
+			
+		// SHOW GUI
+		ownedInfo.colliderType = (FunctionColliderHandler.ColliderType)EditorGUILayout.EnumPopup("ColliderType", ownedInfo.colliderType);
+
+		// CHANGE COLLIDER IF TYPE IS DIFFERENT
+		Collider ownedCollider = ownedInfo.GetComponent<Collider>();
+		switch (ownedInfo.colliderType) {
+				
+			case FunctionColliderHandler.ColliderType.Box:
+					
+				if (!(ownedCollider is BoxCollider)) {
+						
+					DestroyImmediate(ownedCollider);
+					ownedInfo.AddComponent<BoxCollider>();
+					ownedInfo.OnColliderTypeChanged();
+				}
+				break;
+				
+			case FunctionColliderHandler.ColliderType.Sphere:
+					
+				if (!(ownedCollider is SphereCollider)) {
+						
+					DestroyImmediate(ownedCollider);
+					ownedInfo.AddComponent<SphereCollider>();
+					ownedInfo.OnColliderTypeChanged();
+				}
+				break;
+				
+			case FunctionColliderHandler.ColliderType.Capsule:
+					
+				if (!(ownedCollider is CapsuleCollider)) {
+						
+					DestroyImmediate(ownedCollider);
+					ownedInfo.AddComponent<CapsuleCollider>();
+					ownedInfo.OnColliderTypeChanged();
+				}
+				break;
+		}
+		
 	}
 }
 
