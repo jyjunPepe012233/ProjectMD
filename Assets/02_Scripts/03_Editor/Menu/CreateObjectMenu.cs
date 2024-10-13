@@ -21,7 +21,7 @@ public class CreateObjectMenu : MonoBehaviour {
 		
 		// SET PROPERTIES
 		var component = newItem.GetComponent<FunctionColliderHandler>();
-		component.OnColliderTypeChanged();
+		component.LoadColliderBasicProperties();
 		component.OpenEditorWindow();
 	}
 	

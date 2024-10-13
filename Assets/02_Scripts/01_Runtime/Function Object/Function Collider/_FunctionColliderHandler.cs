@@ -34,7 +34,7 @@ public class FunctionColliderHandler : MonoBehaviour {
 		editorWindow.Open(this);
 	}
 
-	public void OnColliderTypeChanged() {
+	public void LoadColliderBasicProperties() {
 		
 		collider = GetComponent<Collider>();
 		collider.isTrigger = true;

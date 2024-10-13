@@ -36,6 +36,9 @@ public class FunctionColliderWindow : EditorWindow {
 		
 		window.Show();
 		window.Focus();
+
+
+		ownedInfo.LoadColliderBasicProperties();
 	}
 
 
@@ -186,7 +189,7 @@ public class FunctionColliderWindow : EditorWindow {
 						
 					DestroyImmediate(ownedCollider);
 					ownedInfo.AddComponent<BoxCollider>();
-					ownedInfo.OnColliderTypeChanged();
+					ownedInfo.LoadColliderBasicProperties();
 				}
 				break;
 				
@@ -196,7 +199,7 @@ public class FunctionColliderWindow : EditorWindow {
 						
 					DestroyImmediate(ownedCollider);
 					ownedInfo.AddComponent<SphereCollider>();
-					ownedInfo.OnColliderTypeChanged();
+					ownedInfo.LoadColliderBasicProperties();
 				}
 				break;
 				
@@ -206,7 +209,7 @@ public class FunctionColliderWindow : EditorWindow {
 						
 					DestroyImmediate(ownedCollider);
 					ownedInfo.AddComponent<CapsuleCollider>();
-					ownedInfo.OnColliderTypeChanged();
+					ownedInfo.LoadColliderBasicProperties();
 				}
 				break;
 		}
