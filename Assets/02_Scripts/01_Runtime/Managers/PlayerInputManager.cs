@@ -4,17 +4,16 @@ using UnityEngine;
 public class PlayerInputManager : Singleton<PlayerInputManager> {
 
     private PlayerControls playerControls;
-
-    [SerializeField] private Vector2 movementInput;
-    [SerializeField] private Vector2 rotationInput;
-    [SerializeField] private float jumpInput;
-    [SerializeField] private bool sprintInput;
-
-    public Vector2 MovementInput => movementInput;
-    public Vector2 RotationInput => rotationInput;
     
-    public float JumpInput => jumpInput;
-    public bool SprintInput => sprintInput;
+    // LOCOMOTION
+    public Vector2 movementInput;
+    public bool jumpInput; 
+    public bool sprintInput;
+    // CAMERA CONTROL
+    public Vector2 rotationInput;
+    public bool lockOnInput;
+    // INTERACTION
+    public bool interactionInput;
 
 
     
@@ -29,12 +28,22 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
             playerControls = new PlayerControls();
             playerControls.Enable();
             
+            #region Locomotion
             playerControls.Locomotion.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
-            playerControls.Locomotion.Jump.performed += i => jumpInput = i.ReadValue<float>();
-            playerControls.CameraControl.Rotation.performed += i => rotationInput = i.ReadValue<Vector2>();
+            playerControls.Locomotion.Jump.performed += i => jumpInput = true; // IF INPUT IS PERFORMED, SET BOOL TO TRUE
             
             playerControls.Locomotion.Sprint.performed += i => sprintInput = true;
             playerControls.Locomotion.Sprint.canceled += i => sprintInput = false;
+            #endregion
+
+            #region Camera Control
+            playerControls.CameraControl.Rotation.performed += i => rotationInput = i.ReadValue<Vector2>();
+            playerControls.CameraControl.LockOn.performed += i => lockOnInput = true; // IF INPUT IS PERFORMED, SET BOOL TO TRUE
+            #endregion
+
+            #region Interaction
+            playerControls.Interaction.Interaction.performed += i => interactionInput = true;
+            #endregion
 
         }
 

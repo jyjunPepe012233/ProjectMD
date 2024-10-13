@@ -49,7 +49,7 @@ public class PlayerCamera : MonoBehaviour {
 
 	void HandleRotation() {
 
-		Vector2 rotationInput = PlayerInputManager.Instance.RotationInput;
+		Vector2 rotationInput = PlayerInputManager.Instance.rotationInput;
 		Vector3 angle = transform.eulerAngles + new Vector3(-rotationInput.y * 0.35f, rotationInput.x) * mouseSensitive;
 
 		if (angle.x > 180) {

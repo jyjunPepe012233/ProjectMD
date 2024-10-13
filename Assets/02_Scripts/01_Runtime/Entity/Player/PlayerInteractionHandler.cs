@@ -46,15 +46,22 @@ public class PlayerInteractionHandler : MonoBehaviour {
 		// refresh popup
 	}
 
-	public void Interact() {
+	public void HandleInteraction() {
 
+		if (!PlayerInputManager.Instance.interactionInput)
+			return;
+		
 		if (currentInteractables.Count == 0)
 			return;
 
 		if (currentInteractables[0] == null)
 			return;
-		
+
 		if (currentInteractables[0].canInteraction)
 			currentInteractables[0].Interact(owner);
+		else
+			RefreshInteractableList();
+		
+		PlayerInputManager.Instance.interactionInput = false;
 	}
 }

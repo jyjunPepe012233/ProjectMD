@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
 public abstract class Interactable : MonoBehaviour {
 
 	[Header("[ Parameter ]")]

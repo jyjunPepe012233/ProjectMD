@@ -74,9 +74,7 @@ public class Player : BaseEntity {
     void Update() {
         
         locomotion.HandleAllLocomotion();
-
-        if (Input.GetKeyDown(KeyCode.E))
-            interaction.Interact();
+        interaction.HandleInteraction();
 
     }
 }

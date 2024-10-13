@@ -85,7 +85,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		moveDirx.Normalize();
 
 
-		Vector3 inputDirx = PlayerInputManager.Instance.MovementInput;
+		Vector3 inputDirx = PlayerInputManager.Instance.movementInput;
 		inputDirx = new Vector3(inputDirx.x, 0, inputDirx.y);
 			// MOVEMENT INPUT IS 2D, SO MAKE
 			// INPUT DIRECTION = (MOVEMENT INPUT X, 0, MOVEMENT INPUT Y
@@ -126,7 +126,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	}
 	
 	void HandleSprint() {
-		isSprinting = PlayerInputManager.Instance.SprintInput;
+		isSprinting = PlayerInputManager.Instance.sprintInput;
 	}
 
 
@@ -146,8 +146,10 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		
 		// ATTEMPT JUMP
 		
-		if (PlayerInputManager.Instance.JumpInput == 0)
+		if (PlayerInputManager.Instance.jumpInput == false)
 			return;
+		
+		PlayerInputManager.Instance.jumpInput = false;
 
 		if (owner.isPerformingAction)
 			return;
@@ -165,6 +167,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		if (!owner.isMoving)
 			jumpDirx *= 0;
 
+		
 	}
 
 	void HandleGravity() {
