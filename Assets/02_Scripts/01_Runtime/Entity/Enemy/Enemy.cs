@@ -68,7 +68,7 @@ namespace MinD {
 			List<Transform> candidates = new List<Transform>();
 
 			foreach (Collider collider in colliders)
-				foreach (Transform candidate in collider.GetComponent<BaseEntity>().bodyPoint)
+				foreach (Transform candidate in collider.GetComponent<BaseEntity>().targetOptions)
 					candidates.Add(candidate);
 			
 			
@@ -101,7 +101,7 @@ namespace MinD {
 
 				if (Vector3.Angle(transform.forward, candidate.position - transform.position) < viewingAngle)
 					// IF CANDIDATE IN VIEWING ANGLE
-					if (!Physics.Linecast(bodyPoint[0]/* MAIN BODY POINT */.position, candidate.position, PhysicLayerDataBase.Instance.environmentLayer))
+					if (!Physics.Linecast(targetOptions[0]/* MAIN BODY POINT */.position, candidate.position, PhysicLayerDataBase.Instance.environmentLayer))
 						// IF NO OBSTACLE IS CHECKED BETWEEN CANDIDATE AND ENEMY
 						return candidate;
 			}

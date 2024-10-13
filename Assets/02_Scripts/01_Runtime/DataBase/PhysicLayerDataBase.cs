@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace MinD.StatusFx {
+namespace MinD {
 
 	public class PhysicLayerDataBase : Singleton<PhysicLayerDataBase>{
 		

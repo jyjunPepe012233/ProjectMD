@@ -27,6 +27,7 @@ public class Player : BaseEntity {
     public bool isGrounded;
     public bool isMoving;
     public bool isJumping;
+    public bool isLockOn;
     public bool canRotate;
     public bool canMove;
     
@@ -48,14 +49,14 @@ public class Player : BaseEntity {
         base.Awake();
 
         camera = FindObjectOfType<PlayerCamera>();
-        
         locomotion = GetComponent<PlayerLocomotionHandler>();
         animation = GetComponent<PlayerAnimationHandler>();
         attribute = GetComponent<PlayerAttributeHandler>();
         inventory = GetComponent<PlayerInventoryHandler>();
         equipment = GetComponent<PlayerEquipmentHandler>();
         interaction = GetComponent<PlayerInteractionHandler>();
-        
+
+        camera.owner = this;
         locomotion.owner = this;
         animation.owner = this;
         attribute.owner = this;
@@ -73,6 +74,7 @@ public class Player : BaseEntity {
 
     void Update() {
         
+        camera.HandleCamera();
         locomotion.HandleAllLocomotion();
         interaction.HandleInteraction();
 

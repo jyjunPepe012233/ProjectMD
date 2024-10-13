@@ -7,8 +7,8 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(Animator))]
 public abstract class BaseEntity : MonoBehaviour {
 
-	[Header("[ Targets Points ]")]
-	public List<Transform> bodyPoint;
+	[Header("[ Bound Targets Options ]")]
+	public List<Transform> targetOptions;
 
 	[HideInInspector] public EntityStatusFxHandler statusFx;
 	
@@ -25,5 +25,17 @@ public abstract class BaseEntity : MonoBehaviour {
 		cc = GetComponent<CharacterController>();
 		animator = GetComponent<Animator>();
 		
+	}
+
+
+
+	private void OnDrawGizmos() {
+		
+		Gizmos.color = Color.cyan;
+
+		foreach (Transform targetOption in targetOptions) {
+			Gizmos.DrawSphere(targetOption.position, 0.05f);
+		}
+
 	}
 }
