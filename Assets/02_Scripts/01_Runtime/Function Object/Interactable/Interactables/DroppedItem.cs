@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MinD;
@@ -76,5 +77,13 @@ public class DroppedItem : Interactable {
 		}
 		
 		Destroy(gameObject);
+	}
+
+
+	private void OnDrawGizmos() {
+
+		Gizmos.color = Color.green;
+		Gizmos.DrawSphere(transform.position, 0.3f);
+
 	}
 }
