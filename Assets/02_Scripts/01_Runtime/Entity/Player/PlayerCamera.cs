@@ -27,8 +27,7 @@ public class PlayerCamera : MonoBehaviour {
 	[SerializeField] private float lockOnMaxRadius;
 
 	public Transform currentTargetOption;
-	public Transform leftTargetOption;
-	public Transform rightTargetOption;
+	private List<Transform> availableTargets = new List<Transform>(); // SORTED BY PROXIMITY
 	
 
 	private Vector3 targetCameraArm;
@@ -43,7 +42,7 @@ public class PlayerCamera : MonoBehaviour {
 		HandleFollowTarget();
 		HandleRotation();
 		HandleCollision();
-		HandleLockOnTarget();
+		HandleLockOn();
 
 	}
 	
@@ -58,7 +57,7 @@ public class PlayerCamera : MonoBehaviour {
 
 		cameraArm = Vector3.Lerp(cameraArm, targetCameraArm, Time.deltaTime * cameraFollowSpeed);
 	}
-
+	
 	void HandleRotation() {
 
 		if (owner.isLockOn) { // AUTO ROTATION BY LOCK ON
@@ -113,7 +112,7 @@ public class PlayerCamera : MonoBehaviour {
 			cameraDistance = cameraMaxDistance;
 	}
 
-	void HandleLockOnTarget() {
+	void HandleLockOn() {
 
 		if (PlayerInputManager.Instance.lockOnInput) {
 			PlayerInputManager.Instance.lockOnInput = false;
@@ -123,11 +122,18 @@ public class PlayerCamera : MonoBehaviour {
 			else 
 				SetLockOnTarget();
 		}
-		
 
-		if (currentTargetOption != null)
+		if (currentTargetOption != null) {
+			
 			if (Vector3.Angle(transform.forward, currentTargetOption.position - transform.position) > lockOnAngle)
 				RemoveLockOnTarget();
+
+			if (PlayerInputManager.Instance.rotationInput.x < -5)
+				MoveLockOnToLeftTarget();
+			else if (PlayerInputManager.Instance.rotationInput.x > 5)
+				MoveLockOnToRightTarget();
+
+		}
 	}
 	
 
@@ -141,7 +147,7 @@ public class PlayerCamera : MonoBehaviour {
 		
 		
 		// CHECK AVAILABLE TARGETS
-		List<Transform> availableTargets = new List<Transform>();
+		availableTargets.Clear();
 		foreach (Collider collider in colliders) {
 
 			// GET ENTITY
@@ -190,7 +196,6 @@ public class PlayerCamera : MonoBehaviour {
 					(availableTargets[i], availableTargets[j]) = (availableTargets[j], availableTargets[i]);
 			}
 		}
-
 		
 		if (availableTargets.Count > 0) {
 			
@@ -200,11 +205,38 @@ public class PlayerCamera : MonoBehaviour {
 		}
 
 	}
-
 	void RemoveLockOnTarget() {
 		
 		currentTargetOption = null;
 		owner.isLockOn = false;
 		
+	}
+
+	
+	void MoveLockOnToLeftTarget() {
+
+		foreach (Transform option in availableTargets) {
+
+			if (option == currentTargetOption)
+				continue;
+
+			if (transform.InverseTransformPoint(option.position).x < 0) {
+				currentTargetOption = option;
+				return;
+			}
+		}
+	}
+	void MoveLockOnToRightTarget() {
+		
+		foreach (Transform option in availableTargets) {
+
+			if (option == currentTargetOption)
+				continue;
+
+			if (transform.InverseTransformPoint(option.position).x > 0) {
+				currentTargetOption = option;
+				return;
+			}
+		}
 	}
 }
