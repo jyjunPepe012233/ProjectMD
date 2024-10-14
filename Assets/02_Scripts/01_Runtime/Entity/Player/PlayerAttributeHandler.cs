@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MinD;
 using MinD.Combat;
+using MinD.UI;
 using UnityEngine;
 
 public class PlayerAttributeHandler : MonoBehaviour {
@@ -35,8 +36,11 @@ public class PlayerAttributeHandler : MonoBehaviour {
     void OnValidate() {
         if (resetAttributes) {
             SetBaseAttributesAsPerStats();
-            owner.curHp = maxHp;
+            owner.curHP = maxHp;
+            owner.curMp = maxMp;
+            owner.curStamina = maxStamina;
             resetAttributes = false;
+            PlayerHUDManager.Instance.RefreshAllStatusBar();
         }
     }
 

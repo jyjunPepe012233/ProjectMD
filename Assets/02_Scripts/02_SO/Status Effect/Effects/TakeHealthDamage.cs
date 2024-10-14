@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MinD.Combat;
+using MinD.UI;
 using UnityEngine.SearchService;
 
 namespace MinD.StatusFx {
@@ -18,7 +19,7 @@ namespace MinD.StatusFx {
 	
 		protected override void OnInstantiateAs(Player player) {
 			
-			player.curHp -= player.attribute.damageNegation.GetCalculatedDamage(this);
+			player.curHP -= player.attribute.damageNegation.GetCalculatedDamage(this);
 
 			string stateName = "";
 			switch (hitDirection) {
@@ -40,6 +41,7 @@ namespace MinD.StatusFx {
 					break;
 			}
 			player.animation.PlayTargetAction(stateName, true, true, false, false);
+			PlayerHUDManager.Instance.RefreshHPBar();
 
 		}
 	

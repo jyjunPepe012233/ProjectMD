@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using MinD.UI;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,8 +20,10 @@ using UnityEngine.TextCore.Text;
 
 public class Player : BaseEntity {
 
-    [Header("[ Attributes ]")]
-    public int curHp;
+    [FormerlySerializedAs("curHp")] [Header("[ Attributes ]")]
+    public int curHP;
+    public int curMp;
+    public int curStamina;
     
     [Header("Flags")]
     public bool isPerformingAction;
@@ -69,6 +72,8 @@ public class Player : BaseEntity {
     void OnEnable() {
         
         inventory.LoadItemData();
+        
+        PlayerHUDManager.Instance.RefreshAllStatusBar();
         
     }
 

@@ -192,7 +192,7 @@ public class PlayerCamera : MonoBehaviour {
 		}
 
 		
-		if (availableTargets[0] != null) {
+		if (availableTargets.Count > 0) {
 			
 			currentTargetOption = availableTargets[0];
 			owner.isLockOn = true;

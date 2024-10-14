@@ -23,7 +23,7 @@ public class StatusBarScript : MonoBehaviour
             player = FindObjectOfType<Player>();
         }
 
-        maxHealth = player.curHp; // maxHp를 참조
+        maxHealth = player.curHP; // maxHp를 참조
         currentHealth = maxHealth;
         UpdateHpSlider(currentHealth);
         damageImage.fillAmount = 1; 
@@ -34,7 +34,7 @@ public class StatusBarScript : MonoBehaviour
     private void Update()
     {
         // Player의 curHp 값을 현재 체력으로 동기화
-        int newHealth = player.curHp;
+        int newHealth = player.curHP;
 
         if (newHealth != currentHealth)
         {
@@ -45,7 +45,7 @@ public class StatusBarScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             maxHealth += 20; // int로 변경
-            player.curHp = maxHealth; // 최대 체력에 맞게 curHp 업데이트
+            player.curHP = maxHealth; // 최대 체력에 맞게 curHp 업데이트
             ChangeUIElementSizes(lengthChangeAmount);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -53,7 +53,7 @@ public class StatusBarScript : MonoBehaviour
             if (maxHealth > 20) // 최대 체력이 20 이하로 떨어지지 않도록 방지
             {
                 maxHealth -= 20; // int로 변경
-                player.curHp = Mathf.Min(player.curHp, maxHealth); // curHp가 maxHealth보다 크지 않게 조정
+                player.curHP = Mathf.Min(player.curHP, maxHealth); // curHp가 maxHealth보다 크지 않게 조정
                 ChangeUIElementSizes(-lengthChangeAmount);
             }
         }
@@ -61,8 +61,8 @@ public class StatusBarScript : MonoBehaviour
         // R 키를 눌렀을 때 20 회복
         if (Input.GetKeyDown(KeyCode.R))
         {
-            player.curHp += 20; // 체력 회복
-            player.curHp = Mathf.Min(player.curHp, maxHealth); // maxHealth를 초과하지 않도록 조정
+            player.curHP += 20; // 체력 회복
+            player.curHP = Mathf.Min(player.curHP, maxHealth); // maxHealth를 초과하지 않도록 조정
         }
     }
 
