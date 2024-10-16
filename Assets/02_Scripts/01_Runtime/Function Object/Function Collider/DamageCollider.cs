@@ -95,6 +95,10 @@ public class DamageCollider : MonoBehaviour {
 	
 
 	private void OnDisable() {
+		ResetDamagedEntity();
+	}
+
+	public void ResetDamagedEntity() {
 		damagedEntity.Clear();
 	}
 	

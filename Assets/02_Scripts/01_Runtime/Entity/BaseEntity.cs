@@ -32,9 +32,11 @@ public abstract class BaseEntity : MonoBehaviour {
 	private void OnDrawGizmos() {
 		
 		Gizmos.color = Color.cyan;
-
-		foreach (Transform targetOption in targetOptions) {
-			Gizmos.DrawSphere(targetOption.position, 0.05f);
+		
+		if (targetOptions != null) {
+			foreach (Transform targetOption in targetOptions) {
+				Gizmos.DrawSphere(targetOption.position, 0.05f);
+			}
 		}
 
 	}

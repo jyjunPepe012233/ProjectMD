@@ -6,6 +6,8 @@ namespace MinD {
 
 		[HideInInspector] public Enemy owner;
 
+		[SerializeField] private string currentState; // TO SHOW STATE IN INSPECTOR
+
 
 
 		public void ExecuteStateTick() {
@@ -17,7 +19,7 @@ namespace MinD {
 			
 		}
 		
-		public void ChangeState(int stateIndex) {
+		public void ChangeStateByIndex(int stateIndex) {
 
 			EnemyState newState = owner.states[stateIndex];
 			
@@ -34,6 +36,7 @@ namespace MinD {
 			owner.currentState = newState;
 			owner.currentState.Enter(owner);
 
+			currentState = owner.currentState.GetType().Name;
 		}
 		
 		
