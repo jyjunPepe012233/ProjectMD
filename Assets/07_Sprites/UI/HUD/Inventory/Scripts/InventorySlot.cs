@@ -1,4 +1,3 @@
-using MinD.SO.Item;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/07_Sprites/UI/HUD/Inventory.meta
+guid: acb1665b2c3ac44c59da0f35df0b4f27
+========
 guid: d3d38b9be66474af5883d67fd0ff70cd
+>>>>>>>> 561e7e6c (feat :: Build InventoryUI , InventorySlot):Assets/07_Sprites/UI/HUD/Inventory/Prefebs.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

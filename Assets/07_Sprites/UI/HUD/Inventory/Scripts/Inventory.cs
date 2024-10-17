@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using MinD.Runtime.Entity;
-using MinD.SO.Item;
 
 public class InventoryUI : MonoBehaviour
 {

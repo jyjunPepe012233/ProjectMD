@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/02_Scripts/02_SO/EnemySO.meta
 guid: f0cb0ef147ed44eb8a9c3ba919e3c8c2
+========
+guid: acb1665b2c3ac44c59da0f35df0b4f27
+>>>>>>>> 561e7e6c (feat :: Build InventoryUI , InventorySlot):Assets/07_Sprites/UI/HUD/Inventory.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
