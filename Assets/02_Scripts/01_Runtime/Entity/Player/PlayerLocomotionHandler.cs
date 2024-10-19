@@ -10,8 +10,8 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	[HideInInspector] public Player owner;
 	
 	[Header("[ Setting ]")]
-	[SerializeField] private float walkSpeed = 3;
-	[SerializeField] private float runningSpeed = 5;
+	[SerializeField] private float walkSpeed = 4;
+	[SerializeField] private float runningSpeed = 6;
 	[SerializeField] private float jumpForce = 3.5f;
 	[SerializeField] private float jumpSpeedMultiplier = 0.75f;
 	[SerializeField] private float rotationSpeed = 15;

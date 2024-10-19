@@ -26,12 +26,7 @@ namespace MinD {
 			
 		}
 
-		public void PlayTargetAction(
-			string stateName,
-			float normalizedTransformDuration = 0.2f,
-			bool isPerformingAction = true,
-			bool applyRootMotion = true,
-			bool isInCombat = true) {
+		public void PlayTargetAnimation(string stateName, float normalizedTransformDuration = 0.2f) {
 			
 			owner.animator.CrossFade(stateName, normalizedTransformDuration);
 

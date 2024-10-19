@@ -12,7 +12,11 @@ namespace MinD {
 		
 		public BaseEntity target;
 		private List<BaseEntity> candidates = new List<BaseEntity>();
-		
+
+
+		public float DistanceToTarget() {
+			return Vector3.Distance(target.transform.position, owner.transform.position);
+		}
 		
 		
 		public BaseEntity FindTargetBySight(float viewingAngle, float viewingRadius, float unConditionalDetectRadius = 0) {
@@ -62,6 +66,8 @@ namespace MinD {
 					}
 				}
 				
+			} else if (candidates.Count == 0) {
+				return null;
 			}
 			
 			

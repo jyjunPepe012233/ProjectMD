@@ -11,7 +11,6 @@ namespace MinD {
 
 
 		public void TurnOnCollider(string colliderName) {
-			Debug.Log(2);
 			
 			foreach (FunctionColliderHandler collider in registeredColliders) {
 
