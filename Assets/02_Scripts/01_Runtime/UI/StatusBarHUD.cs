@@ -18,7 +18,9 @@ namespace MinD.UI {
         [SerializeField] private RectTransform barFloorTransform;
 
         [Header("[ Settings ]")]
-        [SerializeField] private float trailDampingSpeed;
+        [SerializeField] private float widthMultiplier = 1;
+        
+        private float trailDampingSpeed = 150;
         
         private int currentValue;
         private int maxValue;
@@ -26,11 +28,12 @@ namespace MinD.UI {
         
         
         
-        public void SetMaxValue(int maxValue) {
+        public void SetMaxValue(float maxValue) {
             
             fillSlider.maxValue = maxValue;
             fillTrailSlider.maxValue = maxValue;
-            
+
+            maxValue *= widthMultiplier;
             fillTransform.sizeDelta = new Vector2(maxValue, fillTransform.sizeDelta.y);
             fillTrailTransform.sizeDelta = new Vector2(maxValue, fillTrailTransform.sizeDelta.y);
             backgroundTransform.sizeDelta = new Vector2(maxValue, backgroundTransform.sizeDelta.y);

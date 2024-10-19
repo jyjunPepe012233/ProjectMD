@@ -245,7 +245,7 @@ MonoBehaviour:
   fillTrailTransform: {fileID: 1263191735}
   backgroundTransform: {fileID: 1207588082}
   barFloorTransform: {fileID: 693454847}
-  trailDampingSpeed: 150
+  widthMultiplier: 5
 --- !u!114 &111918020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,7 +332,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -381}
+  m_AnchoredPosition: {x: 868, y: -385}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &278554187
@@ -1333,8 +1333,8 @@ MonoBehaviour:
   statusFx: {fileID: 0}
   cc: {fileID: 0}
   animator: {fileID: 0}
-  curHP: 250
-  curMp: 100
+  curHP: 550
+  curMp: 146
   curStamina: 45
   isPerformingAction: 0
   isGrounded: 0
@@ -1407,9 +1407,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   owner: {fileID: 542126811}
-  vitality: 10
-  endurance: 0
-  mind: 0
+  vitality: 30
+  endurance: 23
+  mind: 23
   intelligence: 0
   faith: 0
   maxHp: 250
@@ -2934,7 +2934,7 @@ MonoBehaviour:
   fillTrailTransform: {fileID: 875766492}
   backgroundTransform: {fileID: 343623048}
   barFloorTransform: {fileID: 1743176090}
-  trailDampingSpeed: 150
+  widthMultiplier: 3
 --- !u!114 &984494158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7549,7 +7549,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.99731296, z: -0, w: 0.07325891}
   m_LocalPosition: {x: 24.12, y: 5.10397, z: -23.94}
-  m_LocalScale: {x: 1.9999999, y: 1.9999999, z: 1.9999999}
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4147258952954818}
@@ -8536,7 +8536,7 @@ MonoBehaviour:
   fillTrailTransform: {fileID: 2110244885}
   backgroundTransform: {fileID: 5747126235233660587}
   barFloorTransform: {fileID: 3403480106130117945}
-  trailDampingSpeed: 150
+  widthMultiplier: 1
 --- !u!222 &7823329581212930396
 CanvasRenderer:
   m_ObjectHideFlags: 0
