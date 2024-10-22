@@ -17,7 +17,7 @@ public class PlayerAttributeHandler : MonoBehaviour {
     public int intelligence;
     public int faith;
 
-    [Header("[ Attributes ]")]
+    [Header("[ Status Attributes ]")]
     public int maxHp;
     public int maxMp;
     public int maxStamina;
@@ -28,6 +28,9 @@ public class PlayerAttributeHandler : MonoBehaviour {
     public DamageNegation damageNegation;
     [Space(7)]
     public SpiritAffinity elementalAffinity;
+
+    [Header("[ Other Attributes ]")]
+    public int memoryCapacity;
 
     #region Debug
     [Header("[ Debug ]")]

@@ -265,6 +265,87 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Combat",
+            "id": "378c9833-4640-4670-ad8f-130325efaa5c",
+            "actions": [
+                {
+                    "name": "Use Magic",
+                    "type": "Button",
+                    "id": "76fec518-00fc-4acf-8d1f-d19fdfff33c3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Swap Magic",
+                    "type": "Button",
+                    "id": "e46e8f37-b868-415c-bb1d-d6e46c71f65d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a7c33d11-e8cb-435a-8032-ca69a3ce7133",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Use Magic",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b8574993-331a-4c18-a494-2666dfe3193e",
+                    "path": "<SwitchProControllerHID>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Pro-Controller",
+                    "action": "Use Magic",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis [Keyboard]",
+                    "id": "e57e1bf8-94db-4791-aaea-1ce8fc7d74d2",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap Magic",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "9af56fac-e8ee-4d18-a20a-1485d4c75096",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Swap Magic",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "ff791695-fdc0-4bca-a2cf-6cc45d32150c",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Swap Magic",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": [

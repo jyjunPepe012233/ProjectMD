@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using MinD;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,14 +9,24 @@ using UnityEngine;
 public class PlayerInventoryHandler : MonoBehaviour {
 
 	[HideInInspector] public Player owner;
-
-	// INVENTORY
-	[SerializeField] private Weapon weaponSlot;
-	[SerializeField] private Protection protectionSlot;
-	[SerializeField] private Talisman[] talismanSlots = new Talisman[5];
-	[SerializeField] private Tool[] toolSlots = new Tool[10];
 	
+	
+	[Header("[ Inventory Slot ]")]
+	public Weapon weaponSlot; 
+	public Protection protectionSlot;
+	public Talisman[] talismanSlots = new Talisman[5];
+	
+	[Header("[ Quick Slot ]")]
+	public Magic[] magicSlots; // CHANGE SLOT SIZE BY ATTRIBUTE IN RUNTIME
+	public Tool[] toolSlots = new Tool[10];
+
+	private int usingMemory; // MEMORY AMOUNT OF CURRENT USING MAGICS
+	private int currentMagicSlot;
+	public Magic selectedMagic;
+
+	[Space(10)]
 	[SerializeField] private Item[] playerItemList;
+
 
 
 
@@ -25,6 +37,9 @@ public class PlayerInventoryHandler : MonoBehaviour {
 		
 		// TODO: LOAD THE ITEM FROM SAVE DAT
 	}
+	
+	// load quickslot data
+		// load slot and set selected Magic
 
 
 	
@@ -91,8 +106,9 @@ public class PlayerInventoryHandler : MonoBehaviour {
 
 	
 	
-	public void EquipItem(Equipment equipment, EquipmentSlots targetSlot) {
+	public void EquipEquipment(Equipment equipment, EquipmentSlots targetSlot) {
 
+		// INSERT EQUIPMENT IN SLOT
 		switch (targetSlot) {
 			
 			case EquipmentSlots.Weapon:
@@ -176,7 +192,7 @@ public class PlayerInventoryHandler : MonoBehaviour {
 		
 	}
 
-	public void UnequipItem(EquipmentSlots targetSlot) {
+	public void UnequipEquipment(EquipmentSlots targetSlot) {
 
 		Equipment unequipedItem = null;
 
@@ -288,6 +304,72 @@ public class PlayerInventoryHandler : MonoBehaviour {
 
 		AddItem(unequipedItem.itemId);
 		unequipedItem.OnUnequip(owner);
+	}
+
+	
+	
+	public bool EquipMagic(Magic magic, int slotPos) {
+
+		// CANCEL IF EXCEED THE MEMORY CAPACITY
+		if (magic.memoryCost + usingMemory > owner.attribute.memoryCapacity) {
+			return false;
+		}
+
+		// CANCEL IF slotPos PARAMETER IS OVER THE LIST SIZE
+		if (slotPos < 0 || slotPos >= magicSlots.Length) {
+			return false;
+		}
+		
+		
+		usingMemory += magic.memoryCost;
+		magicSlots[slotPos] = magic;
+
+		return true;
+	}
+
+	public void UnequipMagic(int slotPos) {
+		
+		// CANCEL IF slotPos PARAMETER IS OVER THE LIST SIZE
+		if (slotPos < 0 || slotPos >= magicSlots.Length) {
+			return;
+		}
+		
+		
+		usingMemory -= magicSlots[slotPos].memoryCost;
+		magicSlots[slotPos] = null;
+		
+	}
+
+
+
+	public void HandleQuickSlotSwapping() {
+		HandleMagicSlotSwapping();
+	}
+	
+	private void HandleMagicSlotSwapping() {
+
+		// CHECK INPUT FLAG
+		if (PlayerInputManager.Instance.swapMagicInput == 0) {
+			return;
+		}
+
+		// PREVENT INFINITE LOOP
+		if (!magicSlots.Any())
+			return;
+		
+		if (PlayerInputManager.Instance.swapMagicInput == 1) {
+			while (magicSlots[currentMagicSlot] != null) {
+				currentMagicSlot = (currentMagicSlot+1) % magicSlots.Length;
+			}
+
+		} else if (PlayerInputManager.Instance.swapMagicInput == -1) {
+			while (magicSlots[currentMagicSlot] != null) {
+				currentMagicSlot = (currentMagicSlot-1 + magicSlots.Length) % magicSlots.Length;
+			}
+			
+		}
+
+		selectedMagic = magicSlots[currentMagicSlot];
 	}
 	
 }

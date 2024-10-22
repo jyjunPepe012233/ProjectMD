@@ -42,7 +42,7 @@ public class Player : BaseEntity {
     [HideInInspector] public PlayerInventoryHandler inventory;
     [HideInInspector] public PlayerEquipmentHandler equipment;
     [HideInInspector] public PlayerInteractionHandler interaction;
-    [HideInInspector] public EntityStatusFxHandler effect;
+    [HideInInspector] public PlayerCombatHandler combat;
     
 
 
@@ -58,6 +58,8 @@ public class Player : BaseEntity {
         inventory = GetComponent<PlayerInventoryHandler>();
         equipment = GetComponent<PlayerEquipmentHandler>();
         interaction = GetComponent<PlayerInteractionHandler>();
+        combat = GetComponent<PlayerCombatHandler>();
+
 
         camera.owner = this;
         locomotion.owner = this;
@@ -66,6 +68,7 @@ public class Player : BaseEntity {
         inventory.owner = this;
         equipment.owner = this;
         interaction.owner = this;
+        combat.owner = this;
 
     }
 
@@ -81,7 +84,9 @@ public class Player : BaseEntity {
         
         camera.HandleCamera();
         locomotion.HandleAllLocomotion();
+        inventory.HandleQuickSlotSwapping();
         interaction.HandleInteraction();
+        combat.HandleAllCombatAction();
 
     }
 }

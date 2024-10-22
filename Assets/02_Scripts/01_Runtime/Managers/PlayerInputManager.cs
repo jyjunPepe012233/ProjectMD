@@ -14,6 +14,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
     public bool lockOnInput;
     // INTERACTION
     public bool interactionInput;
+    // COMBAT
+    public bool useMagicInput;
+    public int swapMagicInput;
+        // LEFT MAGIC TO -1, RIGHT MAGIC TO 1
+        // IF MAGIC IS SWAPPED, RESET TO 0
 
 
     
@@ -44,7 +49,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
             #region Interaction
             playerControls.Interaction.Interaction.performed += i => interactionInput = true;
             #endregion
-
+            
+            #region COMBAT
+            playerControls.Combat.UseMagic.performed += i => interactionInput = true;
+            playerControls.Combat.SwapMagic.started += i => swapMagicInput = (int)(i.ReadValue<float>());
+            #endregion
         }
 
         

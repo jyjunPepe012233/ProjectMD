@@ -287,6 +287,87 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Combat"",
+            ""id"": ""378c9833-4640-4670-ad8f-130325efaa5c"",
+            ""actions"": [
+                {
+                    ""name"": ""Use Magic"",
+                    ""type"": ""Button"",
+                    ""id"": ""76fec518-00fc-4acf-8d1f-d19fdfff33c3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Swap Magic"",
+                    ""type"": ""Button"",
+                    ""id"": ""e46e8f37-b868-415c-bb1d-d6e46c71f65d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a7c33d11-e8cb-435a-8032-ca69a3ce7133"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Use Magic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8574993-331a-4c18-a494-2666dfe3193e"",
+                    ""path"": ""<SwitchProControllerHID>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Pro-Controller"",
+                    ""action"": ""Use Magic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis [Keyboard]"",
+                    ""id"": ""e57e1bf8-94db-4791-aaea-1ce8fc7d74d2"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap Magic"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""9af56fac-e8ee-4d18-a20a-1485d4c75096"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Swap Magic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""ff791695-fdc0-4bca-a2cf-6cc45d32150c"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Swap Magic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -331,6 +412,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Interaction
         m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
         m_Interaction_Interaction = m_Interaction.FindAction("Interaction", throwIfNotFound: true);
+        // Combat
+        m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
+        m_Combat_UseMagic = m_Combat.FindAction("Use Magic", throwIfNotFound: true);
+        m_Combat_SwapMagic = m_Combat.FindAction("Swap Magic", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -550,6 +635,60 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public InteractionActions @Interaction => new InteractionActions(this);
+
+    // Combat
+    private readonly InputActionMap m_Combat;
+    private List<ICombatActions> m_CombatActionsCallbackInterfaces = new List<ICombatActions>();
+    private readonly InputAction m_Combat_UseMagic;
+    private readonly InputAction m_Combat_SwapMagic;
+    public struct CombatActions
+    {
+        private @PlayerControls m_Wrapper;
+        public CombatActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @UseMagic => m_Wrapper.m_Combat_UseMagic;
+        public InputAction @SwapMagic => m_Wrapper.m_Combat_SwapMagic;
+        public InputActionMap Get() { return m_Wrapper.m_Combat; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CombatActions set) { return set.Get(); }
+        public void AddCallbacks(ICombatActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CombatActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CombatActionsCallbackInterfaces.Add(instance);
+            @UseMagic.started += instance.OnUseMagic;
+            @UseMagic.performed += instance.OnUseMagic;
+            @UseMagic.canceled += instance.OnUseMagic;
+            @SwapMagic.started += instance.OnSwapMagic;
+            @SwapMagic.performed += instance.OnSwapMagic;
+            @SwapMagic.canceled += instance.OnSwapMagic;
+        }
+
+        private void UnregisterCallbacks(ICombatActions instance)
+        {
+            @UseMagic.started -= instance.OnUseMagic;
+            @UseMagic.performed -= instance.OnUseMagic;
+            @UseMagic.canceled -= instance.OnUseMagic;
+            @SwapMagic.started -= instance.OnSwapMagic;
+            @SwapMagic.performed -= instance.OnSwapMagic;
+            @SwapMagic.canceled -= instance.OnSwapMagic;
+        }
+
+        public void RemoveCallbacks(ICombatActions instance)
+        {
+            if (m_Wrapper.m_CombatActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICombatActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CombatActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CombatActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CombatActions @Combat => new CombatActions(this);
     private int m_MouseNKeySchemeIndex = -1;
     public InputControlScheme MouseNKeyScheme
     {
@@ -582,5 +721,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IInteractionActions
     {
         void OnInteraction(InputAction.CallbackContext context);
+    }
+    public interface ICombatActions
+    {
+        void OnUseMagic(InputAction.CallbackContext context);
+        void OnSwapMagic(InputAction.CallbackContext context);
     }
 }
