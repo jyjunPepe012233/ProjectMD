@@ -4,6 +4,12 @@ using UnityEngine.AI;
 
 namespace MinD {
 	
+	[RequireComponent(typeof(EnemyStateMachine))]
+	[RequireComponent(typeof(EnemyCombatHandler))]
+	[RequireComponent(typeof(EnemyCollisionHandler))]
+	[RequireComponent(typeof(EnemyAnimationHandler))]
+	[RequireComponent(typeof(EnemyEquipmentHandler))]
+	[RequireComponent(typeof(NavMeshAgent))]
 	public abstract class Enemy : BaseEntity {
 		
 		[Header("[ States Info ]")]
