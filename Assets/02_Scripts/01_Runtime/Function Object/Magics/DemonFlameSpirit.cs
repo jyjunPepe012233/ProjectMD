@@ -15,6 +15,8 @@ namespace MinD.Magics {
 
 		private Vector3 startPosition;
 		private Vector3 readyPosition;
+
+		private Vector3 targetDirx;
 		
 		private Rigidbody rigidbody; 
 		private Collider collider;
@@ -31,11 +33,17 @@ namespace MinD.Magics {
 			
 		}
 
-		public void Shoot(Enemy owner) {
+		public void Shoot(BaseEntity owner, BaseEntity target) {
 
 			Physics.IgnoreCollision(collider, owner.GetComponent<Collider>(), true);
 
-			targetOption = owner.combat.target.targetOptions[0];
+			// PREVENT NULL REFERENCE ERROR
+			if (target != null) {
+				targetOption = target.targetOptions[0];
+			} else {
+				targetOption = null;
+			}
+			
 			currentFlightCoroutine = StartCoroutine(ShootCoroutine());
 		}
 		
@@ -65,13 +73,25 @@ namespace MinD.Magics {
 			collider.enabled = true;
 			float speed = 4;
 
+			// SET FORWARD TO TARGET DIRECTION
+			if (targetOption != null) {
+				targetDirx = (targetOption.transform.position - transform.position).normalized;
+			} else {
+				targetDirx = (transform.forward);
+			}
+			transform.forward = targetDirx;
+
 			// SHOOT
 			while (true) {
 				
 				speed += Time.deltaTime * 5;
 
-				Vector3 targetDirx = (targetOption.transform.position - transform.position).normalized;
-				transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirx), Time.deltaTime * 2);
+				
+				if (targetOption != null) {
+					targetDirx = (targetOption.transform.position - transform.position).normalized;
+				}
+
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(targetDirx), Time.deltaTime * 45);
 
 				rigidbody.velocity = transform.forward * speed;
 				

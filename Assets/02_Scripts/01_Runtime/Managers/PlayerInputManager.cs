@@ -51,7 +51,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
             #endregion
             
             #region COMBAT
-            playerControls.Combat.UseMagic.performed += i => interactionInput = true;
+            playerControls.Combat.UseMagic.performed += i => useMagicInput = true;
             playerControls.Combat.SwapMagic.started += i => swapMagicInput = (int)(i.ReadValue<float>());
             #endregion
         }

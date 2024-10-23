@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 
+[RequireComponent(typeof(EntityStatusFxHandler))]
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
 public abstract class BaseEntity : MonoBehaviour {

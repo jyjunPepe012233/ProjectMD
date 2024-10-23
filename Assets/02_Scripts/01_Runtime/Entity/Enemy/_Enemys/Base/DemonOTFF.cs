@@ -30,7 +30,7 @@ namespace MinD.Enemys {
 			DemonFlameSpirit newSpirit = ObjectDataBase.Instance.InstantiateMagic("DemonFlame_Spirit") .GetComponent<DemonFlameSpirit>();
 
 			newSpirit.transform.position = spiritSummonPosition.position; 
-			newSpirit.Shoot(this);
+			newSpirit.Shoot(this, combat.target);
 		}
 	}
 

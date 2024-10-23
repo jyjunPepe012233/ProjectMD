@@ -12,11 +12,9 @@ public class ResetPlayerFlags : StateMachineBehaviour {
     [SerializeField] private bool canMove = true;
     [SerializeField] private bool isJumping = false;
 
-    [SerializeField] private bool setIsPerformingAction, setApplyRootMotion, setCanRotate, setCanMove, setIsJumping;
+
     
-    
-    
-    public Player owner;
+    private Player owner;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MinD;
 using UnityEngine;
 
 public class ItemDataBase : Singleton<ItemDataBase> {
@@ -18,29 +19,36 @@ public class ItemDataBase : Singleton<ItemDataBase> {
 		foreach (Weapon item in itemSoList.weaponList) {
 			item.itemId = settingId;
 			indexedItemList.Add(item);
-			
-			settingId += 1;
+
+			settingId++;
 		}
 
 		foreach (Protection item in itemSoList.protectionList) {
 			item.itemId = settingId;
 			indexedItemList.Add(item);
 			
-			settingId += 1;
+			settingId++;
 		}
 
 		foreach (Talisman item in itemSoList.talismanList) {
 			item.itemId = settingId;
 			indexedItemList.Add(item);
 
-			settingId += 1;
+			settingId++;
 		}
 
 		foreach (Tool item in itemSoList.toolList) {
 			item.itemId = settingId;
 			indexedItemList.Add(item);
 
-			settingId += 1;
+			settingId++;
+		}
+
+		foreach (Magic item in itemSoList.magicList) {
+			item.itemId = settingId;
+			indexedItemList.Add(item);
+
+			settingId++;
 		}
 	}
 

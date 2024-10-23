@@ -22,9 +22,9 @@ using UnityEngine.TextCore.Text;
 public class Player : BaseEntity {
     
     [Header("[ Attributes ]")]
-    private int curHp; 
-    private int curMp;
-    private int curStamina;
+    [SerializeField] private int curHp; 
+    [SerializeField] private int curMp;
+    [SerializeField] private int curStamina;
 
     public int CurHp {
         get => curHp;

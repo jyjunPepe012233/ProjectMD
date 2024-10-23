@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MinD;
 
 
 
@@ -11,5 +12,6 @@ public class ItemSoList : ScriptableObject {
 	public List<Protection> protectionList;
 	public List<Talisman> talismanList;
 	public List<Tool> toolList;
-	
+	public List<Magic> magicList;
+
 }

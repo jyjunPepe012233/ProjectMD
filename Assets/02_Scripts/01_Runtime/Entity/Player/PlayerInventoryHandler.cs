@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MinD;
 using Unity.VisualScripting;
@@ -17,15 +18,24 @@ public class PlayerInventoryHandler : MonoBehaviour {
 	public Talisman[] talismanSlots = new Talisman[5];
 	
 	[Header("[ Quick Slot ]")]
-	public Magic[] magicSlots; // CHANGE SLOT SIZE BY ATTRIBUTE IN RUNTIME
+	public Magic[] magicSlots = new Magic[1]; // CHANGE SLOT SIZE BY ATTRIBUTE IN RUNTIME
 	public Tool[] toolSlots = new Tool[10];
 
 	private int usingMemory; // MEMORY AMOUNT OF CURRENT USING MAGICS
 	private int currentMagicSlot;
-	public Magic selectedMagic;
+	[HideInInspector] public Magic selectedMagic;
 
 	[Space(10)]
 	[SerializeField] private Item[] playerItemList;
+
+	[Header("[ Debug ]")] public Magic equipMagic;
+
+	public void OnValidate() {
+		if (equipMagic != null) {
+			EquipMagic(equipMagic, 0);
+			equipMagic = null;
+		}
+	}
 
 
 
@@ -358,15 +368,22 @@ public class PlayerInventoryHandler : MonoBehaviour {
 			return;
 		
 		if (PlayerInputManager.Instance.swapMagicInput == 1) {
-			while (magicSlots[currentMagicSlot] != null) {
-				currentMagicSlot = (currentMagicSlot+1) % magicSlots.Length;
+			while (true) { // TO SKIP EMPTY MAGIC
+				// REMAINDER OPERATING TO CYCLE THE LIST
+				currentMagicSlot = (currentMagicSlot + 1) % magicSlots.Length;
+				if (magicSlots[currentMagicSlot] != null) {
+					break;
+				}
 			}
 
 		} else if (PlayerInputManager.Instance.swapMagicInput == -1) {
-			while (magicSlots[currentMagicSlot] != null) {
-				currentMagicSlot = (currentMagicSlot-1 + magicSlots.Length) % magicSlots.Length;
+			while (true) {
+				currentMagicSlot = (currentMagicSlot - 1 + magicSlots.Length) % magicSlots.Length;
+				if (magicSlots[currentMagicSlot] != null) {
+					break;
+				}
 			}
-			
+
 		}
 
 		selectedMagic = magicSlots[currentMagicSlot];

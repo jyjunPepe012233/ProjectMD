@@ -20,7 +20,7 @@ namespace MinD.UI {
         [Header("[ Settings ]")]
         [SerializeField] private float widthMultiplier = 1;
         
-        private float trailDampingSpeed = 150;
+        private float trailDampingSpeed = 100;
         
         private int currentValue;
         private int maxValue;

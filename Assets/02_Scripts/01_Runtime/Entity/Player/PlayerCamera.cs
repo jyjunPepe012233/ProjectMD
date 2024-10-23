@@ -200,6 +200,7 @@ public class PlayerCamera : MonoBehaviour {
 		if (availableTargets.Count > 0) {
 			
 			currentTargetOption = availableTargets[0];
+			owner.combat.target = currentTargetOption.GetComponentInParent<BaseEntity>();
 			owner.isLockOn = true;
 			
 		}

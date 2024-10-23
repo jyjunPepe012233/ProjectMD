@@ -7,14 +7,16 @@ using UnityEngine.Serialization;
 public class PlayerCombatHandler : MonoBehaviour {
 
 	[HideInInspector] public Player owner;
+
+	public BaseEntity target;
+
+	[HideInInspector] public Magic currentCastingSpell;
+	
 	
 
 	public void HandleAllCombatAction() {
-		
 		HandleUseMagic();
-
 	}
-	
 	
 	private void HandleUseMagic() {
 
