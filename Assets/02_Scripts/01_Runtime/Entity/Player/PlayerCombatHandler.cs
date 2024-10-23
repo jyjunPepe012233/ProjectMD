@@ -21,16 +21,36 @@ public class PlayerCombatHandler : MonoBehaviour {
 		if (PlayerInputManager.Instance.useMagicInput) {
 			PlayerInputManager.Instance.useMagicInput = false;
 
-
+			
 			Magic useMagic = owner.inventory.selectedMagic;
 
-			// CANCEL IF PLAYER HASN'T ENOUGH MP
-			if (owner.curMp < useMagic.mpCost)
+			// CANCEL IF PLAYER HASN'T ENOUGH MP OR STAMINA
+			if (owner.CurMp < useMagic.mpCost)
+				return;
+			
+			if (owner.CurStamina < useMagic.staminaCost)
 				return;
 
-			owner.curMp -= useMagic.mpCost;
-			useMagic.OnUse();
+			
+			// USE MAGIC
+			owner.CurMp -= useMagic.mpCost;
+			owner.CurStamina -= useMagic.staminaCost;
+			
+			
+			useMagic.OnUse(owner);
+			currentCastingSpell = useMagic;
+			
 		}
+	}
+
+
+
+	public void InstantiateMagicObject() {
+		currentCastingSpell.InstantiateMagicObject(owner);
+	}
+
+	public void InstantiateWarmUpFX() {
+		currentCastingSpell.InstantiateWarmupFX(owner);
 	}
 	
 }

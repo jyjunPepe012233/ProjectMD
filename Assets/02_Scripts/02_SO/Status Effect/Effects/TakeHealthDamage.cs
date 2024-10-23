@@ -19,7 +19,7 @@ namespace MinD.StatusFx {
 	
 		protected override void OnInstantiateAs(Player player) {
 			
-			player.curHP -= player.attribute.damageNegation.GetCalculatedDamage(this);
+			player.CurHp -= player.attribute.damageNegation.GetCalculatedDamage(this);
 
 			string stateName = "";
 			switch (hitDirection) {
@@ -41,7 +41,6 @@ namespace MinD.StatusFx {
 					break;
 			}
 			player.animation.PlayTargetAction(stateName, true, true, false, false);
-			PlayerHUDManager.Instance.RefreshHPBar();
 
 		}
 	

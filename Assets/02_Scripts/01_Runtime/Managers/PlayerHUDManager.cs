@@ -8,13 +8,8 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	public Player player;
 	
 	public PlayerHUD playerHUD;
-
 	
-	private void OnEnable() {
-		player = FindObjectOfType<Player>();
-		playerHUD = FindObjectOfType<PlayerHUD>();
-	}
-
+	
 
 	public void Update() {
 
@@ -42,15 +37,15 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	
 	public void RefreshHPBar() {
 		playerHUD.hpBar.SetMaxValue(player.attribute.maxHp);
-		playerHUD.hpBar.SetValue(player.curHP);
+		playerHUD.hpBar.SetValue(player.CurHp);
 	}
 	public void RefreshMPBar() {
 		playerHUD.mpBar.SetMaxValue(player.attribute.maxMp);
-		playerHUD.mpBar.SetValue(player.curMp);
+		playerHUD.mpBar.SetValue(player.CurMp);
 	}
 	public void RefreshStaminaBar() {
 		playerHUD.staminaBar.SetMaxValue(player.attribute.maxStamina);
-		playerHUD.staminaBar.SetValue(player.curStamina);
+		playerHUD.staminaBar.SetValue(player.CurStamina);
 	}
 	
 	

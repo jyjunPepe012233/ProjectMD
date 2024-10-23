@@ -16,14 +16,49 @@ using UnityEngine.TextCore.Text;
 [RequireComponent(typeof(PlayerInventoryHandler))]
 [RequireComponent(typeof(PlayerEquipmentHandler))]
 [RequireComponent(typeof(PlayerInteractionHandler))]
+[RequireComponent(typeof(PlayerCombatHandler))]
 #endregion
 
 public class Player : BaseEntity {
+    
+    [Header("[ Attributes ]")]
+    private int curHp; 
+    private int curMp;
+    private int curStamina;
 
-    [FormerlySerializedAs("curHp")] [Header("[ Attributes ]")]
-    public int curHP;
-    public int curMp;
-    public int curStamina;
+    public int CurHp {
+        get => curHp;
+        set {
+            curHp = value;
+            if (curHp <= 0) {
+                curHp = 0;
+                
+                // DIE
+                return;
+            }
+            
+            PlayerHUDManager.Instance.RefreshHPBar();
+        }
+    }
+    public int CurMp {
+        get => curMp;
+        set {
+            curMp = value;
+            curMp = Mathf.Max(curMp, 0); // IF CUR MP IS LOWER THAN 0, RETURN 0
+            
+            PlayerHUDManager.Instance.RefreshMPBar();
+        }
+    }
+    public int CurStamina {
+        get => curStamina;
+        set {
+            curStamina = value;
+            curStamina = Mathf.Max(curStamina, 0);
+            
+            PlayerHUDManager.Instance.RefreshStaminaBar();
+        }
+    }
+    
     
     [Header("Flags")]
     public bool isPerformingAction;

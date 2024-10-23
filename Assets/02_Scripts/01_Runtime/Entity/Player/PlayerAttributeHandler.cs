@@ -39,9 +39,9 @@ public class PlayerAttributeHandler : MonoBehaviour {
     void OnValidate() {
         if (resetAttributes) {
             SetBaseAttributesAsPerStats();
-            owner.curHP = maxHp;
-            owner.curMp = maxMp;
-            owner.curStamina = maxStamina;
+            owner.CurHp = maxHp;
+            owner.CurMp = maxMp;
+            owner.CurStamina = maxStamina;
             resetAttributes = false;
             PlayerHUDManager.Instance.RefreshAllStatusBar();
         }
