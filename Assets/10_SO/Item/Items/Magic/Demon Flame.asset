@@ -19,7 +19,10 @@ MonoBehaviour:
   itemMaxCount: 1
   itemCount: 0
   memoryCost: 1
-  mpCost: 35
+  mpCost: 20
+  staminaCost: 20
+  mpCostDuring: 0
+  staminaCostDuring: 0
   isPerformingAction: 1
   applyRootMotion: 1
   canRotate: 0

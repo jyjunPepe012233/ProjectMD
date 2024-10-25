@@ -8,51 +8,87 @@ public class PlayerCombatHandler : MonoBehaviour {
 
 	[HideInInspector] public Player owner;
 
+	
 	public BaseEntity target;
 
-	[HideInInspector] public Magic currentCastingSpell;
-	
+	[FormerlySerializedAs("currentCastingSpell")] [HideInInspector] public Magic currentCastingMagic;
+	private bool usingMagic;
 	
 
 	public void HandleAllCombatAction() {
-		HandleUseMagic();
+		HandleUsingMagic();
 	}
 	
-	private void HandleUseMagic() {
+	private void HandleUsingMagic() {
+
+		if (currentCastingMagic != null) {
+			currentCastingMagic.Tick();
+		}
+		
 
 		if (PlayerInputManager.Instance.useMagicInput) {
-			PlayerInputManager.Instance.useMagicInput = false;
 
-			
+			// CHECK BASIC FLAGS
+			if (usingMagic || owner.isPerformingAction) {
+				return;
+			}
+
+
 			Magic useMagic = owner.inventory.selectedMagic;
 
 			// CANCEL IF PLAYER HASN'T ENOUGH MP OR STAMINA
-			if (owner.CurMp < useMagic.mpCost)
+			if (owner.CurMp < useMagic.mpCost) {
 				return;
-			
-			if (owner.CurStamina < useMagic.staminaCost)
+			}
+			if (owner.CurStamina < useMagic.staminaCost) {
 				return;
+			}
 
 			
-			// USE MAGIC
+			usingMagic = true;
+			
 			owner.CurMp -= useMagic.mpCost;
 			owner.CurStamina -= useMagic.staminaCost;
+
+			useMagic.castPlayer = owner;
+			
+			useMagic.OnUse();
+			currentCastingMagic = useMagic;
 			
 			
-			useMagic.OnUse(owner);
-			currentCastingSpell = useMagic;
+			
+		} else if (currentCastingMagic != null) { 
+			
+			// IF INPUT IS NULL AND DURING CASTING => USE MAGIC INPUT IS END
+			currentCastingMagic.OnReleaseInput();
 			
 		}
 	}
 
+	public void ExitCurrentMagic() {
 
+		if (currentCastingMagic == null) {
+			return;
+		}
 
-	public void InstantiateMagicObject() {
-		currentCastingSpell.InstantiateMagicObject(owner);
+		usingMagic = false;
+		
+		currentCastingMagic.OnExit();
+		currentCastingMagic = null;
 	}
 
-	public void InstantiateWarmUpFX() {
-		currentCastingSpell.InstantiateWarmupFX(owner);
+	
+
+	public void InstantiateWarmUpFx() {
+		currentCastingMagic.InstantiateWarmupFX();
+	}
+
+	public void SuccessfullyCast() {
+		currentCastingMagic.OnSuccessfullyCast();
+	}
+	
+	public void CastIsEnd() {
+		currentCastingMagic.OnCastIsEnd();
 	}
 	
 }

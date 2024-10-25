@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace MinD.Magics {
+namespace MinD.Object.Magics {
 
 	public class DemonFlameSpirit : MonoBehaviour {
 

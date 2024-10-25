@@ -26,13 +26,15 @@ public class PlayerAttributeHandler : MonoBehaviour {
     public float divine;
     [Space(7)]
     public DamageNegation damageNegation;
-    [Space(7)]
-    public SpiritAffinity elementalAffinity;
 
     [Header("[ Other Attributes ]")]
     public int memoryCapacity;
+    public float staminaRecoverySpeed;
+    public float staminaRecoveryDelay;
 
-    #region Debug
+    private float staminaRecoveryTimer;
+    private float staminaRecoveryFloatTemp;
+    
     [Header("[ Debug ]")]
     public bool resetAttributes;
     
@@ -46,8 +48,6 @@ public class PlayerAttributeHandler : MonoBehaviour {
             PlayerHUDManager.Instance.RefreshAllStatusBar();
         }
     }
-
-    #endregion
 
 
     public void Awake() {
@@ -78,5 +78,41 @@ public class PlayerAttributeHandler : MonoBehaviour {
     void ModifyAttributesAsPerEquipment() {
         
         
+    }
+
+
+
+    public void HandleStamina() {
+
+        if (owner.CurStamina < maxStamina) {
+            
+            // CHECK FLAGS AND CONTROL TIMER TO RECOVERY STAMINA
+            if (!owner.isPerformingAction && !owner.locomotion.isSprinting) {
+                
+                staminaRecoveryTimer += Time.deltaTime;
+                
+            } else {
+                staminaRecoveryTimer = 0;
+            }
+            
+            
+            if (staminaRecoveryTimer > staminaRecoveryDelay) {
+                staminaRecoveryFloatTemp += staminaRecoverySpeed * Time.deltaTime;
+
+                if (staminaRecoveryFloatTemp > 1) {
+
+                    // TO ELIMINATE ERROR THAT OCCUR IN CONVERTING FLOAT TO INT
+                    while (true) {
+                        if (staminaRecoveryFloatTemp < 1)
+                            break;
+                        
+                        owner.CurStamina += 1;
+                        staminaRecoveryFloatTemp -= 1;
+                    }
+                    
+                }
+            }
+        }
+
     }
 }

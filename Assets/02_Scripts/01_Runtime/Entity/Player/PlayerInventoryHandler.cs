@@ -363,10 +363,12 @@ public class PlayerInventoryHandler : MonoBehaviour {
 			return;
 		}
 
-		// PREVENT INFINITE LOOP
-		if (!magicSlots.Any())
+		
+		// CANCEL SWAP IF PLAYER HASN'T ANY MAGIC
+		if (magicSlots.Count(i => i != null) == 0)
 			return;
 		
+
 		if (PlayerInputManager.Instance.swapMagicInput == 1) {
 			while (true) { // TO SKIP EMPTY MAGIC
 				// REMAINDER OPERATING TO CYCLE THE LIST
@@ -383,9 +385,9 @@ public class PlayerInventoryHandler : MonoBehaviour {
 					break;
 				}
 			}
-
 		}
-
+		
+		PlayerInputManager.Instance.swapMagicInput = 0;
 		selectedMagic = magicSlots[currentMagicSlot];
 	}
 	

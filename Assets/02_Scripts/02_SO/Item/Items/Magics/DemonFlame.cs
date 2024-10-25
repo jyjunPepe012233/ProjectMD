@@ -1,31 +1,48 @@
 using System.Runtime.Serialization;
+using MinD.Object.Magics;
 using UnityEngine;
 
 namespace MinD.Magics {
 
 	[CreateAssetMenu(menuName="MinD/Item/Items/Magics/Demon Flame")]
 	public class DemonFlame : Magic {
+		// 마염
 		
-		public override void OnUse(Player player) {
+		public override void OnUse() {
 			
-			player.animation.PlayTargetAction("DemonFlame", isPerformingAction, applyRootMotion, canRotate, canMove);
+			castPlayer.animation.PlayTargetAction("DemonFlame", true, true, false, false);
 			
 		}
 
-		public override void InstantiateMagicObject(Player player) {
+		public override void Tick() {
+			
+			if (castPlayer.isPerformingAction == false) // ON ANIMATION IS END
+				castPlayer.combat.ExitCurrentMagic();
+			
+		}
 
-			Vector3 summonPos = player.transform.position + player.transform.up * 2.3f;
+		public override void OnReleaseInput() {
+		}
+
+		public override void OnExit() {
+		}
+
+
+		public override void OnSuccessfullyCast() {
+
+			Vector3 summonPos = castPlayer.transform.position + castPlayer.transform.up * 2.3f;
 
 			DemonFlameSpirit demonFlame = ObjectDataBase.Instance.InstantiateMagic("DemonFlame_Spirit").GetComponent<DemonFlameSpirit>();
 			demonFlame.transform.position = summonPos;
 
-			if (player.combat.target != null) {
-				demonFlame.Shoot(player, player.combat.target);
+			if (castPlayer.combat.target != null) {
+				demonFlame.Shoot(castPlayer, castPlayer.combat.target);
 			} else {
-				demonFlame.Shoot(player, null);
+				demonFlame.Shoot(castPlayer, null);
 			}
 			
 		}
+		
 	}
 
 }

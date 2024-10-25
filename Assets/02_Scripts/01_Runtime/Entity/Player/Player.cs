@@ -31,11 +31,9 @@ public class Player : BaseEntity {
         set {
             curHp = value;
             if (curHp <= 0) {
-                curHp = 0;
-                
                 // DIE
-                return;
             }
+            curHp = Mathf.Clamp(curHp, 0, attribute.maxHp);
             
             PlayerHUDManager.Instance.RefreshHPBar();
         }
@@ -44,7 +42,7 @@ public class Player : BaseEntity {
         get => curMp;
         set {
             curMp = value;
-            curMp = Mathf.Max(curMp, 0); // IF CUR MP IS LOWER THAN 0, RETURN 0
+            curMp = Mathf.Clamp(curMp, 0, attribute.maxMp);
             
             PlayerHUDManager.Instance.RefreshMPBar();
         }
@@ -53,7 +51,7 @@ public class Player : BaseEntity {
         get => curStamina;
         set {
             curStamina = value;
-            curStamina = Mathf.Max(curStamina, 0);
+            curStamina = Mathf.Clamp(curStamina, 0, attribute.maxStamina);
             
             PlayerHUDManager.Instance.RefreshStaminaBar();
         }
@@ -119,9 +117,18 @@ public class Player : BaseEntity {
         
         camera.HandleCamera();
         locomotion.HandleAllLocomotion();
+        attribute.HandleStamina();
         inventory.HandleQuickSlotSwapping();
         interaction.HandleInteraction();
         combat.HandleAllCombatAction();
 
+    }
+
+
+    public void CanRotate(bool active) {
+        canRotate = active;
+    }
+    public void CanMove(bool active) {
+        canMove = active;
     }
 }

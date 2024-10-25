@@ -2,6 +2,7 @@ using MinD.EnemyStates.DemonOTFF;
 using UnityEngine;
 using MinD.EnemyStates.DemonOTFF;
 using MinD.Magics;
+using MinD.Object.Magics;
 
 namespace MinD.Enemys {
 

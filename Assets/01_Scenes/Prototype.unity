@@ -245,7 +245,7 @@ MonoBehaviour:
   fillTrailTransform: {fileID: 1263191735}
   backgroundTransform: {fileID: 1207588082}
   barFloorTransform: {fileID: 693454847}
-  widthMultiplier: 5
+  widthMultiplier: 3
 --- !u!114 &111918020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1361,7 +1361,7 @@ Transform:
   m_GameObject: {fileID: 542126809}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.13, y: 5.44, z: -17.88}
+  m_LocalPosition: {x: 21.13, y: 5.053, z: -17.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1410,7 +1410,7 @@ MonoBehaviour:
   owner: {fileID: 542126811}
   vitality: 30
   endurance: 23
-  mind: 23
+  mind: 99
   intelligence: 0
   faith: 0
   maxHp: 550
@@ -1425,14 +1425,9 @@ MonoBehaviour:
     frost: 0
     lightning: 0
     holy: 0
-  elementalAffinity:
-    flame: 0
-    storm: 0
-    live: 0
-    ice: 0
-    metal: 0
-    flux: 0
-  memoryCapacity: 1
+  memoryCapacity: 5
+  staminaRecoverySpeed: 15
+  staminaRecoveryDelay: 2
   resetAttributes: 0
 --- !u!114 &542126815
 MonoBehaviour:
@@ -1524,7 +1519,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   magicSlots:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 92e3add1df5e84ca382ebb4d6ba66260, type: 2}
   toolSlots:
   - {fileID: 0}
   - {fileID: 0}
@@ -1567,7 +1562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
   target: {fileID: 0}
-  currentCastingSpell: {fileID: 0}
+  currentCastingMagic: {fileID: 0}
 --- !u!1 &552106009 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b3eb819d5ce8ba54fb167a100267e824,
@@ -1997,7 +1992,7 @@ Transform:
   m_GameObject: {fileID: 730893993}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.59, y: 0, z: 1.46}
+  m_LocalPosition: {x: -0.59, y: -0.597, z: 1.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3001,7 +2996,7 @@ MonoBehaviour:
   fillTrailTransform: {fileID: 875766492}
   backgroundTransform: {fileID: 343623048}
   barFloorTransform: {fileID: 1743176090}
-  widthMultiplier: 3
+  widthMultiplier: 2
 --- !u!114 &984494158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4718,6 +4713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magics:
   - {fileID: 5893720624626477688, guid: 599daf03cb365452ab163b5c43bb1cb6, type: 3}
+  - {fileID: 5664770137503069860, guid: bc4e1690c90ee4125b98ca1df131282d, type: 3}
 --- !u!1001 &1844948177
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6160,7 +6156,7 @@ MonoBehaviour:
   fillTrailTransform: {fileID: 2110244885}
   backgroundTransform: {fileID: 5747126235233660587}
   barFloorTransform: {fileID: 3403480106130117945}
-  widthMultiplier: 1
+  widthMultiplier: 0.7
 --- !u!222 &7823329581212930396
 CanvasRenderer:
   m_ObjectHideFlags: 0

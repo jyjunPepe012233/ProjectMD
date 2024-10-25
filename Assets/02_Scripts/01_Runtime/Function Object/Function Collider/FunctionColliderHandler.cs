@@ -30,6 +30,13 @@ public class FunctionColliderHandler : MonoBehaviour {
 		
 		if (damageCollider != null)
 			damageCollider.ResetDamagedEntity();
+
+		collider.enabled = false;
+		collider.enabled = true;
+	}
+
+	public void SetCollisionActive(bool active) {
+		collider.enabled = active;
 	}
 
 
@@ -40,7 +47,6 @@ public class FunctionColliderHandler : MonoBehaviour {
 		
 		editorWindow.Open(this);
 	}
-
 	public void LoadColliderBasicProperties() {
 		
 		collider = GetComponent<Collider>();
