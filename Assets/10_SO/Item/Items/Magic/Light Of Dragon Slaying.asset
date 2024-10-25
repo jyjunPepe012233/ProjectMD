@@ -21,7 +21,7 @@ MonoBehaviour:
   memoryCost: 3
   mpCost: 55
   staminaCost: 35
-  mpCostDuring: 34
+  mpCostDuring: 21
   staminaCostDuring: 17
   castPlayer: {fileID: 0}
   damage:

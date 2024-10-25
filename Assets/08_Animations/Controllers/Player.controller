@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Light_Of_DragonSlaying_Start
+  m_Name: LghtOfDrgnSlyng_Start
   m_Speed: 0.5
   m_CycleOffset: 0
   m_Transitions:
@@ -130,7 +130,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Light_Of_DragonSlaying_Loop
+  m_Name: LghtOfDrgnSlyng_Loop
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1268,7 +1268,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Light_Of_DragonSlaying_End
+  m_Name: LghtOfDrgnSlyng_End
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
