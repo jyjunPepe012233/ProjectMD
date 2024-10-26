@@ -19,13 +19,14 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 	
 	[Space(10)]
 	[SerializeField] private ParticleSystem blastSystem;
+	[SerializeField] private Utils.FadingLight blastLight;
 
 	
 	[Header("[ Other ]")]
 	[SerializeField] private GameObject projectile;
 
 
-	private WaitForSeconds damageYieldTick;
+	private WaitForSeconds damageYieldTick; 
 	private Coroutine blastingCoroutine;
 
 	private Vector3 blastPosition = new Vector3(0, 0, 2.5f);
@@ -33,19 +34,22 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 
 	private LghtOfDrgnSlyng magicSO;
 
+	private float blastLightStartIntensity;
+
 
 
 	public void SetUp(LghtOfDrgnSlyng magicSO, Damage damage, float damageTick) {
 
 		this.magicSO = magicSO;
 		blastDamage = damage;
-		damageYieldTick = new WaitForSeconds(Mathf.Max(damageTick, 0.1f)); // MINIMUM TIME OF DAMAGE TICK IS 0.1 SECOND 
+		damageYieldTick = new WaitForSeconds(Mathf.Max(damageTick, 0.1f)); // MINIMUM TIME OF DAMAGE TICK IS 0.1 SECOND
 	}
 
 
 
 	public void PlayWarmUpVfx() {
 		StartCoroutine(PlayMagicCircleVFX(1.5f));
+		blastLight.FadeIn(1);
 	}
 
 	private IEnumerator PlayMagicCircleVFX(float duration) {
@@ -86,11 +90,11 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 
 			} else {
 				magicSO.EndBlasting();
+				blastLight.FadeOut(1.5f);
 				yield break;
 			}
 		}
 	}
-
 	private void ThrowDamageCollider() {
 
 		var newProjectile = Instantiate(projectile).GetComponent<LghtOfDrgnSlyngProjectile>(); // NEED TO CHANGE POOLING
@@ -99,10 +103,16 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 
 
 
+
+
 	// CALL BY EndBlasting() METHOD IN MAGIC ITEM SO
 	public IEnumerator EndBlastingCoroutine(float duration) {
 
-		StopCoroutine(blastingCoroutine);
+		if (blastingCoroutine != null) {
+			StopCoroutine(blastingCoroutine);
+		} else {
+			StopAllCoroutines();
+		}
 
 
 		// OFF BLASTING FX
