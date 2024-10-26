@@ -10,13 +10,15 @@ public class PlayerAttributeHandler : MonoBehaviour {
 
     [Header("[ Debug ]")]
     public bool resetAttributes;
-    
-    
+
+
     [Header("[ Stats ]")]
-    [Range(0, 99)] public int vitality, endurance, mind, intelligence, faith;
+    [Range(0, 99)] public int vitality;
+    [Range(0, 99)] public int endurance, mind, intelligence, faith;
 
     [Header("[ Status Attributes ]")]
-    public int maxHp, maxMp, maxStamina;
+    public int maxHp;
+    public int maxMp, maxStamina;
     [Space(5)]
     public float magicForceModifier;
     public float divine;
