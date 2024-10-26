@@ -12,23 +12,24 @@ public class PlayerInventoryHandler : MonoBehaviour {
 	[HideInInspector] public Player owner;
 	
 	
-	[Header("[ Inventory Slot ]")]
+	[Header("[ Equipment Slot ]")]
 	public Weapon weaponSlot; 
 	public Protection protectionSlot;
 	public Talisman[] talismanSlots = new Talisman[5];
-	
-	[Header("[ Quick Slot ]")]
-	public Magic[] magicSlots = new Magic[1]; // CHANGE SLOT SIZE BY ATTRIBUTE IN RUNTIME
 	public Tool[] toolSlots = new Tool[10];
-
+	
+	[Header("[ Magic Slot ]")]
+	public int currentMagicSlot;
+	public Magic[] magicSlots = new Magic[1]; // CHANGE SLOT SIZE BY ATTRIBUTE IN RUNTIME
+	
 	private int usingMemory; // MEMORY AMOUNT OF CURRENT USING MAGICS
-	private int currentMagicSlot;
-	[HideInInspector] public Magic selectedMagic;
-
-	[Space(10)]
+	
+	
+	[Header("[ Owned Item Array(Inventory) ]")]
 	[SerializeField] private Item[] playerItemList;
 
-	[Header("[ Debug ]")] public Magic equipMagic;
+	[Header("[ Debug ]")]
+	public Magic equipMagic;
 
 	public void OnValidate() {
 		if (equipMagic != null) {
@@ -344,11 +345,12 @@ public class PlayerInventoryHandler : MonoBehaviour {
 			return;
 		}
 		
-		
 		usingMemory -= magicSlots[slotPos].memoryCost;
 		magicSlots[slotPos] = null;
 		
 	}
+	
+	// RESIZE MAGIC SLOT
 
 
 
@@ -388,7 +390,6 @@ public class PlayerInventoryHandler : MonoBehaviour {
 		}
 		
 		PlayerInputManager.Instance.swapMagicInput = 0;
-		selectedMagic = magicSlots[currentMagicSlot];
 	}
 	
 }

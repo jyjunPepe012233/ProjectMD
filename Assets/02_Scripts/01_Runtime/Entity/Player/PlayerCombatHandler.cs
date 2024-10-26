@@ -34,7 +34,11 @@ public class PlayerCombatHandler : MonoBehaviour {
 			}
 
 
-			Magic useMagic = owner.inventory.selectedMagic;
+			Magic useMagic = owner.inventory.magicSlots[owner.inventory.currentMagicSlot];
+
+			if (useMagic == null) {
+				return;
+			}
 
 			// CANCEL IF PLAYER HASN'T ENOUGH MP OR STAMINA
 			if (owner.CurMp < useMagic.mpCost) {
