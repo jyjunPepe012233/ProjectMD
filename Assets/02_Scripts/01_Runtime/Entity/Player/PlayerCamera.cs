@@ -1,107 +1,110 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using MinD;
-using Unity.VisualScripting;
+using MinD.Runtime.DataBase;
+using MinD.Runtime.Managers;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
+
+namespace MinD.Runtime.Entity {
 
 public class PlayerCamera : MonoBehaviour {
 
-	public Player owner;
-	public float mouseSensitive = 1.5f;
+	[HideInInspector] public Player owner;
+	
+	
+	public float rotationMultiplier = 1.5f;
 
+	
 	[Header("[ Runtime Value ]")]
 	[SerializeField] private float modify_distance; // 카메라 거리를 일시적으로 변경할 수치
-	
+
 	[Header("[ Settings ]")]
 	[SerializeField] private Vector3 cameraOffset;
-	[SerializeField, Range(0, 90)] private float limitAngleAbove = 6 ;
-	[SerializeField, Range(0, 90)] private float limitAngleBelow = 40;
-	[SerializeField] private float cameraMaxDistance = 3.5f;
+	[SerializeField, Range(0, 90)] private float limitAngleAbove = 40;
+	[SerializeField, Range(0, 90)] private float limitAngleBelow = 60;
+	
+	[Space(7)]
+	public float cameraMaxDistance = 3.5f;
 	[SerializeField] private float cameraFollowSpeed = 13;
 	[SerializeField] private float cameraRadius = 0.3f;
 	[SerializeField] private LayerMask cameraCollisionMask;
-	[Space(10)]
-	[SerializeField] private float lockOnAngle;
-	[SerializeField] private float lockOnMaxRadius;
-
+	
+	[Space(7)]
+	[SerializeField] private float lockOnAngle = 50;
+	[SerializeField] private float lockOnMaxRadius = 50;
+	
+	
+	[HideInInspector]
 	public Transform currentTargetOption;
 	private List<Transform> availableTargets = new List<Transform>(); // SORTED BY PROXIMITY
-	
 
-	private Vector3 targetCameraArm;
-	private Vector3 cameraArm;
-		// Camera Arm Position
+
+	// POSITION OF VIRTUAL CAMERA ARM
+	private Vector3 targetCameraArm; // LERP TARGET POSITION
+	private Vector3 cameraArm; // CURRENT POSITION
+	
 	private float cameraDistance;
-	
-	
+
+
 
 	public void HandleCamera() {
-		
+
 		HandleFollowTarget();
 		HandleRotation();
 		HandleCollision();
 		HandleLockOn();
 
 	}
-	
-	
 
-	void HandleFollowTarget() {
+
+
+	private void HandleFollowTarget() {
 
 		Vector3 angle = transform.eulerAngles;
 		angle.x = 0;
-		
+
 		targetCameraArm = owner.transform.position + Quaternion.Euler(angle) * cameraOffset;
 
 		cameraArm = Vector3.Lerp(cameraArm, targetCameraArm, Time.deltaTime * cameraFollowSpeed);
 	}
-	
-	void HandleRotation() {
 
-		if (owner.isLockOn) { // AUTO ROTATION BY LOCK ON
+	private void HandleRotation() {
+
+		if (owner.isLockOn) {
+			// AUTO ROTATION BY LOCK ON
 
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(currentTargetOption.position - transform.position), 10 * Time.deltaTime);
 			Vector3 angle = transform.eulerAngles;
-			
-			
+
+
 			// LIMIT ANGLE
 			if (angle.x > 180)
 				angle.x = Mathf.Clamp(angle.x, 360 - limitAngleAbove, 370);
 			else
 				angle.x = Mathf.Clamp(angle.x, -10, limitAngleBelow);
-			
+
 			angle.z = 0;
-			
-			
 			transform.eulerAngles = angle;
-			
-		}
-		else {
-			
+
+		} else {
+
 			Vector2 rotationInput = PlayerInputManager.Instance.rotationInput;
-			Vector3 angle = transform.eulerAngles + new Vector3(-rotationInput.y * 0.35f, rotationInput.x) * mouseSensitive;
+			Vector3 angle = transform.eulerAngles + new Vector3(-rotationInput.y * 0.35f, rotationInput.x) * rotationMultiplier;
 
-			
+
 			// LIMIT ANGLE
 			if (angle.x > 180)
 				angle.x = Mathf.Clamp(angle.x, 360 - limitAngleAbove, 370);
 			else
 				angle.x = Mathf.Clamp(angle.x, -10, limitAngleBelow);
-			
-			angle.z = 0;
-			
 
+			angle.z = 0;
 			transform.eulerAngles = angle;
 		}
-		
 		
 		transform.position = cameraArm + (transform.rotation * Vector3.back * cameraDistance);
-		
 	}
 
-	void HandleCollision() {
+	private void HandleCollision() {
 
 		Ray ray = new Ray(cameraArm, transform.rotation * Vector3.back);
 		if (Physics.SphereCast(ray, cameraRadius, out RaycastHit hitInfo, cameraMaxDistance, cameraCollisionMask)) {
@@ -112,19 +115,19 @@ public class PlayerCamera : MonoBehaviour {
 			cameraDistance = cameraMaxDistance;
 	}
 
-	void HandleLockOn() {
+	private void HandleLockOn() {
 
 		if (PlayerInputManager.Instance.lockOnInput) {
 			PlayerInputManager.Instance.lockOnInput = false;
-			
+
 			if (owner.isLockOn)
 				RemoveLockOnTarget();
-			else 
+			else
 				SetLockOnTarget();
 		}
 
 		if (currentTargetOption != null) {
-			
+
 			if (Vector3.Angle(transform.forward, currentTargetOption.position - transform.position) > lockOnAngle)
 				RemoveLockOnTarget();
 
@@ -135,17 +138,18 @@ public class PlayerCamera : MonoBehaviour {
 
 		}
 	}
+
 	
 
-	void SetLockOnTarget() {
-		
+	private void SetLockOnTarget() {
+
 		// GET ENTITY COLLIDERS IN AVAILABLE RADIUS
 		Collider[] colliders = Physics.OverlapSphere(transform.position, lockOnMaxRadius, PhysicLayerDataBase.Instance.entityLayer);
 
 		if (colliders.Length == 0)
 			return;
-		
-		
+
+
 		// CHECK AVAILABLE TARGETS
 		availableTargets.Clear();
 		foreach (Collider collider in colliders) {
@@ -180,7 +184,7 @@ public class PlayerCamera : MonoBehaviour {
 				availableTargets.Add(options[i]);
 			}
 		}
-		
+
 
 		// SORTING TARGET OPTIONS BY PROXIMITY
 		for (int i = 0; i < availableTargets.Count; i++) {
@@ -196,25 +200,24 @@ public class PlayerCamera : MonoBehaviour {
 					(availableTargets[i], availableTargets[j]) = (availableTargets[j], availableTargets[i]);
 			}
 		}
-		
+
 		if (availableTargets.Count > 0) {
-			
+
 			currentTargetOption = availableTargets[0];
 			owner.combat.target = currentTargetOption.GetComponentInParent<BaseEntity>();
 			owner.isLockOn = true;
-			
+
 		}
 
 	}
-	void RemoveLockOnTarget() {
-		
+	private void RemoveLockOnTarget() {
+
 		currentTargetOption = null;
 		owner.isLockOn = false;
-		
-	}
 
+	}
 	
-	void MoveLockOnToLeftTarget() {
+	private void MoveLockOnToLeftTarget() {
 
 		foreach (Transform option in availableTargets) {
 
@@ -227,8 +230,8 @@ public class PlayerCamera : MonoBehaviour {
 			}
 		}
 	}
-	void MoveLockOnToRightTarget() {
-		
+	private void MoveLockOnToRightTarget() {
+
 		foreach (Transform option in availableTargets) {
 
 			if (option == currentTargetOption)
@@ -240,4 +243,6 @@ public class PlayerCamera : MonoBehaviour {
 			}
 		}
 	}
+}
+
 }

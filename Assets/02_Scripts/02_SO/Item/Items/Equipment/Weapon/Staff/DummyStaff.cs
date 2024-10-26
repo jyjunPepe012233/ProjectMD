@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using MinD.Runtime.Entity;
 using UnityEngine;
+
+namespace MinD.SO.Item.Items {
 
 [CreateAssetMenu(fileName = "Dummy Staff", menuName = "MinD/Item/Items/Weapons/Staffs/Dummy Staff")]
 public class DummyStaff : Weapon {
-	
+
 	public override void OnEquip(Player owner) {
 		Debug.Log("장비함!");
 	}
@@ -16,4 +17,6 @@ public class DummyStaff : Weapon {
 	public override void OnUnequip(Player owner) {
 		Debug.Log("장비 해제!");
 	}
+}
+
 }

@@ -1,7 +1,9 @@
-namespace MinD {
-	public enum ItemRarityEnum {
-		Common,
-		Rare,
-		Legendary
-	}
+namespace MinD.Enums {
+
+public enum ItemRarityEnum {
+	Common,
+	Rare,
+	Legendary
+}
+
 }

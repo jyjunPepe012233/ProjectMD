@@ -1,9 +1,9 @@
-namespace MinD {
+namespace MinD.Enums {
 
-	public enum ShowGizmoMode {
-		Always,
-		Selected,
-		Disabled
-	}
+public enum ShowGizmoMode {
+	Always,
+	Selected,
+	Disabled
+}
 
 }

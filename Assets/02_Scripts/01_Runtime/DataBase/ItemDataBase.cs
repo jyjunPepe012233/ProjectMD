@@ -1,16 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using MinD;
+using MinD.SO.Item;
 using UnityEngine;
+
+namespace MinD.Runtime.DataBase {
 
 public class ItemDataBase : Singleton<ItemDataBase> {
 
 	[SerializeField] private ItemSoList itemSoList;
 	[SerializeField] private List<Item> indexedItemList;
-	
-	
-	
+
+
+
 	void IndexingItemList() {
 
 		indexedItemList = new List<Item>();
@@ -26,7 +27,7 @@ public class ItemDataBase : Singleton<ItemDataBase> {
 		foreach (Protection item in itemSoList.protectionList) {
 			item.itemId = settingId;
 			indexedItemList.Add(item);
-			
+
 			settingId++;
 		}
 
@@ -54,29 +55,31 @@ public class ItemDataBase : Singleton<ItemDataBase> {
 
 
 	public int GetAllItemsCount() {
-		
+
 		if (!indexedItemList.Any())
 			IndexingItemList();
-		
+
 		return indexedItemList.Count;
 	}
 
-	
+
 	// GET ORIGINAL DATA SO OF ITEM TO ITEM ID
 	public Item GetItemSo(int itemId) {
-		
+
 		if (!indexedItemList.Any())
 			IndexingItemList();
-		
+
 
 		Item item = indexedItemList[itemId];
-		
+
 		if (item != null)
 			return item;
-		
+
 		Debug.LogError("Can't Find The Item That Has Id " + itemId);
 		return null;
 	}
-	
+
+
+}
 
 }

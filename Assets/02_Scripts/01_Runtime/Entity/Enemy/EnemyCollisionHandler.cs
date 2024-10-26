@@ -1,50 +1,51 @@
+using MinD.Runtime.Object;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace MinD {
+namespace MinD.Runtime.Entity {
 
-	public class EnemyCollisionHandler : MonoBehaviour {
+public class EnemyCollisionHandler : MonoBehaviour {
 
-		[HideInInspector] public Enemy owner;
-		
-		public FunctionColliderHandler[] registeredColliders;
+	[HideInInspector] public Enemy owner;
+	
+	public FunctionColliderHandler[] registeredColliders;
 
+	
 
-		public void TurnOnCollider(string colliderName) {
-			
-			foreach (FunctionColliderHandler collider in registeredColliders) {
+	public void TurnOnCollider(string colliderName) {
 
-				if (collider.gameObject.name == colliderName) {
-					collider.GetComponent<Collider>().enabled = true;
-				}
-				
+		foreach (FunctionColliderHandler collider in registeredColliders) {
+
+			if (collider.gameObject.name == colliderName) {
+				collider.GetComponent<Collider>().enabled = true;
 			}
+
 		}
-		
-		public void TurnOffCollider(string colliderName) {
+	}
 
-			foreach (FunctionColliderHandler collider in registeredColliders) {
+	public void TurnOffCollider(string colliderName) {
 
-				if (collider.gameObject.name == colliderName) {
-					collider.ResetTargetsInAllColliders();
-					collider.GetComponent<Collider>().enabled = false;
-				}
-				
+		foreach (FunctionColliderHandler collider in registeredColliders) {
+
+			if (collider.gameObject.name == colliderName) {
+				collider.ResetTargetsInAllColliders();
+				collider.GetComponent<Collider>().enabled = false;
 			}
+
 		}
+	}
 
-		public void ResetCollider(string colliderName) {
-			
-			foreach (FunctionColliderHandler collider in registeredColliders) {
+	public void ResetCollider(string colliderName) {
 
-				if (collider.name == colliderName) {
-					collider.ResetTargetsInAllColliders();
-				}
-				
+		foreach (FunctionColliderHandler collider in registeredColliders) {
+
+			if (collider.name == colliderName) {
+				collider.ResetTargetsInAllColliders();
 			}
-			
+
 		}
 
 	}
+
+}
 
 }

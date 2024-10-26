@@ -1,19 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+using MinD.SO.Item;
 using UnityEngine;
+
+namespace MinD.Runtime.Entity {
 
 public class PlayerEquipmentHandler : MonoBehaviour {
 
 	[HideInInspector] public Player owner;
-
+	
 	public Transform rightHand;
 
 	private GameObject currentInstantiatedWeapon;
 
 
 	public void ChangeWeapon(Weapon weapon) {
-		
+
 		if (currentInstantiatedWeapon != null) {
 			Destroy(currentInstantiatedWeapon);
 			currentInstantiatedWeapon = null;
@@ -25,4 +25,6 @@ public class PlayerEquipmentHandler : MonoBehaviour {
 		obj.transform.localEulerAngles = weapon.weaponAngleOffset;
 
 	}
+}
+
 }

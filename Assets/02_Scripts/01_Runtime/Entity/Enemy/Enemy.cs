@@ -1,82 +1,92 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using MinD.Runtime.Managers;
+using MinD.SO.EnemyState;
 
-namespace MinD {
+namespace MinD.Runtime.Entity {
+
+[RequireComponent(typeof(EnemyStateMachine))]
+[RequireComponent(typeof(EnemyCombatHandler))]
+[RequireComponent(typeof(EnemyCollisionHandler))]
+[RequireComponent(typeof(EnemyAnimationHandler))]
+[RequireComponent(typeof(EnemyEquipmentHandler))]
+[RequireComponent(typeof(NavMeshAgent))]
+public abstract class Enemy : BaseEntity {
 	
-	[RequireComponent(typeof(EnemyStateMachine))]
-	[RequireComponent(typeof(EnemyCombatHandler))]
-	[RequireComponent(typeof(EnemyCollisionHandler))]
-	[RequireComponent(typeof(EnemyAnimationHandler))]
-	[RequireComponent(typeof(EnemyEquipmentHandler))]
-	[RequireComponent(typeof(NavMeshAgent))]
-	public abstract class Enemy : BaseEntity {
-		
-		[Header("[ States Info ]")]
-		public EnemyState currentState;
-		public EnemyState previousState;
-		[HideInInspector] public EnemyState[] states;
-		
-		[Header("[ Current Status ]")]
-		public float curHp;
+	[HideInInspector] public NavMeshAgent agent;
+	
+	[HideInInspector] public EnemyStateMachine stateMachine;
+	[HideInInspector] public EnemyCombatHandler combat;
+	[HideInInspector] public EnemyCollisionHandler collision;
+	[HideInInspector] public EnemyAnimationHandler animation;
+	[HideInInspector] public EnemyEquipmentHandler equipment;
+	
+	
+	[Header("[ States Info ]")]
+	public EnemyState currentState;
+	public EnemyState previousState;
 
-		[Header("[ Attribute Settings ]")]
-		public float maxHp;
+	[Header("[ Current Status ]")]
+	public float curHp;
 
-		[Header("[ Flags ]")]
-		public bool isPerformingAction;
-		public bool isInCombat;
-		
-		
-		[HideInInspector] public EnemyStateMachine stateMachine;
-		[HideInInspector] public EnemyCombatHandler combat;
-		[HideInInspector] public EnemyCollisionHandler collision;
-		[HideInInspector] public EnemyAnimationHandler animation;
-		[HideInInspector] public EnemyEquipmentHandler equipment;
+	[Header("[ Attribute Settings ]")]
+	public float maxHp;
 
-		[HideInInspector] public NavMeshAgent agent;
-		
-		
-		
-		protected override void Awake() {
+	[Header("[ Flags ]")]
+	public bool isPerformingAction;
+	public bool isInCombat;
+	
+	
+	[HideInInspector] public EnemyState[] states;
+	
 
-			base.Awake();
-			
-			agent = GetComponent<NavMeshAgent>();
-			
-			
-			stateMachine = GetComponent<EnemyStateMachine>();
-			combat = GetComponent<EnemyCombatHandler>();
-			collision = GetComponent<EnemyCollisionHandler>();
-			animation = GetComponent<EnemyAnimationHandler>();
-			equipment = GetComponent<EnemyEquipmentHandler>();
-			
-			stateMachine.owner = this;
-			combat.owner = this;
-			collision.owner = this;
-			animation.owner = this;
-			equipment.owner = this;
-		}
 
-		private void Start() {
-			Setup();
-		}
+	protected override void Awake() {
 
-		protected virtual void Setup() {
-			
-			SetupStates();
+		base.Awake();
 
-			WorldEntityManager.Instance.RegisteringEnemyOnWorld(this);
+		agent = GetComponent<NavMeshAgent>();
 
-		}
 
-		protected abstract void SetupStates();
+		stateMachine = GetComponent<EnemyStateMachine>();
+		combat = GetComponent<EnemyCombatHandler>();
+		collision = GetComponent<EnemyCollisionHandler>();
+		animation = GetComponent<EnemyAnimationHandler>();
+		equipment = GetComponent<EnemyEquipmentHandler>();
 
-		protected virtual void Update() {
-
-			stateMachine.ExecuteStateTick();
-
-		}
-		
+		stateMachine.owner = this;
+		combat.owner = this;
+		collision.owner = this;
+		animation.owner = this;
+		equipment.owner = this;
 	}
+
+	private void Start() {
+		Setup();
+	}
+	
+	protected override void Update() {
+		
+		base.Update();
+
+		stateMachine.ExecuteStateTick();
+
+	}
+	
+	
+
+	protected virtual void Setup() {
+
+		SetupStates();
+
+		WorldEntityManager.Instance.RegisteringEnemyOnWorld(this);
+
+	}
+
+	protected abstract void SetupStates();
+
+
+
+}
+
 }

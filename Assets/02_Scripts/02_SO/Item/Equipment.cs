@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using MinD.Runtime.Entity;
+
+namespace MinD.SO.Item {
 
 public abstract class Equipment : Item {
 
@@ -9,5 +9,7 @@ public abstract class Equipment : Item {
 	public abstract void Execute(Player owner);
 
 	public abstract void OnUnequip(Player owner);
+
+}
 
 }

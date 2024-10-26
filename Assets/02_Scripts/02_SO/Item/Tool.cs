@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem.Users;
-
+namespace MinD.SO.Item {
 
 public abstract class Tool : Equipment {
 
 	public abstract void OnUse();
+}
+
 }

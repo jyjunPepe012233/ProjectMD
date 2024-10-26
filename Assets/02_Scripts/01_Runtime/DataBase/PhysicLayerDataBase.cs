@@ -1,12 +1,12 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace MinD {
+namespace MinD.Runtime.DataBase {
 
-	public class PhysicLayerDataBase : Singleton<PhysicLayerDataBase>{
-		
-		public LayerMask entityLayer;
-		public LayerMask environmentLayer;
+public class PhysicLayerDataBase : Singleton<PhysicLayerDataBase> {
 
-	}
+	public LayerMask entityLayer;
+	public LayerMask environmentLayer;
+
+}
+
 }

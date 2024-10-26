@@ -1,26 +1,27 @@
 using UnityEngine;
 
-namespace MinD {
+namespace MinD.Runtime.DataBase {
 
-	public class ObjectDataBase : Singleton<ObjectDataBase> {
+public class ObjectDataBase : Singleton<ObjectDataBase> {
 
-		[Header("[ Magics ]")]
-		public GameObject[] magics;
+	[Header("[ Magics ]")]
+	public GameObject[] magics;
 
-		public GameObject InstantiateMagic(string magicName) {
-			
-			foreach (GameObject obj in magics) {
+	
+	public GameObject InstantiateMagic(string magicName) {
 
-				if (obj.name == magicName)
-					return Instantiate(obj);
-			}
-			
-			Debug.LogError("!! CAN'T FIND OBJECT NAMED " + magicName + " IN OBJECT DATABASE !!");
-			return null;
+		foreach (GameObject obj in magics) {
 
+			if (obj.name == magicName)
+				return Instantiate(obj);
 		}
 
+		Debug.LogError("!! CAN'T FIND OBJECT NAMED " + magicName + " IN OBJECT DATABASE !!");
+		return null;
 
 	}
+
+
+}
 
 }

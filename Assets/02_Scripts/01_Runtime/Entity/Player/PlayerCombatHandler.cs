@@ -1,30 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-using MinD;
+using MinD.Runtime.Managers;
+using MinD.SO.Item;
 using UnityEngine;
 using UnityEngine.Serialization;
+
+
+namespace MinD.Runtime.Entity {
 
 public class PlayerCombatHandler : MonoBehaviour {
 
 	[HideInInspector] public Player owner;
-
 	
+	// LOCKING ON ENTITY
 	public BaseEntity target;
-
-	[FormerlySerializedAs("currentCastingSpell")] [HideInInspector] public Magic currentCastingMagic;
-	private bool usingMagic;
 	
+	
+	[HideInInspector]
+	public Magic currentCastingMagic;
+
+	private bool usingMagic;
+
 
 	public void HandleAllCombatAction() {
 		HandleUsingMagic();
 	}
-	
+
 	private void HandleUsingMagic() {
 
 		if (currentCastingMagic != null) {
 			currentCastingMagic.Tick();
 		}
-		
+
 
 		if (PlayerInputManager.Instance.useMagicInput) {
 
@@ -44,28 +49,29 @@ public class PlayerCombatHandler : MonoBehaviour {
 			if (owner.CurMp < useMagic.mpCost) {
 				return;
 			}
+
 			if (owner.CurStamina < useMagic.staminaCost) {
 				return;
 			}
 
-			
+
 			usingMagic = true;
-			
+
 			owner.CurMp -= useMagic.mpCost;
 			owner.CurStamina -= useMagic.staminaCost;
 
 			useMagic.castPlayer = owner;
-			
+
 			useMagic.OnUse();
 			currentCastingMagic = useMagic;
-			
-			
-			
-		} else if (currentCastingMagic != null) { 
-			
+
+
+
+		} else if (currentCastingMagic != null) {
+
 			// IF INPUT IS NULL AND DURING CASTING => USE MAGIC INPUT IS END
 			currentCastingMagic.OnReleaseInput();
-			
+
 		}
 	}
 
@@ -76,12 +82,12 @@ public class PlayerCombatHandler : MonoBehaviour {
 		}
 
 		usingMagic = false;
-		
+
 		currentCastingMagic.OnExit();
 		currentCastingMagic = null;
 	}
 
-	
+
 
 	public void InstantiateWarmUpFx() {
 		currentCastingMagic.InstantiateWarmupFX();
@@ -90,9 +96,11 @@ public class PlayerCombatHandler : MonoBehaviour {
 	public void SuccessfullyCast() {
 		currentCastingMagic.OnSuccessfullyCast();
 	}
-	
+
 	public void CastIsEnd() {
 		currentCastingMagic.OnCastIsEnd();
 	}
-	
+
+}
+
 }

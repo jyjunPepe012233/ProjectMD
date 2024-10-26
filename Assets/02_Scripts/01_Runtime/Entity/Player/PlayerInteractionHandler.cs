@@ -1,26 +1,25 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using MinD.Runtime.Managers;
+using MinD.Runtime.Object;
 using UnityEngine;
-using UnityEngine.Serialization;
 
+namespace MinD.Runtime.Entity {
 
-[RequireComponent(typeof(Animator))]
 public class PlayerInteractionHandler : MonoBehaviour {
 
 	[HideInInspector] public Player owner;
 
 	[SerializeField] private List<Interactable> currentInteractables = new List<Interactable>();
-	
+
 
 	public void AddInteractableInList(Interactable interactable) {
-		
+
 		if (!currentInteractables.Contains(interactable))
 			currentInteractables.Add(interactable);
 	}
 
 	public void RemoveInteractableInList(Interactable interactable) {
-		
+
 		if (currentInteractables.Contains(interactable))
 			currentInteractables.Remove(interactable);
 	}
@@ -29,11 +28,11 @@ public class PlayerInteractionHandler : MonoBehaviour {
 
 		if (currentInteractables.Count == 0)
 			return;
-		
-		for (int i = currentInteractables.Count-1; i < -1; i--) /*REVERSE FOR*/ {
+
+		for (int i = currentInteractables.Count - 1; i < -1; i--) /*REVERSE FOR*/ {
 
 			Interactable interactable = currentInteractables[i];
-			
+
 			// IS INTERACTION IS DESTROYED
 			// OR INTERACTION CAN'T INTERACTION BY PARAMETER
 			if (interactable == null || !interactable.canInteraction)
@@ -50,7 +49,7 @@ public class PlayerInteractionHandler : MonoBehaviour {
 
 		if (!PlayerInputManager.Instance.interactionInput)
 			return;
-		
+
 		if (currentInteractables.Count == 0)
 			return;
 
@@ -61,7 +60,9 @@ public class PlayerInteractionHandler : MonoBehaviour {
 			currentInteractables[0].Interact(owner);
 		else
 			RefreshInteractableList();
-		
+
 		PlayerInputManager.Instance.interactionInput = false;
 	}
+}
+
 }
