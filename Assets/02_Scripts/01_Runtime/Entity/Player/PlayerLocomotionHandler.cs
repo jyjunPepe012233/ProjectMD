@@ -1,3 +1,4 @@
+using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
 using UnityEngine;
 
@@ -24,7 +25,6 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	public bool isSprinting;
 
 	
-	private int groundLayerMask;
 	private Vector3 yVelocity;
 	private float inAirTimer;
 	private bool fallVelocityHasSet;
@@ -33,9 +33,6 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	private Vector3 jumpDirx;
 
 
-	void OnEnable() {
-		groundLayerMask = LayerMask.GetMask("Default");
-	}
 
 	public void HandleAllLocomotion() {
 
@@ -134,7 +131,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 
 	void HandleGroundedCheck() {
 
-		owner.isGrounded = Physics.CheckSphere(transform.position, groundedCheckRadius, groundLayerMask);
+		owner.isGrounded = Physics.CheckSphere(transform.position, groundedCheckRadius, PhysicLayerDataBase.Instance.environmentLayer);
 		owner.animator.SetBool("IsGrounded", owner.isGrounded);
 
 	}
@@ -147,7 +144,6 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 
 
 		// ATTEMPT JUMP
-
 		if (PlayerInputManager.Instance.jumpInput == false)
 			return;
 
