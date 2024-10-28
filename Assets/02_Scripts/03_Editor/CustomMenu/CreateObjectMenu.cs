@@ -1,6 +1,7 @@
 using MinD.Runtime.Entity;
 using MinD.Runtime.Object;
 using MinD.Runtime.Object.Interactables;
+using MinD.Runtime.Object.Utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,13 +14,14 @@ public class CreateObjectMenu : MonoBehaviour {
 	public static void CreateNewFunctionCollider() {
 
 		// CREATE NEW ITEM
-		GameObject newItem = new GameObject("Function Collider", typeof(FunctionColliderHandler), typeof(BoxCollider));
+		GameObject newItem = new GameObject("Function Collider", typeof(FunctionColliderHandler), typeof(BoxCollider), typeof(VisibleCollider));
 
 		GameObjectUtility.SetParentAndAlign(newItem, Selection.activeGameObject);
 
 		Undo.RegisterCreatedObjectUndo(newItem, "Create Function Collider");
 		Selection.activeGameObject = newItem;
 
+		newItem.layer = LayerMask.NameToLayer("DamageCollider");
 
 		// SET PROPERTIES
 		var component = newItem.GetComponent<FunctionColliderHandler>();

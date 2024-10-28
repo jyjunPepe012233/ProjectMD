@@ -39,14 +39,6 @@ public class FunctionColliderWindow : EditorWindow {
 
 		curComponentHeight = 0;
 
-		GUILayout.BeginArea(new Rect(10, 5f, position.width - 20, 50));
-
-		ownedInfo.showGizmoMode = (ShowGizmoMode)EditorGUILayout.EnumPopup("Gizmos Mode", ownedInfo.showGizmoMode);
-		ownedInfo.showGizmosColor = EditorGUILayout.ColorField("Gizmos Color", ownedInfo.showGizmosColor);
-		curComponentHeight += 50;
-
-		GUILayout.EndArea();
-
 		BeginComponent<DamageCollider>("Damage Collider", ref ownedInfo.damageCollider, 250);
 		CreateDamageColliderOption();
 		EndComponent();
