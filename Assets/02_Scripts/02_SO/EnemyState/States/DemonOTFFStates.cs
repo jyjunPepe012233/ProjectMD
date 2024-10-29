@@ -67,7 +67,7 @@ public class Idle : EnemyState {
 public class BaseChase : EnemyState {
 	
 	public override void Enter(Enemy enemy) {
-		enemy.agent.isStopped = false;
+		enemy.navAgent.isStopped = false;
 	}
 
 	public override void Tick(Enemy enemy) {
@@ -81,8 +81,8 @@ public class BaseChase : EnemyState {
 		} else {
 
 			// CHASING LOCOMOTION
-			enemy.agent.SetDestination(enemy.combat.target.transform.position);
-			Vector3 dirx = enemy.transform.InverseTransformDirection(enemy.agent.desiredVelocity).normalized;
+			enemy.navAgent.SetDestination(enemy.combat.target.transform.position);
+			Vector3 dirx = enemy.transform.InverseTransformDirection(enemy.navAgent.desiredVelocity).normalized;
 
 			float speed = 0.975f;
 			enemy.animation.SetBaseLocomotionParameter(dirx.x * speed, dirx.z * speed);
@@ -114,7 +114,7 @@ public class ComboAttack1 : EnemyState {
 	
 	public override void Enter(Enemy enemy) {
 		
-		enemy.agent.isStopped = true;
+		enemy.navAgent.isStopped = true;
 		
 		
 		// PLAY ANIMATION BY PROBABILITY
@@ -187,7 +187,7 @@ public class DodgeBackward : EnemyState {
 	
 	public override void Enter(Enemy enemy) {
 
-		enemy.agent.isStopped = true;
+		enemy.navAgent.isStopped = true;
 		
 		enemy.combat.RotateToTarget(0.1f);
 		enemy.animation.PlayTargetAnimation("Dodge_Combat_B", 0.001f);

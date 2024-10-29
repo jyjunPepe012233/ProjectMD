@@ -9,7 +9,11 @@ namespace MinD.Runtime.Entity {
 
 public abstract class BaseEntity : MonoBehaviour {
 
-	[Header("[ Bound Targets Options ]")] public List<Transform> targetOptions;
+	[Header("[ Base Settings ]")]
+	public bool isInvincible;
+	public bool immunePoiseBreak;
+	[Space(5)]
+	public List<Transform> targetOptions;
 
 	[HideInInspector] public EntityStatusFxHandler statusFx;
 

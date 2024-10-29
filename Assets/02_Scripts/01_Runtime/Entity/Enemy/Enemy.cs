@@ -2,35 +2,33 @@ using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
 using MinD.SO.EnemyState;
+using UnityEngine.Serialization;
 
 namespace MinD.Runtime.Entity {
 
 [RequireComponent(typeof(EnemyStateMachine))]
 [RequireComponent(typeof(EnemyCombatHandler))]
-[RequireComponent(typeof(EnemyCollisionHandler))]
 [RequireComponent(typeof(EnemyAnimationHandler))]
-[RequireComponent(typeof(EnemyEquipmentHandler))]
+[RequireComponent(typeof(EnemyColliderHandler))]
+[RequireComponent(typeof(EnemyUtilityHandler))]
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Enemy : BaseEntity {
 	
-	[HideInInspector] public NavMeshAgent agent;
+	[HideInInspector] public NavMeshAgent navAgent;
 	
 	[HideInInspector] public EnemyStateMachine stateMachine;
 	[HideInInspector] public EnemyCombatHandler combat;
-	[HideInInspector] public EnemyCollisionHandler collision;
 	[HideInInspector] public EnemyAnimationHandler animation;
-	[HideInInspector] public EnemyEquipmentHandler equipment;
+	[HideInInspector] public EnemyColliderHandler collider;
+	[HideInInspector] public EnemyUtilityHandler utility;
 	
 	
 	[Header("[ States Info ]")]
 	public EnemyState currentState;
 	public EnemyState previousState;
 
-	[Header("[ Current Status ]")]
+	[Header("[ Attributes ]")]
 	public float curHp;
-
-	[Header("[ Attribute Settings ]")]
-	public float maxHp;
 
 	[Header("[ Flags ]")]
 	public bool isPerformingAction;
@@ -45,20 +43,24 @@ public abstract class Enemy : BaseEntity {
 
 		base.Awake();
 
-		agent = GetComponent<NavMeshAgent>();
-
+		navAgent = GetComponent<NavMeshAgent>();
 
 		stateMachine = GetComponent<EnemyStateMachine>();
 		combat = GetComponent<EnemyCombatHandler>();
-		collision = GetComponent<EnemyCollisionHandler>();
 		animation = GetComponent<EnemyAnimationHandler>();
-		equipment = GetComponent<EnemyEquipmentHandler>();
+		collider = GetComponent<EnemyColliderHandler>();
+		utility = GetComponent<EnemyUtilityHandler>();
+		
 
 		stateMachine.owner = this;
 		combat.owner = this;
-		collision.owner = this;
 		animation.owner = this;
-		equipment.owner = this;
+		collider.owner = this;
+		utility.owner = this;
+		
+		
+		
+		WorldEntityManager.Instance.RegisteringEnemyOnWorld(this);
 	}
 
 	private void Start() {
@@ -78,9 +80,8 @@ public abstract class Enemy : BaseEntity {
 	protected virtual void Setup() {
 
 		SetupStates();
-
-		WorldEntityManager.Instance.RegisteringEnemyOnWorld(this);
-
+		
+		collider.BeIgnoreCollisionWithMyColliders();
 	}
 
 	protected abstract void SetupStates();

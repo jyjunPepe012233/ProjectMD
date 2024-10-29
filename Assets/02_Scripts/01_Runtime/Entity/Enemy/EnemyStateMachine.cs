@@ -6,8 +6,6 @@ namespace MinD.Runtime.Entity {
 public class EnemyStateMachine : MonoBehaviour {
 
 	[HideInInspector] public Enemy owner;
-	
-	[SerializeField] private string currentState; // TO SHOW STATE IN INSPECTOR
 
 	
 	
@@ -36,8 +34,6 @@ public class EnemyStateMachine : MonoBehaviour {
 
 		owner.currentState = newState;
 		owner.currentState.Enter(owner);
-
-		currentState = owner.currentState.GetType().Name;
 	}
 
 
