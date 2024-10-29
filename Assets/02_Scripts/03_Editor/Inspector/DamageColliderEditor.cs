@@ -20,39 +20,40 @@ public class DamageColliderEditor : UnityEditor.Editor {
 	}
 
 	public override void OnInspectorGUI() {
+
+		if (Application.isPlaying) {
+			EditorGUILayout.LabelField("Game is playing");
+			return;
+		}
+		
+		
 		
 		GUILayout.Space(10);
+		component.soData = (DamageData)EditorGUILayout.ObjectField("Reference Data", component.soData, typeof(DamageData), false);
+		GUILayout.Space(10);
 		
-		component.basedOnSO = EditorGUILayout.ToggleLeft("Based On Scriptable Object", component.basedOnSO);
-		EditorGUILayout.Space(5);
-		EditorGUI.indentLevel++;
-		
-		if (component.basedOnSO) {
-			component.referenceData = (DamageColliderData)EditorGUILayout.ObjectField("Reference Data", component.referenceData, typeof(DamageColliderData), false);
-
-		} else {
+		if (component.soData != null) {
 			
-			var temp = component.damageEffect;
-
+			var soData = component.soData;
+			
 			EditorGUILayout.BeginFoldoutHeaderGroup(true, "Damage", EditorStyles.foldoutHeader);
-			temp.damage.physical = EditorGUILayout.IntField("Physical", temp.damage.physical);
-			temp.damage.magic = EditorGUILayout.IntField("Magic", temp.damage.magic);
-			temp.damage.fire = EditorGUILayout.IntField("Fire", temp.damage.fire);
-			temp.damage.frost = EditorGUILayout.IntField("Frost", temp.damage.frost);
-			temp.damage.lightning = EditorGUILayout.IntField("Lightning", temp.damage.lightning);
-			temp.damage.holy = EditorGUILayout.IntField("Holy", temp.damage.holy);
-			EditorGUILayout.EndFoldoutHeaderGroup();
-
+			EditorGUI.indentLevel++;
+			soData.damage.physical = EditorGUILayout.IntField("Physical", soData.damage.physical);
+			soData.damage.magic = EditorGUILayout.IntField("Magic", soData.damage.magic);
+			soData.damage.fire = EditorGUILayout.IntField("Fire", soData.damage.fire);
+			soData.damage.frost = EditorGUILayout.IntField("Frost", soData.damage.frost);
+			soData.damage.lightning = EditorGUILayout.IntField("Lightning", soData.damage.lightning);
+			soData.damage.holy = EditorGUILayout.IntField("Holy", soData.damage.holy);
 			EditorGUI.indentLevel--;
+			EditorGUILayout.EndFoldoutHeaderGroup();
 			
-			int totalDamage = temp.physical + component.damage.magic + component.damage.fire + component.damage.frost + component.damage.lightning + component.damage.holy;
-			EditorGUILayout.IntField("Total Damage", totalDamage);
-			
+			EditorGUILayout.IntField("Total Damage", soData.totalDamage);
 			
 			
 			EditorGUILayout.Space(15);
-			component.poiseBreakAmount = EditorGUILayout.IntSlider("Poise Break Damage", component.poiseBreakAmount, 0, 100);
+			soData.poiseBreakDamage = EditorGUILayout.IntSlider("Poise Break Damage", soData.poiseBreakDamage, 0, 100);
 			
+			soData.RefreshValue();
 		}
 
 	}

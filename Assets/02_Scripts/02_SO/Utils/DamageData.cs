@@ -1,25 +1,30 @@
 using MinD.Enums;
 using MinD.Runtime.Utils;
+using MinD.SO.StatusFX.Effects;
 using MinD.Structs;
 using UnityEngine;
 
 namespace MinD.SO.Utils {
 
 [CreateAssetMenu(fileName = "Damage Data", menuName = "MinD/Utils/Damage Data")]
-public class DamageColliderData : ScriptableObject {
+public class DamageData : ScriptableObject {
 	
 	public Damage damage; 
 	public int totalDamage; // ONLY FOR SHOWING
 	
 	[Space(5)]
 	[Range(0, 100)] public int poiseBreakDamage;
-	[Space(15)]
-	
 	
 	
 
 	void OnValidate() {
+		RefreshValue();
+	}
+
+	public void RefreshValue() {
+		
 		totalDamage = damage.physical + damage.magic + damage.fire + damage.frost + damage.lightning + damage.holy;
+		
 	}
 	
 }

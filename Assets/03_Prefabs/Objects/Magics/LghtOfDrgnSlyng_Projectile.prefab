@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7314979249821002336}
   - component: {fileID: 2569861677903695815}
-  - component: {fileID: 6098315678503673106}
   - component: {fileID: 5616314123848446334}
   - component: {fileID: 3605450481740560834}
   m_Layer: 7
@@ -47,25 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c78263afc749c2b0dc6ea7e73d1489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fCollider: {fileID: 6098315678503673106}
---- !u!114 &6098315678503673106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3612935080124855755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ca4af8b65b9842dfb891458a9bbf434, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorWindow: {fileID: 0}
-  showGizmoMode: 0
-  showGizmosColor: {r: 1, g: 0.1, b: 0.1, a: 0.65}
-  colliderType: 1
   damageCollider: {fileID: 5616314123848446334}
-  collider: {fileID: 3605450481740560834}
 --- !u!114 &5616314123848446334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,14 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18842f16ee46c4fc59fcac3b5aefea54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage:
-    physical: 0
-    magic: 0
-    fire: 0
-    frost: 0
-    lightning: 0
-    holy: 0
-  againWhenExit: 0
+  soData: {fileID: 0}
   blackList: []
 --- !u!135 &3605450481740560834
 SphereCollider:

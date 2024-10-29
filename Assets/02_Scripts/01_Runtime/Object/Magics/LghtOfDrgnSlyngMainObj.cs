@@ -1,5 +1,6 @@
 using System.Collections;
 using MinD.SO.Item.Items;
+using MinD.SO.Utils;
 using MinD.Structs;
 using UnityEngine;
 
@@ -30,7 +31,7 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 	private Coroutine blastingCoroutine;
 
 	private Vector3 blastPosition = new Vector3(0, 0, 2.5f);
-	private Damage blastDamage;
+	private DamageData blastDamageData;
 
 	private LghtOfDrgnSlyng magicSO;
 
@@ -38,10 +39,10 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 
 
 
-	public void SetUp(LghtOfDrgnSlyng magicSO, Damage damage, float damageTick) {
+	public void SetUp(LghtOfDrgnSlyng magicSO, DamageData damageData, float damageTick) {
 
 		this.magicSO = magicSO;
-		blastDamage = damage;
+		blastDamageData = damageData;
 		damageYieldTick = new WaitForSeconds(Mathf.Max(damageTick, 0.1f)); // MINIMUM TIME OF DAMAGE TICK IS 0.1 SECOND
 	}
 
@@ -96,9 +97,8 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 		}
 	}
 	private void ThrowDamageCollider() {
-
 		var newProjectile = Instantiate(projectile).GetComponent<LghtOfDrgnSlyngProjectile>(); // NEED TO CHANGE POOLING
-		newProjectile.Shoot(transform.TransformPoint(blastPosition), transform.forward, 25, 32.5f, blastDamage);
+		newProjectile.Shoot(transform.TransformPoint(blastPosition), transform.forward, 25, 32.5f, blastDamageData);
 	}
 
 

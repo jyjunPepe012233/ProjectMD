@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b992e96be6994dffab1860b6570ac40b, type: 3}
-  m_Name: Light Of Dragon Slaying
+  m_Name: LghtOfDrgnSlyng
   m_EditorClassIdentifier: 
   itemId: 2
   itemName: "\uBA78\uB8E1\uC758 \uBE5B"
@@ -24,13 +24,7 @@ MonoBehaviour:
   mpCostDuring: 21
   staminaCostDuring: 17
   castPlayer: {fileID: 0}
-  damage:
-    physical: 0
-    magic: 0
-    fire: 0
-    frost: 0
-    lightning: 0
-    holy: 0
+  damageData: {fileID: 11400000, guid: b7f265946d8e140b8aaa35ce5adf9654, type: 2}
   damageTick: 0.2
   isInputReleased: 0
   isBlasting: 0

@@ -1,4 +1,5 @@
 using MinD.Runtime.Utils;
+using MinD.SO.Utils;
 using MinD.Structs;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public class LghtOfDrgnSlyngProjectile : MonoBehaviour {
 
 	private float currentDistance;
 
-	public void Shoot(Vector3 origin, Vector3 direction, float speed, float distance, Damage damage) {
+	public void Shoot(Vector3 origin, Vector3 direction, float speed, float distance, DamageData damageData) {
 
 		transform.position = origin;
 		this.direction = direction;
@@ -23,7 +24,7 @@ public class LghtOfDrgnSlyngProjectile : MonoBehaviour {
 
 		currentDistance = 0;
 
-		damageCollider.damageEffect.damage = damage;
+		damageCollider.soData = damageData;
 	}
 
 

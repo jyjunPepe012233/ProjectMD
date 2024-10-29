@@ -1,8 +1,8 @@
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Object.Magics;
-using MinD.Structs;
+using MinD.SO.Utils;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Rendering.UI;
 
 namespace MinD.SO.Item.Items {
 
@@ -11,7 +11,7 @@ public class LghtOfDrgnSlyng : Magic {
 	// 멸룡의 빛
 
 	[Header("[ Settings ]")]
-	[SerializeField] private Damage damage;
+	[SerializeField] private DamageData damageData;
 	[SerializeField] private float damageTick;
 	
 	[Header("[ Flags ]")]
@@ -32,6 +32,8 @@ public class LghtOfDrgnSlyng : Magic {
 
 		// INSTANTIATE MAGIC OBJECT
 		magic = ObjectDataBase.Instance.InstantiateMagic("LghtOfDrgnSlyng_MainObj").GetComponent<LghtOfDrgnSlyngMainObj>();
+		magic.SetUp(this, damageData, damageTick);
+
 
 
 		Vector3 pivot = castPlayer.targetOptions[0].position;
@@ -110,7 +112,6 @@ public class LghtOfDrgnSlyng : Magic {
 		// SET FLAGS
 		isBlasting = true;
 
-		magic.SetUp(this, damage, damageTick);
 		magic.StartBlasting();
 	}
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using MinD.Enums;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Entity;
+using MinD.SO.StatusFX;
 using MinD.SO.StatusFX.Effects;
 using MinD.SO.Utils;
 using MinD.Structs;
@@ -11,31 +12,23 @@ using UnityEngine.Serialization;
 namespace MinD.Runtime.Utils {
 
 public class DamageCollider : MonoBehaviour {
+	
+	public DamageData soData;
 
-	public bool basedOnSO; 
-	public DamageColliderData referenceData;
-	
-	// IF NOT BASED ON SO, ACCESS IN DAMAGE EFFECT DIRECTLY
-	public TakeHealthDamage damageEffect = new TakeHealthDamage();
-	
-	
-	
-	[HideInInspector] public List<BaseEntity> blackList; // IGNORE THIS DAMAGE COLLIDER
+
+	public List<BaseEntity> blackList; // IGNORE THIS DAMAGE COLLIDER
 	
 	private List<BaseEntity> damagedEntity = new List<BaseEntity>();
-
-
-	private void Awake() {
-
-		if (basedOnSO) {
-			damageEffect.damage = referenceData.damage;
-			damageEffect.poiseBreakDamage = referenceData.poiseBreakDamage;
-		}
-	}
 
 	
 
 	private void OnTriggerEnter(Collider other) {
+
+		if (soData == null) {
+			return;
+		}
+		
+		
 
 		BaseEntity damageTarget = other.GetComponentInParent<BaseEntity>();
 
@@ -47,25 +40,29 @@ public class DamageCollider : MonoBehaviour {
 			if (damageTarget == null)
 				return;
 		}
-
-		// CANCEL DAMAGE IF TARGET IS INVINCIBLE
-		if (damageTarget.isInvincible) {
+		
+		if (damageTarget.isInvincible)
 			return;
-		}
-
+		
 		// CANCEL DAMAGE IF TARGET ENTITY ALREADY DAMAGED
 		if (damagedEntity.Contains(damageTarget))
 			return;
 
-		// CANCEL DAMAGE IF TARGET IS BLACKLIST
-		if (blackList.Contains(damageTarget))
+		if (blackList.Contains(damageTarget)) {
 			return;
+		}
 
 
+
+		TakeHealthDamage damageEffect = new TakeHealthDamage();
+
+		damageEffect.damage = soData.damage;
+		damageEffect.poiseBreakDamage = soData.poiseBreakDamage;
+		
 		// GET HIT DIRECTION
 		float hitPointAngle =
 			Vector3.SignedAngle(-transform.forward, damageTarget.transform.forward, Vector3.up);
-		// 데미지콜라이더의 방향이 데미지의 방향이다
+			// 데미지콜라이더의 방향이 데미지의 방향이다
 
 		if (hitPointAngle >= -45 && hitPointAngle < 45)
 			damageEffect.hitDirection = HitDirection.Front;
