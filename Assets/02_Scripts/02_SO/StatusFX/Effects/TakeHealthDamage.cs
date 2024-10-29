@@ -10,7 +10,8 @@ public class TakeHealthDamage : InstantEffect {
 
 	public Damage damage;
 
-	public PoiseBreakAmount poiseBreakAmount;
+	public int poiseBreakDamage;
+	
 	public HitDirection hitDirection;
 
 

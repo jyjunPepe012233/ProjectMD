@@ -1,7 +1,7 @@
 using MinD.Runtime.Entity;
-using MinD.Runtime.Object;
 using MinD.Runtime.Object.Interactables;
 using MinD.Runtime.Object.Utils;
+using MinD.Runtime.Utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,24 +10,20 @@ namespace MinD.Editor.CustomMenu {
 public class CreateObjectMenu : MonoBehaviour {
 
 
-	[MenuItem("GameObject/Create With MinD/Create Function Collider", false, int.MinValue + 0)]
+	[MenuItem("GameObject/Create With MinD/Create Damage Collider", false, int.MinValue + 0)]
 	public static void CreateNewFunctionCollider() {
 
 		// CREATE NEW ITEM
-		GameObject newItem = new GameObject("Function Collider", typeof(FunctionColliderHandler), typeof(BoxCollider), typeof(VisibleCollider));
+		GameObject newItem = new GameObject("Damage Collider", typeof(DamageCollider), typeof(BoxCollider), typeof(VisibleCollider));
 
 		GameObjectUtility.SetParentAndAlign(newItem, Selection.activeGameObject);
 
-		Undo.RegisterCreatedObjectUndo(newItem, "Create Function Collider");
+		Undo.RegisterCreatedObjectUndo(newItem, "Create Damage Collider");
 		Selection.activeGameObject = newItem;
 
 		newItem.layer = LayerMask.NameToLayer("DamageCollider");
-
-		// SET PROPERTIES
-		var component = newItem.GetComponent<FunctionColliderHandler>();
-		component.LoadColliderBasicProperties();
-		component.OpenEditorWindow();
 	}
+	
 
 	[MenuItem("GameObject/Create With MinD/Create Dropped Item", false, int.MinValue + 1)]
 	public static void CreateNewDroppedItem() {

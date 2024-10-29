@@ -1,3 +1,4 @@
+using MinD.Runtime.Utils;
 using MinD.Structs;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ namespace MinD.Runtime.Object.Magics {
 
 public class LghtOfDrgnSlyngProjectile : MonoBehaviour {
 
-	[SerializeField] private FunctionColliderHandler fCollider;
+	public DamageCollider damageCollider;
 
 	private Vector3 direction;
 	private float speed;
@@ -22,7 +23,7 @@ public class LghtOfDrgnSlyngProjectile : MonoBehaviour {
 
 		currentDistance = 0;
 
-		fCollider.damageCollider.damage = damage;
+		damageCollider.damageEffect.damage = damage;
 	}
 
 

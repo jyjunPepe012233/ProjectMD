@@ -12,7 +12,7 @@ public class StatusFxDataBase : Singleton<StatusFxDataBase> {
 	private StatusFXList effectSOList;
 
 
-	public InstantEffect GetEffectData(InstantEffectType type) {
+	public InstantEffect InstantiateEffectData(InstantEffectType type) {
 
 		foreach (InstantEffect effect in effectSOList.instantEffects) {
 
@@ -24,7 +24,7 @@ public class StatusFxDataBase : Singleton<StatusFxDataBase> {
 		return null;
 	}
 
-	public StaticEffect GetEffectData(StaticEffectType type) {
+	public StaticEffect InstantiateEffectData(StaticEffectType type) {
 
 		foreach (StaticEffect effect in effectSOList.staticEffects) {
 
@@ -36,7 +36,7 @@ public class StatusFxDataBase : Singleton<StatusFxDataBase> {
 		return null;
 	}
 
-	public TimedEffect GetEffectData(TimedEffectType type) {
+	public TimedEffect InstantiateEffectData(TimedEffectType type) {
 
 		foreach (TimedEffect effect in effectSOList.timedEffects) {
 
@@ -48,7 +48,7 @@ public class StatusFxDataBase : Singleton<StatusFxDataBase> {
 		return null;
 	}
 
-	public StackingEffect GetEffectData(StackingEffectType type) {
+	public StackingEffect InstantiateEffectData(StackingEffectType type) {
 
 		foreach (StackingEffect effect in effectSOList.stackingEffects) {
 
