@@ -3,31 +3,37 @@ using MinD.Enums;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Entity;
 using MinD.SO.StatusFX.Effects;
+using MinD.SO.Utils;
 using MinD.Structs;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace MinD.Runtime.Object {
+namespace MinD.Runtime.Utils {
 
 public class DamageCollider : MonoBehaviour {
 
-	[HideInInspector] public Damage damage;
-	[HideInInspector] public bool againWhenExit;
-
+	public bool basedOnSO; 
+	public DamageColliderData referenceData;
+	
+	// IF NOT BASED ON SO, ACCESS IN DAMAGE EFFECT DIRECTLY
+	public TakeHealthDamage damageEffect = new TakeHealthDamage();
+	
+	
+	
 	[HideInInspector] public List<BaseEntity> blackList; // IGNORE THIS DAMAGE COLLIDER
-
-
+	
 	private List<BaseEntity> damagedEntity = new List<BaseEntity>();
-
-	private TakeHealthDamage damageEffect;
 
 
 	private void Awake() {
 
-		damageEffect = (TakeHealthDamage)StatusFxDataBase.Instance.GetEffectData(InstantEffectType.TakeHealthDamage);
-		damageEffect.damage = damage;
-
+		if (basedOnSO) {
+			damageEffect.damage = referenceData.damage;
+			damageEffect.poiseBreakDamage = referenceData.poiseBreakDamage;
+		}
 	}
 
+	
 
 	private void OnTriggerEnter(Collider other) {
 
@@ -40,6 +46,11 @@ public class DamageCollider : MonoBehaviour {
 
 			if (damageTarget == null)
 				return;
+		}
+
+		// CANCEL DAMAGE IF TARGET IS INVINCIBLE
+		if (damageTarget.isInvincible) {
+			return;
 		}
 
 		// CANCEL DAMAGE IF TARGET ENTITY ALREADY DAMAGED
@@ -72,26 +83,6 @@ public class DamageCollider : MonoBehaviour {
 		damagedEntity.Add(damageTarget);
 		damageTarget.statusFx.AddInstantEffect(damageEffect);
 
-	}
-
-	private void OnTriggerExit(Collider other) {
-
-		if (!againWhenExit)
-			return;
-
-		BaseEntity target = other.GetComponentInParent<BaseEntity>();
-
-		// TARGET HASN'T ENTITY COMPONENT 
-		if (target == null) {
-
-			target = other.GetComponent<BaseEntity>();
-
-			if (target == null)
-				return;
-		}
-
-		if (damagedEntity.Contains(target))
-			damagedEntity.Remove(target);
 	}
 
 
