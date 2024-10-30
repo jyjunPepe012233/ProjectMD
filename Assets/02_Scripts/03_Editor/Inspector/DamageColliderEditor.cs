@@ -10,7 +10,7 @@ namespace MinD.Editor.Inspector {
 public class DamageColliderEditor : UnityEditor.Editor {
 
 	private DamageCollider component;
-
+	
 
 
 	void OnEnable() {
@@ -20,15 +20,25 @@ public class DamageColliderEditor : UnityEditor.Editor {
 	}
 
 	public override void OnInspectorGUI() {
+		
+		GUILayout.Space(10);
 
-		if (Application.isPlaying) {
-			EditorGUILayout.LabelField("Game is playing");
+		// CHECK COLLIDER IS EXIST
+		var collider = component.GetComponent<Collider>();
+		
+		if (collider == null) {
+			EditorGUILayout.LabelField("Requires a Collider Component");
+			GUILayout.Space(10);
 			return;
+			
+		} else {
+			component.collider = collider;
+			collider.isTrigger = true;
+
 		}
 		
 		
 		
-		GUILayout.Space(10);
 		component.soData = (DamageData)EditorGUILayout.ObjectField("Reference Data", component.soData, typeof(DamageData), false);
 		GUILayout.Space(10);
 		

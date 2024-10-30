@@ -12,6 +12,8 @@ using UnityEngine.Serialization;
 namespace MinD.Runtime.Utils {
 
 public class DamageCollider : MonoBehaviour {
+
+	public Collider collider;
 	
 	public DamageData soData;
 

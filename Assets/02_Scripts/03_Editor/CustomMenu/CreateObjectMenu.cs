@@ -11,10 +11,10 @@ public class CreateObjectMenu : MonoBehaviour {
 
 
 	[MenuItem("GameObject/Create With MinD/Create Damage Collider", false, int.MinValue + 0)]
-	public static void CreateNewFunctionCollider() {
+	public static void CreateNewDamageCollider() {
 
 		// CREATE NEW ITEM
-		GameObject newItem = new GameObject("Damage Collider", typeof(DamageCollider), typeof(BoxCollider), typeof(VisibleCollider));
+		GameObject newItem = new GameObject("Damage Collider", typeof(DamageCollider), typeof(VisibleCollider));
 
 		GameObjectUtility.SetParentAndAlign(newItem, Selection.activeGameObject);
 
@@ -22,8 +22,13 @@ public class CreateObjectMenu : MonoBehaviour {
 		Selection.activeGameObject = newItem;
 
 		newItem.layer = LayerMask.NameToLayer("DamageCollider");
+
+		
+		// HANDLE COMPONENT VALUE
+		newItem.GetComponent<VisibleCollider>().useCustomColor = true;
+		newItem.GetComponent<VisibleCollider>().color = new Color(1, 0.05f, 0.05f, 0.65f);
 	}
-	
+
 
 	[MenuItem("GameObject/Create With MinD/Create Dropped Item", false, int.MinValue + 1)]
 	public static void CreateNewDroppedItem() {

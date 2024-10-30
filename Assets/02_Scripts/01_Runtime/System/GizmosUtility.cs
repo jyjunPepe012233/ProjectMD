@@ -4,21 +4,18 @@ namespace MinD.Runtime.System {
 
 public class GizmosUtility {
 
-	private static Color defaultColor1 = new Color(1, .05f , .05f, .65f);
-	private static Color defaultColor2 = new Color(.05f, 1, .05f, .65f);
+	private static Color defaultColor1 = new Color(.05f, 1, .05f, .65f);
 	
 	
 
 	public static void DrawColliderGizmo(Collider collider, Color? color = null) {
 
 		if (color == null) {
-
-			if (collider is CharacterController) {
-				Gizmos.color = defaultColor2;
-			} else {
-				Gizmos.color = defaultColor1;
-			}
+			Gizmos.color = defaultColor1;
+		} else {
+			Gizmos.color = color.Value;
 		}
+		
 		
 		switch (collider) {
 			
