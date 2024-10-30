@@ -32,9 +32,7 @@ public class DamageColliderEditor : UnityEditor.Editor {
 			return;
 			
 		} else {
-			component.collider = collider;
 			collider.isTrigger = true;
-
 		}
 		
 		
