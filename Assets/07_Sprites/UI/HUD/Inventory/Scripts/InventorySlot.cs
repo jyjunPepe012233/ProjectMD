@@ -5,8 +5,15 @@ public class InventorySlot : MonoBehaviour
 {
     public Image itemImage;    // 아이템 이미지
     public Text itemCountText; // 아이템 개수
+    public GameObject selectionImage; // 선택 이미지
 
-    private Item currentItem;  // 현재 슬롯에 아이템
+    private Item currentItem;  // 현재 슬롯에 있는 아이템
+    private InventoryUI inventoryUI; // 인벤토리 UI 참조
+
+    void Start()
+    {
+        inventoryUI = FindObjectOfType<InventoryUI>(); // InventoryUI 참조 가져오기
+    }
 
     public void SetItem(Item item)
     {
@@ -30,15 +37,23 @@ public class InventorySlot : MonoBehaviour
         currentItem = null;
         itemImage.enabled = false;
         itemCountText.enabled = false;
+        SetSelected(false); // 슬롯을 비우면 선택 이미지를 숨김
+    }
+
+    public void SetSelected(bool isSelected)
+    {
+        if (selectionImage != null)
+        {
+            selectionImage.SetActive(isSelected);
+        }
     }
 
     // 슬롯 클릭 시
     public void OnClick()
     {
-        if (currentItem != null)
+        if (inventoryUI != null)
         {
-            // 아이템 정보를 UI에 표시
-            Debug.Log($"아이템 이름: {currentItem.itemName}, 설명: {currentItem.itemDescription}");
+            inventoryUI.OnSlotClicked(this);
         }
     }
 }
