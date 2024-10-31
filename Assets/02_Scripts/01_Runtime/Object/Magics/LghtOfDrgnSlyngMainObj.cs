@@ -75,7 +75,7 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 	public void StartBlasting() {
 		blastingCoroutine = StartCoroutine(BlastingCoroutine());
 	}
-
+	
 	private IEnumerator BlastingCoroutine() {
 
 		blastSystem.Play();
@@ -90,15 +90,15 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 				yield return damageYieldTick;
 
 			} else {
+				// STOPPING MAGIC PATTERN
 				magicSO.EndBlasting();
-				blastLight.FadeOut(1.5f);
 				yield break;
 			}
 		}
 	}
 	private void ThrowDamageCollider() {
 		var newProjectile = Instantiate(projectile).GetComponent<LghtOfDrgnSlyngProjectile>(); // NEED TO CHANGE POOLING
-		newProjectile.Shoot(transform.TransformPoint(blastPosition), transform.forward, 25, 32.5f, blastDamageData);
+		newProjectile.Shoot(transform.TransformPoint(blastPosition), transform.forward, 25, 32.5f, blastDamageData, magicSO.castPlayer);
 	}
 
 
@@ -117,6 +117,8 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 
 		// OFF BLASTING FX
 		blastSystem.Stop();
+		blastLight.FadeOut(1.5f);
+
 
 		// FADE OUT MAGIC CIRCLE
 		var renderer = circleSystem.GetComponent<Renderer>();

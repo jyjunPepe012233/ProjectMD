@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using MinD.Runtime.Object;
+using MinD.Runtime.Utils;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
@@ -8,12 +10,37 @@ namespace MinD.Runtime.Entity {
 public class EnemyUtilityHandler : MonoBehaviour {
 
 	[HideInInspector] public Enemy owner;
-
+	
+	public Collider[] bodyColliders;
+	[Space(10)]
 	[SerializeField] private GameObject[] ownedObjects;
-	[SerializeField] private ParticleSystem[] particleSystems;
+	[SerializeField] private GameObject[] prefabs;
+	
+	
+	
+	public void BeIgnoreCollisionWithMyColliders() {
+		
+		// RESET ARRAY TO THERE'S ONLY AVAILABLE(RIGHT LAYER) COLLIDER
+		bodyColliders = bodyColliders.Where(col => col.gameObject.layer == LayerMask.GetMask("Entity")) .ToArray();
+		
+		foreach (Collider collider1 in bodyColliders) {
+			foreach (Collider collider2 in bodyColliders) {
+				Physics.IgnoreCollision(collider1, collider2);
+			}
+		}
+	}
 
 
-
+	public GameObject InstantiateObject(string prefabName) {
+		foreach (GameObject obj in prefabs) {
+			if (obj.name == prefabName) {
+				return Instantiate(obj);
+			}
+		}
+		
+		throw new UnityException("!! CAN'T FIND " + owner.name + " REGISTERED PREFAB THE NAMED " + prefabName);
+	}
+	
 	public void EnableObject(string targetObjects) {
 		// MULTIPLE OBJECTS ARE SEPARATE BY SPACE 
 
@@ -36,7 +63,6 @@ public class EnemyUtilityHandler : MonoBehaviour {
 		}
 
 	}
-
 	public void DisableObject(string targetObjects) {
 		// MULTIPLE OBJECTS ARE SEPARATE BY SPACE 
 
@@ -58,19 +84,30 @@ public class EnemyUtilityHandler : MonoBehaviour {
 			}
 		}
 	}
+	
+	public void ResetDamageColliderToHitAgain(string colliderName) {
 
+		foreach (GameObject obj in ownedObjects) {
 
+			if (obj.name == colliderName) {
+				var cols = obj.GetComponentsInChildren<DamageCollider>();
+				foreach (DamageCollider col in cols) {
+					col.ResetToHitAgain();
+				}
 
-	public ParticleSystem GetParticleSystems(string particleName) {
-
-		foreach (ParticleSystem system in particleSystems) {
-			if (system.name == particleName) {
-				return system;
+				return;
 			}
+			
 		}
-
-		throw new UnityException("!! CAN'T FIND PARTICLE SYSTEM OWNED BY " + owner.name + " THE NAMED " + particleName);
+		
+		throw new UnityException("!! CAN'T FIND " + owner.name + " OWNED DAMAGE COLLIDER THE NAMED " + colliderName);
 	}
+	
+	
+	
+
+	
+	
 }
 
 }

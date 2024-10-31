@@ -8,8 +8,7 @@ namespace MinD.Runtime.Entity {
 [RequireComponent(typeof(Animator))]
 
 public abstract class BaseEntity : MonoBehaviour {
-
-	[Header("[ Base Settings ]")]
+	
 	public bool isInvincible;
 	public bool immunePoiseBreak;
 	[Space(5)]

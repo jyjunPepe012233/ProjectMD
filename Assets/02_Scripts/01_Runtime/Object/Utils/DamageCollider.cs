@@ -1,17 +1,13 @@
 using System.Collections.Generic;
-using MinD.Enums;
-using MinD.Runtime.DataBase;
 using MinD.Runtime.Entity;
-using MinD.SO.StatusFX;
 using MinD.SO.StatusFX.Effects;
 using MinD.SO.Utils;
-using MinD.Structs;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace MinD.Runtime.Utils {
 
 public class DamageCollider : MonoBehaviour {
+	
 	public DamageData soData;
 
 
@@ -64,30 +60,29 @@ public class DamageCollider : MonoBehaviour {
 			// 데미지콜라이더의 방향이 데미지의 방향이다
 
 		if (hitPointAngle >= -45 && hitPointAngle < 45)
-			damageEffect.hitDirection = HitDirection.Front;
+			damageEffect.hitDirection = "F";
 
 		else if (hitPointAngle >= 45 && hitPointAngle < 135)
-			damageEffect.hitDirection = HitDirection.Right;
+			damageEffect.hitDirection = "R";
 
 		else if (hitPointAngle >= 135 || hitPointAngle < -135)
-			damageEffect.hitDirection = HitDirection.Back;
+			damageEffect.hitDirection = "B";
 
 		else
-			damageEffect.hitDirection = HitDirection.Left;
+			damageEffect.hitDirection = "L";
 
 		// GIVE EFFECT TO TARGET
 		damagedEntity.Add(damageTarget);
 		damageTarget.statusFx.AddInstantEffect(damageEffect);
-
 	}
 
 
 
 	private void OnDisable() {
-		ResetDamagedEntity();
+		ResetToHitAgain();
 	}
 
-	public void ResetDamagedEntity() {
+	public void ResetToHitAgain() {
 		damagedEntity.Clear();
 	}
 

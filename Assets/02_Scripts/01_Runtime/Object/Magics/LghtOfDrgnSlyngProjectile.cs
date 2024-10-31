@@ -1,3 +1,5 @@
+using MinD.Runtime.Entity;
+using MinD.Runtime.System;
 using MinD.Runtime.Utils;
 using MinD.SO.Utils;
 using MinD.Structs;
@@ -15,7 +17,7 @@ public class LghtOfDrgnSlyngProjectile : MonoBehaviour {
 
 	private float currentDistance;
 
-	public void Shoot(Vector3 origin, Vector3 direction, float speed, float distance, DamageData damageData) {
+	public void Shoot(Vector3 origin, Vector3 direction, float speed, float distance, DamageData damageData, BaseEntity caster) {
 
 		transform.position = origin;
 		this.direction = direction;
@@ -25,6 +27,8 @@ public class LghtOfDrgnSlyngProjectile : MonoBehaviour {
 		currentDistance = 0;
 
 		damageCollider.soData = damageData;
+		
+		PhysicUtility.IgnoreCollisionUtil(caster, GetComponent<Collider>());
 	}
 
 

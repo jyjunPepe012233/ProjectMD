@@ -1,4 +1,5 @@
 using MinD.Runtime.Managers;
+using UnityEditor.Playables;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
@@ -21,6 +22,9 @@ public class Player : BaseEntity {
     [HideInInspector] public PlayerEquipmentHandler equipment;
     [HideInInspector] public PlayerInteractionHandler interaction;
     [HideInInspector] public PlayerCombatHandler combat;
+
+    [Space(15)]
+    [SerializeField] private bool infiniteAttribute;
     
 
     [Header("[ Attributes ]")]
@@ -30,6 +34,12 @@ public class Player : BaseEntity {
     public int CurHp {
         get => curHp;
         set {
+            // INFINITY ATTRIBUTES TO DEBUGGING
+            if (infiniteAttribute) {
+                curMp = attribute.maxMp;
+                return;
+            }
+            
             curHp = value;
             if (curHp <= 0) {
                 // DIE
@@ -43,6 +53,12 @@ public class Player : BaseEntity {
     public int CurMp {
         get => curMp;
         set {
+            // INFINITY ATTRIBUTES TO DEBUGGING
+            if (infiniteAttribute) {
+                curMp = attribute.maxMp;
+                return;
+            }
+            
             curMp = value;
             curMp = Mathf.Clamp(curMp, 0, attribute.maxMp);
 
@@ -52,6 +68,12 @@ public class Player : BaseEntity {
     public int CurStamina {
         get => curStamina;
         set {
+            // INFINITY ATTRIBUTES TO DEBUGGING
+            if (infiniteAttribute) {
+                curMp = attribute.maxMp;
+                return;
+            }
+            
             curStamina = value;
             curStamina = Mathf.Clamp(curStamina, 0, attribute.maxStamina);
 
@@ -96,11 +118,26 @@ public class Player : BaseEntity {
 
     }
 
+    void Start() {
+
+        // LOAD DATA
+        inventory.LoadItemData();
+        PlayerHUDManager.Instance.RefreshAllStatusBar();
+        
+        
+        // BASIC SETTINGS
+        combat.getHitAction += combat.CancelMagicOnGetHit;
+        
+    }
+
     void OnEnable() {
 
-        inventory.LoadItemData();
-
-        PlayerHUDManager.Instance.RefreshAllStatusBar();
+        // LOAD DATA
+        
+        // SET BASIC SUBSCRIBERS
+        
+        
+        
 
     }
 

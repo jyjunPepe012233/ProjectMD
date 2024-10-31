@@ -27,10 +27,14 @@ public abstract class Magic : Item {
 	public abstract void OnReleaseInput();
 	// WRITE THE CODE WHEN RUNNING IF PLAYER'S USE MAGIC INPUT IS ENDED
 
+	public abstract void OnCancel();
+	// WRITE THE CODE WHEN RUNNING IF MAGIC WAS CANCELED BY FORCE
+
 	public abstract void OnExit();
 	// WRITE THE CODE WHEN RUNNING MAGIC IS PERFECTLY END
 	// AND IF YOU WANT TO END THE MAGIC, USE EndCurrentMagic FUNCTION IN PLAYER COMBAT HANDLER
 	// THAT FUNCTION WILL CALL THIS FUNCTION
+	
 
 
 
@@ -38,9 +42,6 @@ public abstract class Magic : Item {
 	}
 
 	public virtual void OnSuccessfullyCast() {
-	}
-
-	public virtual void OnCastIsEnd() {
 	}
 
 

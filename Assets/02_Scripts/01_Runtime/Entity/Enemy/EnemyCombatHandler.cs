@@ -18,8 +18,6 @@ public class EnemyCombatHandler : MonoBehaviour {
 	public float DistanceToTarget() {
 		return Vector3.Distance(target.transform.position, owner.transform.position);
 	}
-
-
 	public BaseEntity FindTargetBySight(float viewingAngle, float viewingRadius, float unConditionalDetectRadius = 0) {
 
 		Collider[] colliders = Physics.OverlapSphere(transform.position, viewingRadius, PhysicLayerDataBase.Instance.entityLayer);
@@ -92,10 +90,10 @@ public class EnemyCombatHandler : MonoBehaviour {
 		return null;
 	}
 
+	
 	public void RotateToTarget(float duration) {
 		StartCoroutine(RotateToTargetCoroutine(duration));
 	}
-
 	private IEnumerator RotateToTargetCoroutine(float duration) {
 
 		Quaternion startRotation = transform.rotation;
@@ -117,6 +115,11 @@ public class EnemyCombatHandler : MonoBehaviour {
 		}
 	}
 
+	
+	
+	
+	
+	
 
 	public void OnDrawGizmos() {
 

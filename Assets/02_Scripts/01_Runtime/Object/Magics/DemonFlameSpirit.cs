@@ -1,5 +1,6 @@
 using System.Collections;
 using MinD.Runtime.Entity;
+using MinD.Runtime.System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -34,8 +35,8 @@ public class DemonFlameSpirit : MonoBehaviour {
 	}
 
 	public void Shoot(BaseEntity owner, BaseEntity target) {
-
-		Physics.IgnoreCollision(collider, owner.GetComponent<Collider>(), true);
+		
+		PhysicUtility.IgnoreCollisionUtil(owner, GetComponent<Collider>());
 
 		// PREVENT NULL REFERENCE ERROR
 		if (target != null) {

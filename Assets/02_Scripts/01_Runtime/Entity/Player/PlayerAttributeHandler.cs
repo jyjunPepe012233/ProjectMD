@@ -24,6 +24,7 @@ public class PlayerAttributeHandler : MonoBehaviour {
     public float divine;
     [Space(5)]
     public DamageNegation damageNegation;
+    public int poiseBreakResistance;
 
     
     [Header("[ Other Attributes ]")]

@@ -84,10 +84,18 @@ public class LghtOfDrgnSlyng : Magic {
 		}
 
 	}
-
-
+	
 	public override void OnReleaseInput() {
 		isInputReleased = true;
+	}
+
+	public override void OnCancel() {
+		
+		// DESTROY MAGIC
+		magic.StartCoroutine(magic.EndBlastingCoroutine(2f));
+		
+		// FORCE EXIT
+		castPlayer.combat.ExitCurrentMagic();
 	}
 
 	public override void OnExit() {
@@ -99,6 +107,7 @@ public class LghtOfDrgnSlyng : Magic {
 		isBlasting = false;
 		blastTimer = 0;
 	}
+	
 
 
 
@@ -115,20 +124,16 @@ public class LghtOfDrgnSlyng : Magic {
 		magic.StartBlasting();
 	}
 
-	public override void OnCastIsEnd() {
-	}
-
-
+	
 	public void EndBlasting() {
 
 		isBlasting = false;
 		magic.StartCoroutine(magic.EndBlastingCoroutine(2f));
-
+		
 		castPlayer.animation.PlayTargetAction("LghtOfDrgnSlyng_End", true, true, false, false);
 		// AND WILL CALL OnCastIsEnd METHOD VIA ANIMATION EVENT
 	}
-
-
+	
 	public bool TryDrainMpAndStaminaDuringBlasting() {
 
 		// IF PLAYER HASN'T ENOUGH STATS, RETURN FALSE

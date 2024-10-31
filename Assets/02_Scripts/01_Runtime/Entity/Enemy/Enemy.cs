@@ -7,9 +7,9 @@ using UnityEngine.Serialization;
 namespace MinD.Runtime.Entity {
 
 [RequireComponent(typeof(EnemyStateMachine))]
+[RequireComponent(typeof(EnemyAttributeHandler))]
 [RequireComponent(typeof(EnemyCombatHandler))]
 [RequireComponent(typeof(EnemyAnimationHandler))]
-[RequireComponent(typeof(EnemyColliderHandler))]
 [RequireComponent(typeof(EnemyUtilityHandler))]
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Enemy : BaseEntity {
@@ -17,13 +17,12 @@ public abstract class Enemy : BaseEntity {
 	[HideInInspector] public NavMeshAgent navAgent;
 	
 	[HideInInspector] public EnemyStateMachine stateMachine;
+	[HideInInspector] public EnemyAttributeHandler attribute;
 	[HideInInspector] public EnemyCombatHandler combat;
 	[HideInInspector] public EnemyAnimationHandler animation;
-	[HideInInspector] public EnemyColliderHandler collider;
 	[HideInInspector] public EnemyUtilityHandler utility;
 	
-	
-	[Header("[ States Info ]")]
+	[Space(15)]
 	public EnemyState currentState;
 	public EnemyState previousState;
 
@@ -46,18 +45,16 @@ public abstract class Enemy : BaseEntity {
 		navAgent = GetComponent<NavMeshAgent>();
 
 		stateMachine = GetComponent<EnemyStateMachine>();
+		attribute = GetComponent<EnemyAttributeHandler>();
 		combat = GetComponent<EnemyCombatHandler>();
 		animation = GetComponent<EnemyAnimationHandler>();
-		collider = GetComponent<EnemyColliderHandler>();
 		utility = GetComponent<EnemyUtilityHandler>();
 		
 
 		stateMachine.owner = this;
 		combat.owner = this;
 		animation.owner = this;
-		collider.owner = this;
 		utility.owner = this;
-		
 		
 		
 		WorldEntityManager.Instance.RegisteringEnemyOnWorld(this);
@@ -81,7 +78,7 @@ public abstract class Enemy : BaseEntity {
 
 		SetupStates();
 		
-		collider.BeIgnoreCollisionWithMyColliders();
+		utility.BeIgnoreCollisionWithMyColliders();
 	}
 
 	protected abstract void SetupStates();

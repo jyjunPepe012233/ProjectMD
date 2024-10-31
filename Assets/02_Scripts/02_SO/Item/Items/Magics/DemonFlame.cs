@@ -24,6 +24,10 @@ public class DemonFlame : Magic {
 	public override void OnReleaseInput() {
 	}
 
+	public override void OnCancel() {
+		castPlayer.combat.ExitCurrentMagic();
+	}
+
 	public override void OnExit() {
 	}
 

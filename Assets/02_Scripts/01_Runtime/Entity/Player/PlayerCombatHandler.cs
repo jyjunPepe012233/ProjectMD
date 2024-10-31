@@ -1,7 +1,7 @@
+using System;
 using MinD.Runtime.Managers;
 using MinD.SO.Item;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 namespace MinD.Runtime.Entity {
@@ -14,11 +14,13 @@ public class PlayerCombatHandler : MonoBehaviour {
 	public BaseEntity target;
 	
 	
-	[HideInInspector]
-	public Magic currentCastingMagic;
-
+	[HideInInspector] public Magic currentCastingMagic;
 	private bool usingMagic;
-
+	
+	// WHEN PLAYER GET HIT, CALL THIS ACTION IN 'TakeHealthDamage'
+	public Action  getHitAction;
+	
+	
 
 	public void HandleAllCombatAction() {
 		HandleUsingMagic();
@@ -75,6 +77,8 @@ public class PlayerCombatHandler : MonoBehaviour {
 		}
 	}
 
+	
+	
 	public void ExitCurrentMagic() {
 
 		if (currentCastingMagic == null) {
@@ -86,19 +90,25 @@ public class PlayerCombatHandler : MonoBehaviour {
 		currentCastingMagic.OnExit();
 		currentCastingMagic = null;
 	}
+	
+	// SUBSCRIBES getHitAction
+	public void CancelMagicOnGetHit() {
+
+		// CANCEL MAGIC
+		if (currentCastingMagic != null) {
+			currentCastingMagic.OnCancel();
+		}
+		
+	}
 
 
 
-	public void InstantiateWarmUpFx() {
+	public void OnInstantiateWarmUpFx() {
 		currentCastingMagic.InstantiateWarmupFX();
 	}
 
-	public void SuccessfullyCast() {
+	public void OnSuccessfullyCast() {
 		currentCastingMagic.OnSuccessfullyCast();
-	}
-
-	public void CastIsEnd() {
-		currentCastingMagic.OnCastIsEnd();
 	}
 
 }
