@@ -9,9 +9,9 @@ namespace MinD.Runtime.Entity {
 
 public abstract class BaseEntity : MonoBehaviour {
 	
+	[Space(5)]
 	public bool isInvincible;
 	public bool immunePoiseBreak;
-	[Space(5)]
 	public List<Transform> targetOptions;
 
 	[HideInInspector] public EntityStatusFxHandler statusFx;

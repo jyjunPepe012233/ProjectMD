@@ -26,5 +26,7 @@ MonoBehaviour:
   castPlayer: {fileID: 0}
   damageData: {fileID: 11400000, guid: b7f265946d8e140b8aaa35ce5adf9654, type: 2}
   damageTick: 0.2
+  magicObject: {fileID: 5664770137503069860, guid: bc4e1690c90ee4125b98ca1df131282d,
+    type: 3}
   isInputReleased: 0
   isBlasting: 0

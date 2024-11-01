@@ -7,6 +7,10 @@ namespace MinD.SO.Item.Items {
 [CreateAssetMenu(menuName = "MinD/Item/Items/Magics/Demon Flame")]
 public class DemonFlame : Magic {
 	// 마염
+	
+	[Space(15)]
+	[SerializeField] private GameObject spirit;
+	
 
 	public override void OnUse() {
 
@@ -36,7 +40,7 @@ public class DemonFlame : Magic {
 
 		Vector3 summonPos = castPlayer.transform.position + castPlayer.transform.up * 2.3f;
 
-		DemonFlameSpirit demonFlame = ObjectDataBase.Instance.InstantiateMagic("DemonFlame_Spirit").GetComponent<DemonFlameSpirit>();
+		DemonFlameSpirit demonFlame = Instantiate(spirit).GetComponent<DemonFlameSpirit>();
 		demonFlame.transform.position = summonPos;
 
 		if (castPlayer.combat.target != null) {

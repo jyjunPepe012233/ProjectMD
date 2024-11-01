@@ -13,12 +13,14 @@ public class LghtOfDrgnSlyng : Magic {
 	[Header("[ Settings ]")]
 	[SerializeField] private DamageData damageData;
 	[SerializeField] private float damageTick;
+	[Space(10)]
+	[SerializeField] private GameObject magicObject;
 	
 	[Header("[ Flags ]")]
 	public bool isInputReleased;
 	public bool isBlasting;
-
-	private LghtOfDrgnSlyngMainObj magic;
+	
+	private LghtOfDrgnSlyngMainObj currentMagic;
 
 	private float blastTimer;
 
@@ -31,8 +33,8 @@ public class LghtOfDrgnSlyng : Magic {
 
 
 		// INSTANTIATE MAGIC OBJECT
-		magic = ObjectDataBase.Instance.InstantiateMagic("LghtOfDrgnSlyng_MainObj").GetComponent<LghtOfDrgnSlyngMainObj>();
-		magic.SetUp(this, damageData, damageTick);
+		currentMagic = Instantiate(magicObject).GetComponent<LghtOfDrgnSlyngMainObj>();
+		currentMagic.SetUp(this, damageData, damageTick);
 
 
 
@@ -43,24 +45,24 @@ public class LghtOfDrgnSlyng : Magic {
 
 			// POSITION
 			Vector3 targetDirx = (castPlayer.camera.currentTargetOption.position - pivot).normalized;
-			magic.transform.position = pivot + Quaternion.LookRotation(targetDirx) * new Vector3(0, 0.5f, 2);
+			currentMagic.transform.position = pivot + Quaternion.LookRotation(targetDirx) * new Vector3(0, 0.5f, 2);
 
 
 			// DIRECTION
-			magic.transform.forward = targetDirx;
-			Vector3 angle = magic.transform.eulerAngles;
+			currentMagic.transform.forward = targetDirx;
+			Vector3 angle = currentMagic.transform.eulerAngles;
 
 			angle.x = Mathf.Clamp(angle.x, -20, 20);
-			magic.transform.eulerAngles = angle;
+			currentMagic.transform.eulerAngles = angle;
 
 
 		} else {
-			magic.transform.position = pivot + (castPlayer.transform.rotation * new Vector3(0, 0.5f, 2));
-			magic.transform.forward = castPlayer.transform.forward;
+			currentMagic.transform.position = pivot + (castPlayer.transform.rotation * new Vector3(0, 0.5f, 2));
+			currentMagic.transform.forward = castPlayer.transform.forward;
 		}
 
 
-		magic.PlayWarmUpVfx();
+		currentMagic.PlayWarmUpVfx();
 	}
 
 	public override void Tick() {
@@ -92,7 +94,7 @@ public class LghtOfDrgnSlyng : Magic {
 	public override void OnCancel() {
 		
 		// DESTROY MAGIC
-		magic.StartCoroutine(magic.EndBlastingCoroutine(2f));
+		currentMagic.StartCoroutine(currentMagic.EndBlastingCoroutine(2f));
 		
 		// FORCE EXIT
 		castPlayer.combat.ExitCurrentMagic();
@@ -100,7 +102,7 @@ public class LghtOfDrgnSlyng : Magic {
 
 	public override void OnExit() {
 
-		magic = null;
+		currentMagic = null;
 
 		// RESET FLAG
 		isInputReleased = false;
@@ -121,14 +123,14 @@ public class LghtOfDrgnSlyng : Magic {
 		// SET FLAGS
 		isBlasting = true;
 
-		magic.StartBlasting();
+		currentMagic.StartBlasting();
 	}
 
 	
 	public void EndBlasting() {
 
 		isBlasting = false;
-		magic.StartCoroutine(magic.EndBlastingCoroutine(2f));
+		currentMagic.StartCoroutine(currentMagic.EndBlastingCoroutine(2f));
 		
 		castPlayer.animation.PlayTargetAction("LghtOfDrgnSlyng_End", true, true, false, false);
 		// AND WILL CALL OnCastIsEnd METHOD VIA ANIMATION EVENT

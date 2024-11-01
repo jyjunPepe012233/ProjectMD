@@ -52,7 +52,7 @@ public class PlayerAttributeHandler : MonoBehaviour {
     }
 
 
-    void SetBaseAttributesAsPerStats() {
+    public void SetBaseAttributesAsPerStats() {
 
         // Vitality
         maxHp = 100 + (vitality * 15);
