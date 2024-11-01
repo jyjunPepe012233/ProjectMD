@@ -122,6 +122,8 @@ public class Player : BaseEntity {
 
         // LOAD DATA
         inventory.LoadItemData();
+        
+        attribute.SetBaseAttributesAsPerStats();
         PlayerHUDManager.Instance.RefreshAllStatusBar();
         
         
@@ -129,17 +131,8 @@ public class Player : BaseEntity {
         combat.getHitAction += combat.CancelMagicOnGetHit;
         
     }
-
-    void OnEnable() {
-
-        // LOAD DATA
-        
-        // SET BASIC SUBSCRIBERS
-        
-        
-        
-
-    }
+    
+    
 
     protected override void Update() {
         

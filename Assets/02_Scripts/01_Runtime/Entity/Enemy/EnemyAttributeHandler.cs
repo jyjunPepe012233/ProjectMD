@@ -6,11 +6,9 @@ namespace MinD.Runtime.Entity {
 public class EnemyAttributeHandler : MonoBehaviour {
 
 	public int maxHp;
-	
-	[Space(5)]
 	public float speed;
 
-	[Space(15)]
+	[Space(10)]
 	public DamageNegation damageNegation;
 	public int poiseBreakResistance;
 

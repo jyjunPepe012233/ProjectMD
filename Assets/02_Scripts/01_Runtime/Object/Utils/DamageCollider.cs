@@ -18,13 +18,13 @@ public class DamageCollider : MonoBehaviour {
 	
 
 	private void OnTriggerEnter(Collider other) {
-
+		
 		if (soData == null) {
-			return;
+;			return;
 		}
 		
 		
-
+		
 		BaseEntity damageTarget = other.GetComponentInParent<BaseEntity>();
 
 		// TARGET HASN'T ENTITY COMPONENT 
@@ -32,8 +32,9 @@ public class DamageCollider : MonoBehaviour {
 
 			damageTarget = other.GetComponent<BaseEntity>();
 
-			if (damageTarget == null)
+			if (damageTarget == null) {
 				return;
+			}
 		}
 		
 		if (damageTarget.isInvincible)
