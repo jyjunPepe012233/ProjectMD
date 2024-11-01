@@ -14,7 +14,7 @@ public class CreateObjectMenu : MonoBehaviour {
 	public static void CreateNewDamageCollider() {
 
 		// CREATE NEW ITEM
-		GameObject newItem = new GameObject("Damage Collider", typeof(DamageCollider), typeof(VisibleCollider));
+		GameObject newItem = new GameObject("Damage Collider", typeof(DamageCollider), typeof(VisibleCollider), typeof(Rigidbody));
 
 		GameObjectUtility.SetParentAndAlign(newItem, Selection.activeGameObject);
 
@@ -27,6 +27,7 @@ public class CreateObjectMenu : MonoBehaviour {
 		// HANDLE COMPONENT VALUE
 		newItem.GetComponent<VisibleCollider>().useCustomColor = true;
 		newItem.GetComponent<VisibleCollider>().color = new Color(1, 0.05f, 0.05f, 0.65f);
+		newItem.GetComponent<Rigidbody>().isKinematic = true;
 	}
 
 

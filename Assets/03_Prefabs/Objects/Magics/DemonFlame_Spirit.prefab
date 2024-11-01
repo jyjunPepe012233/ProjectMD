@@ -9308,7 +9308,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4948856223056083050}
   - component: {fileID: 5183278615394604063}
-  - component: {fileID: 7533047824961685510}
   - component: {fileID: 8079925135486800558}
   - component: {fileID: 5069985410528467691}
   - component: {fileID: 1144579292747340349}
@@ -9351,24 +9350,6 @@ MonoBehaviour:
   targetOption: {fileID: 0}
   flightFx: {fileID: 4994054980192967996}
   explodeFX: {fileID: 7209682396404991527}
---- !u!114 &7533047824961685510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5893720624626477688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ca4af8b65b9842dfb891458a9bbf434, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorWindow: {fileID: 0}
-  showGizmoMode: 0
-  showGizmosColor: {r: 1, g: 0.1, b: 0.1, a: 0.65}
-  colliderType: 1
-  damageCollider: {fileID: 8079925135486800558}
-  collider: {fileID: 1144579292747340349}
 --- !u!114 &8079925135486800558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9381,14 +9362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18842f16ee46c4fc59fcac3b5aefea54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage:
-    physical: 50
-    magic: 0
-    fire: 0
-    frost: 0
-    lightning: 0
-    holy: 0
-  againWhenExit: 0
+  soData: {fileID: 0}
   blackList: []
 --- !u!54 &5069985410528467691
 Rigidbody:
