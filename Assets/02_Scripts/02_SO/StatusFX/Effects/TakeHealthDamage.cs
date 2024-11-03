@@ -49,6 +49,10 @@ public class TakeHealthDamage : InstantEffect {
 
 		// DRAIN HP
 		player.CurHp -= GetCalculatedDamage(damage, player.attribute.damageNegation);
+		
+		// CANCEL ACTIONS
+		player.combat.CancelMagicOnGetHit();
+		
 		// INVOKE ACTION
 		player.combat.getHitAction();
 		

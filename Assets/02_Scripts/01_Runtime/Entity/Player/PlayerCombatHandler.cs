@@ -91,7 +91,6 @@ public class PlayerCombatHandler : MonoBehaviour {
 		currentCastingMagic = null;
 	}
 	
-	// SUBSCRIBES getHitAction
 	public void CancelMagicOnGetHit() {
 
 		// CANCEL MAGIC

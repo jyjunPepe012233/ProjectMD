@@ -128,8 +128,6 @@ public class Player : BaseEntity {
         
         
         // BASIC SETTINGS
-        combat.getHitAction += combat.CancelMagicOnGetHit;
-        
     }
     
     
