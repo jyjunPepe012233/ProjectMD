@@ -8,6 +8,7 @@ namespace MinD.Runtime.Object.Utils {
 public class VisibleCollider : MonoBehaviour {
 	
 	[SerializeField] private ShowGizmoMode showGizmoMode;
+	[SerializeField] private LayerMask showLayers = ~0;
 	[SerializeField] private bool showChildCollider;
 	
 	[Space(10)] 
@@ -41,13 +42,7 @@ public class VisibleCollider : MonoBehaviour {
 				return;
 			}
 			
-			if (useCustomColor) {
-				foreach (Collider col in cols)
-					GizmosUtility.DrawColliderGizmo(col, color);
-			} else {
-				foreach (Collider col in cols)
-					GizmosUtility.DrawColliderGizmo(col, null);
-			}
+			DrawColliderGizmoFinal(cols, color);
 			
 		} else {
 
@@ -56,15 +51,43 @@ public class VisibleCollider : MonoBehaviour {
 				return;
 			}
 			
-			if (useCustomColor) {
-				GizmosUtility.DrawColliderGizmo(col, color);
-			} else {
-				GizmosUtility.DrawColliderGizmo(col, null);
-			}
-			
+			DrawColliderGizmoFinal(col, color);
 		}
 		
 	}
+
+	
+	private void DrawColliderGizmoFinal(Collider[] cols, Color? color) {
+
+		if (!useCustomColor) {
+			color = null;
+		}
+			
+		foreach (Collider col in cols) {
+			if (col.gameObject.activeInHierarchy &&
+			    showLayers == (showLayers | (1 << col.gameObject.layer))) {
+				// IS OBJECT IS ENABLE AND IN ALLOWED LAYERS
+				
+				GizmosUtility.DrawColliderGizmo(col, color);
+			}
+		}
+		
+	}
+	private void DrawColliderGizmoFinal(Collider col, Color? color) {
+
+		if (!useCustomColor) {
+			color = null;
+		}
+		
+		if (col.gameObject.activeInHierarchy &&
+			showLayers == (showLayers | (1 << col.gameObject.layer))) {
+			
+			GizmosUtility.DrawColliderGizmo(col, color);
+		}
+		
+	}
+	
+	
 
 }
 
