@@ -11,7 +11,7 @@ public class DamageCollider : MonoBehaviour {
 	public DamageData soData;
 
 
-	public List<BaseEntity> blackList; // IGNORE THIS DAMAGE COLLIDER
+	public List<BaseEntity> blackList = new List<BaseEntity>(); // IGNORE THIS DAMAGE COLLIDER
 	
 	private List<BaseEntity> damagedEntity = new List<BaseEntity>();
 
@@ -55,22 +55,10 @@ public class DamageCollider : MonoBehaviour {
 		damageEffect.damage = soData.damage;
 		damageEffect.poiseBreakDamage = soData.poiseBreakDamage;
 		
+		
 		// GET HIT DIRECTION
-		float hitPointAngle =
-			Vector3.SignedAngle(-transform.forward, damageTarget.transform.forward, Vector3.up);
-			// 데미지콜라이더의 방향이 데미지의 방향이다
-
-		if (hitPointAngle >= -45 && hitPointAngle < 45)
-			damageEffect.hitDirection = "F";
-
-		else if (hitPointAngle >= 45 && hitPointAngle < 135)
-			damageEffect.hitDirection = "R";
-
-		else if (hitPointAngle >= 135 || hitPointAngle < -135)
-			damageEffect.hitDirection = "B";
-
-		else
-			damageEffect.hitDirection = "L";
+		Vector3 hitDirx = other.ClosestPoint(transform.position) - transform.position; // HIT DETECTION DIRECTION OF THE THIS COLLIDER
+		damageEffect.hitAngle = Vector3.SignedAngle(damageTarget.transform.forward, -hitDirx, Vector3.up);
 
 		// GIVE EFFECT TO TARGET
 		damagedEntity.Add(damageTarget);

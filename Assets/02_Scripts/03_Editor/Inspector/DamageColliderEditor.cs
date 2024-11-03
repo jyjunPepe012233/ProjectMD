@@ -61,6 +61,13 @@ public class DamageColliderEditor : UnityEditor.Editor {
 			EditorGUILayout.Space(15);
 			soData.poiseBreakDamage = EditorGUILayout.IntSlider("Poise Break Damage", soData.poiseBreakDamage, 0, 100);
 			
+			EditorGUILayout.Space(15);
+			if (GUILayout.Button("Reset To Hit Again")) {
+				component.ResetToHitAgain();
+			}
+			
+			
+			
 			soData.RefreshValue();
 		}
 

@@ -18,7 +18,7 @@ public class PlayerCombatHandler : MonoBehaviour {
 	private bool usingMagic;
 	
 	// WHEN PLAYER GET HIT, CALL THIS ACTION IN 'TakeHealthDamage'
-	public Action  getHitAction;
+	public Action getHitAction = new Action(()=>{});
 	
 	
 

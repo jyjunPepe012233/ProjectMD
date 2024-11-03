@@ -10,8 +10,8 @@ public class TakeHealthDamage : InstantEffect {
 
 	public Damage damage;
 	public int poiseBreakDamage;
-	
-	public string hitDirection;
+
+	public float hitAngle;
 
 	
 	
@@ -63,26 +63,51 @@ public class TakeHealthDamage : InstantEffect {
 		}
 
 
-
-		string stateName = "Hit_";
 		
+		#region SET_POISE_BREAK_ANIMATION
+		
+		// DECIDE DIRECTION OF POISE BREAK ANIMATION BY HIT DIRECTION
+		string hitDirection;
+		// SET HIT DIRECTION	
+		if (hitAngle >= -45 && hitAngle < 45) {
+			hitDirection = "F";
+
+		} else if (hitAngle >= 45 && hitAngle < 135) {
+			hitDirection = "R";
+			
+		}  else if (hitAngle >= 135 || hitAngle < -135) {
+			hitDirection = "B";
+			
+		} else {
+			hitDirection = "L";
+		}
+		
+		
+		
+		string stateName = "Hit_";
+
 		// DECIDE ANIMATION BY CALCULATED POISE BREAK AMOUNT
 		int poiseBreakAmount = GetPoiseBreakAmount(poiseBreakDamage, player.attribute.poiseBreakResistance);
 		if (poiseBreakAmount >= 80) {
-			stateName += "KnockDown_";
+			stateName += "KnockDown_Start";
 			
+			Vector3 angle = player.transform.eulerAngles;
+			angle.y += hitAngle;
+			player.transform.eulerAngles = angle;
+
 		} else if (poiseBreakAmount >= 55) {
 			stateName += "Large_";
-			
+			stateName += hitDirection;
+
 		} else if (poiseBreakAmount >= 20) {
 			stateName += "Default_";
+			stateName += hitDirection;
 			
 		} else {
 			return; // IF POISE BREAK AMOUNT IS BELOW TO 20, POISE BREAK DOESN'T OCCUR
 		}
-
-		// SET HIT DIRECTION	
-		stateName += hitDirection;
+		
+		#endregion
 
 		// PLAY POISE BREAK ANIMATION
 		player.animation.PlayTargetAction(stateName, true, true, false, false);
