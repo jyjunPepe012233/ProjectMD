@@ -1,28 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 public class InventoryUI : MonoBehaviour
 {
-    // Inspector에서 설정 가능한 슬롯 프리팹, 스크롤, 카테고리 관련 UI 및 슬롯 목록들
     public GameObject slotPrefab;
     public ScrollRect scrollRect;
-    public List<Transform> categoryPolygon; 
+    public List<Transform> categoryPolygon;
     public List<Transform> categoryPanels;
     private List<List<InventorySlot>> categorySlots;
 
-    private int selectedSlotIndex = 0; // 현재 선택된 슬롯의 인덱스
-    private int inventoryWidth = 5;    // 인벤토리의 가로 길이
-    private PlayerInventoryHandler playerInventory; // 플레이어의 인벤토리 핸들러
+    private int selectedSlotIndex = 0;
+    private int inventoryWidth = 5;
+    private PlayerInventoryHandler playerInventory;
 
-    private int currentCategoryIndex = 0; // 현재 선택된 카테고리 인덱스
+    private int currentCategoryIndex = 0;
 
-    public GameObject inventoryPanel; // 전체 인벤토리 패널
-    private bool isInventoryActive = false; // 인벤토리 활성화 여부
+    public GameObject inventoryPanel;
+    private bool isInventoryActive = false;
 
     void Start()
     {
-        // 초기화: 플레이어 인벤토리 찾고, 각 카테고리에 슬롯 생성
         playerInventory = FindObjectOfType<Player>().inventory;
         categorySlots = new List<List<InventorySlot>>();
 
@@ -35,25 +34,23 @@ public class InventoryUI : MonoBehaviour
         UpdateCategory();
         UpdateInventoryUI();
         UpdateSelectionImage();
-        inventoryPanel.SetActive(false); // 시작할 때 인벤토리 비활성화
+        inventoryPanel.SetActive(false);
     }
 
     void Update()
     {
-        HandleInput(); // 입력 처리 함수 호출
+        HandleInput();
     }
 
     void HandleInput()
     {
-        // 인벤토리 열기/닫기 토글
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            ToggleInventory(); 
+            ToggleInventory();
         }
 
-        if (!isInventoryActive) return; // 인벤토리 비활성화 시 조작 무시
+        if (!isInventoryActive) return;
 
-        // 카테고리 변경, 슬롯 선택 이동, 새 슬롯 추가에 따른 입력 처리
         if (Input.GetKeyDown(KeyCode.Z))
         {
             ChangeCategory(-1);
@@ -72,13 +69,13 @@ public class InventoryUI : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            ScrollUp(); 
-            MoveSelection(-inventoryWidth); 
+            ScrollUp();
+            MoveSelection(-inventoryWidth);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            ScrollDown(); 
-            MoveSelection(inventoryWidth); 
+            ScrollDown();
+            MoveSelection(inventoryWidth);
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
@@ -86,18 +83,22 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // 인벤토리 열기/닫기 토글
     void ToggleInventory()
     {
-        isInventoryActive = !isInventoryActive; 
+        isInventoryActive = !isInventoryActive;
         inventoryPanel.SetActive(isInventoryActive);
+
         if (isInventoryActive)
         {
             UpdateCategory(); // 현재 카테고리 갱신
+
+            // y 범위에 따른 스크롤 위치 계산
+            scrollRect.normalizedPosition = new Vector2(scrollRect.normalizedPosition.x, 1);
         }
     }
 
-    // 카테고리 변경
+
+
     void ChangeCategory(int direction)
     {
         currentCategoryIndex += direction;
@@ -110,10 +111,9 @@ public class InventoryUI : MonoBehaviour
             currentCategoryIndex = 0;
         }
 
-        UpdateCategory(); // 카테고리 갱신
+        UpdateCategory();
     }
 
-    // 카테고리 UI 갱신 및 활성화
     void UpdateCategory()
     {
         foreach (var panel in categoryPanels)
@@ -133,7 +133,6 @@ public class InventoryUI : MonoBehaviour
         ScrollToSelectedSlot();
     }
 
-    // 카테고리 UI 폴리곤 상태 갱신
     void UpdateCategoryPolygon()
     {
         for (int i = 0; i < categoryPolygon.Count; i++)
@@ -142,31 +141,28 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // 슬롯 선택 이동
     void MoveSelection(int direction)
     {
         int newSelectedIndex = selectedSlotIndex + direction;
 
-        // 인덱스가 유효한 경우에만 이동
         if (newSelectedIndex < 0 || newSelectedIndex >= categorySlots[currentCategoryIndex].Count)
         {
-            return; 
+            return;
         }
 
         if (direction == 1 && (selectedSlotIndex + 1) % inventoryWidth == 0)
         {
-            return; // 오른쪽 끝에서 더 이동하지 않음
+            return;
         }
         else if (direction == -1 && selectedSlotIndex % inventoryWidth == 0)
         {
-            return; // 왼쪽 끝에서 더 이동하지 않음
+            return;
         }
 
         selectedSlotIndex = newSelectedIndex;
         UpdateSelectionImage();
     }
 
-    // 슬롯 선택 이미지 갱신
     void UpdateSelectionImage()
     {
         var slots = categorySlots[currentCategoryIndex];
@@ -176,23 +172,27 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // 스크롤을 아래로 이동
     void ScrollDown()
     {
+        if (scrollRect.content.anchoredPosition.y >= 65 * GetCurrentCategorySlotRange()) 
+            return;
+        
         Vector2 newPosition = scrollRect.content.anchoredPosition;
-        newPosition.y += 134; 
+        newPosition.y += 134;
         scrollRect.content.anchoredPosition = newPosition;
     }
 
-    // 스크롤을 위로 이동
     void ScrollUp()
     {
+        if (scrollRect.content.anchoredPosition.y <= -65 * GetCurrentCategorySlotRange())
+        return;
+        
+        Debug.Log(scrollRect.content.anchoredPosition.y);
         Vector2 newPosition = scrollRect.content.anchoredPosition;
-        newPosition.y -= 134; 
+        newPosition.y -= 134;
         scrollRect.content.anchoredPosition = newPosition;
     }
 
-    // 현재 선택된 슬롯으로 스크롤 이동
     void ScrollToSelectedSlot()
     {
         if (scrollRect == null || categorySlots[currentCategoryIndex].Count == 0) return;
@@ -212,7 +212,6 @@ public class InventoryUI : MonoBehaviour
         scrollRect.content.anchoredPosition = newContentPosition;
     }
 
-    // 슬롯을 생성하여 패널에 추가
     List<InventorySlot> CreateSlots(Transform panel, int slotCount)
     {
         List<InventorySlot> slots = new List<InventorySlot>();
@@ -225,7 +224,6 @@ public class InventoryUI : MonoBehaviour
         return slots;
     }
 
-    // 슬롯 추가 함수
     InventorySlot AddSlot(Transform panel)
     {
         GameObject newSlotObject = Instantiate(slotPrefab, panel);
@@ -237,10 +235,9 @@ public class InventoryUI : MonoBehaviour
             button.onClick.AddListener(slot.OnClick);
         }
 
-        return slot; 
+        return slot;
     }
 
-    // 새 슬롯을 현재 카테고리에 추가
     void AddSlot(int categoryIndex)
     {
         InventorySlot newSlot = AddSlot(categoryPanels[categoryIndex]);
@@ -252,7 +249,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // 슬롯 클릭 이벤트 처리
     public void OnSlotClicked(InventorySlot clickedSlot)
     {
         int clickedIndex = categorySlots[currentCategoryIndex].IndexOf(clickedSlot);
@@ -264,7 +260,6 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // 플레이어 인벤토리와 슬롯 UI 업데이트
     public void UpdateInventoryUI()
     {
         Item[] playerItems = playerInventory.playerItemList;
@@ -289,4 +284,17 @@ public class InventoryUI : MonoBehaviour
             slots[i].ClearSlot();
         }
     }
+    int GetCurrentCategorySlotRange()
+    {
+        int slotCount = categorySlots[currentCategoryIndex].Count;
+        int rangeSize = 5;
+        int baseCount = 25;
+
+        if (slotCount < baseCount)
+            return -1;
+        
+
+        return (slotCount - baseCount) / rangeSize;
+    }
+
 }
