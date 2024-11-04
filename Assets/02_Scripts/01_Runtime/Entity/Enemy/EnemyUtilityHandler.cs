@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MinD.Runtime.Object;
+using MinD.Runtime.System;
 using MinD.Runtime.Utils;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace MinD.Runtime.Entity {
 
@@ -11,23 +13,25 @@ public class EnemyUtilityHandler : MonoBehaviour {
 
 	[HideInInspector] public Enemy owner;
 	
-	public Collider[] bodyColliders;
 	[Space(10)]
 	[SerializeField] private GameObject[] ownedObjects;
 	[SerializeField] private GameObject[] prefabs;
 	
 	
 	
-	public void BeIgnoreCollisionWithMyColliders() {
+	public void AllCollisionIgnoreSetup() {
 		
 		// RESET ARRAY TO THERE'S ONLY AVAILABLE(RIGHT LAYER) COLLIDER
-		bodyColliders = bodyColliders.Where(col => col.gameObject.layer == LayerMask.GetMask("Entity")) .ToArray();
+		Collider[] allCols = GetComponentsInChildren<Collider>(true);
+
 		
-		foreach (Collider collider1 in bodyColliders) {
-			foreach (Collider collider2 in bodyColliders) {
-				Physics.IgnoreCollision(collider1, collider2);
-			}
+		// IGNORE BODY COLLIDERS WITH OWNED DAMAGE COLLIDER
+		var ownedDamageCols = allCols.Where(c => c.gameObject.layer == LayerMask.NameToLayer("DamageCollider"));
+		
+		foreach (Collider col in ownedDamageCols) {
+			PhysicUtility.IgnoreCollisionUtil(owner, col);
 		}
+		
 	}
 
 

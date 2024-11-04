@@ -27,8 +27,20 @@ public abstract class Enemy : BaseEntity {
 	public EnemyState previousState;
 
 	[Header("[ Attributes ]")]
-	public float curHp;
-
+	[SerializeField] private int curHp;
+	public int CurHp {
+		get => curHp;
+		set {
+			curHp = value;
+			if (curHp <= 0) {
+				// DIE
+			}
+			
+			curHp = Mathf.Clamp(curHp, 0, attribute.maxHp);
+		}
+	}
+	
+	
 	[Header("[ Flags ]")]
 	public bool isPerformingAction;
 	public bool isInCombat;
@@ -78,7 +90,7 @@ public abstract class Enemy : BaseEntity {
 
 		SetupStates();
 		
-		utility.BeIgnoreCollisionWithMyColliders();
+		utility.AllCollisionIgnoreSetup();
 	}
 
 	protected abstract void SetupStates();

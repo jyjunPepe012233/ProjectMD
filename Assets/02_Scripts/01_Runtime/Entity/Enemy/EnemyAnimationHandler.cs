@@ -5,7 +5,6 @@ namespace MinD.Runtime.Entity {
 public class EnemyAnimationHandler : MonoBehaviour {
 
 	[HideInInspector] public Enemy owner;
-
 	
 	private Vector2 locomotionParam;
 	
@@ -25,6 +24,8 @@ public class EnemyAnimationHandler : MonoBehaviour {
 		}
 
 	}
+	
+	public void PlayPoiseBreakAnimation() {}
 
 	public void PlayTargetAnimation(string stateName, float normalizedTransformDuration = 0.2f) {
 

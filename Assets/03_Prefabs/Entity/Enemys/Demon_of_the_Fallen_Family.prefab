@@ -1604,7 +1604,7 @@ MonoBehaviour:
   utility: {fileID: 0}
   currentState: {fileID: 0}
   previousState: {fileID: 0}
-  curHp: 0
+  curHp: 1060
   isPerformingAction: 0
   isInCombat: 0
   states: []
@@ -1685,7 +1685,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  bodyColliders: []
   ownedObjects:
   - {fileID: 8039036935099301375}
   - {fileID: 3279204290339655959}
@@ -2065,6 +2064,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGizmoMode: 0
+  showLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   showChildCollider: 0
   useCustomColor: 1
   color: {r: 1, g: 0.05, b: 0.05, a: 0.65}

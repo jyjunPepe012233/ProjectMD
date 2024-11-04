@@ -6272,7 +6272,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  bodyColliders: []
   ownedObjects:
   - {fileID: 4117780590455126033}
   - {fileID: 8878631380903531769}
@@ -6683,7 +6682,7 @@ MonoBehaviour:
   utility: {fileID: 0}
   currentState: {fileID: 0}
   previousState: {fileID: 0}
-  curHp: 0
+  curHp: 1060
   isPerformingAction: 0
   isInCombat: 0
   states: []
@@ -7812,7 +7811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4164931266145314744
 Transform:
   m_ObjectHideFlags: 0
@@ -9174,7 +9173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8986879500502196616
 Transform:
   m_ObjectHideFlags: 0

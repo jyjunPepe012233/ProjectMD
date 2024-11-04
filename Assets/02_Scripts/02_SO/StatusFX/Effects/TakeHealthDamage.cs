@@ -116,15 +116,16 @@ public class TakeHealthDamage : InstantEffect {
 	protected override void OnInstantiateAs(Enemy enemy) {
 		
 		// DRAIN HP
-		enemy.curHp -= GetCalculatedDamage(damage, enemy.attribute.damageNegation);
-		
+		enemy.CurHp -= GetCalculatedDamage(damage, enemy.attribute.damageNegation);
+
+		return;
 		
 		// IF ENTITY HAS IMMUNE OF POISE BREAK, DON'T GIVE POISE BREAK 
 		if (enemy.immunePoiseBreak) {
 			return;
 		}
 		
-		
+		// TODO:  ENEMY'S POISE BREAK
 
 		string stateName = "Hit_";
 		
