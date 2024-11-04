@@ -3,12 +3,15 @@ using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
-    public Image itemImage;    // 아이템 이미지
+    public Image itemImage; // 아이템 이미지
     public Text itemCountText; // 아이템 개수
     public GameObject selectionImage; // 선택 이미지
 
-    private Item currentItem;  // 현재 슬롯에 있는 아이템
+    private Item currentItem; // 현재 슬롯에 있는 아이템
     private InventoryUI inventoryUI; // 인벤토리 UI 참조
+
+    public int slotId; // 슬롯 ID
+    public int categoryId; // 카테고리 ID
 
     void Start()
     {

@@ -20,6 +20,10 @@ public abstract class Item : ScriptableObject {
 	public int itemCount = 0;
 
 	public Sprite itemImage;
+	
+	[Header("[ IDs ]")]
+	[HideInInspector] public int slotId;        // 슬롯 ID
+	[HideInInspector] public int categoryId;    // 카테고리 ID
 }
 
 }

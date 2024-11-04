@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
+
 public class InventoryUI : MonoBehaviour
 {
     public GameObject slotPrefab;
@@ -185,9 +186,8 @@ public class InventoryUI : MonoBehaviour
     void ScrollUp()
     {
         if (scrollRect.content.anchoredPosition.y <= -65 * GetCurrentCategorySlotRange())
-        return;
+            return;
         
-        Debug.Log(scrollRect.content.anchoredPosition.y);
         Vector2 newPosition = scrollRect.content.anchoredPosition;
         newPosition.y -= 134;
         scrollRect.content.anchoredPosition = newPosition;
@@ -216,9 +216,14 @@ public class InventoryUI : MonoBehaviour
     {
         List<InventorySlot> slots = new List<InventorySlot>();
 
+        int categoryId = categoryPanels.IndexOf(panel); // 현재 패널의 인덱스를 통해 카테고리 ID 결정
+
         for (int i = 0; i < slotCount; i++)
         {
-            slots.Add(AddSlot(panel));
+            InventorySlot newSlot = AddSlot(panel);
+            newSlot.slotId = i; // 슬롯 ID 설정
+            newSlot.categoryId = categoryId; // 카테고리 ID 설정
+            slots.Add(newSlot);
         }
 
         return slots;
