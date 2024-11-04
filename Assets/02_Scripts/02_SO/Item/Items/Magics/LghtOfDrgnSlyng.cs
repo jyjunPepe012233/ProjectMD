@@ -52,7 +52,11 @@ public class LghtOfDrgnSlyng : Magic {
 			currentMagic.transform.forward = targetDirx;
 			Vector3 angle = currentMagic.transform.eulerAngles;
 
-			angle.x = Mathf.Clamp(angle.x, -20, 20);
+			if (angle.x > 180) {
+				angle.x = Mathf.Clamp(angle.x, 340, 360);
+			} else {
+				angle.x = Mathf.Clamp(angle.x, 0, 20);
+			}
 			currentMagic.transform.eulerAngles = angle;
 
 

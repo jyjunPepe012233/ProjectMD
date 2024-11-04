@@ -1,7 +1,7 @@
 using MinD.Runtime.Entity;
 using UnityEngine;
 
-namespace MinD.SO.EnemyState {
+namespace MinD.SO.EnemySO {
 
 public abstract class EnemyState : ScriptableObject {
 

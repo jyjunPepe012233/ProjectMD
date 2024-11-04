@@ -1,4 +1,4 @@
-using MinD.SO.EnemyState;
+using MinD.SO.EnemySO;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {

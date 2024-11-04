@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
-using MinD.SO.EnemyState;
+using MinD.SO.EnemySO;
 using UnityEngine.Serialization;
 
 namespace MinD.Runtime.Entity {
 
 [RequireComponent(typeof(EnemyStateMachine))]
-[RequireComponent(typeof(EnemyAttributeHandler))]
 [RequireComponent(typeof(EnemyCombatHandler))]
 [RequireComponent(typeof(EnemyAnimationHandler))]
 [RequireComponent(typeof(EnemyUtilityHandler))]
@@ -17,7 +16,6 @@ public abstract class Enemy : BaseEntity {
 	[HideInInspector] public NavMeshAgent navAgent;
 	
 	[HideInInspector] public EnemyStateMachine stateMachine;
-	[HideInInspector] public EnemyAttributeHandler attribute;
 	[HideInInspector] public EnemyCombatHandler combat;
 	[HideInInspector] public EnemyAnimationHandler animation;
 	[HideInInspector] public EnemyUtilityHandler utility;
@@ -39,6 +37,7 @@ public abstract class Enemy : BaseEntity {
 			curHp = Mathf.Clamp(curHp, 0, attribute.maxHp);
 		}
 	}
+	public EnemyAttribute attribute;
 	
 	
 	[Header("[ Flags ]")]
@@ -57,7 +56,6 @@ public abstract class Enemy : BaseEntity {
 		navAgent = GetComponent<NavMeshAgent>();
 
 		stateMachine = GetComponent<EnemyStateMachine>();
-		attribute = GetComponent<EnemyAttributeHandler>();
 		combat = GetComponent<EnemyCombatHandler>();
 		animation = GetComponent<EnemyAnimationHandler>();
 		utility = GetComponent<EnemyUtilityHandler>();
@@ -72,7 +70,7 @@ public abstract class Enemy : BaseEntity {
 		WorldEntityManager.Instance.RegisteringEnemyOnWorld(this);
 	}
 
-	private void Start() {
+	private void OnEnable() {
 		Setup();
 	}
 	
@@ -89,7 +87,8 @@ public abstract class Enemy : BaseEntity {
 	protected virtual void Setup() {
 
 		SetupStates();
-		
+
+		curHp = attribute.maxHp;
 		utility.AllCollisionIgnoreSetup();
 	}
 

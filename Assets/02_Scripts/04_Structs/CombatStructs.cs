@@ -20,12 +20,12 @@ public struct Damage {
 public struct DamageNegation {
 
 	// 0~1
-	[Range(0, 1)] public float physical;
-	[Range(0, 1)] public float magic;
-	[Range(0, 1)] public float fire;
-	[Range(0, 1)] public float frost;
-	[Range(0, 1)] public float lightning;
-	[Range(0, 1)] public float holy;
+	public float physical;
+	public float magic; 
+	public float fire; 
+	public float frost; 
+	public float lightning; 
+	public float holy;
 	
 }
 

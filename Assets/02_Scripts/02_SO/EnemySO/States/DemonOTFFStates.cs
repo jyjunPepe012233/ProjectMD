@@ -1,7 +1,7 @@
 using MinD.Runtime.Entity;
 using UnityEngine;
 
-namespace MinD.SO.EnemyState.States.DemonOTFF {
+namespace MinD.SO.EnemySO.States {
 		
 public enum States {
 	Idle,

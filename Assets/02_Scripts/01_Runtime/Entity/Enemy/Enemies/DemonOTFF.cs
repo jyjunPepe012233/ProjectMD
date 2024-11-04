@@ -1,7 +1,7 @@
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Object.Magics;
-using MinD.SO.EnemyState;
-using MinD.SO.EnemyState.States.DemonOTFF;
+using MinD.SO.EnemySO;
+using MinD.SO.EnemySO.States;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity.Enemies {
