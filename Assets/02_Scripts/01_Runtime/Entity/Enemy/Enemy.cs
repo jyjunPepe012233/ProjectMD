@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
 using MinD.SO.EnemySO;
+using MinD.SO.EnemySO.State;
+using MinD.SO.StatusFX.Effects;
+using Unity.VisualScripting;
 using UnityEngine.Serialization;
 
 namespace MinD.Runtime.Entity {
@@ -20,9 +24,16 @@ public abstract class Enemy : BaseEntity {
 	[HideInInspector] public EnemyAnimationHandler animation;
 	[HideInInspector] public EnemyUtilityHandler utility;
 	
+	
 	[Space(15)]
 	public EnemyState currentState;
 	public EnemyState previousState;
+	[Space(3)]
+	public EnemyState globalState;
+	
+	[HideInInspector] public EnemyState[] states;
+	[HideInInspector] public EnemyState[] globalStates;
+	
 
 	[Header("[ Attributes ]")]
 	[SerializeField] private int curHp;
@@ -39,13 +50,11 @@ public abstract class Enemy : BaseEntity {
 	}
 	public EnemyAttribute attribute;
 	
-	
 	[Header("[ Flags ]")]
 	public bool isPerformingAction;
 	public bool isInCombat;
 	
-	
-	[HideInInspector] public EnemyState[] states;
+	public Action getHitAction = new Action(() => {});
 	
 
 
@@ -68,11 +77,10 @@ public abstract class Enemy : BaseEntity {
 		
 		
 		WorldEntityManager.Instance.RegisteringEnemyOnWorld(this);
-	}
-
+	} // SETUP A OBJECT SETTINGS
 	private void OnEnable() {
 		Setup();
-	}
+	} // SETUP CODES WHEN ENABLED
 	
 	protected override void Update() {
 		
@@ -91,11 +99,8 @@ public abstract class Enemy : BaseEntity {
 		curHp = attribute.maxHp;
 		utility.AllCollisionIgnoreSetup();
 	}
-
+	
 	protected abstract void SetupStates();
-
-
-
 }
 
 }

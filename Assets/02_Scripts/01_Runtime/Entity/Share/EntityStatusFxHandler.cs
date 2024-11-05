@@ -9,8 +9,9 @@ public class EntityStatusFxHandler : MonoBehaviour {
 
 	[HideInInspector] public BaseEntity owner;
 
-	
-	[Header("[ Owned Effect List ]")]
+
+	[Header("[ Owned Effect List ]")] 
+	public InstantEffect instantEffectSlot; // LATEST EFFECT
 	[SerializeField] private List<StaticEffect> staticEffects;
 	[SerializeField] private List<TimedEffect> timedEffects;
 	[SerializeField] private List<StackingEffect> stackingEffects;
@@ -36,9 +37,18 @@ public class EntityStatusFxHandler : MonoBehaviour {
 
 	public void AddInstantEffect(InstantEffect effectInstance) {
 
-		effectInstance.OnInstantiate(owner);
-		Destroy(effectInstance);
+		// MAKE SURE CAN APPLY INSTANT EFFECT
+		if (effectInstance == null) {
+			return;
+		}
 
+		// REFRESH THE PREVIOUS EFFECT SLOT
+		if (instantEffectSlot != null) {
+			Destroy(instantEffectSlot);
+		}
+		
+		instantEffectSlot = effectInstance;
+		instantEffectSlot.OnInstantiate(owner);
 	}
 	
 	

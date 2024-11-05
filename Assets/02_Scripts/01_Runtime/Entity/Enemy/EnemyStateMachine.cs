@@ -1,4 +1,4 @@
-using MinD.SO.EnemySO;
+using MinD.SO.EnemySO.State;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
@@ -7,16 +7,35 @@ public class EnemyStateMachine : MonoBehaviour {
 
 	[HideInInspector] public Enemy owner;
 
+	private int currentStateIndex;
+	private int currentGlobalStateIndex;
+
 	
 	
 	public void ExecuteStateTick() {
 
-		if (owner.currentState != null)
-			owner.currentState.Tick(owner);
-		else
+		if (owner.currentState != null) {
+			owner.currentState.Tick();
+		} else {
 			Debug.LogError("!! THE ENEMY'S STATE IS NULL !!");
+		}
 
+
+		if (owner.globalState != null) {
+			owner.globalState.Tick();
+		} else {
+			Debug.LogError("!! THE ENEMY'S GLOBAL STATE IS NULL !!");
+		}
 	}
+
+	public int GetCurrentStateIndex() {
+		return currentStateIndex;
+	}
+
+	public int GetCurrentGlobalStateIndex() {
+		return currentGlobalStateIndex;
+	}
+	
 
 	public void ChangeStateByIndex(int stateIndex) {
 
@@ -28,14 +47,35 @@ public class EnemyStateMachine : MonoBehaviour {
 		if (owner.previousState != null) {
 
 			owner.previousState = owner.currentState;
-			owner.previousState.Exit(owner);
+			owner.previousState.Exit();
 
 		}
 
 		owner.currentState = newState;
-		owner.currentState.Enter(owner);
-	}
+		owner.currentState.enemy = owner;
+		owner.currentState.Enter();
 
+		
+		currentStateIndex = stateIndex;
+	}
+	public void ChangeGlobalStateByIndex(int stateIndex) {
+		
+		EnemyState newState = owner.globalStates[stateIndex];
+
+		if (newState == null)
+			return;
+
+		if (owner.globalState != null) {
+			owner.globalState.Exit();
+		}
+		
+		owner.globalState = newState;
+		owner.globalState.enemy = owner;
+		owner.globalState.Enter();
+		
+		
+		currentGlobalStateIndex = stateIndex;
+	}
 
 
 }

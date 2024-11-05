@@ -15,7 +15,7 @@ public class TakeHealthDamage : InstantEffect {
 
 	
 	
-	private static int GetCalculatedDamage(Damage damage_, DamageNegation negation_) {
+	public static int GetCalculatedDamage(Damage damage_, DamageNegation negation_) {
 
 		int finalDamage = 0;
 		finalDamage += (int)((1 - negation_.physical) * damage_.physical);
@@ -28,7 +28,7 @@ public class TakeHealthDamage : InstantEffect {
 		return finalDamage;
 	}
 
-	private static int GetPoiseBreakAmount(int poiseBreakDamage, int poiseBreakResistance) {
+	public static int GetPoiseBreakAmount(int poiseBreakDamage, int poiseBreakResistance) {
 
 		float resistanceValue = (float)poiseBreakResistance / 100;
 
@@ -61,10 +61,10 @@ public class TakeHealthDamage : InstantEffect {
 		if (player.immunePoiseBreak) {
 			return;
 		}
-
-
+		
 		
 		#region SET_POISE_BREAK_ANIMATION
+		
 		
 		// DECIDE DIRECTION OF POISE BREAK ANIMATION BY HIT DIRECTION
 		string hitDirection;
@@ -75,7 +75,7 @@ public class TakeHealthDamage : InstantEffect {
 		} else if (hitAngle >= 45 && hitAngle < 135) {
 			hitDirection = "R";
 			
-		}  else if (hitAngle >= 135 || hitAngle < -135) {
+		}  else if (hitAngle >= 135 && hitAngle < -135) {
 			hitDirection = "B";
 			
 		} else {
@@ -117,19 +117,8 @@ public class TakeHealthDamage : InstantEffect {
 		
 		// DRAIN HP
 		enemy.CurHp -= GetCalculatedDamage(damage, enemy.attribute.damageNegation);
-
-		return;
 		
-		// IF ENTITY HAS IMMUNE OF POISE BREAK, DON'T GIVE POISE BREAK 
-		if (enemy.immunePoiseBreak) {
-			return;
-		}
-		
-		// TODO:  ENEMY'S POISE BREAK
-
-		string stateName = "Hit_";
-		
-		
+		enemy.getHitAction.Invoke();
 	}
 
 }
