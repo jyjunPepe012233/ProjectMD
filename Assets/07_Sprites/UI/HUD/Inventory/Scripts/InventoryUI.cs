@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Linq;
-
 
 public class InventoryUI : MonoBehaviour
 {
@@ -15,6 +13,7 @@ public class InventoryUI : MonoBehaviour
     private int selectedSlotIndex = 0;
     private int inventoryWidth = 5;
     private PlayerInventoryHandler playerInventory;
+    private ItemSoList itemSoList;
 
     private int currentCategoryIndex = 0;
 
@@ -26,9 +25,10 @@ public class InventoryUI : MonoBehaviour
         playerInventory = FindObjectOfType<Player>().inventory;
         categorySlots = new List<List<InventorySlot>>();
 
-        foreach (var panel in categoryPanels)
+        // 각 카테고리 패널에 슬롯 생성
+        for (int i = 0; i < categoryPanels.Count; i++)
         {
-            List<InventorySlot> slots = CreateSlots(panel, 25);
+            List<InventorySlot> slots = CreateSlots(categoryPanels[i], 50, i); // i를 통해 categoryId 설정
             categorySlots.Add(slots);
         }
 
@@ -80,7 +80,7 @@ public class InventoryUI : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            AddSlot(currentCategoryIndex);
+            AddSlot(categoryPanels[currentCategoryIndex], currentCategoryIndex);
         }
     }
 
@@ -91,27 +91,14 @@ public class InventoryUI : MonoBehaviour
 
         if (isInventoryActive)
         {
-            UpdateCategory(); // 현재 카테고리 갱신
-
-            // y 범위에 따른 스크롤 위치 계산
+            UpdateCategory();
             scrollRect.normalizedPosition = new Vector2(scrollRect.normalizedPosition.x, 1);
         }
     }
 
-
-
     void ChangeCategory(int direction)
     {
-        currentCategoryIndex += direction;
-        if (currentCategoryIndex < 0)
-        {
-            currentCategoryIndex = categoryPanels.Count - 1;
-        }
-        else if (currentCategoryIndex >= categoryPanels.Count)
-        {
-            currentCategoryIndex = 0;
-        }
-
+        currentCategoryIndex = (currentCategoryIndex + direction + categoryPanels.Count) % categoryPanels.Count;
         UpdateCategory();
     }
 
@@ -130,6 +117,7 @@ public class InventoryUI : MonoBehaviour
         scrollRect.content = currentPanel.GetComponent<RectTransform>();
 
         selectedSlotIndex = 0;
+        UpdateInventoryUI();
         UpdateSelectionImage();
         ScrollToSelectedSlot();
     }
@@ -212,27 +200,25 @@ public class InventoryUI : MonoBehaviour
         scrollRect.content.anchoredPosition = newContentPosition;
     }
 
-    List<InventorySlot> CreateSlots(Transform panel, int slotCount)
+    List<InventorySlot> CreateSlots(Transform panel, int slotCount, int categoryId)
     {
         List<InventorySlot> slots = new List<InventorySlot>();
 
-        int categoryId = categoryPanels.IndexOf(panel); // 현재 패널의 인덱스를 통해 카테고리 ID 결정
-
         for (int i = 0; i < slotCount; i++)
         {
-            InventorySlot newSlot = AddSlot(panel);
-            newSlot.slotId = i; // 슬롯 ID 설정
-            newSlot.categoryId = categoryId; // 카테고리 ID 설정
+            InventorySlot newSlot = AddSlot(panel, categoryId);
             slots.Add(newSlot);
         }
 
         return slots;
     }
 
-    InventorySlot AddSlot(Transform panel)
+    InventorySlot AddSlot(Transform panel, int categoryId)
     {
         GameObject newSlotObject = Instantiate(slotPrefab, panel);
         InventorySlot slot = newSlotObject.GetComponent<InventorySlot>();
+
+        slot.categoryId = categoryId; // 슬롯에 카테고리 ID 설정
 
         Button button = newSlotObject.GetComponent<Button>();
         if (button != null)
@@ -241,17 +227,6 @@ public class InventoryUI : MonoBehaviour
         }
 
         return slot;
-    }
-
-    void AddSlot(int categoryIndex)
-    {
-        InventorySlot newSlot = AddSlot(categoryPanels[categoryIndex]);
-        if (newSlot != null)
-        {
-            categorySlots[categoryIndex].Add(newSlot);
-            UpdateSelectionImage();
-            ScrollToSelectedSlot();
-        }
     }
 
     public void OnSlotClicked(InventorySlot clickedSlot)
@@ -268,17 +243,16 @@ public class InventoryUI : MonoBehaviour
     public void UpdateInventoryUI()
     {
         Item[] playerItems = playerInventory.playerItemList;
-        int slotIndex = 0;
-
         var slots = categorySlots[currentCategoryIndex];
+        int slotIndex = 0;
 
         for (int i = 0; i < playerItems.Length; i++)
         {
-            if (playerItems[i] != null && playerItems[i].itemCount > 0)
+            if (playerItems[i] != null && playerItems[i].itemCount > 0 && playerItems[i].categoryId == currentCategoryIndex)
             {
                 if (slotIndex < slots.Count)
                 {
-                    slots[slotIndex].SetItem(playerItems[i]);
+                    slots[slotIndex].SetItem(playerItems[i], currentCategoryIndex);
                     slotIndex++;
                 }
             }
@@ -289,6 +263,7 @@ public class InventoryUI : MonoBehaviour
             slots[i].ClearSlot();
         }
     }
+
     int GetCurrentCategorySlotRange()
     {
         int slotCount = categorySlots[currentCategoryIndex].Count;
@@ -301,5 +276,4 @@ public class InventoryUI : MonoBehaviour
 
         return (slotCount - baseCount) / rangeSize;
     }
-
 }

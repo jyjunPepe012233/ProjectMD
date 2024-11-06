@@ -3,23 +3,28 @@ using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
-    public Image itemImage; // 아이템 이미지
-    public Text itemCountText; // 아이템 개수
-    public GameObject selectionImage; // 선택 이미지
+    public Image itemImage;
+    public Text itemCountText;
+    public GameObject selectionImage;
 
-    private Item currentItem; // 현재 슬롯에 있는 아이템
-    private InventoryUI inventoryUI; // 인벤토리 UI 참조
+    private Item currentItem;
+    private InventoryUI inventoryUI;
 
-    public int slotId; // 슬롯 ID
-    public int categoryId; // 카테고리 ID
+    public int categoryId; // 슬롯의 카테고리를 나타내는 변수 추가
 
     void Start()
     {
-        inventoryUI = FindObjectOfType<InventoryUI>(); // InventoryUI 참조 가져오기
+        inventoryUI = FindObjectOfType<InventoryUI>();
     }
 
-    public void SetItem(Item item)
+    public void SetItem(Item item, int itemCategoryId)
     {
+        if (categoryId != itemCategoryId) // 카테고리 ID가 일치하지 않으면 아이템을 설정하지 않음
+        {
+            ClearSlot();
+            return;
+        }
+
         currentItem = item;
 
         if (item != null && item.itemCount > 0)
@@ -40,7 +45,7 @@ public class InventorySlot : MonoBehaviour
         currentItem = null;
         itemImage.enabled = false;
         itemCountText.enabled = false;
-        SetSelected(false); // 슬롯을 비우면 선택 이미지를 숨김
+        SetSelected(false);
     }
 
     public void SetSelected(bool isSelected)
@@ -51,7 +56,6 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
-    // 슬롯 클릭 시
     public void OnClick()
     {
         if (inventoryUI != null)
