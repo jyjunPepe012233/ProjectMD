@@ -23,6 +23,11 @@ public class PlayerCombatHandler : MonoBehaviour {
 	
 
 	public void HandleAllCombatAction() {
+
+		if (owner.isDeath) {
+			return;
+		}
+
 		HandleUsingMagic();
 	}
 

@@ -1,3 +1,4 @@
+using System.Linq;
 using MinD.Runtime.Entity;
 using UnityEngine;
 
@@ -12,6 +13,18 @@ public static class PhysicUtility {
 		foreach (Collider col in cols) {
 			Physics.IgnoreCollision(col, collider);
 		}
+	}
+
+	public static void SetActiveChildrenColliders(Transform root, bool active, int layerMask = ~0, bool includeInactive = false) {
+		
+		// GET COLLIDER COMPONENTS IN CHILDREN WHAT LAYER IS INCLUDED IN LAYERMASK PARAMETER
+		Collider[] cols = root.GetComponentsInChildren<Collider>(includeInactive)
+			.Where(col => layerMask == (layerMask | col.gameObject.layer)) .ToArray();
+
+		foreach (Collider col in cols) {
+			col.enabled = active;
+		}
+		
 	}
 	
 }

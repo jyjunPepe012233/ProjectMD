@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,12 +15,18 @@ public abstract class BaseEntity : MonoBehaviour {
 	public bool isInvincible;
 	public bool immunePoiseBreak;
 	public List<Transform> targetOptions;
+	
+	[Header("[ Attributes ]")]
+	
+
+	[HideInInspector] public bool isDeath;
 
 	[HideInInspector] public EntityStatusFxHandler statusFx;
 
 	[HideInInspector] public CharacterController cc;
 	[HideInInspector] public Animator animator;
 
+	public Action dieAction = new Action(() => {});
 
 
 	protected virtual void Awake() {
@@ -30,14 +38,13 @@ public abstract class BaseEntity : MonoBehaviour {
 		animator = GetComponent<Animator>();
 
 	}
-
 	protected virtual void Update() {
 		
 		statusFx.HandleAllEffect();
 		
 	}
-
-
+	
+	protected abstract IEnumerator Die();
 
 	private void OnDrawGizmos() {
 

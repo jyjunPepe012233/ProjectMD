@@ -13,6 +13,11 @@ public class EnemyStateMachine : MonoBehaviour {
 	
 	
 	public void ExecuteStateTick() {
+		
+		// IF CHARACTER DIED, DON'T EXECUTE METHOD IN A STATES
+		if (owner.isDeath) {
+			return;
+		}
 
 		if (owner.currentState != null) {
 			owner.currentState.Tick();
@@ -31,7 +36,6 @@ public class EnemyStateMachine : MonoBehaviour {
 	public int GetCurrentStateIndex() {
 		return currentStateIndex;
 	}
-
 	public int GetCurrentGlobalStateIndex() {
 		return currentGlobalStateIndex;
 	}
@@ -78,6 +82,23 @@ public class EnemyStateMachine : MonoBehaviour {
 	}
 
 
+	public void ExitAllState() {
+		
+		if (owner.currentState != null) {
+			owner.currentState.Exit();
+			owner.currentState = null;
+		}
+
+		if (owner.previousState) {
+			owner.previousState = null;
+		}
+
+		if (owner.globalState) {
+			owner.globalState.Exit();
+			owner.globalState = null;
+		}
+		
+	}
 }
 
 }

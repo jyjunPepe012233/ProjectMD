@@ -96,10 +96,10 @@ public class DemonOTFFStateGroup {
 
 
 				// JUDGE NEXT ATTACK BY DISTANCE
-				if (enemy.combat.DistanceToTarget() < 6.5f) {
+				if (enemy.combat.DistanceToTarget() < 9.5f) {
 
-					if (Random.value < 0.6f) {
-						// 60%
+					if (Random.value < 0.5f) {
+						// 50%
 						enemy.stateMachine.ChangeStateByIndex((int)States.RunAttack1);
 					} else {
 						enemy.stateMachine.ChangeStateByIndex((int)States.SummonDemonFlameSpirit);

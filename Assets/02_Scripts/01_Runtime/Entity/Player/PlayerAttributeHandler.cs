@@ -108,10 +108,10 @@ public class PlayerAttributeHandler : MonoBehaviour {
                         staminaRecoveryFloatTemp -= 1;
                     }
 
-                }
+                } // 5중 네스팅 죄송합니다ㅋㅋ
             }
         }
-    } // 네스팅 꼬라지 진짜 ㅇㅏ오
+    }
 }
 
 }

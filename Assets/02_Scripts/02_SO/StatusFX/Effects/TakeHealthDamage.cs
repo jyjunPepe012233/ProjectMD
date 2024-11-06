@@ -57,8 +57,12 @@ public class TakeHealthDamage : InstantEffect {
 		player.combat.getHitAction();
 		
 		
-		// IF ENTITY HAS IMMUNE OF POISE BREAK, DON'T GIVE POISE BREAK 
+		// IF PLAYER HAS IMMUNE OF POISE BREAK, DON'T GIVE POISE BREAK 
 		if (player.immunePoiseBreak) {
+			return;
+		}
+		// IF PLAYER HAS DIED, POISE BREAK IS NOT RUNNING
+		if (player.isDeath) {
 			return;
 		}
 		
@@ -119,7 +123,7 @@ public class TakeHealthDamage : InstantEffect {
 		enemy.CurHp -= GetCalculatedDamage(damage, enemy.attribute.damageNegation);
 		
 		enemy.getHitAction.Invoke();
-	}
+	}	
 
 }
 

@@ -120,21 +120,30 @@ public class PlayerCamera : MonoBehaviour {
 		if (PlayerInputManager.Instance.lockOnInput) {
 			PlayerInputManager.Instance.lockOnInput = false;
 
-			if (owner.isLockOn)
+			if (owner.isLockOn) {
 				RemoveLockOnTarget();
-			else
+			} else {
 				SetLockOnTarget();
+			}
 		}
 
-		if (currentTargetOption != null) {
-
-			if (Vector3.Angle(transform.forward, currentTargetOption.position - transform.position) > lockOnAngle)
+		if (owner.isLockOn) {
+			
+			// IF TARGET IS DESTROYED OR DYING, WHATEVER TARGET IS UNSUITABLE AS TARGET 
+			if (currentTargetOption.GetComponentInParent<BaseEntity>().isDeath 
+			    || currentTargetOption.gameObject.activeSelf
+			    || currentTargetOption == null) {
+				
+				SetLockOnTarget();
+				
+			} else if (Vector3.Angle(transform.forward, currentTargetOption.position - transform.position) > lockOnAngle) {
 				RemoveLockOnTarget();
 
-			if (PlayerInputManager.Instance.rotationInput.x < -5)
+			} else if (PlayerInputManager.Instance.rotationInput.x < -5) {
 				MoveLockOnToLeftTarget();
-			else if (PlayerInputManager.Instance.rotationInput.x > 5)
+			} else if (PlayerInputManager.Instance.rotationInput.x > 5) {
 				MoveLockOnToRightTarget();
+			}
 
 		}
 	}
@@ -142,12 +151,16 @@ public class PlayerCamera : MonoBehaviour {
 	
 
 	private void SetLockOnTarget() {
+		
+		RemoveLockOnTarget();
+		
 
 		// GET ENTITY COLLIDERS IN AVAILABLE RADIUS
 		Collider[] colliders = Physics.OverlapSphere(transform.position, lockOnMaxRadius, PhysicLayerDataBase.Instance.entityLayer);
 
-		if (colliders.Length == 0)
+		if (colliders.Length == 0) {
 			return;
+		}
 
 
 		// CHECK AVAILABLE TARGETS
@@ -156,10 +169,16 @@ public class PlayerCamera : MonoBehaviour {
 
 			// GET ENTITY
 			BaseEntity targetEntity = null;
+			
 			targetEntity = collider.GetComponentInParent<BaseEntity>();
 			if (targetEntity == null)
 				targetEntity = collider.GetComponent<BaseEntity>();
-
+			
+			// CHECK CONDITION OF TARGET ENTITY
+			if (targetEntity.isDeath)
+				return;
+			
+			
 
 			// CHECK OPTIONS
 			List<Transform> options = targetEntity.targetOptions;

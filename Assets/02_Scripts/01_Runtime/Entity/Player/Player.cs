@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using MinD.Runtime.Managers;
+using MinD.Runtime.System;
 using UnityEditor.Playables;
 using UnityEngine;
 
@@ -42,7 +45,7 @@ public class Player : BaseEntity {
             
             curHp = value;
             if (curHp <= 0) {
-                // DIE
+                StartCoroutine(Die());
             }
 
             curHp = Mathf.Clamp(curHp, 0, attribute.maxHp);
@@ -117,7 +120,6 @@ public class Player : BaseEntity {
         combat.owner = this;
 
     }
-
     void Start() {
 
         // LOAD DATA
@@ -130,8 +132,6 @@ public class Player : BaseEntity {
         // BASIC SETTINGS
     }
     
-    
-
     protected override void Update() {
         
         base.Update();
@@ -146,10 +146,25 @@ public class Player : BaseEntity {
     }
 
 
+
+    protected override IEnumerator Die() {
+
+        isDeath = true;
+        // IF PLAYER DIED, EACH HANDLER WILL STOP A FEATURES
+        
+        animation.PlayTargetAction("Death", true, true, false, false);
+        PhysicUtility.SetActiveChildrenColliders(transform, false);
+        
+        yield return new WaitForSeconds(2.5f);
+        
+        PlayerHUDManager.Instance.OpenYouDiedPopup();
+    }
+
+        
+    
     public void CanRotate(bool active) {
         canRotate = active;
     }
-
     public void CanMove(bool active) {
         canMove = active;
     }

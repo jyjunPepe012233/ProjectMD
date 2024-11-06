@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
+using MinD.Runtime.System;
 using MinD.SO.EnemySO;
 using MinD.SO.EnemySO.State;
 using MinD.SO.StatusFX.Effects;
@@ -24,7 +27,6 @@ public abstract class Enemy : BaseEntity {
 	[HideInInspector] public EnemyAnimationHandler animation;
 	[HideInInspector] public EnemyUtilityHandler utility;
 	
-	
 	[Space(15)]
 	public EnemyState currentState;
 	public EnemyState previousState;
@@ -42,7 +44,7 @@ public abstract class Enemy : BaseEntity {
 		set {
 			curHp = value;
 			if (curHp <= 0) {
-				// DIE
+				StartDie();
 			}
 			
 			curHp = Mathf.Clamp(curHp, 0, attribute.maxHp);
@@ -101,6 +103,16 @@ public abstract class Enemy : BaseEntity {
 	}
 	
 	protected abstract void SetupStates();
+
+	private void StartDie() {
+		
+		isDeath = true;
+		stateMachine.ExitAllState();
+
+		PhysicUtility.SetActiveChildrenColliders(transform, false);
+
+		StartCoroutine(Die());
+	}
 }
 
 }

@@ -1,7 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
 using MinD.Runtime.Object.Magics;
 using MinD.SO.EnemySO.State;
 using MinD.SO.EnemySO.State.StateGroups;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace MinD.Runtime.Entity.Enemies {
 
@@ -33,6 +36,16 @@ public class DemonOTFF : Enemy {
 		
 	}
 
+	protected override IEnumerator Die() {
+
+		animation.PlayTargetAnimation("Death", 0.01f);
+
+		yield return new WaitForSeconds(5.5f);
+		
+		Destroy(gameObject);
+
+	}
+
 	public void SummonSpirit() {
 
 		DemonFlameSpirit newSpirit = Instantiate(spirit).GetComponent<DemonFlameSpirit>();
@@ -40,6 +53,8 @@ public class DemonOTFF : Enemy {
 		newSpirit.transform.position = spiritSummonPosition.position;
 		newSpirit.Shoot(this, combat.target);
 	}
+	
+	
 }
 
 }

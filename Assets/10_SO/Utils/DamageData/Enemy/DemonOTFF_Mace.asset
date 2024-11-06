@@ -20,4 +20,4 @@ MonoBehaviour:
     lightning: 0
     holy: 0
   totalDamage: 120
-  poiseBreakDamage: 28
+  poiseBreakDamage: 83

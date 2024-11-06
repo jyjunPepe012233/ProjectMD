@@ -35,15 +35,19 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 
 
 	public void HandleAllLocomotion() {
+		
+		HandleGroundedCheck();
+		HandleGravity();
 
+		if (owner.isDeath) {
+			return;
+		}
+		
 		HandleRotation();
 
 		HandleMovement();
 		HandleSprint();
-
-		HandleGroundedCheck();
 		HandleJump();
-		HandleGravity();
 
 		HandleBlink();
 

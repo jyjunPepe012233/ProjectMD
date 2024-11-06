@@ -37,6 +37,10 @@ public class EntityStatusFxHandler : MonoBehaviour {
 
 	public void AddInstantEffect(InstantEffect effectInstance) {
 
+		if (owner.isDeath) {
+			return;
+		}
+
 		// MAKE SURE CAN APPLY INSTANT EFFECT
 		if (effectInstance == null) {
 			return;
@@ -66,6 +70,10 @@ public class EntityStatusFxHandler : MonoBehaviour {
 		}
 	}
 	public void AddTimedEffect(TimedEffect effect) {
+		
+		if (owner.isDeath) {
+			return;
+		}
 
 		timedEffects.Add(effect);
 		effect.OnInstantiate(owner);
@@ -87,6 +95,10 @@ public class EntityStatusFxHandler : MonoBehaviour {
 
 	
 	public void AddStaticEffect(StaticEffect effect) {
+		
+		if (owner.isDeath) {
+			return;
+		}
 
 		staticEffects.Add(effect);
 		effect.OnInstantiate(owner);
@@ -110,8 +122,14 @@ public class EntityStatusFxHandler : MonoBehaviour {
 	
 
 	private void HandleStackingEffect() {
+		
 	}
 	public void AddStackingEffect(StackingEffectType type, float stackAmount) {
+		
+		if (owner.isDeath) {
+			return;
+		}
+		
 	}
 	public void RemoveStackingEffect(StackingEffectType type) {
 	}

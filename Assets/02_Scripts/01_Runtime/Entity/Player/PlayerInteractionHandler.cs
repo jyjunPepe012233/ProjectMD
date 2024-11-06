@@ -47,6 +47,10 @@ public class PlayerInteractionHandler : MonoBehaviour {
 
 	public void HandleInteraction() {
 
+		if (owner.isDeath)
+			return;
+
+		// CHECK INPUT
 		if (!PlayerInputManager.Instance.interactionInput)
 			return;
 

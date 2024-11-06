@@ -38,11 +38,14 @@ public class EnemyCombatHandler : MonoBehaviour {
 				if (candidate == null)
 					continue;
 			}
+			
+			if (candidates.Contains(candidate))
+				continue;
 
 			if (candidate == owner)
 				continue;
-
-			if (candidates.Contains(candidate))
+			
+			if (candidate.isDeath)
 				continue;
 
 			candidates.Add(candidate);
