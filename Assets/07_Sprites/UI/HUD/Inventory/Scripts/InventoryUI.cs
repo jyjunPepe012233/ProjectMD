@@ -78,10 +78,6 @@ public class InventoryUI : MonoBehaviour
             ScrollDown();
             MoveSelection(inventoryWidth);
         }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            AddSlot(categoryPanels[currentCategoryIndex], currentCategoryIndex);
-        }
     }
 
     void ToggleInventory()
@@ -92,7 +88,6 @@ public class InventoryUI : MonoBehaviour
         if (isInventoryActive)
         {
             UpdateCategory();
-            scrollRect.normalizedPosition = new Vector2(scrollRect.normalizedPosition.x, 1);
         }
     }
 
@@ -100,7 +95,11 @@ public class InventoryUI : MonoBehaviour
     {
         currentCategoryIndex = (currentCategoryIndex + direction + categoryPanels.Count) % categoryPanels.Count;
         UpdateCategory();
+    
+        // Set the y-coordinate of the content panel to -332 when category changes
+        scrollRect.content.anchoredPosition = new Vector2(scrollRect.content.anchoredPosition.x, -332);
     }
+
 
     void UpdateCategory()
     {
@@ -120,6 +119,7 @@ public class InventoryUI : MonoBehaviour
         UpdateInventoryUI();
         UpdateSelectionImage();
         ScrollToSelectedSlot();
+        scrollRect.normalizedPosition = new Vector2(scrollRect.normalizedPosition.x, 1);
     }
 
     void UpdateCategoryPolygon()
