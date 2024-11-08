@@ -37,9 +37,18 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Sprint"",
+                    ""name"": ""Space_Sprint"",
                     ""type"": ""PassThrough"",
                     ""id"": ""c34c72d4-47ea-4e9e-9b2e-844d4a998c39"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.32)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Space_Blink"",
+                    ""type"": ""Button"",
+                    ""id"": ""ee9972c0-f511-42ef-a0b0-4fa68579beab"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Hold(duration=0.32)"",
@@ -129,7 +138,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""MouseNKey"",
-                    ""action"": ""Sprint"",
+                    ""action"": ""Space_Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -151,7 +160,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Pro-Controller"",
-                    ""action"": ""Sprint"",
+                    ""action"": ""Space_Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -163,6 +172,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e562beb1-d92e-4f64-8a9a-55c37e9eca05"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Space_Blink"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fda2082d-8597-4503-b3bd-4149fbd88d22"",
+                    ""path"": ""<SwitchProControllerHID>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Pro-Controller"",
+                    ""action"": ""Space_Blink"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -403,7 +434,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Locomotion
         m_Locomotion = asset.FindActionMap("Locomotion", throwIfNotFound: true);
         m_Locomotion_Movement = m_Locomotion.FindAction("Movement", throwIfNotFound: true);
-        m_Locomotion_Sprint = m_Locomotion.FindAction("Sprint", throwIfNotFound: true);
+        m_Locomotion_Space_Sprint = m_Locomotion.FindAction("Space_Sprint", throwIfNotFound: true);
+        m_Locomotion_Space_Blink = m_Locomotion.FindAction("Space_Blink", throwIfNotFound: true);
         m_Locomotion_Jump = m_Locomotion.FindAction("Jump", throwIfNotFound: true);
         // CameraControl
         m_CameraControl = asset.FindActionMap("CameraControl", throwIfNotFound: true);
@@ -478,14 +510,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Locomotion;
     private List<ILocomotionActions> m_LocomotionActionsCallbackInterfaces = new List<ILocomotionActions>();
     private readonly InputAction m_Locomotion_Movement;
-    private readonly InputAction m_Locomotion_Sprint;
+    private readonly InputAction m_Locomotion_Space_Sprint;
+    private readonly InputAction m_Locomotion_Space_Blink;
     private readonly InputAction m_Locomotion_Jump;
     public struct LocomotionActions
     {
         private @PlayerControls m_Wrapper;
         public LocomotionActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Locomotion_Movement;
-        public InputAction @Sprint => m_Wrapper.m_Locomotion_Sprint;
+        public InputAction @Space_Sprint => m_Wrapper.m_Locomotion_Space_Sprint;
+        public InputAction @Space_Blink => m_Wrapper.m_Locomotion_Space_Blink;
         public InputAction @Jump => m_Wrapper.m_Locomotion_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Locomotion; }
         public void Enable() { Get().Enable(); }
@@ -499,9 +533,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
-            @Sprint.started += instance.OnSprint;
-            @Sprint.performed += instance.OnSprint;
-            @Sprint.canceled += instance.OnSprint;
+            @Space_Sprint.started += instance.OnSpace_Sprint;
+            @Space_Sprint.performed += instance.OnSpace_Sprint;
+            @Space_Sprint.canceled += instance.OnSpace_Sprint;
+            @Space_Blink.started += instance.OnSpace_Blink;
+            @Space_Blink.performed += instance.OnSpace_Blink;
+            @Space_Blink.canceled += instance.OnSpace_Blink;
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
@@ -512,9 +549,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
-            @Sprint.started -= instance.OnSprint;
-            @Sprint.performed -= instance.OnSprint;
-            @Sprint.canceled -= instance.OnSprint;
+            @Space_Sprint.started -= instance.OnSpace_Sprint;
+            @Space_Sprint.performed -= instance.OnSpace_Sprint;
+            @Space_Sprint.canceled -= instance.OnSpace_Sprint;
+            @Space_Blink.started -= instance.OnSpace_Blink;
+            @Space_Blink.performed -= instance.OnSpace_Blink;
+            @Space_Blink.canceled -= instance.OnSpace_Blink;
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
@@ -710,7 +750,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface ILocomotionActions
     {
         void OnMovement(InputAction.CallbackContext context);
-        void OnSprint(InputAction.CallbackContext context);
+        void OnSpace_Sprint(InputAction.CallbackContext context);
+        void OnSpace_Blink(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
     }
     public interface ICameraControlActions

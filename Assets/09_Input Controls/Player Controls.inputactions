@@ -15,9 +15,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Sprint",
+                    "name": "Space_Sprint",
                     "type": "PassThrough",
                     "id": "c34c72d4-47ea-4e9e-9b2e-844d4a998c39",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.32)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Space_Blink",
+                    "type": "Button",
+                    "id": "ee9972c0-f511-42ef-a0b0-4fa68579beab",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Hold(duration=0.32)",
@@ -107,7 +116,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseNKey",
-                    "action": "Sprint",
+                    "action": "Space_Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -129,7 +138,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Pro-Controller",
-                    "action": "Sprint",
+                    "action": "Space_Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -141,6 +150,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e562beb1-d92e-4f64-8a9a-55c37e9eca05",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Space_Blink",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fda2082d-8597-4503-b3bd-4149fbd88d22",
+                    "path": "<SwitchProControllerHID>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Pro-Controller",
+                    "action": "Space_Blink",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

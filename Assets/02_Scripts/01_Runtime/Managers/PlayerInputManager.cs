@@ -10,6 +10,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
     public Vector2 movementInput;
     public bool jumpInput;
     public bool sprintInput;
+    public bool blinkInput;
 
     // CAMERA CONTROL
     public Vector2 rotationInput;
@@ -40,8 +41,10 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
             playerControls.Locomotion.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             playerControls.Locomotion.Jump.performed += i => jumpInput = true; // IF INPUT IS PERFORMED, SET BOOL TO TRUE
 
-            playerControls.Locomotion.Sprint.performed += i => sprintInput = true;
-            playerControls.Locomotion.Sprint.canceled += i => sprintInput = false;
+            playerControls.Locomotion.Space_Sprint.performed += i => sprintInput = true;
+            playerControls.Locomotion.Space_Sprint.canceled += i => sprintInput = false;
+            
+            playerControls.Locomotion.Space_Blink.canceled += i => blinkInput = true; // CAN'T ELAPSED HOLD TIME TO SPRINT
             
             
             // CAMERA CONTROL
