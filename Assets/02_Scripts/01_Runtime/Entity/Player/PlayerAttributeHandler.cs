@@ -31,6 +31,7 @@ public class PlayerAttributeHandler : MonoBehaviour {
     public int memoryCapacity;
     public float staminaRecoverySpeed;
     public float staminaRecoveryDelay;
+    public int blinkCostStamina;
 
     private float staminaRecoveryTimer;
     private float staminaRecoveryFloatTemp;

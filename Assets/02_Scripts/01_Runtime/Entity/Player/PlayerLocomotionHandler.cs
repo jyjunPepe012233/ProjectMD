@@ -1,6 +1,10 @@
+using System.Collections;
 using MinD.Runtime.DataBase;
-using MinD.Runtime.Managers;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
+using PlayerInputManager = MinD.Runtime.Managers.PlayerInputManager;
 
 namespace MinD.Runtime.Entity {
 
@@ -20,17 +24,23 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	[SerializeField] private float gravityForce = 9.8f;
 	[SerializeField] private float groundedGravityForce = 20;
 	[SerializeField] private float groundedCheckRadius = 0.2f;
+
+	[Space(5)]
+	[SerializeField] private float blinkDistance;
 	
 	[Header("[ Flags ]")]
 	public bool isSprinting;
+	[FormerlySerializedAs("isBlinking")] public bool duringBlink;
 
 	
 	private Vector3 yVelocity;
 	private float inAirTimer;
 	private bool fallVelocityHasSet;
 
-	private Vector3 moveDirx;
+	private Vector3 moveDirx; // move direction on world
 	private Vector3 jumpDirx;
+
+	private Vector3 blinkDirx; // blink direction on world
 
 
 
@@ -38,10 +48,6 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		
 		HandleGroundedCheck();
 		HandleGravity();
-
-		if (owner.isDeath) {
-			return;
-		}
 		
 		HandleRotation();
 
@@ -58,6 +64,10 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		if (!owner.canRotate)
 			return;
 
+		if (owner.isDeath) {
+			return;
+		}
+		
 
 		if (owner.isMoving) {
 
@@ -71,21 +81,29 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 			if (!owner.isGrounded)
 				rotationSpeedTemp *= 0.13f;
 
-
-			if (isSprinting)
+			if (owner.isLockOn) {
+				if (isSprinting)
+					transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(moveDirx), rotationSpeedTemp);
+				else
+					transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(camDirx), rotationSpeedTemp);
+				
+			} else {
 				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(moveDirx), rotationSpeedTemp);
-			else
-				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(camDirx), rotationSpeedTemp);
+				
+			}
 		}
 
 	}
-
 
 	void HandleMovement() {
 
 		moveDirx = owner.camera.transform.forward;
 		moveDirx.y = 0;
 		moveDirx.Normalize();
+
+		if (owner.isDeath) {
+			return;
+		}
 
 
 		Vector3 inputDirx = PlayerInputManager.Instance.movementInput;
@@ -118,20 +136,37 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		}
 
 
-		#region Update_Animation_BlendTree
+		// DON'T SETTING MOVE BLEND ANIMATION PARAMETER DURING BLINK
+		if (duringBlink) {
+			return;
+		}
 
-		if (isSprinting && owner.isMoving)
-			owner.animation.LerpMovementBlendTree(0, inputDirx.magnitude * 2);
-		else
-			owner.animation.LerpMovementBlendTree(inputDirx.x, inputDirx.z);
+		if (owner.isLockOn) {
+			if (isSprinting && owner.isMoving) {
+				owner.animation.LerpMovementBlendTree(0, inputDirx.magnitude * 2);
+			} else {
+				owner.animation.LerpMovementBlendTree(inputDirx.x, inputDirx.z);
+			}
+		} else {
+			if (isSprinting) {
+				owner.animation.LerpMovementBlendTree(0, inputDirx.magnitude * 2);
+			} else {
+				owner.animation.LerpMovementBlendTree(0, inputDirx.magnitude);
+			}
+		}	
 
-		#endregion
+		
 	}
 
 	void HandleSprint() {
+		
+		if (owner.isDeath) {
+			isSprinting = false;
+			return;
+		}
+		
 		isSprinting = PlayerInputManager.Instance.sprintInput;
 	}
-
 
 	void HandleGroundedCheck() {
 
@@ -147,11 +182,15 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 			owner.cc.Move(jumpDirx * Time.deltaTime);
 
 
-		// ATTEMPT JUMP
+		// HANDLE INPUT
 		if (PlayerInputManager.Instance.jumpInput == false)
 			return;
-
 		PlayerInputManager.Instance.jumpInput = false;
+		
+		
+		if (owner.isDeath) {
+			return;
+		}
 
 		if (owner.isPerformingAction)
 			return;
@@ -203,10 +242,105 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 
 	void HandleBlink() {
 
-		// TODO: move character via root motion in dodge animation
+		// HANDLE MOVE DIRECTION PARAMETER DURING BLINK
+		// AND RESET FLAGS WHEN BLINK IS END
+		if (duringBlink) {
+			
+			// GET BLINK DIRECTION VECTOR BASED ON CHARACTER DIRECTION
+			Vector3 localBlinkDirx = transform.InverseTransformDirection(blinkDirx);
+			
+			owner.animator.SetFloat("MoveHorizontal", localBlinkDirx.x);
+			owner.animator.SetFloat("MoveVertical", localBlinkDirx.z);
 
+			
+			if (!owner.isPerformingAction) {
+				duringBlink = false;
+			}
+			
+		}
+		
+		
+		// CHECK INPUT TO ATTEMPT BLINK
+		if (PlayerInputManager.Instance.blinkInput) {
+			PlayerInputManager.Instance.blinkInput = false;
+			
+		} else {
+			return;
+		}
+
+		// CHECK FLAGS TO MAKE SURE ATTEMPT BLINK
+		if (PlayerInputManager.Instance.movementInput.magnitude == 0) {
+			return;
+		}
+		
+		if (owner.CurStamina < owner.attribute.blinkCostStamina) {
+			return;
+		}
+		if (!owner.isGrounded) {
+			return;
+		}
+		if (!owner.canMove) {
+			return;
+		}
+		if (owner.isPerformingAction) {
+			return;
+		}
+
+		
+		// ATTEMPT BLINK
+		duringBlink = true;
+		owner.CurStamina -= owner.attribute.blinkCostStamina;
+		
+		StartCoroutine(AttemptBlink());
 	}
 
+	IEnumerator AttemptBlink() {
+
+		Vector3 camDirx = owner.camera.transform.forward;
+		camDirx.y = 0;
+		
+		blinkDirx = Quaternion.LookRotation(camDirx) * new Vector3(PlayerInputManager.Instance.movementInput.x, 0, PlayerInputManager.Instance.movementInput.y);
+		Vector3 targetPosition = transform.position + (blinkDirx * blinkDistance);
+		
+		NavMeshHit hitInfo;
+		if (!NavMesh.SamplePosition(targetPosition, out hitInfo, 3f, NavMesh.AllAreas)) {
+			// CAN'T FIND CLOSEST NAVMESH SURFACE(navmesh surface is available area to blink)
+			yield break;
+		}
+		
+
+		// CHECK DIRECTION OF MOVE HEIGHT
+		Vector3 blinkAngle = Quaternion.LookRotation(targetPosition - transform.position).eulerAngles;
+		if (blinkAngle.x < 180) {
+			if (blinkAngle.x > 12.5)
+				yield break; // blink canceled
+		} else {
+			if (blinkAngle.x > 347.5)
+				yield break; // blink canceled
+		}
+
+
+		// CHECK OBSTACLE BETWEEN CURRENT CORE(player's main target option) POSITION AND NEW(after move) CORE POSITION 
+		// FOR BEING PLAYER CAN'T PASS THROUGH THE WALL
+		Vector3 playerCoreLocalPosition = owner.targetOptions[0].position - transform.position;
+		if (Physics.Linecast(hitInfo.position + playerCoreLocalPosition, owner.targetOptions[0].position, PhysicLayerDataBase.Instance.environmentLayer)) {
+			yield break; // blink canceled
+		}
+
+		
+		// FINALLY ATTEMPT BLINK
+		owner.animation.PlayTargetAction("Blink_Direction_Tree", true, true, false, false);
+		
+		yield return new WaitForSeconds(0.2f);
+		
+		GameObject vfx = Instantiate(VfxDataBase.Instance.blinkVfx);
+		vfx.transform.position = owner.targetOptions[0].position;
+		vfx.transform.forward = blinkDirx;
+		
+		owner.cc.Move(hitInfo.position - transform.position);
+	}
+
+	
 
 	private void OnDrawGizmosSelected() {
 

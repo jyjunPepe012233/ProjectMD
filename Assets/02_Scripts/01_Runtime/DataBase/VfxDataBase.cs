@@ -9,6 +9,8 @@ public class VfxDataBase : Singleton<VfxDataBase> {
 	public GameObject droppedItemRare;
 	public GameObject droppedItemLegendary;
 
+	[Header("[ Player ]")]
+	public GameObject blinkVfx;
 }
 
 }
