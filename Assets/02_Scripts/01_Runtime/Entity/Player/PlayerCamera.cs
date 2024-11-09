@@ -12,10 +12,7 @@ public class PlayerCamera : MonoBehaviour {
 	
 	
 	public float rotationMultiplier = 1.5f;
-
 	
-	[Header("[ Runtime Value ]")]
-	[SerializeField] private float modify_distance; // 카메라 거리를 일시적으로 변경할 수치
 
 	[Header("[ Settings ]")]
 	[SerializeField] private Vector3 cameraOffset;
@@ -42,7 +39,9 @@ public class PlayerCamera : MonoBehaviour {
 	private Vector3 targetCameraArm; // LERP TARGET POSITION
 	private Vector3 cameraArm; // CURRENT POSITION
 	
-	private float cameraDistance;
+	private float cameraDistance; // CURRENT CAMERA DISTANCE(NOT MAX DISTANCE)
+
+	private float releaseLockOnTimer;
 
 
 
@@ -131,18 +130,30 @@ public class PlayerCamera : MonoBehaviour {
 			
 			// IF TARGET IS DESTROYED OR DYING, WHATEVER TARGET IS UNSUITABLE AS TARGET 
 			if (currentTargetOption.GetComponentInParent<BaseEntity>().isDeath 
-			    || currentTargetOption.gameObject.activeSelf
+			    || !currentTargetOption.gameObject.activeSelf // IF ENTITY OBJECT IS DISABLED OR DESTROYED(missing)
 			    || currentTargetOption == null) {
 				
 				SetLockOnTarget();
 				
+				
 			} else if (Vector3.Angle(transform.forward, currentTargetOption.position - transform.position) > lockOnAngle) {
-				RemoveLockOnTarget();
-
+				// IF TARGET IS OUT OF ALLOWED ANGLE
+				
+				releaseLockOnTimer += Time.deltaTime;
+				
+				if (releaseLockOnTimer > 0.5f) {
+					// IF TARGET IS OUT OF ALLOWED ANGLE FOR A TIME, REFRESH TARGET
+					
+					SetLockOnTarget();
+				}
+				
 			} else if (PlayerInputManager.Instance.rotationInput.x < -5) {
 				MoveLockOnToLeftTarget();
 			} else if (PlayerInputManager.Instance.rotationInput.x > 5) {
 				MoveLockOnToRightTarget();
+				
+			} else {
+				releaseLockOnTimer = 0;
 			}
 
 		}
