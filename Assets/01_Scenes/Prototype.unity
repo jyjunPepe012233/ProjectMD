@@ -1464,7 +1464,6 @@ MonoBehaviour:
   groundedCheckRadius: 0.25
   blinkDistance: 3
   isSprinting: 0
-  duringBlink: 0
 --- !u!114 &542126811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1495,8 +1494,8 @@ MonoBehaviour:
   combat: {fileID: 0}
   infiniteAttribute: 0
   curHp: 325
-  curMp: 146
-  curStamina: 91
+  curMp: 298
+  curStamina: 243
   isPerformingAction: 0
   isGrounded: 0
   isMoving: 0

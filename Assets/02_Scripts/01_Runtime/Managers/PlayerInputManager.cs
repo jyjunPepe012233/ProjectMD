@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace MinD.Runtime.Managers {
 
@@ -10,7 +11,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
     public Vector2 movementInput;
     public bool jumpInput;
     public bool sprintInput;
-    public bool blinkInput;
+    private bool blinkInput; // HANDLING IN METHOD IN THIS MANAGER
 
     // CAMERA CONTROL
     public Vector2 rotationInput;
@@ -44,7 +45,9 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
             playerControls.Locomotion.Space_Sprint.performed += i => sprintInput = true;
             playerControls.Locomotion.Space_Sprint.canceled += i => sprintInput = false;
             
-            playerControls.Locomotion.Space_Blink.canceled += i => blinkInput = true; // CAN'T ELAPSED HOLD TIME TO SPRINT
+            playerControls.Locomotion.Space_Blink.started += i => blinkInput = true;
+            playerControls.Locomotion.Space_Blink.performed += i => blinkInput = false; // WHEN ELAPSE HOLD TIME
+            playerControls.Locomotion.Space_Blink.canceled += AttemptBlink;
             
             
             // CAMERA CONTROL
@@ -63,6 +66,17 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
             
         }
     }
+
+    void AttemptBlink(InputAction.CallbackContext callbackContext) {
+
+        if (blinkInput) {
+            // WASN'T ELAPSE HOLD TIME
+            
+            WorldEntityManager.Instance.player.locomotion.AttemptBlink();
+        }
+
+    }
+
 }
 
 }

@@ -2,7 +2,6 @@ using System.Collections;
 using MinD.Runtime.DataBase;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using PlayerInputManager = MinD.Runtime.Managers.PlayerInputManager;
 
@@ -30,8 +29,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	
 	[Header("[ Flags ]")]
 	public bool isSprinting;
-	[FormerlySerializedAs("isBlinking")] public bool duringBlink;
-
+	
 	
 	private Vector3 yVelocity;
 	private float inAirTimer;
@@ -42,7 +40,9 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 
 	private Vector3 blinkDirx; // blink direction on world
 
-
+	private Coroutine blinkCoroutine;
+	
+	
 
 	public void HandleAllLocomotion() {
 		
@@ -54,8 +54,6 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		HandleMovement();
 		HandleSprint();
 		HandleJump();
-
-		HandleBlink();
 
 	}
 
@@ -134,12 +132,8 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 			else owner.cc.Move(moveDirx * walkSpeed);
 
 		}
-
-
-		// DON'T SETTING MOVE BLEND ANIMATION PARAMETER DURING BLINK
-		if (duringBlink) {
-			return;
-		}
+		
+		
 
 		if (owner.isLockOn) {
 			if (isSprinting && owner.isMoving) {
@@ -159,13 +153,13 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	}
 
 	void HandleSprint() {
-		
-		if (owner.isDeath) {
+
+		if (PlayerInputManager.Instance.sprintInput) {
+			isSprinting = true;
+			
+		} else {
 			isSprinting = false;
-			return;
 		}
-		
-		isSprinting = PlayerInputManager.Instance.sprintInput;
 	}
 
 	void HandleGroundedCheck() {
@@ -239,41 +233,18 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		owner.cc.Move(yVelocity * Time.deltaTime);
 	}
 
+	
+	
+	
 
-	void HandleBlink() {
-
-		// HANDLE MOVE DIRECTION PARAMETER DURING BLINK
-		// AND RESET FLAGS WHEN BLINK IS END
-		if (duringBlink) {
-			
-			// GET BLINK DIRECTION VECTOR BASED ON CHARACTER DIRECTION
-			Vector3 localBlinkDirx = transform.InverseTransformDirection(blinkDirx);
-			
-			owner.animator.SetFloat("MoveHorizontal", localBlinkDirx.x);
-			owner.animator.SetFloat("MoveVertical", localBlinkDirx.z);
-
-			
-			if (!owner.isPerformingAction) {
-				duringBlink = false;
-			}
-			
-		}
+	// CALL BY PLAYER INPUT MANAGER
+	public void AttemptBlink() { 
 		
-		
-		// CHECK INPUT TO ATTEMPT BLINK
-		if (PlayerInputManager.Instance.blinkInput) {
-			PlayerInputManager.Instance.blinkInput = false;
-			
-		} else {
-			return;
-		}
-
 		// CHECK FLAGS TO MAKE SURE ATTEMPT BLINK
-		if (PlayerInputManager.Instance.movementInput.magnitude == 0) {
+		if (owner.CurStamina < owner.attribute.blinkCostStamina) {
 			return;
 		}
-		
-		if (owner.CurStamina < owner.attribute.blinkCostStamina) {
+		if (!owner.isMoving || isSprinting) {
 			return;
 		}
 		if (!owner.isGrounded) {
@@ -287,36 +258,30 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		}
 
 		
-		// ATTEMPT BLINK
-		duringBlink = true;
-		owner.CurStamina -= owner.attribute.blinkCostStamina;
-		
-		StartCoroutine(AttemptBlink());
-	}
-
-	IEnumerator AttemptBlink() {
-
+		// GET BLINK DIRECTION
 		Vector3 camDirx = owner.camera.transform.forward;
 		camDirx.y = 0;
 		
 		blinkDirx = Quaternion.LookRotation(camDirx) * new Vector3(PlayerInputManager.Instance.movementInput.x, 0, PlayerInputManager.Instance.movementInput.y);
 		Vector3 targetPosition = transform.position + (blinkDirx * blinkDistance);
 		
+		
+		// CHECK DESTINATION BASED ON BLINK DIRECTION
 		NavMeshHit hitInfo;
 		if (!NavMesh.SamplePosition(targetPosition, out hitInfo, 3f, NavMesh.AllAreas)) {
 			// CAN'T FIND CLOSEST NAVMESH SURFACE(navmesh surface is available area to blink)
-			yield break;
+			return;
 		}
 		
 
-		// CHECK DIRECTION OF MOVE HEIGHT
+		// CHECK ANGLE TO DESTINATION
 		Vector3 blinkAngle = Quaternion.LookRotation(targetPosition - transform.position).eulerAngles;
 		if (blinkAngle.x < 180) {
 			if (blinkAngle.x > 12.5)
-				yield break; // blink canceled
+				return;
 		} else {
 			if (blinkAngle.x > 347.5)
-				yield break; // blink canceled
+				return;
 		}
 
 
@@ -324,20 +289,44 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		// FOR BEING PLAYER CAN'T PASS THROUGH THE WALL
 		Vector3 playerCoreLocalPosition = owner.targetOptions[0].position - transform.position;
 		if (Physics.Linecast(hitInfo.position + playerCoreLocalPosition, owner.targetOptions[0].position, PhysicLayerDataBase.Instance.environmentLayer)) {
-			yield break; // blink canceled
+			return;
 		}
-
 		
-		// FINALLY ATTEMPT BLINK
+		blinkCoroutine = StartCoroutine(Blink(hitInfo.position - transform.position));
+	}
+
+	public void CancelBlink() {
+		if (blinkCoroutine != null) {
+			StopCoroutine(blinkCoroutine);
+		}
+	}
+	
+	IEnumerator Blink(Vector3 localBlinkPoint) {
+		
 		owner.animation.PlayTargetAction("Blink_Direction_Tree", true, true, false, false);
 		
+		// HANDLE MOVE DIRECTION PARAMETER IN ANIMATOR DURING BLINK
+		Vector3 localBlinkDirx = transform.InverseTransformDirection(blinkDirx);
+		owner.animator.SetFloat("MoveHorizontal", localBlinkDirx.x);
+		owner.animator.SetFloat("MoveVertical", localBlinkDirx.z);
+		
+		
+		// BEFORE BLINK DELAY
 		yield return new WaitForSeconds(0.2f);
 		
+		
+		owner.CurStamina -= owner.attribute.blinkCostStamina;
+		
+		// INSTANTIATE VFX AT OLD POSITION
 		GameObject vfx = Instantiate(VfxDataBase.Instance.blinkVfx);
 		vfx.transform.position = owner.targetOptions[0].position;
-		vfx.transform.forward = hitInfo.position - transform.position;
+		vfx.transform.forward = localBlinkPoint.normalized;
 		
-		owner.cc.Move(hitInfo.position - transform.position);
+		// MOVE AFTER INSTANTIATE VFX
+		owner.cc.Move(localBlinkPoint);
+
+
+		blinkCoroutine = null;
 	}
 
 	
@@ -346,14 +335,6 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 
 		// Ground Check Sphere
 		Gizmos.DrawSphere(transform.position, groundedCheckRadius);
-
-		Gizmos.DrawRay(transform.position, transform.forward);
-		Gizmos.DrawWireSphere(transform.position + transform.forward, 0.17f);
-
-
-		Gizmos.color = Color.red;
-		Gizmos.DrawRay(transform.position, moveDirx.normalized);
-		Gizmos.DrawSphere(transform.position + moveDirx.normalized, 0.15f);
 
 	}
 }

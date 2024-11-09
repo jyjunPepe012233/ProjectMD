@@ -106,7 +106,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Blink_Direction_Tree
-  m_Speed: 1.4
+  m_Speed: 1.1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1276745574759631284}
@@ -120,7 +120,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: -2905611660286328764}
-  m_Tag: 
+  m_Tag: TAG_blink
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -647,9 +647,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.49404186
+  m_TransitionDuration: 0.28188413
   m_TransitionOffset: 0
-  m_ExitTime: 0.4585148
+  m_ExitTime: 0.45851484
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -746,7 +746,7 @@ AnimatorController:
     m_Controller: {fileID: 0}
   - m_Name: MoveVertical
     m_Type: 1
-    m_DefaultFloat: -1
+    m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
