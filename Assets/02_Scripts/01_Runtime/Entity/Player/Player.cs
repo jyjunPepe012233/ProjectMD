@@ -121,15 +121,14 @@ public class Player : BaseEntity {
 
     }
     void Start() {
-
-        // LOAD DATA
+        
+        // RESET PROPERTIES
+        combat.getHitAction += locomotion.CancelBlink;
+        
         inventory.LoadItemData();
         
         attribute.SetBaseAttributesAsPerStats();
         PlayerHUDManager.Instance.RefreshAllStatusBar();
-        
-        
-        // BASIC SETTINGS
     }
     
     protected override void Update() {
