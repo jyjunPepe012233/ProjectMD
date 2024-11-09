@@ -335,7 +335,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		
 		GameObject vfx = Instantiate(VfxDataBase.Instance.blinkVfx);
 		vfx.transform.position = owner.targetOptions[0].position;
-		vfx.transform.forward = blinkDirx;
+		vfx.transform.forward = hitInfo.position - transform.position;
 		
 		owner.cc.Move(hitInfo.position - transform.position);
 	}
