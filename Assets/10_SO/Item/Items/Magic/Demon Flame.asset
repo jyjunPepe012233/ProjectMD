@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5534c37db7204f239e4d5faf96f3c70b, type: 3}
   m_Name: Demon Flame
   m_EditorClassIdentifier: 
-  itemId: 0
+  itemId: 1
   itemName: "\uB9C8\uC5FC"
   itemDescription: 
   itemRarity: 0
@@ -23,7 +23,5 @@ MonoBehaviour:
   staminaCost: 20
   mpCostDuring: 0
   staminaCostDuring: 0
-  isPerformingAction: 1
-  applyRootMotion: 1
-  canRotate: 0
-  canMove: 0
+  castPlayer: {fileID: 0}
+  spirit: {fileID: 5893720624626477688, guid: 599daf03cb365452ab163b5c43bb1cb6, type: 3}

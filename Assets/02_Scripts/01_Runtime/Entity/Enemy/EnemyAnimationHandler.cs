@@ -77,7 +77,9 @@ public class EnemyAnimationHandler : MonoBehaviour {
 	}
 
 	// PLAY POISE BREAK ANIMATION
-	owner.animation.PlayTargetAnimation(stateName, 0.1f);
+	
+	Debug.Log(81);
+	owner.animation.PlayTargetAnimation(stateName, owner.animator.GetCurrentAnimatorStateInfo(0).length * 0.003f);
 	
 }
 

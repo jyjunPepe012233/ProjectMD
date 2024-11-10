@@ -1,7 +1,9 @@
 using System.Collections;
 using MinD.Runtime.Entity;
 using MinD.Runtime.System;
+using MinD.Runtime.Utils;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace MinD.Runtime.Object.Magics {
@@ -10,8 +12,10 @@ public class DemonFlameSpirit : MonoBehaviour {
 
 	public Transform targetOption;
 	[Space(10)]
-	[SerializeField] private ParticleSystem flightFx;
-	[SerializeField] private ParticleSystem explodeFX;
+	[SerializeField] private ParticleSystem flightFx; 
+	[SerializeField] private ParticleSystem explosionFx;
+	[Space(10)]
+	[SerializeField] private DamageCollider explosionDamageCollider;
 
 	
 	private Vector3 startPosition;
@@ -110,24 +114,24 @@ public class DemonFlameSpirit : MonoBehaviour {
 	}
 
 	private IEnumerator Explode() {
-
-		collider.enabled = false;
+		
+		explosionDamageCollider.gameObject.SetActive(true);
 
 		flightFx.Stop();
-		explodeFX.Play();
+		explosionFx.Play();
 
 		StopCoroutine(currentFlightCoroutine);
 		rigidbody.velocity = Vector3.zero;
 
 		isExploded = true;
-
+		
 
 
 		// SET LIFETIME
 		float elapsedTime = 0;
 		while (true) {
 
-			if (elapsedTime > explodeFX.main.duration)
+			if (elapsedTime > explosionFx.main.duration)
 				break;
 
 			elapsedTime += Time.deltaTime;

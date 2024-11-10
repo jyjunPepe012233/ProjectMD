@@ -47,13 +47,13 @@ public class EnemyStateMachine : MonoBehaviour {
 
 		if (newState == null)
 			return;
-
+		
+		
 		if (owner.previousState != null) {
-
-			owner.previousState = owner.currentState;
 			owner.previousState.Exit();
-
 		}
+		owner.previousState = owner.currentState;
+
 
 		owner.currentState = newState;
 		owner.currentState.enemy = owner;
