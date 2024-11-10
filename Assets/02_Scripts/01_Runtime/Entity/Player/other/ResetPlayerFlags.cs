@@ -11,7 +11,9 @@ public class ResetPlayerFlags : StateMachineBehaviour {
     [SerializeField] private bool applyRootMotion = false;
     [SerializeField] private bool canRotate = true;
     [SerializeField] private bool canMove = true;
-    [SerializeField] private bool isJumping = false;
+    
+    [Header("[ Other Flags ]")]
+    [SerializeField] private bool resetJumpingFlag = false;
 
     private Player owner;
     
@@ -25,10 +27,14 @@ public class ResetPlayerFlags : StateMachineBehaviour {
         animator.applyRootMotion = applyRootMotion;
 
         owner.isPerformingAction = isPerformingAction;
-        owner.isJumping = isJumping;
         owner.canRotate = canRotate;
         owner.canMove = canMove;
 
+
+        if (resetJumpingFlag) {
+            owner.locomotion.isJumping = false;
+        }
+        
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

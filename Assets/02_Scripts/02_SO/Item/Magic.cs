@@ -5,7 +5,7 @@ namespace MinD.SO.Item {
 
 public abstract class Magic : Item {
 	
-	[Header("[ Magic Status ]"), Space(20)]
+	[Space(50), Header("[ Magic Status ]")]
 	[Range(1, 3)] public int memoryCost = 1;
 	public int mpCost;
 	public int staminaCost;

@@ -29,6 +29,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	
 	[Header("[ Flags ]")]
 	public bool isSprinting;
+	public bool isJumping;
 	
 	
 	private Vector3 yVelocity;
@@ -172,7 +173,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	void HandleJump() {
 
 		// JUMP MOVEMENT
-		if (owner.isJumping && !owner.isGrounded)
+		if (isJumping && !owner.isGrounded)
 			owner.cc.Move(jumpDirx * Time.deltaTime);
 
 
@@ -192,7 +193,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		if (!owner.isGrounded)
 			return;
 
-		owner.isJumping = true;
+		isJumping = true;
 
 		yVelocity.y = jumpForce;
 		owner.animation.PlayTargetAction("Jump_Start", true, false, true, false);
@@ -217,7 +218,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 				inAirTimer = 0;
 
 			}
-		} else if (!fallVelocityHasSet && !owner.isJumping) {
+		} else if (!fallVelocityHasSet && isJumping) {
 			// SET BASE FALL SPEED
 
 			fallVelocityHasSet = true;

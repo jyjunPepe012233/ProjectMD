@@ -89,7 +89,6 @@ public class Player : BaseEntity {
     public bool isPerformingAction;
     public bool isGrounded;
     public bool isMoving;
-    public bool isJumping;
     public bool isLockOn;
     public bool canRotate;
     public bool canMove;
