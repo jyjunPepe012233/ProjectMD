@@ -47,7 +47,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
             
             playerControls.Locomotion.Space_Blink.started += i => blinkInput = true;
             playerControls.Locomotion.Space_Blink.performed += i => blinkInput = false; // WHEN ELAPSE HOLD TIME
-            playerControls.Locomotion.Space_Blink.canceled += AttemptBlink;
+            playerControls.Locomotion.Space_Blink.canceled += AttemptCallBlink;
             
             
             // CAMERA CONTROL
@@ -67,7 +67,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
         }
     }
 
-    void AttemptBlink(InputAction.CallbackContext callbackContext) {
+    void AttemptCallBlink(InputAction.CallbackContext callbackContext) {
 
         if (blinkInput) {
             // WASN'T ELAPSE HOLD TIME
