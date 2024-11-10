@@ -1580,7 +1580,7 @@ MonoBehaviour:
   memoryCapacity: 5
   staminaRecoverySpeed: 50
   staminaRecoveryDelay: 1
-  blinkCostStamina: 0
+  blinkCostStamina: 35
 --- !u!114 &542126815
 MonoBehaviour:
   m_ObjectHideFlags: 0

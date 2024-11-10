@@ -35,12 +35,13 @@ public class TakeHealthDamage : InstantEffect {
 
 		// get minPoiseBreak(poise break amount when resistance is minimum)
 		// get maxPoiseBreak(poise break amount when resistance is maximum)
-		// and lerp two value as t is poise break resistance(0~1)
+		// and lerp two value as Lerp Factor is poise break resistance
 
 		float minPoiseBreak = (poiseBreakDamage); // 0 to 100
-		float maxPoiseBreak = (1.3f * poiseBreakDamage) - 50; // -50 to 80 
+		float maxPoiseBreak = (1.3f * poiseBreakDamage) - 50; // -50 to 80
 
-		return Mathf.Clamp((int)(Mathf.Lerp(minPoiseBreak, maxPoiseBreak, resistanceValue)), 0, 100);
+		return Mathf.Clamp((int)(Mathf.LerpUnclamped(minPoiseBreak, maxPoiseBreak, resistanceValue)), 0, 100);
+		// ACTUALLY, POISE BREAK RESISTANCE CAN OUT OF RANGE 0-100.
 	}
 
 	
