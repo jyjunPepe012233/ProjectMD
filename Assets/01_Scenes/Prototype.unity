@@ -735,7 +735,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
   rotationMultiplier: 1.5
-  modify_distance: 0
   cameraOffset: {x: 0, y: 1.7, z: 0}
   limitAngleAbove: 40
   limitAngleBelow: 60
@@ -1581,7 +1580,7 @@ MonoBehaviour:
   memoryCapacity: 5
   staminaRecoverySpeed: 50
   staminaRecoveryDelay: 1
-  blinkCostStamina: 35
+  blinkCostStamina: 0
 --- !u!114 &542126815
 MonoBehaviour:
   m_ObjectHideFlags: 0
