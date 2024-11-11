@@ -32,7 +32,26 @@ public class PlayerAnimationHandler : MonoBehaviour {
 		bool canRotate = true,
 		bool canMove = true) {
 
-		owner.animator.CrossFade(stateName, 0.2f);
+		float normalizedTransitionDuration = 0.2f / owner.animator.GetCurrentAnimatorStateInfo(0).length;
+		owner.animator.CrossFade(stateName, normalizedTransitionDuration);
+
+		owner.animator.applyRootMotion = applyRootMotion;
+
+		owner.isPerformingAction = isPerformingAnimation;
+		owner.canRotate = canRotate;
+		owner.canMove = canMove;
+		// THOSE FLAGS RESET WHEN STATE IS BACK TO 'DEFAULT MOVEMENT'
+
+	}
+	
+	public void PlayTargetAction(string stateName, float absoluteTransitionDuration,
+		bool isPerformingAnimation,
+		bool applyRootMotion = false,
+		bool canRotate = true,
+		bool canMove = true) {
+
+		float normalizedTransitionDuration = absoluteTransitionDuration / owner.animator.GetCurrentAnimatorStateInfo(0).length;
+		owner.animator.CrossFade(stateName, normalizedTransitionDuration);
 
 		owner.animator.applyRootMotion = applyRootMotion;
 
