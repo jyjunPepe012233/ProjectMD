@@ -31,9 +31,8 @@ public class PlayerAnimationHandler : MonoBehaviour {
 		bool applyRootMotion = false,
 		bool canRotate = true,
 		bool canMove = true) {
-
-		float normalizedTransitionDuration = 0.2f / owner.animator.GetCurrentAnimatorStateInfo(0).length;
-		owner.animator.CrossFade(stateName, normalizedTransitionDuration);
+		
+		owner.animator.CrossFadeInFixedTime(stateName, 0.2f);
 
 		owner.animator.applyRootMotion = applyRootMotion;
 
@@ -44,14 +43,13 @@ public class PlayerAnimationHandler : MonoBehaviour {
 
 	}
 	
-	public void PlayTargetAction(string stateName, float absoluteTransitionDuration,
+	public void PlayTargetAction(string stateName, float transitionDuration,
 		bool isPerformingAnimation,
 		bool applyRootMotion = false,
 		bool canRotate = true,
 		bool canMove = true) {
-
-		float normalizedTransitionDuration = absoluteTransitionDuration / owner.animator.GetCurrentAnimatorStateInfo(0).length;
-		owner.animator.CrossFade(stateName, normalizedTransitionDuration);
+		
+		owner.animator.CrossFadeInFixedTime(stateName, transitionDuration);
 
 		owner.animator.applyRootMotion = applyRootMotion;
 
