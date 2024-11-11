@@ -1463,6 +1463,7 @@ MonoBehaviour:
   groundedCheckRadius: 0.25
   blinkDistance: 3
   isSprinting: 0
+  isJumping: 0
 --- !u!114 &542126811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1498,7 +1499,6 @@ MonoBehaviour:
   isPerformingAction: 0
   isGrounded: 0
   isMoving: 0
-  isJumping: 0
   isLockOn: 0
   canRotate: 0
   canMove: 0
@@ -1517,6 +1517,7 @@ Transform:
   m_Children:
   - {fileID: 730893994}
   - {fileID: 588852867}
+  - {fileID: 638291073}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &542126813
@@ -1715,7 +1716,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
   target: {fileID: 0}
+  defenseMagicCollider: {fileID: 638291072}
   currentCastingMagic: {fileID: 0}
+  usingMagic: 0
+  usingDefenseMagic: 0
+  isParrying: 0
 --- !u!1 &552106009 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b3eb819d5ce8ba54fb167a100267e824,
@@ -1930,6 +1935,59 @@ Transform:
   - {fileID: 1171156514}
   m_Father: {fileID: 2063522244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &638291072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 638291073}
+  - component: {fileID: 638291074}
+  m_Layer: 11
+  m_Name: Defense Magic Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &638291073
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638291072}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 542126812}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &638291074
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638291072}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.25
+  m_Center: {x: 0, y: 1.25, z: 0}
 --- !u!1 &654135878
 GameObject:
   m_ObjectHideFlags: 0

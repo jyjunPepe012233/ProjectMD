@@ -67,16 +67,17 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 			return;
 		}
 		
-
+		
+		
+		float rotationSpeedTemp = rotationSpeed;
+		
+		Vector3 camDirx = owner.camera.transform.forward;
+		camDirx.y = 0;
+		camDirx.Normalize();
+		
 		if (owner.isMoving) {
 
-			Vector3 camDirx = owner.camera.transform.forward;
-			camDirx.y = 0;
-			camDirx.Normalize();
-
-
 			// DEGREASE ROTATION SPEED WHEN PLAYER IS NOT GROUNDED
-			float rotationSpeedTemp = rotationSpeed;
 			if (!owner.isGrounded)
 				rotationSpeedTemp *= 0.13f;
 
@@ -90,6 +91,14 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(moveDirx), rotationSpeedTemp);
 				
 			}
+		}
+
+		if (owner.combat.usingDefenseMagic) {
+
+			if (owner.isLockOn) {
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(camDirx), rotationSpeedTemp);
+			}
+			
 		}
 
 	}

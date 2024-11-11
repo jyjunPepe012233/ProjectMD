@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using MinD.Runtime.Managers;
 using MinD.SO.Item;
 using UnityEngine;
@@ -12,10 +13,17 @@ public class PlayerCombatHandler : MonoBehaviour {
 	
 	// LOCKING ON ENTITY
 	public BaseEntity target;
+
+	[Header("[ Defense Magic Collider ]")]
+	public GameObject defenseMagicCollider;
 	
 	
 	[HideInInspector] public Magic currentCastingMagic;
-	private bool usingMagic;
+	[SerializeField] private bool usingMagic;
+
+	private Coroutine defenseMagicCoroutine; 
+	public bool usingDefenseMagic;
+	public bool isParrying;
 	
 	// WHEN PLAYER GET HIT, CALL THIS ACTION IN 'TakeHealthDamage'
 	public Action getHitAction = new Action(()=>{});
@@ -29,6 +37,7 @@ public class PlayerCombatHandler : MonoBehaviour {
 		}
 
 		HandleUsingMagic();
+		HandleDefenseMagic();
 	}
 
 	private void HandleUsingMagic() {
@@ -82,6 +91,56 @@ public class PlayerCombatHandler : MonoBehaviour {
 		}
 	}
 
+	private void HandleDefenseMagic() {
+		
+		if (!usingDefenseMagic && PlayerInputManager.Instance.defenseMagicInput) {
+			
+			if (owner.isPerformingAction) {
+				return;
+			}
+			if (!owner.isGrounded) {
+				return;
+			}
+			
+			StartCoroutine(ActivateDefenseMagic());
+		}
+		
+		
+		
+		if (usingDefenseMagic && !PlayerInputManager.Instance.defenseMagicInput) {
+			StartCoroutine(ReleaseDefenseMagic());
+		}
+		
+	}
+
+	private IEnumerator ActivateDefenseMagic() {
+		
+		// PLAY DEFENSE ANIMATION (LOOPING)
+		owner.animation.PlayTargetAction("Defense_Action_Start", 0.2f, true, true, true, false);
+		
+		usingDefenseMagic = true; // IF THIS FLAG IS ENABLED, DAMAGE WILL CALCULATE SPECIAL
+		
+		defenseMagicCollider.SetActive(true);
+
+		yield break;
+	}
+
+	private IEnumerator ReleaseDefenseMagic() {
+		
+		owner.animation.PlayTargetAction("Default Movement", 0.35f, false);
+		
+		usingDefenseMagic = false;
+		isParrying = true;
+		
+		defenseMagicCollider.SetActive(false);
+		
+		yield return new WaitForSeconds(0.3f);
+
+		isParrying = false;
+	}
+	
+	
+	
 	
 	
 	public void ExitCurrentMagic() {
@@ -110,7 +169,6 @@ public class PlayerCombatHandler : MonoBehaviour {
 	public void OnInstantiateWarmUpFx() {
 		currentCastingMagic.InstantiateWarmupFX();
 	}
-
 	public void OnSuccessfullyCast() {
 		currentCastingMagic.OnSuccessfullyCast();
 	}

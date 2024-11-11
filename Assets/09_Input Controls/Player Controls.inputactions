@@ -318,13 +318,22 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Defense Magic",
+                    "type": "Button",
+                    "id": "ab7dcc72-6367-4eaa-9635-1e0f08a0efc9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "a7c33d11-e8cb-435a-8032-ca69a3ce7133",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseNKey",
@@ -375,6 +384,28 @@
                     "action": "Swap Magic",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "e1f41101-e5f7-4461-b2ef-f05575fce512",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Defense Magic",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3bc48516-8647-4885-b626-df92d889c793",
+                    "path": "<SwitchProControllerHID>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Pro-Controller",
+                    "action": "Defense Magic",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

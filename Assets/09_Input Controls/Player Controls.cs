@@ -340,13 +340,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Defense Magic"",
+                    ""type"": ""Button"",
+                    ""id"": ""ab7dcc72-6367-4eaa-9635-1e0f08a0efc9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""a7c33d11-e8cb-435a-8032-ca69a3ce7133"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""MouseNKey"",
@@ -397,6 +406,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Swap Magic"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e1f41101-e5f7-4461-b2ef-f05575fce512"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Defense Magic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3bc48516-8647-4885-b626-df92d889c793"",
+                    ""path"": ""<SwitchProControllerHID>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Pro-Controller"",
+                    ""action"": ""Defense Magic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -448,6 +479,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
         m_Combat_UseMagic = m_Combat.FindAction("Use Magic", throwIfNotFound: true);
         m_Combat_SwapMagic = m_Combat.FindAction("Swap Magic", throwIfNotFound: true);
+        m_Combat_DefenseMagic = m_Combat.FindAction("Defense Magic", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -681,12 +713,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<ICombatActions> m_CombatActionsCallbackInterfaces = new List<ICombatActions>();
     private readonly InputAction m_Combat_UseMagic;
     private readonly InputAction m_Combat_SwapMagic;
+    private readonly InputAction m_Combat_DefenseMagic;
     public struct CombatActions
     {
         private @PlayerControls m_Wrapper;
         public CombatActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @UseMagic => m_Wrapper.m_Combat_UseMagic;
         public InputAction @SwapMagic => m_Wrapper.m_Combat_SwapMagic;
+        public InputAction @DefenseMagic => m_Wrapper.m_Combat_DefenseMagic;
         public InputActionMap Get() { return m_Wrapper.m_Combat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -702,6 +736,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwapMagic.started += instance.OnSwapMagic;
             @SwapMagic.performed += instance.OnSwapMagic;
             @SwapMagic.canceled += instance.OnSwapMagic;
+            @DefenseMagic.started += instance.OnDefenseMagic;
+            @DefenseMagic.performed += instance.OnDefenseMagic;
+            @DefenseMagic.canceled += instance.OnDefenseMagic;
         }
 
         private void UnregisterCallbacks(ICombatActions instance)
@@ -712,6 +749,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwapMagic.started -= instance.OnSwapMagic;
             @SwapMagic.performed -= instance.OnSwapMagic;
             @SwapMagic.canceled -= instance.OnSwapMagic;
+            @DefenseMagic.started -= instance.OnDefenseMagic;
+            @DefenseMagic.performed -= instance.OnDefenseMagic;
+            @DefenseMagic.canceled -= instance.OnDefenseMagic;
         }
 
         public void RemoveCallbacks(ICombatActions instance)
@@ -767,5 +807,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnUseMagic(InputAction.CallbackContext context);
         void OnSwapMagic(InputAction.CallbackContext context);
+        void OnDefenseMagic(InputAction.CallbackContext context);
     }
 }

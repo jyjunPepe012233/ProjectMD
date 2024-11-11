@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MinD.Runtime.Entity;
+using MinD.SO.StatusFX;
 using MinD.SO.StatusFX.Effects;
 using MinD.SO.Utils;
 using UnityEngine;
@@ -19,49 +20,53 @@ public class DamageCollider : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other) {
 		
-		if (soData == null) {
+		if (soData == null) { // IF NO DAMAGE DATA IS REGISTERED, THE DAMAGE COLLIDER WILL DISABLE
+			gameObject.SetActive(false);
 ;			return;
 		}
 		
 		
 		
 		BaseEntity damageTarget = other.GetComponentInParent<BaseEntity>();
-
-		// TARGET HASN'T ENTITY COMPONENT 
 		if (damageTarget == null) {
-
-			damageTarget = other.GetComponent<BaseEntity>();
-
-			if (damageTarget == null) {
-				return;
-			}
+			return;
 		}
 		
-		if (damageTarget.isInvincible)
-			return;
 		
-		// CANCEL DAMAGE IF TARGET ENTITY ALREADY DAMAGED
-		if (damagedEntity.Contains(damageTarget))
+		
+		if (damageTarget.isInvincible) {
 			return;
-
+		}  
+		if (damagedEntity.Contains(damageTarget)) { // CANCEL DAMAGE IF TARGET ENTITY ALREADY DAMAGED
+			return;
+		}
 		if (blackList.Contains(damageTarget)) {
 			return;
 		}
-
-
-
-		TakeHealthDamage damageEffect = new TakeHealthDamage();
-
-		damageEffect.damage = soData.damage;
-		damageEffect.poiseBreakDamage = soData.poiseBreakDamage;
 		
 		
 		// GET HIT DIRECTION
 		Vector3 hitDirx = other.ClosestPoint(transform.position) - transform.position; // HIT DETECTION DIRECTION OF THE THIS COLLIDER
-		damageEffect.hitAngle = Vector3.SignedAngle(damageTarget.transform.forward, -hitDirx, Vector3.up);
+		float hitAngle = Vector3.SignedAngle(damageTarget.transform.forward, -hitDirx, Vector3.up);
+		
+		damagedEntity.Add(damageTarget);
+
+		InstantEffect damageEffect = null;
+		if (damageTarget is Player player) {
+			
+			if (player.combat.isParrying) {
+				damageEffect = new AbsorbMagic(soData.absorbMp, hitDirx);
+				
+			} else if (player.combat.usingDefenseMagic) {
+				damageEffect = new TakeDefensedHealthDamage(soData.damage, soData.poiseBreakDamage, hitAngle);
+
+			}
+		} else { 
+			damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, hitAngle);
+			
+		}
 
 		// GIVE EFFECT TO TARGET
-		damagedEntity.Add(damageTarget);
 		damageTarget.statusFx.AddInstantEffect(damageEffect);
 	}
 

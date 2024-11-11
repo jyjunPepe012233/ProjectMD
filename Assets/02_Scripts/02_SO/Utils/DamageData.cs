@@ -11,6 +11,9 @@ public class DamageData : ScriptableObject {
 	
 	[Space(5)]
 	[Range(0, 100)] public int poiseBreakDamage;
+
+	[Space(10)]
+	public int absorbMp;
 	
 	
 

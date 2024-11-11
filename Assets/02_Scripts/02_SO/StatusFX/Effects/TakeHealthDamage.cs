@@ -12,6 +12,14 @@ public class TakeHealthDamage : InstantEffect {
 	public int poiseBreakDamage;
 
 	public float hitAngle;
+	
+	
+	
+	public TakeHealthDamage(Damage damage, int poiseBreakDamage, float hitAngle) {
+		this.damage = damage;
+		this.poiseBreakDamage = poiseBreakDamage;
+		this.hitAngle = hitAngle;
+	}
 
 	
 	
