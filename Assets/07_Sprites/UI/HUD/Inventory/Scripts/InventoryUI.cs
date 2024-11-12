@@ -28,7 +28,7 @@ public class InventoryUI : MonoBehaviour
         // 각 카테고리 패널에 슬롯 생성
         for (int i = 0; i < categoryPanels.Count; i++)
         {
-            List<InventorySlot> slots = CreateSlots(categoryPanels[i], 50, i); // i를 통해 categoryId 설정
+            List<InventorySlot> slots = CreateSlots(categoryPanels[i], 25, i); // i를 통해 categoryId 설정
             categorySlots.Add(slots);
         }
 
@@ -96,8 +96,7 @@ public class InventoryUI : MonoBehaviour
         currentCategoryIndex = (currentCategoryIndex + direction + categoryPanels.Count) % categoryPanels.Count;
         UpdateCategory();
     
-        // Set the y-coordinate of the content panel to -332 when category changes
-        scrollRect.content.anchoredPosition = new Vector2(scrollRect.content.anchoredPosition.x, -332);
+        scrollRect.content.anchoredPosition = new Vector2(scrollRect.content.anchoredPosition.y, 0);
     }
 
 
@@ -119,7 +118,7 @@ public class InventoryUI : MonoBehaviour
         UpdateInventoryUI();
         UpdateSelectionImage();
         ScrollToSelectedSlot();
-        scrollRect.normalizedPosition = new Vector2(scrollRect.normalizedPosition.x, 1);
+        scrollRect.normalizedPosition = new Vector2(scrollRect.normalizedPosition.y, 0);
     }
 
     void UpdateCategoryPolygon()
