@@ -33,7 +33,7 @@ public class TakeHealthDamage : InstantEffect {
 		finalDamage += (int)((1 - negation_.lightning) * damage_.lightning);
 		finalDamage += (int)((1 - negation_.holy) * damage_.holy);
 
-		return finalDamage;
+		return Mathf.Max(finalDamage, 1); // MINIMUM OF DAMAGE IS 1
 	}
 
 	public static int GetPoiseBreakAmount(int poiseBreakDamage, int poiseBreakResistance) {
