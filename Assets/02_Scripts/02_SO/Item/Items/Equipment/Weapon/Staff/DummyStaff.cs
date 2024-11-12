@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MinD.SO.Item.Items {
 
-[CreateAssetMenu(fileName = "Dummy Staff", menuName = "MinD/Item/Items/Weapons/Staffs/Dummy Staff")]
+[CreateAssetMenu(fileName = "Dummy Staff", menuName = "MinD/Item/Items/Equipment/Weapons/Staffs/Dummy Staff")]
 public class DummyStaff : Weapon {
 
 	public override void OnEquip(Player owner) {
