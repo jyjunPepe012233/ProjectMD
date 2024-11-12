@@ -18,6 +18,8 @@ public abstract class Item : ScriptableObject {
 	
 	[Header("[ Runtime Data ]")]
 	public int itemCount = 0;
+
+	public Sprite itemImage;
 }
 
 }

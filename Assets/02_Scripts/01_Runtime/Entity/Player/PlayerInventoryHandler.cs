@@ -1,79 +1,46 @@
-using System.Linq;
-using MinD.Enums;
-using MinD.Runtime.DataBase;
-using MinD.Runtime.Managers;
-using MinD.SO.Item;
+using System.Collections;
+using System.Collections.Generic;
+using MinD;
+using Unity.VisualScripting;
 using UnityEngine;
-
-namespace MinD.Runtime.Entity {
 
 public class PlayerInventoryHandler : MonoBehaviour {
 
 	[HideInInspector] public Player owner;
 
-
-	[Header("[ Equipment Slot ]")]
-	public Weapon weaponSlot;
-	public Protection protectionSlot;
-
-	[Space(5)]
-	public int allowedTalismanSlotCount;
-	public Talisman[] talismanSlots = new Talisman[5];
-
-	[Space(5)]
-	public Tool[] toolSlots = new Tool[10];
+	// INVENTORY
+	[SerializeField] private Weapon weaponSlot;
+	[SerializeField] private Protection protectionSlot;
+	[SerializeField] private Talisman[] talismanSlots = new Talisman[5];
+	[SerializeField] private Tool[] toolSlots = new Tool[10];
 	
-
-	[Header("[ Magic Slot ]")]
-	public int currentMagicSlot;
-	public Magic[] magicSlots = new Magic[1]; // CHANGE SLOT SIZE BY ATTRIBUTE IN RUNTIME
-
-	private int usingMemory; // MEMORY AMOUNT OF CURRENT USING MAGICS
-
-
-	[Header("[ Owned Item Array ]")]
-	[SerializeField] private Item[] playerItemList;
-
-	
-	[Header("[ Debug ]")]
-	public Magic equipMagic;
-
-	public void OnValidate() {
-		if (equipMagic != null) {
-			EquipMagic(equipMagic, 0);
-			equipMagic = null;
-		}
-	}
-
+	[SerializeField] public Item[] playerItemList;
 
 
 
 	public void LoadItemData() {
-
+		
 		// SET DATA LIST LENGTH
-		playerItemList = new Item[ItemDataBase.Instance.GetAllItemsCount()];
-
+		playerItemList = new Item[ItemDataBase.Instance.GetAllItemsCount()]; 
+		
 		// TODO: LOAD THE ITEM FROM SAVE DAT
 	}
 
-	// load quickslot data
-	// load slot and set selected Magic
 
-
-
+	
 	private Item CreateItem(int itemId) {
-
+		
 		Item newItem = Instantiate(ItemDataBase.Instance.GetItemSo(itemId));
 		playerItemList[itemId] = newItem;
 
 		return newItem;
 	}
-
+	
 	public bool AddItem(int itemId, int amount = 1, bool deleteExceededItem = false) {
 
 		if (amount < 0)
 			amount = 0; // MIN(0) CLAMP
-
+		
 		// USE ID AS INDEX TO FIND THE TARGET ITEM INSTANCE IN LIST
 		// CAUSE ID IS GENERATE BASED ON INDEX OF ITEM SO LIST
 		Item itemInList = playerItemList[itemId];
@@ -81,8 +48,8 @@ public class PlayerInventoryHandler : MonoBehaviour {
 		// IF ITEM INSTANCE IS NOT CREATED
 		if (itemInList == null)
 			itemInList = CreateItem(itemId);
-
-
+		
+		
 		// IF ITEM COUNT WILL EXCEEDS MAX COUNT
 		if (itemInList.itemCount + amount > itemInList.itemMaxCount) {
 
@@ -93,13 +60,13 @@ public class PlayerInventoryHandler : MonoBehaviour {
 			} else
 				return false;
 		}
-
-
+		
+		
 		// WORKING NORMALLY
 		itemInList.itemCount += amount;
 		return true;
 	}
-
+	
 	public bool ReduceItem(int itemId, int amount = 1) {
 
 		if (amount < 0)
@@ -108,7 +75,7 @@ public class PlayerInventoryHandler : MonoBehaviour {
 		// USE ID AS INDEX TO FIND THE TARGET ITEM INSTANCE IN LIST
 		// CAUSE ID IS GENERATE BASED ON INDEX OF ITEM SO LIST
 		Item itemInList = playerItemList[itemId];
-
+		
 		// IF ITEM INSTANCE IS NOT CREATED
 		if (itemInList == null)
 			return false;
@@ -122,23 +89,21 @@ public class PlayerInventoryHandler : MonoBehaviour {
 		return true;
 	}
 
+	
+	
+	public void EquipItem(Equipment equipment, EquipmentSlots targetSlot) {
 
-
-	public void EquipEquipment(Equipment equipment, EquipmentSlots targetSlot) {
-
-		// INSERT EQUIPMENT IN SLOT
 		switch (targetSlot) {
-
+			
 			case EquipmentSlots.Weapon:
 				weaponSlot = equipment as Weapon;
 				break;
-
+			
 			case EquipmentSlots.Protection:
 				protectionSlot = equipment as Protection;
 				break;
-
+			
 			#region Talismans
-
 			case EquipmentSlots.Talisman_01:
 				talismanSlots[0] = equipment as Talisman;
 				break;
@@ -158,11 +123,9 @@ public class PlayerInventoryHandler : MonoBehaviour {
 			case EquipmentSlots.Talisman_05:
 				talismanSlots[4] = equipment as Talisman;
 				break;
-
 			#endregion
-
+			
 			#region Tools
-
 			case EquipmentSlots.Tool_01:
 				toolSlots[0] = equipment as Tool;
 				break;
@@ -202,19 +165,18 @@ public class PlayerInventoryHandler : MonoBehaviour {
 			case EquipmentSlots.Tool_10:
 				toolSlots[9] = equipment as Tool;
 				break;
-
 			#endregion
 		}
-
+		
 		ReduceItem(equipment.itemId);
 		equipment.OnEquip(owner);
-
+		
 		if (equipment is Weapon weapon)
 			owner.equipment.ChangeWeapon(weapon);
-
+		
 	}
 
-	public void UnequipEquipment(EquipmentSlots targetSlot) {
+	public void UnequipItem(EquipmentSlots targetSlot) {
 
 		Equipment unequipedItem = null;
 
@@ -225,13 +187,13 @@ public class PlayerInventoryHandler : MonoBehaviour {
 				unequipedItem = weaponSlot;
 
 				if (weaponSlot != null) {
-
+					
 					if (unequipedItem is Weapon weapon)
 						owner.equipment.ChangeWeapon(null);
 
 					weaponSlot = null;
 				}
-
+				
 				weaponSlot = null;
 				break;
 
@@ -327,83 +289,5 @@ public class PlayerInventoryHandler : MonoBehaviour {
 		AddItem(unequipedItem.itemId);
 		unequipedItem.OnUnequip(owner);
 	}
-
-
-
-	public bool EquipMagic(Magic magic, int slotPos) {
-
-		// CANCEL IF EXCEED THE MEMORY CAPACITY
-		if (magic.memoryCost + usingMemory > owner.attribute.memoryCapacity) {
-			return false;
-		}
-
-		// CANCEL IF slotPos PARAMETER IS OVER THE LIST SIZE
-		if (slotPos < 0 || slotPos >= magicSlots.Length) {
-			return false;
-		}
-
-
-		usingMemory += magic.memoryCost;
-		magicSlots[slotPos] = magic;
-
-		return true;
-	}
-
-	public void UnequipMagic(int slotPos) {
-
-		// CANCEL IF slotPos PARAMETER IS OVER THE LIST SIZE
-		if (slotPos < 0 || slotPos >= magicSlots.Length) {
-			return;
-		}
-
-		usingMemory -= magicSlots[slotPos].memoryCost;
-		magicSlots[slotPos] = null;
-
-	}
-
-	// RESIZE MAGIC SLOT
-
-
-
-	public void HandleQuickSlotSwapping() {
-		HandleMagicSlotSwapping();
-	}
-
-	private void HandleMagicSlotSwapping() {
-
-		// CHECK INPUT FLAG
-		if (PlayerInputManager.Instance.swapMagicInput == 0) {
-			return;
-		}
-
-
-		// CANCEL SWAP IF PLAYER HASN'T ANY MAGIC
-		if (magicSlots.Count(i => i != null) == 0)
-			return;
-
-
-		if (PlayerInputManager.Instance.swapMagicInput == 1) {
-			while (true) {
-				// TO SKIP EMPTY MAGIC
-				// REMAINDER OPERATING TO CYCLE THE LIST
-				currentMagicSlot = (currentMagicSlot + 1) % magicSlots.Length;
-				if (magicSlots[currentMagicSlot] != null) {
-					break;
-				}
-			}
-
-		} else if (PlayerInputManager.Instance.swapMagicInput == -1) {
-			while (true) {
-				currentMagicSlot = (currentMagicSlot - 1 + magicSlots.Length) % magicSlots.Length;
-				if (magicSlots[currentMagicSlot] != null) {
-					break;
-				}
-			}
-		}
-
-		PlayerInputManager.Instance.swapMagicInput = 0;
-	}
-
-}
-
+	
 }
