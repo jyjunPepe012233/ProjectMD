@@ -425,7 +425,6 @@ RectTransform:
   - {fileID: 6595243013995293021}
   - {fileID: 984494156}
   - {fileID: 111918018}
-  - {fileID: 1815129077}
   m_Father: {fileID: 2193688974321990050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -1493,7 +1492,7 @@ MonoBehaviour:
   interaction: {fileID: 0}
   combat: {fileID: 0}
   infiniteAttribute: 0
-  curHp: 325
+  curHp: 326
   curMp: 298
   curStamina: 243
   isPerformingAction: 0
@@ -4013,7 +4012,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1815129077}
   m_Father: {fileID: 2193688974321990050}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -5421,11 +5421,11 @@ RectTransform:
   m_Children:
   - {fileID: 87587948}
   - {fileID: 1407238284}
-  m_Father: {fileID: 242496467}
+  m_Father: {fileID: 1346765362}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 54, y: -90}
+  m_AnchoredPosition: {x: 54, y: -93.50731}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1819872709 stripped
