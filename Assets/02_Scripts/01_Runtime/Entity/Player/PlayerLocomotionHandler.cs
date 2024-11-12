@@ -227,7 +227,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 				inAirTimer = 0;
 
 			}
-		} else if (!fallVelocityHasSet && isJumping) {
+		} else if (!fallVelocityHasSet && !isJumping) {
 			// SET BASE FALL SPEED
 
 			fallVelocityHasSet = true;
