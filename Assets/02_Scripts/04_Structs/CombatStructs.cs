@@ -14,6 +14,17 @@ public struct Damage {
 	public int lightning;
 	public int holy;
 
+	public int AllDamage {
+		get => physical + magic + fire + frost + lightning + holy;
+		set {
+			physical = value;
+			magic = value;
+			fire = value;
+			frost = value;
+			lightning = value;
+			holy = value;
+		}
+	}
 }
 
 [Serializable]
@@ -26,6 +37,30 @@ public struct DamageNegation {
 	public float frost; 
 	public float lightning; 
 	public float holy;
+
+	public static DamageNegation operator +(DamageNegation a, DamageNegation b) {
+		
+		a.physical += b.physical;
+		a.magic += b.magic;
+		a.fire += b.fire;
+		a.frost += b.frost;
+		a.lightning += b.lightning;
+		a.holy += b.holy;
+
+		return a;
+	}
+	
+	public static DamageNegation operator -(DamageNegation a, DamageNegation b) {
+		
+		a.physical -= b.physical;
+		a.magic -= b.magic;
+		a.fire -= b.fire;
+		a.frost -= b.frost;
+		a.lightning -= b.lightning;
+		a.holy -= b.holy;
+
+		return a;
+	}
 	
 }
 
