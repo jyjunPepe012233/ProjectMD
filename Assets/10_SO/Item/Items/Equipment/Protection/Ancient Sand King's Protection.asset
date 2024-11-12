@@ -9,16 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c84a59516054e739da07ec97c4f8617, type: 3}
-  m_Name: DemonOTFF_Mace
+  m_Script: {fileID: 11500000, guid: 487366b65ad447cebf52bebdd54684a2, type: 3}
+  m_Name: Ancient Sand King's Protection
   m_EditorClassIdentifier: 
-  damage:
-    physical: 120
+  itemId: 0
+  itemName: 
+  itemDescription: 
+  itemRarity: 0
+  itemMaxCount: 1
+  itemCount: 0
+  negationBoost:
+    physical: 0
     magic: 0
     fire: 0
     frost: 0
     lightning: 0
     holy: 0
-  totalDamage: 120
-  poiseBreakDamage: 83
-  absorbMp: 100

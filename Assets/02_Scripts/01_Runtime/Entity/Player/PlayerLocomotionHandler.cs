@@ -119,7 +119,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		// MOVEMENT INPUT IS 2D, SO MAKE
 		// INPUT DIRECTION = (MOVEMENT INPUT X, 0, MOVEMENT INPUT Y
 
-		owner.isMoving = inputDirx.magnitude != 0;
+		owner.isMoving = inputDirx.magnitude != 0 && owner.canMove;
 		owner.animator.SetBool("IsMoving", owner.isMoving);
 
 

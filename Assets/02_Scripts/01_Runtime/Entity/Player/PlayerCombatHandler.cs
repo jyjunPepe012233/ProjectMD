@@ -117,10 +117,18 @@ public class PlayerCombatHandler : MonoBehaviour {
 		
 		// PLAY DEFENSE ANIMATION (LOOPING)
 		owner.animation.PlayTargetAction("Defense_Action_Start", 0.2f, true, true, true, false);
+
 		
 		usingDefenseMagic = true; // IF THIS FLAG IS ENABLED, DAMAGE WILL CALCULATE SPECIAL
 		
-		defenseMagicCollider.SetActive(true);
+		// IF PLAYER DOESN'T EQUIP PROTECTION, JUST PERFORMING ACTION IN GUARD 
+		if (owner.inventory.protectionSlot != null) {
+			
+			// set negation
+			owner.attribute.damageNegation += owner.inventory.protectionSlot.negationBoost;
+			
+			defenseMagicCollider.SetActive(true);
+		}
 
 		yield break;
 	}
@@ -130,9 +138,20 @@ public class PlayerCombatHandler : MonoBehaviour {
 		owner.animation.PlayTargetAction("Default Movement", 0.35f, false);
 		
 		usingDefenseMagic = false;
+
+		if (owner.inventory.protectionSlot != null) {
+			
+			// set negation
+			owner.attribute.damageNegation -= owner.inventory.protectionSlot.negationBoost;
+			
+			defenseMagicCollider.SetActive(false);
+			
+		} else {
+			// PLAYER JUST PERFORMING ACTION CAUSE DOESN'T EQUIP PROTECTION
+		}
+
+
 		isParrying = true;
-		
-		defenseMagicCollider.SetActive(false);
 		
 		yield return new WaitForSeconds(0.3f);
 
