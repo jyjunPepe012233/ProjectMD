@@ -2,6 +2,8 @@ using MinD.SO.Item;
 using UnityEngine;
 using UnityEngine.UI;
 
+namespace MinD.Runtime.UI {
+
 public class InventorySlot : MonoBehaviour
 {
     public Image itemImage;
@@ -64,4 +66,6 @@ public class InventorySlot : MonoBehaviour
             inventoryUI.OnSlotClicked(this);
         }
     }
+}
+
 }

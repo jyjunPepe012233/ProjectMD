@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using MinD.Runtime.Entity;
 using MinD.SO.Item;
 
+namespace MinD.Runtime.UI {
+
 public class InventoryUI : MonoBehaviour
 {
     public GameObject slotPrefab;
@@ -277,4 +279,6 @@ public class InventoryUI : MonoBehaviour
 
         return (slotCount - baseCount) / rangeSize;
     }
+}
+
 }
