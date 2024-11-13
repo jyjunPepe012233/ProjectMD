@@ -24,7 +24,8 @@ public class TakeHealthDamage : InstantEffect {
 	
 	
 	public static int GetCalculatedDamage(Damage damage_, DamageNegation negation_) {
-
+		
+		
 		int finalDamage = 0;
 		finalDamage += (int)((1 - negation_.physical) * damage_.physical);
 		finalDamage += (int)((1 - negation_.magic) * damage_.magic);
@@ -59,9 +60,6 @@ public class TakeHealthDamage : InstantEffect {
 		// DRAIN HP
 		player.CurHp -= GetCalculatedDamage(damage, player.attribute.damageNegation);
 		
-		// CANCEL ACTIONS
-		player.combat.CancelMagicOnGetHit();
-		
 		// INVOKE ACTION
 		player.combat.getHitAction();
 		
@@ -70,8 +68,11 @@ public class TakeHealthDamage : InstantEffect {
 		if (player.immunePoiseBreak) {
 			return;
 		}
-		// IF PLAYER HAS DIED, POISE BREAK IS NOT RUNNING
-		if (player.isDeath) {
+		
+		// CANCEL ACTIONS
+		player.combat.CancelMagicOnGetHit();
+
+		if (player.immunePoiseBreak) {
 			return;
 		}
 		
