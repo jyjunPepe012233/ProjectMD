@@ -1,4 +1,3 @@
-using MinD.Enums;
 using MinD.Runtime.Entity;
 using MinD.Structs;
 using UnityEngine;
@@ -32,7 +31,7 @@ public class TakeDefensedHealthDamage : InstantEffect {
 		
 		
 		// STAMINA DRAIN BY NEGATED AMOUNT
-		int staminaDrain = Mathf.Min((realDamage - negatedDamage) / 3, 1); // MINIMUM OF STAMINA DRAIN IS 1
+		int staminaDrain = Mathf.Max((realDamage - negatedDamage) / 3, 1); // MINIMUM OF STAMINA DRAIN IS 1
 
 		float staminaDrainAmount = Mathf.Clamp01((float)player.CurStamina / staminaDrain);
 		// ㄴ AMOUNT OF SUCCESSFULLY DRAINED STAMINA

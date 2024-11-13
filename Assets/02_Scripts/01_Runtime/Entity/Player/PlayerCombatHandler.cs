@@ -125,7 +125,7 @@ public class PlayerCombatHandler : MonoBehaviour {
 		if (owner.inventory.protectionSlot != null) {
 			
 			// set negation
-			owner.attribute.damageNegation += owner.inventory.protectionSlot.negationBoost;
+			owner.attribute.damageNegation *= owner.inventory.protectionSlot.negationBoost;
 			
 			defenseMagicCollider.SetActive(true);
 		}
@@ -142,7 +142,7 @@ public class PlayerCombatHandler : MonoBehaviour {
 		if (owner.inventory.protectionSlot != null) {
 			
 			// set negation
-			owner.attribute.damageNegation -= owner.inventory.protectionSlot.negationBoost;
+			owner.attribute.damageNegation /= owner.inventory.protectionSlot.negationBoost;
 			
 			defenseMagicCollider.SetActive(false);
 			

@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Ancient Sand King's Protection
   m_EditorClassIdentifier: 
   itemId: 0
-  itemName: 
+  itemName: "\uC61B \uBAA8\uB798\uC655\uC758 \uC218\uD638"
   itemDescription: 
-  itemRarity: 0
+  itemRarity: 2
   itemMaxCount: 1
   itemCount: 0
   negationBoost:
-    physical: 0
-    magic: 0
-    fire: 0
-    frost: 0
-    lightning: 0
-    holy: 0
+    _physical: 0.93
+    _magic: 0.45
+    _fire: 0.78
+    _frost: 0.37
+    _lightning: 0.84
+    _holy: 0.37
