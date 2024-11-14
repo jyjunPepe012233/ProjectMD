@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 namespace MinD.Structs {
@@ -13,6 +14,15 @@ public struct Damage {
 	public int frost;
 	public int lightning;
 	public int holy;
+
+	public Damage(int physical, int magic, int fire, int frost, int lightning, int holy) {
+		this.physical = physical;
+		this.magic = magic;
+		this.fire = fire;
+		this.frost = frost;
+		this.lightning = lightning;
+		this.holy = holy;
+	}
 
 	public int AllDamage {
 		get => physical + magic + fire + frost + lightning + holy;
@@ -32,28 +42,40 @@ public struct DamageNegation {
 
 	// 0~1
 	public float physical {
-		get => finalPhysical;
-		set => _physical = value;
+		get => GetCalculatedNegation(0);
+		set {
+			_physical = value;
+		}
 	}
-	public float magic  {
-		get => finalMagic;
-		set => _magic = value;
+	public float magic {
+		get => GetCalculatedNegation(1);
+		set {
+			_magic = value;
+		}
 	}
 	public float fire {
-		get => finalFire;
-		set => _fire = value;
+		get => GetCalculatedNegation(2);
+		set {
+			_fire = value;
+		}
 	}
 	public float frost {
-		get => finalFrost;
-		set => _frost = value;
+		get => GetCalculatedNegation(3);
+		set {
+			_frost = value;
+		}
 	}
 	public float lightning {
-		get => finalLightning;
-		set => _lightning = value;
+		get => GetCalculatedNegation(4);
+		set {
+			_lightning = value;
+		}
 	}
 	public float holy {
-		get => finalHoly;
-		set => _holy = value;
+		get => GetCalculatedNegation(5);
+		set {
+			_holy = value;
+		}
 	}
 
 	// BASE NEGATION VALUE OF THIS STRUCT
@@ -62,30 +84,69 @@ public struct DamageNegation {
 	
 	private List<DamageNegation> multiplyingNegations;
 	
-	// FINALLY CALCULATED NEGATION VALUE BY multiplyingNegations LIST
-	private float finalPhysical, finalMagic, finalFire, finalFrost, finalLightning, finalHoly;
 	
 	
-	
-	private void RefreshNegationCalculate() {
-		
-		finalPhysical = _physical;
-		finalMagic = _magic;
-		finalFire = _fire;
-		finalFrost = _frost;
-		finalLightning = _lightning;
-		finalHoly = _holy;
+	/// <summary>
+	/// Return calculated damage value by negation type parameter
+	/// </summary>
+	/// <param name="negationType"></param>
+	/// <returns></returns>
+	private float GetCalculatedNegation(int negationType) {
 
-		for (int i = 0; i < multiplyingNegations.Count; i++) {
-
-			finalPhysical += (1 - finalPhysical) * multiplyingNegations[i].physical;
-			finalMagic += (1 - finalMagic) * multiplyingNegations[i].magic;
-			finalFire += (1 - finalFire) * multiplyingNegations[i].fire;
-			finalFrost += (1 - finalFrost) * multiplyingNegations[i].frost;
-			finalLightning += (1 - finalLightning) * multiplyingNegations[i].lightning;
-			finalHoly += (1 - finalHoly) * multiplyingNegations[i].holy;
-
+		if (multiplyingNegations == null) {
+			multiplyingNegations = new List<DamageNegation>();
 		}
+		
+		
+
+		float finalNegation = 0;
+		
+		switch (negationType) {
+			
+			case 0:
+				finalNegation = _physical;
+				for (int i = 0; i < multiplyingNegations.Count; i++) {
+					finalNegation += (1 - finalNegation) * multiplyingNegations[i].physical;
+				}
+				break;
+			
+			case 1:
+				finalNegation = _magic;
+				for (int i = 0; i < multiplyingNegations.Count; i++) {
+					finalNegation += (1 - finalNegation) * multiplyingNegations[i].magic;
+				}
+				break;
+			
+			case 2:
+				finalNegation = _fire;
+				for (int i = 0; i < multiplyingNegations.Count; i++) {
+					finalNegation += (1 - finalNegation) * multiplyingNegations[i].fire;
+				}
+				break;
+			
+			case 3:
+				finalNegation = _frost;
+				for (int i = 0; i < multiplyingNegations.Count; i++) {
+					finalNegation += (1 - finalNegation) * multiplyingNegations[i].frost;
+				}
+				break;
+			
+			case 4:
+				finalNegation = _lightning;
+				for (int i = 0; i < multiplyingNegations.Count; i++) {
+					finalNegation += (1 - finalNegation) * multiplyingNegations[i].lightning;
+				}
+				break;
+			
+			case 5:
+				finalNegation = _holy;
+				for (int i = 0; i < multiplyingNegations.Count; i++) {
+					finalNegation += (1 - finalNegation) * multiplyingNegations[i].holy;
+				}
+				break;
+		}
+
+		return finalNegation;
 
 	}
 
@@ -97,9 +158,7 @@ public struct DamageNegation {
 			a.multiplyingNegations = new List<DamageNegation>();
 		}
 		
-		
 		a.multiplyingNegations.Add(b);
-		a.RefreshNegationCalculate();
 		
 		return a;
 	}
@@ -115,10 +174,8 @@ public struct DamageNegation {
 			
 			if (a.multiplyingNegations[i].Equals(b)) {
 				a.multiplyingNegations.RemoveAt(i);
-				a.RefreshNegationCalculate();
 				return a;
 			}
-			
 		}
 		
 		Debug.Log("!! DAMAGE NEGATION OPERATOR CAN'T OPERATE!");

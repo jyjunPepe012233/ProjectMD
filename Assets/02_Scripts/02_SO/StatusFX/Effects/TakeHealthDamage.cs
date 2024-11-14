@@ -65,14 +65,15 @@ public class TakeHealthDamage : InstantEffect {
 		
 		
 		// IF PLAYER HAS IMMUNE OF POISE BREAK, DON'T GIVE POISE BREAK 
-		if (player.immunePoiseBreak) {
+		if (player.immunePoiseBreak && !player.isDeath) {
 			return;
 		}
 		
 		// CANCEL ACTIONS
 		player.combat.CancelMagicOnGetHit();
 
-		if (player.immunePoiseBreak) {
+		// IF PLAYER IS DEATH IN DRAIN HP PROCESS, DON'T PLAY ANIMATION
+		if (player.isDeath) {
 			return;
 		}
 		

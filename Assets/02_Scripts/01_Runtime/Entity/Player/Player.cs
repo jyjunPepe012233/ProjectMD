@@ -148,6 +148,7 @@ public class Player : BaseEntity {
     protected override IEnumerator Die() {
 
         isDeath = true;
+        isInvincible = true;
         // IF PLAYER DIED, EACH HANDLER WILL STOP A FEATURES
         
         animation.PlayTargetAction("Death", true, true, false, false);

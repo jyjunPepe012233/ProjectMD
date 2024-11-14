@@ -1,3 +1,4 @@
+using System.Buffers;
 using MinD.Runtime.Entity;
 using MinD.Structs;
 using UnityEngine;
@@ -21,17 +22,19 @@ public class TakeDefensedHealthDamage : InstantEffect {
 
 	
 	protected override void OnInstantiateAs(Player player) {
+		
+		// INVOKE ACTION
+		player.combat.getHitAction.Invoke();
+		
+		
 
 		int realDamage = damage.AllDamage;
 		int negatedDamage = TakeHealthDamage.GetCalculatedDamage(damage, player.attribute.damageNegation);
 		
 		
-		player.CurHp -= negatedDamage;
-		
-		
 		
 		// STAMINA DRAIN BY NEGATED AMOUNT
-		int staminaDrain = Mathf.Max((realDamage - negatedDamage) / 3, 1); // MINIMUM OF STAMINA DRAIN IS 1
+		int staminaDrain = Mathf.Max((realDamage - negatedDamage) / 3, 1); // MINIMUM OF STAMINA DRAIN AMOUNT IS 1
 
 		float staminaDrainAmount = Mathf.Clamp01((float)player.CurStamina / staminaDrain);
 		// ㄴ AMOUNT OF SUCCESSFULLY DRAINED STAMINA
@@ -40,17 +43,29 @@ public class TakeDefensedHealthDamage : InstantEffect {
 
 		player.CurStamina -= staminaDrain;
 		
-		if (staminaDrainAmount <= 0.2f) { // if 20% of stamina wasn't drain
+		if (staminaDrainAmount <= 0.45f) { // if 45% of stamina wasn't drain
 			// GUARD BREAK AND KNOCK DOWN
 			
-		} else if (staminaDrainAmount <= 0.5) { // if 50% of stamina wasn't drain 
-			// GUARD BREAK
+			// DRAIN HP BY ALL DAMAGE
+			player.CurHp -= (int)(realDamage * 1.4f);
+			
+			player.StartCoroutine(player.combat.ReleaseDefenseMagic(false, false));
+
+			if (!player.isDeath) {
+				player.animation.PlayTargetAction("Defense_Break", 0.15f, true, true, false, false);
+			}
 			
 		} else {
-			// GUARD SUCCESSFULLY
+			
+			// DRAIN HP
+			player.CurHp -= negatedDamage;
+			player.CurHp -= (int)(realDamage * (1-staminaDrainAmount)); // DRAINING HP BY AMOUNT OF CAN'T DRAINED STAMINA
 			
 		}
 		
+		
+		
+
 	}
 
 	protected override void OnInstantiateAs(Enemy enemy) {

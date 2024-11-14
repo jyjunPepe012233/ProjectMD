@@ -142,9 +142,13 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 			else owner.cc.Move(moveDirx * walkSpeed);
 
 		}
-		
-		
 
+
+
+		if (!owner.canRotate || !owner.canMove) {
+			return;
+		}
+		
 		if (owner.isLockOn) {
 			if (isSprinting && owner.isMoving) {
 				owner.animation.LerpMovementBlendTree(0, inputDirx.magnitude * 2);
