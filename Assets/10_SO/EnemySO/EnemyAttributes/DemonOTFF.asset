@@ -15,10 +15,10 @@ MonoBehaviour:
   maxHp: 1060
   speed: 0.975
   damageNegation:
-    physical: 0.3
-    magic: 0.1
-    fire: 0.4
-    frost: 0.1
-    lightning: 0.1
-    holy: -0.8
+    _physical: 0.3
+    _magic: 0.1
+    _fire: 0.25
+    _frost: 0.1
+    _lightning: 0.1
+    _holy: -0.5
   poiseBreakResistance: 60

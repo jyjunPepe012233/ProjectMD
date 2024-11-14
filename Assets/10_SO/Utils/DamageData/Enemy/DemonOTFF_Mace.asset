@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: DemonOTFF_Mace
   m_EditorClassIdentifier: 
   damage:
-    physical: 120
+    physical: 344
     magic: 0
     fire: 0
     frost: 0
     lightning: 0
     holy: 0
-  totalDamage: 120
-  poiseBreakDamage: 83
+  totalDamage: 344
+  poiseBreakDamage: 78
   absorbMp: 100
