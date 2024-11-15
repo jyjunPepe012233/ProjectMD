@@ -315,12 +315,12 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		}
 	}
 	
-	IEnumerator Blink(Vector3 localBlinkPoint) {
+	IEnumerator Blink(Vector3 blinkPoint) {
 		
 		owner.animation.PlayTargetAction("Blink_Direction_Tree", true, true, false, false);
 		
 		// HANDLE MOVE DIRECTION PARAMETER IN ANIMATOR DURING BLINK
-		Vector3 localBlinkDirx = transform.InverseTransformDirection(blinkDirx);
+		Vector3 localBlinkDirx = transform.InverseTransformDirection(blinkPoint);
 		owner.animator.SetFloat("MoveHorizontal", localBlinkDirx.x);
 		owner.animator.SetFloat("MoveVertical", localBlinkDirx.z);
 		
@@ -334,10 +334,10 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		// INSTANTIATE VFX AT OLD POSITION
 		GameObject vfx = Instantiate(VfxDataBase.Instance.blinkVfx);
 		vfx.transform.position = owner.targetOptions[0].position;
-		vfx.transform.forward = localBlinkPoint.normalized;
+		vfx.transform.forward = blinkPoint.normalized;
 		
 		// MOVE AFTER INSTANTIATE VFX
-		owner.cc.Move(localBlinkPoint);
+		owner.cc.Move(blinkPoint);
 
 
 		blinkCoroutine = null;
