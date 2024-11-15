@@ -203,7 +203,7 @@ public class InventoryUI : MonoBehaviour
         scrollRect.content.anchoredPosition = newContentPosition;
     }
 
-    List<InventorySlot> CreateSlots(Transform panel, int slotCount, int categoryId)
+    public List<InventorySlot> CreateSlots(Transform panel, int slotCount, int categoryId)
     {
         List<InventorySlot> slots = new List<InventorySlot>();
 
