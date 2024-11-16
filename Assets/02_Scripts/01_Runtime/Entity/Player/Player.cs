@@ -136,6 +136,7 @@ public class Player : BaseEntity {
 
         camera.HandleCamera();
         locomotion.HandleAllLocomotion();
+        animation.HandleAllParameter();
         attribute.HandleStamina();
         inventory.HandleQuickSlotSwapping();
         interaction.HandleInteraction();
