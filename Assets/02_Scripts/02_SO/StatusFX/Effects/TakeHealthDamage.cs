@@ -2,6 +2,7 @@ using MinD.Enums;
 using MinD.Runtime.Entity;
 using MinD.Structs;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MinD.SO.StatusFX.Effects {
 
@@ -11,14 +12,14 @@ public class TakeHealthDamage : InstantEffect {
 	public Damage damage;
 	public int poiseBreakDamage;
 
-	public float hitAngle;
+	[FormerlySerializedAs("hitAngle")] public float attackAngle;
 	
 	
 	
-	public TakeHealthDamage(Damage damage, int poiseBreakDamage, float hitAngle) {
+	public TakeHealthDamage(Damage damage, int poiseBreakDamage, float attackAngle) {
 		this.damage = damage;
 		this.poiseBreakDamage = poiseBreakDamage;
-		this.hitAngle = hitAngle;
+		this.attackAngle = attackAngle;
 	}
 
 	
@@ -84,13 +85,13 @@ public class TakeHealthDamage : InstantEffect {
 		// DECIDE DIRECTION OF POISE BREAK ANIMATION BY HIT DIRECTION
 		string hitDirection;
 		// SET HIT DIRECTION	
-		if (hitAngle >= -45 && hitAngle < 45) {
+		if (attackAngle >= -45 && attackAngle < 45) {
 			hitDirection = "F";
 
-		} else if (hitAngle >= 45 && hitAngle < 135) {
+		} else if (attackAngle >= 45 && attackAngle < 135) {
 			hitDirection = "R";
 			
-		}  else if (hitAngle >= 135 && hitAngle < -135) {
+		}  else if (attackAngle >= 135 && attackAngle < -135) {
 			hitDirection = "B";
 			
 		} else {
@@ -107,7 +108,7 @@ public class TakeHealthDamage : InstantEffect {
 			stateName += "KnockDown_Start";
 			
 			Vector3 angle = player.transform.eulerAngles;
-			angle.y += hitAngle;
+			angle.y += attackAngle;
 			player.transform.eulerAngles = angle;
 
 		} else if (poiseBreakAmount >= 55) {

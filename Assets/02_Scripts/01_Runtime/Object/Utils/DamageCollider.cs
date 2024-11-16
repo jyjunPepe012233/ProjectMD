@@ -46,8 +46,8 @@ public class DamageCollider : MonoBehaviour {
 		
 		
 		// GET HIT DIRECTION
-		Vector3 hitDirx = other.ClosestPoint(transform.position) - transform.position; // HIT DETECTION DIRECTION OF THE THIS COLLIDER
-		float hitAngle = Vector3.SignedAngle(damageTarget.transform.forward, -hitDirx, Vector3.up);
+		Vector3 attackDirx = other.ClosestPoint(transform.position) - transform.position; // ATTACK DIRECTION AS TARGET
+		float attackAngle = Vector3.SignedAngle(damageTarget.transform.forward, -attackDirx, Vector3.up);
 		
 		damagedEntity.Add(damageTarget);
 
@@ -55,17 +55,17 @@ public class DamageCollider : MonoBehaviour {
 		if (damageTarget is Player player) {
 			
 			if (player.combat.isParrying) {
-				damageEffect = new AbsorbMagic(soData.absorbMp, hitDirx);
+				damageEffect = new AbsorbMagic(soData.absorbMp, attackDirx);
 				
 			} else if (player.combat.usingDefenseMagic) {
-				damageEffect = new TakeDefensedHealthDamage(soData.damage, soData.poiseBreakDamage, hitDirx);
+				damageEffect = new TakeDefensedHealthDamage(soData.damage, soData.poiseBreakDamage, attackDirx);
 
 			} else {
-				damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, hitAngle);
+				damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, attackAngle);
 			}
 			
 		} else { 
-			damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, hitAngle);
+			damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, attackAngle);
 			
 		}
 

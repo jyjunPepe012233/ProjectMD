@@ -4,6 +4,7 @@ using MinD.Runtime.Entity;
 using MinD.Structs;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
+using UnityEngine.Serialization;
 
 namespace MinD.SO.StatusFX.Effects {
 
@@ -12,14 +13,14 @@ public class TakeDefensedHealthDamage : InstantEffect {
 
 	public Damage damage;
 	public int poiseBreakDamage;
+	
+	[FormerlySerializedAs("attackDirx")] public Vector3 worldAttackDirx;
 
-	public Vector3 worldHitDirx;
 
-
-	public TakeDefensedHealthDamage(Damage damage, int poiseBreakDamage, Vector3 worldHitDirx) {
+	public TakeDefensedHealthDamage(Damage damage, int poiseBreakDamage, Vector3 worldAttackDirx) {
 		this.damage = damage;
 		this.poiseBreakDamage = poiseBreakDamage;
-		this.worldHitDirx = worldHitDirx;
+		this.worldAttackDirx = worldAttackDirx;
 	}
 
 	
@@ -67,8 +68,8 @@ public class TakeDefensedHealthDamage : InstantEffect {
 			
 			// INSTANTIATE VFX
 			GameObject hexagon = Instantiate(VfxDataBase.Instance.defenseMagicHexagon);
-			hexagon.transform.forward = worldHitDirx;
-			hexagon.transform.position = player.combat.defenseMagicCollider.transform.position + (worldHitDirx * -1.25f); // MULTIPLY NEGATIVE FOR GET THE INVERSE DIRECTION OF ATTACK
+			hexagon.transform.forward = worldAttackDirx;
+			hexagon.transform.position = player.combat.defenseMagicCollider.transform.position + (worldAttackDirx * -1.25f); // SET NEGATIVE FOR GET THE INVERSE DIRECTION OF ATTACK
 			
 
 		}
