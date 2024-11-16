@@ -9,13 +9,13 @@ namespace MinD.SO.StatusFX.Effects {
 public class AbsorbMagic : InstantEffect {
 
 	public int absorbMp;
-	public Vector3 localDefensePoint;
+	public Vector3 worldHitDirx;
 	
 
 	
-	public AbsorbMagic(int absorbMp, Vector3 localDefensePoint) {
+	public AbsorbMagic(int absorbMp, Vector3 worldHitDirx) {
 		this.absorbMp = absorbMp;
-		this.localDefensePoint = localDefensePoint;
+		this.worldHitDirx = worldHitDirx;
 	}
 
 	

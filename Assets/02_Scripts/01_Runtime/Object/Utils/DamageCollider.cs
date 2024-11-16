@@ -58,12 +58,12 @@ public class DamageCollider : MonoBehaviour {
 				damageEffect = new AbsorbMagic(soData.absorbMp, hitDirx);
 				
 			} else if (player.combat.usingDefenseMagic) {
-				damageEffect = new TakeDefensedHealthDamage(soData.damage, soData.poiseBreakDamage, hitAngle);
+				damageEffect = new TakeDefensedHealthDamage(soData.damage, soData.poiseBreakDamage, hitDirx);
 
 			} else {
 				damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, hitAngle);
-
 			}
+			
 		} else { 
 			damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, hitAngle);
 			

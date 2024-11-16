@@ -1,7 +1,9 @@
 using System.Buffers;
+using MinD.Runtime.DataBase;
 using MinD.Runtime.Entity;
 using MinD.Structs;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 namespace MinD.SO.StatusFX.Effects {
 
@@ -11,13 +13,13 @@ public class TakeDefensedHealthDamage : InstantEffect {
 	public Damage damage;
 	public int poiseBreakDamage;
 
-	public float hitAngle;
+	public Vector3 worldHitDirx;
 
 
-	public TakeDefensedHealthDamage(Damage damage, int poiseBreakDamage, float hitAngle) {
+	public TakeDefensedHealthDamage(Damage damage, int poiseBreakDamage, Vector3 worldHitDirx) {
 		this.damage = damage;
 		this.poiseBreakDamage = poiseBreakDamage;
-		this.hitAngle = hitAngle;
+		this.worldHitDirx = worldHitDirx;
 	}
 
 	
@@ -56,11 +58,19 @@ public class TakeDefensedHealthDamage : InstantEffect {
 			}
 			
 		} else {
+			// SUCCESSFULLY DEFENSE ATTACK
 			
 			// DRAIN HP
 			player.CurHp -= negatedDamage;
 			player.CurHp -= (int)(realDamage * (1-staminaDrainAmount)); // DRAINING HP BY AMOUNT OF CAN'T DRAINED STAMINA
 			
+			
+			// INSTANTIATE VFX
+			GameObject hexagon = Instantiate(VfxDataBase.Instance.defenseMagicHexagon);
+			hexagon.transform.forward = worldHitDirx;
+			hexagon.transform.position = player.combat.defenseMagicCollider.transform.position + (worldHitDirx * -1.25f); // MULTIPLY NEGATIVE FOR GET THE INVERSE DIRECTION OF ATTACK
+			
+
 		}
 		
 		

@@ -2063,8 +2063,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638291072}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2090,7 +2090,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 1.25
-  m_Center: {x: 0, y: 1.25, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &654135878
 GameObject:
   m_ObjectHideFlags: 0
@@ -5383,7 +5383,8 @@ MonoBehaviour:
     type: 3}
   blinkVfx: {fileID: 1853418275489752793, guid: 71768db8bf1184a848228d8b61674da0,
     type: 3}
-  defenseMagicLoopVfx: {fileID: 5146996394584568682}
+  defenseMagicHexagon: {fileID: 5036567524009738203, guid: dac140ba286454422bdbc7a62ce14947,
+    type: 3}
 --- !u!4 &1749224850
 Transform:
   m_ObjectHideFlags: 0
@@ -11477,7 +11478,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 504175369
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
