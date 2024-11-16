@@ -49,7 +49,7 @@ public class TakeDefensedHealthDamage : InstantEffect {
 			// DRAIN HP BY ALL DAMAGE
 			player.CurHp -= (int)(realDamage * 1.4f);
 			
-			player.StartCoroutine(player.combat.ReleaseDefenseMagic(false, false));
+			player.combat.ReleaseDefenseMagic(false, false);
 
 			if (!player.isDeath) {
 				player.animation.PlayTargetAction("Defense_Break", 0.15f, true, true, false, false);

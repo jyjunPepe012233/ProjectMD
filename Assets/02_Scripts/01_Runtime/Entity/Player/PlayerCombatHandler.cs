@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
 using MinD.SO.Item;
 using UnityEngine;
@@ -14,8 +15,9 @@ public class PlayerCombatHandler : MonoBehaviour {
 	// LOCKING ON ENTITY
 	public BaseEntity target;
 
-	[Header("[ Defense Magic Collider ]")]
+	[Header("[ Defense Magic ]")]
 	public GameObject defenseMagicCollider;
+	public ParticleSystem defenseMagicVfx;
 	
 	
 	[HideInInspector] public Magic currentCastingMagic;
@@ -102,25 +104,31 @@ public class PlayerCombatHandler : MonoBehaviour {
 				return;
 			}
 			
-			StartCoroutine(ActivateDefenseMagic());
+			ActivateDefenseMagic();
 		}
 		
 		
 		
-		if (usingDefenseMagic && !PlayerInputManager.Instance.defenseMagicInput) {
-			StartCoroutine(ReleaseDefenseMagic());
+		if (usingDefenseMagic && !PlayerInputManager.Instance.defenseMagicInput) { 
+			ReleaseDefenseMagic();
 		}
 		
 	}
 
-	public IEnumerator ActivateDefenseMagic(bool playAnimation = true) {
+	private void ActivateDefenseMagic() {
+		
+		usingDefenseMagic = true; // IF THIS FLAG IS ENABLED, DAMAGE WILL CALCULATE SPECIAL
+
+		
 		
 		// PLAY DEFENSE ANIMATION (LOOPING)
-		if (playAnimation) {
-			owner.animation.PlayTargetAction("Defense_Action_Start", 0.1f, true, true, true, false);
-		}
+			owner.animation.PlayTargetAction("Defense_Action_Start", 0.2f, true, true, true, false);
+		
+		
+		// PLAY VFX
+		defenseMagicVfx.Play();
+		
 
-		usingDefenseMagic = true; // IF THIS FLAG IS ENABLED, DAMAGE WILL CALCULATE SPECIAL
 		
 		// IF PLAYER DOESN'T EQUIP PROTECTION, JUST PERFORMING ACTION IN GUARD 
 		if (owner.inventory.protectionSlot != null) {
@@ -130,17 +138,25 @@ public class PlayerCombatHandler : MonoBehaviour {
 			
 			defenseMagicCollider.SetActive(true);
 		}
-
-		yield break;
+		
 	}
-
-	public IEnumerator ReleaseDefenseMagic(bool playAnimation = true, bool releaseWithParrying = true) {
-
-		if (playAnimation) {
-			owner.animation.PlayTargetAction("Default Movement", 0.35f, false);
-		}
+	public void ReleaseDefenseMagic(bool playAnimation = true, bool parrying = true) {
 
 		usingDefenseMagic = false;
+
+		
+		if (playAnimation) {
+
+			if (parrying) {
+				owner.animation.PlayTargetAction("Defense_Action_Parry", 0.2f, true, true, true, false);
+			} else {
+				owner.animation.PlayTargetAction("Default Movement", 0.3f, false);
+			}
+		}
+
+		
+		defenseMagicVfx.Stop();
+		
 
 		// ACTIVE DEFENSE MAGIC IF PLAYER EQUIPPING PROTECTION
 		if (owner.inventory.protectionSlot != null) {
@@ -151,17 +167,13 @@ public class PlayerCombatHandler : MonoBehaviour {
 			defenseMagicCollider.SetActive(false);
 			
 		}
-
-
-		if (releaseWithParrying) {
-			isParrying = true;
-
-			yield return new WaitForSeconds(0.3f);
-
-			isParrying = false;
-		}
-		
 	}
+
+	public void StartParrying() => isParrying = true;
+	public void EndParrying() => isParrying = false;
+	
+	
+	
 	
 	
 	

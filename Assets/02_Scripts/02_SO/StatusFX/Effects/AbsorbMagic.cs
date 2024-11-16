@@ -22,6 +22,8 @@ public class AbsorbMagic : InstantEffect {
 	protected override void OnInstantiateAs(Player player) {
 
 		player.CurMp += absorbMp;
+		
+		Debug.Log("Successfully Parryed");
 
 	}
 
