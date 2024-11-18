@@ -321,7 +321,7 @@ namespace MinD.Runtime.UI {
             {
                 selectedSlotIndex = clickedIndex;
                 UpdateSelectionImage();  // 클릭 시 선택 이미지 업데이트
-                ScrollToSelectedSlot();
+                UpdateItemDetails();     // 아이템 정보 업데이트
             }
         }
 
