@@ -22,7 +22,7 @@ public class EquipmentUI : MonoBehaviour
 
     public void CreateEquipmentSlots()
 {
-    int[] slotCounts = { 10, 5, 1, 1 }; 
+    int[] slotCounts = { 5, 10, 1, 1 }; 
 
     for (int i = 0; i < EquipmentPanels.Count; i++)
     {
