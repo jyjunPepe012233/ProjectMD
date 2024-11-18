@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponList:
   - {fileID: 11400000, guid: e0191d9f3e3cf4ad293fcea0c7bc01bc, type: 2}
-  protectionList: []
+  protectionList:
+  - {fileID: 11400000, guid: 79ee1f72431d9433caec6971842f7ac6, type: 2}
   talismanList: []
   toolList: []
   magicList:

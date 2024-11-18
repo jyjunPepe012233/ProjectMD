@@ -9,6 +9,9 @@ namespace MinD.Runtime.UI {
 
     public class InventoryUI : MonoBehaviour
     {
+        public Text itemNameText; // 아이템 이름 표시
+        public Text itemDescriptionText; // 아이템 설명 표시
+        
         public GameObject slotPrefab;
         public ScrollRect scrollRect;
         public List<Transform> categoryPolygon;
@@ -43,21 +46,22 @@ namespace MinD.Runtime.UI {
         }
         void Start()
         {
-            DisableScrollbarNavigation(); // 스크롤바 Navigation 비활성화
             playerInventory = FindObjectOfType<Player>().inventory;
             categorySlots = new List<List<InventorySlot>>();
 
             // 각 카테고리 패널에 슬롯 생성
             for (int i = 0; i < categoryPanels.Count; i++)
             {
-                List<InventorySlot> slots = CreateSlots(categoryPanels[i], 25, i); // i를 통해 categoryId 설정
+                List<InventorySlot> slots = CreateSlots(categoryPanels[i], 25, i);
                 categorySlots.Add(slots);
             }
 
             UpdateCategory();
             UpdateInventoryUI();
             UpdateSelectionImage();
+
             inventoryPanel.SetActive(false);
+            UpdateItemDetails(); // 초기 상태에서도 아이템 정보 표시
         }
 
         void MaintainFocus()
@@ -80,14 +84,15 @@ namespace MinD.Runtime.UI {
 
             if (isInventoryActive)
             {
-                selectedSlotIndex = 0;  // 인벤토리를 열 때 0번 슬롯 선택
-                EventSystem.current.SetSelectedGameObject(categorySlots[currentCategoryIndex][selectedSlotIndex].gameObject); // 초점 설정
-                UpdateCategory();
-                UpdateSelectionImage();
+                selectedSlotIndex = 0; // 인벤토리를 열 때 0번 슬롯 선택
+                UpdateCategory();      // 현재 카테고리 활성화
+                UpdateSelectionImage(); // 선택 이미지 업데이트
+                UpdateItemDetails();   // 아이템 이름과 설명 업데이트
             }
             else
             {
-                EventSystem.current.SetSelectedGameObject(null); // 인벤토리를 닫으면 초점 해제
+                itemNameText.text = ""; // 인벤토리를 닫을 때 이름 초기화
+                itemDescriptionText.text = ""; // 설명 초기화
             }
         }
 
@@ -99,14 +104,6 @@ namespace MinD.Runtime.UI {
             }
 
             if (!isInventoryActive) return;
-
-            GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
-
-            // InventorySlot만 초점 이동 가능
-            if (currentSelected != null && currentSelected.GetComponent<InventorySlot>() == null)
-            {
-                EventSystem.current.SetSelectedGameObject(categorySlots[currentCategoryIndex][selectedSlotIndex].gameObject);
-            }
 
             if (Input.GetKeyDown(KeyCode.Z))
             {
@@ -138,18 +135,27 @@ namespace MinD.Runtime.UI {
             // Enter 키로 선택된 슬롯 처리
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                OnSlotSelected(categorySlots[currentCategoryIndex][selectedSlotIndex]);
+                var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
+                OnSlotSelected(selectedSlot); // 슬롯 선택 로직 실행
+
+                selectedSlot.OnClick(); // 슬롯 클릭 메서드 직접 호출
             }
         }
+
 
 
 
         void ChangeCategory(int direction)
         {
             currentCategoryIndex = (currentCategoryIndex + direction + categoryPanels.Count) % categoryPanels.Count;
+
             UpdateCategory();
-        
+
+            // 스크롤 초기화
             scrollRect.content.anchoredPosition = new Vector2(scrollRect.content.anchoredPosition.y, 0);
+
+            // 선택된 슬롯 정보 업데이트
+            UpdateItemDetails();
         }
 
         void UpdateCategory()
@@ -206,7 +212,11 @@ namespace MinD.Runtime.UI {
             }
 
             selectedSlotIndex = newSelectedIndex;
-            UpdateSelectionImage();  // 선택된 슬롯에 이미지 업데이트
+
+            // 선택 이미지 업데이트
+            UpdateSelectionImage();
+            // 아이템 정보 업데이트
+            UpdateItemDetails();
         }
 
         void UpdateSelectionImage()
@@ -214,7 +224,23 @@ namespace MinD.Runtime.UI {
             var slots = categorySlots[currentCategoryIndex];
             for (int i = 0; i < slots.Count; i++)
             {
-                slots[i].SetSelected(i == selectedSlotIndex);  // 선택된 슬롯만 선택 이미지 표시
+                slots[i].SetSelected(i == selectedSlotIndex);
+            }
+        }
+        void UpdateItemDetails()
+        {
+            var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
+            var item = selectedSlot.GetCurrentItem();
+
+            if (item != null)
+            {
+                itemNameText.text = item.itemName; // 아이템 이름 업데이트
+                itemDescriptionText.text = item.itemDescription; // 아이템 설명 업데이트
+            }
+            else
+            {
+                itemNameText.text = ""; // 아이템이 없을 때 이름 초기화
+                itemDescriptionText.text = ""; // 아이템이 없을 때 설명 초기화
             }
         }
 

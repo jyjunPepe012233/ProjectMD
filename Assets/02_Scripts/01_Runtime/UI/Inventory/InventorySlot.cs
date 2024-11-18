@@ -66,6 +66,9 @@ public class InventorySlot : MonoBehaviour
             inventoryUI.OnSlotClicked(this);
         }
     }
+    public Item GetCurrentItem()
+    {
+        return currentItem; // 현재 슬롯의 아이템 반환
+    }
 }
-
 }
