@@ -156,7 +156,11 @@ namespace MinD.Runtime.UI {
 
             // 선택된 슬롯 정보 업데이트
             UpdateItemDetails();
+
+            // EventSystem으로 선택된 슬롯 포커싱
+            FocusSelectedSlot();
         }
+
 
         void UpdateCategory()
         {
@@ -226,7 +230,11 @@ namespace MinD.Runtime.UI {
             {
                 slots[i].SetSelected(i == selectedSlotIndex);
             }
+
+            // EventSystem으로 선택된 슬롯 포커싱
+            FocusSelectedSlot();
         }
+
         void UpdateItemDetails()
         {
             var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
@@ -351,5 +359,14 @@ namespace MinD.Runtime.UI {
 
             return (slotCount - baseCount) / rangeSize;
         }
+        void FocusSelectedSlot()
+        {
+            if (categorySlots[currentCategoryIndex].Count > selectedSlotIndex)
+            {
+                GameObject selectedSlotObject = categorySlots[currentCategoryIndex][selectedSlotIndex].gameObject;
+                EventSystem.current.SetSelectedGameObject(selectedSlotObject);
+            }
+        }
+
     }
 }

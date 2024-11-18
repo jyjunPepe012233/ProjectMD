@@ -19,7 +19,7 @@ MonoBehaviour:
   itemRarity: 0
   itemMaxCount: 1
   itemCount: 0
-  categoryId: 1
+  categoryId: 2
   negationBoost:
     physical: 0
     magic: 0
