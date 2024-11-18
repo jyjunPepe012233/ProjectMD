@@ -16,21 +16,27 @@ public class EquipmentUI : MonoBehaviour
         if (inventoryUI != null)
         {
             CreateEquipmentSlots();
+            
         }
     }
 
     public void CreateEquipmentSlots()
-    {
-        // 각 패널에 맞는 슬롯 수 지정
-        int[] slotCounts = { 10, 5, 1, 1 }; 
+{
+    int[] slotCounts = { 10, 5, 1, 1 }; 
 
-        for (int i = 0; i < EquipmentPanels.Count; i++)
+    for (int i = 0; i < EquipmentPanels.Count; i++)
+    {
+        Transform panel = EquipmentPanels[i];
+        for (int j = 0; j < slotCounts[i]; j++)
         {
-            if (i < slotCounts.Length)
+            GameObject slotObj = Instantiate(EquipmentslotPrefab, panel);
+            InventorySlot slot = slotObj.GetComponent<InventorySlot>();
+            if (slot != null)
             {
-                List<InventorySlot> slots = inventoryUI.CreateSlots(EquipmentPanels[i], slotCounts[i], i);
-                
+                slot.categoryId = i;
             }
         }
     }
+}
+
 }
