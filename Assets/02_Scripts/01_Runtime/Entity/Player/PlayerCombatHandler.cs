@@ -14,18 +14,15 @@ public class PlayerCombatHandler : MonoBehaviour {
 	
 	// LOCKING ON ENTITY
 	public BaseEntity target;
-
-	[Header("[ Defense Magic ]")]
-	public GameObject defenseMagicCollider;
-	public ParticleSystem defenseMagicVfx;
 	
-	
-	[HideInInspector] public Magic currentCastingMagic;
-	[SerializeField] private bool usingMagic;
-
-	private Coroutine defenseMagicCoroutine; 
+	[Header("[ Flags ]")]
+	public bool usingMagic;
 	public bool usingDefenseMagic;
 	public bool isParrying;
+	
+	
+	[HideInInspector] public PlayerDefenseMagic defenseMagic;
+	[HideInInspector] public Magic currentCastingMagic;
 	
 	// WHEN PLAYER GET HIT, CALL THIS ACTION IN 'TakeHealthDamage'
 	public Action getHitAction = new Action(()=>{});
@@ -122,22 +119,14 @@ public class PlayerCombatHandler : MonoBehaviour {
 		
 		
 		// PLAY DEFENSE ANIMATION (LOOPING)
-			owner.animation.PlayTargetAction("Defense_Action_Start", 0.2f, true, true, true, false);
+		owner.animation.PlayTargetAction("Defense_Action_Start", 0.2f, true, true, true, false);
 		
-		
-		// PLAY VFX
-		defenseMagicVfx.Play();
+		// ACTIVE DEFENSE MAGIC
+		defenseMagic.EnableShield();
 		
 
 		
-		// IF PLAYER DOESN'T EQUIP PROTECTION, JUST PERFORMING ACTION IN GUARD 
-		if (owner.inventory.protectionSlot != null) {
-			
-			// set negation
-			owner.attribute.damageNegation *= owner.inventory.protectionSlot.negationBoost;
-			
-			defenseMagicCollider.SetActive(true);
-		}
+		
 		
 	}
 	public void ReleaseDefenseMagic(bool playAnimation = true, bool parrying = true) {
@@ -146,7 +135,6 @@ public class PlayerCombatHandler : MonoBehaviour {
 
 		
 		if (playAnimation) {
-
 			if (parrying) {
 				owner.animation.PlayTargetAction("Defense_Action_Parry", 0.2f, true, true, true, false);
 			} else {
@@ -154,19 +142,8 @@ public class PlayerCombatHandler : MonoBehaviour {
 			}
 		}
 
-		
-		defenseMagicVfx.Stop();
-		
-
-		// ACTIVE DEFENSE MAGIC IF PLAYER EQUIPPING PROTECTION
-		if (owner.inventory.protectionSlot != null) {
-			
-			// set negation
-			owner.attribute.damageNegation /= owner.inventory.protectionSlot.negationBoost;
-			
-			defenseMagicCollider.SetActive(false);
-			
-		}
+		// DISABLE DEFENSE MAGIC
+		defenseMagic.DisableShield();
 	}
 
 	public void StartParrying() => isParrying = true;

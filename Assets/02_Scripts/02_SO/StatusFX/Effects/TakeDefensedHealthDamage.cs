@@ -14,7 +14,7 @@ public class TakeDefensedHealthDamage : InstantEffect {
 	public Damage damage;
 	public int poiseBreakDamage;
 	
-	[FormerlySerializedAs("attackDirx")] public Vector3 worldAttackDirx;
+	public Vector3 worldAttackDirx;
 
 
 	public TakeDefensedHealthDamage(Damage damage, int poiseBreakDamage, Vector3 worldAttackDirx) {
@@ -52,6 +52,7 @@ public class TakeDefensedHealthDamage : InstantEffect {
 			// DRAIN HP BY ALL DAMAGE
 			player.CurHp -= (int)(realDamage * 1.4f);
 			
+			player.combat.defenseMagic.PlayGuardBreakVFX();
 			player.combat.ReleaseDefenseMagic(false, false);
 
 			if (!player.isDeath) {
@@ -67,9 +68,7 @@ public class TakeDefensedHealthDamage : InstantEffect {
 			
 			
 			// INSTANTIATE VFX
-			GameObject hexagon = Instantiate(VfxDataBase.Instance.defenseMagicHexagon);
-			hexagon.transform.forward = worldAttackDirx;
-			hexagon.transform.position = player.combat.defenseMagicCollider.transform.position + (worldAttackDirx * -1.25f); // SET NEGATIVE FOR GET THE INVERSE DIRECTION OF ATTACK
+			player.combat.defenseMagic.PlayHitVFX(-worldAttackDirx);
 			
 
 		}
