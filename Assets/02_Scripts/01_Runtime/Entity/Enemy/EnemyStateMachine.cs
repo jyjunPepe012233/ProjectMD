@@ -50,7 +50,9 @@ public class EnemyStateMachine : MonoBehaviour {
 		
 		
 		owner.previousState = owner.currentState;
-		owner.previousState.Exit();
+		if (owner.previousState != null) {
+			owner.previousState.Exit();
+		}
 
 
 		owner.currentState = newState;

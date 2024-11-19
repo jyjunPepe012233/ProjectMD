@@ -11,7 +11,6 @@ public class VfxDataBase : Singleton<VfxDataBase> {
 
 	[Header("[ Player ]")]
 	public GameObject blinkVfx;
-	public GameObject defenseMagicHexagon;
 }
 
 }
