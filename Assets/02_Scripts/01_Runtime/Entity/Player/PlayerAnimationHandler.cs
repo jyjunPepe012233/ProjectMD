@@ -7,21 +7,44 @@ public class PlayerAnimationHandler : MonoBehaviour {
 	[HideInInspector] public Player owner;
 	
 	private float moveBlendLerpSpeed = 6;
-	private Vector2 moveBlend;
-
+	private float runBlendDampTime = 0.35f;
 	
+	private Vector2 moveBlend;
+	private float runBlend;
 
-	public void Awake() {
-		owner = GetComponent<Player>();
+
+
+
+	public void HandleAllParameter() {
+		HandleLocomotionParameter();
 	}
 
+	private void HandleLocomotionParameter() {
 
-	public void LerpMovementBlendTree(float horizontal, float vertical) {
+		if (!owner.canRotate || !owner.canMove) {
+			return;
+		}
+		
+		
 
-		moveBlend = Vector2.Lerp(moveBlend, new Vector2(horizontal, vertical), Time.deltaTime * moveBlendLerpSpeed);
+		// SET HORIZONTAL AND VERTICAL PARAMETER
+		Vector3 localMoveDirx = transform.InverseTransformDirection(owner.locomotion.moveDirx);
+		if (owner.isMoving) {
+			moveBlend = Vector2.Lerp(moveBlend, new Vector2(localMoveDirx.x, localMoveDirx.z), Time.deltaTime * moveBlendLerpSpeed);
+		} else {
+			moveBlend = Vector2.Lerp(moveBlend, Vector2.zero, Time.deltaTime * moveBlendLerpSpeed);
+		}
 
 		owner.animator.SetFloat("MoveHorizontal", moveBlend.x);
 		owner.animator.SetFloat("MoveVertical", moveBlend.y);
+		
+		
+		
+		// SET RUN BLEND PARAMETER
+		runBlend += (owner.locomotion.isSprinting ? 1 : -1) / runBlendDampTime * Time.deltaTime;
+		runBlend = Mathf.Clamp01(runBlend);
+			
+		owner.animator.SetFloat("RunBlend", runBlend);
 	}
 
 
@@ -49,7 +72,7 @@ public class PlayerAnimationHandler : MonoBehaviour {
 		bool canRotate = true,
 		bool canMove = true) {
 		
-		owner.animator.CrossFadeInFixedTime(stateName, transitionDuration);
+		owner.animator.CrossFadeInFixedTime(stateName, transitionDuration, 0);
 
 		owner.animator.applyRootMotion = applyRootMotion;
 

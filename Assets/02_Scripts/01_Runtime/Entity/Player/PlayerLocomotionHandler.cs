@@ -36,7 +36,7 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 	private float inAirTimer;
 	private bool fallVelocityHasSet;
 
-	private Vector3 moveDirx; // move direction on world
+	[HideInInspector] public Vector3 moveDirx; // move direction on world
 	private Vector3 jumpDirx;
 
 	private Vector3 blinkDirx; // blink direction on world
@@ -140,36 +140,17 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 			if (isSprinting)
 				owner.cc.Move(moveDirx * runningSpeed);
 			else owner.cc.Move(moveDirx * walkSpeed);
-
+			
+			
+			moveDirx.Normalize();
 		}
-		
-		
-
-		if (owner.isLockOn) {
-			if (isSprinting && owner.isMoving) {
-				owner.animation.LerpMovementBlendTree(0, inputDirx.magnitude * 2);
-			} else {
-				owner.animation.LerpMovementBlendTree(inputDirx.x, inputDirx.z);
-			}
-		} else {
-			if (isSprinting) {
-				owner.animation.LerpMovementBlendTree(0, inputDirx.magnitude * 2);
-			} else {
-				owner.animation.LerpMovementBlendTree(0, inputDirx.magnitude);
-			}
-		}	
-
 		
 	}
 
 	void HandleSprint() {
 
-		if (PlayerInputManager.Instance.sprintInput) {
-			isSprinting = true;
-			
-		} else {
-			isSprinting = false;
-		}
+		isSprinting = owner.isMoving && PlayerInputManager.Instance.sprintInput;
+
 	}
 
 	void HandleGroundedCheck() {
@@ -311,12 +292,12 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		}
 	}
 	
-	IEnumerator Blink(Vector3 localBlinkPoint) {
+	IEnumerator Blink(Vector3 blinkPoint) {
 		
 		owner.animation.PlayTargetAction("Blink_Direction_Tree", true, true, false, false);
 		
 		// HANDLE MOVE DIRECTION PARAMETER IN ANIMATOR DURING BLINK
-		Vector3 localBlinkDirx = transform.InverseTransformDirection(blinkDirx);
+		Vector3 localBlinkDirx = transform.InverseTransformDirection(blinkPoint);
 		owner.animator.SetFloat("MoveHorizontal", localBlinkDirx.x);
 		owner.animator.SetFloat("MoveVertical", localBlinkDirx.z);
 		
@@ -330,10 +311,10 @@ public class PlayerLocomotionHandler : MonoBehaviour {
 		// INSTANTIATE VFX AT OLD POSITION
 		GameObject vfx = Instantiate(VfxDataBase.Instance.blinkVfx);
 		vfx.transform.position = owner.targetOptions[0].position;
-		vfx.transform.forward = localBlinkPoint.normalized;
+		vfx.transform.forward = blinkPoint.normalized;
 		
 		// MOVE AFTER INSTANTIATE VFX
-		owner.cc.Move(localBlinkPoint);
+		owner.cc.Move(blinkPoint);
 
 
 		blinkCoroutine = null;

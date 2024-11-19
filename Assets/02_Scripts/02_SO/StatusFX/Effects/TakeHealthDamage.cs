@@ -2,6 +2,7 @@ using MinD.Enums;
 using MinD.Runtime.Entity;
 using MinD.Structs;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MinD.SO.StatusFX.Effects {
 
@@ -11,20 +12,21 @@ public class TakeHealthDamage : InstantEffect {
 	public Damage damage;
 	public int poiseBreakDamage;
 
-	public float hitAngle;
+	[FormerlySerializedAs("hitAngle")] public float attackAngle;
 	
 	
 	
-	public TakeHealthDamage(Damage damage, int poiseBreakDamage, float hitAngle) {
+	public TakeHealthDamage(Damage damage, int poiseBreakDamage, float attackAngle) {
 		this.damage = damage;
 		this.poiseBreakDamage = poiseBreakDamage;
-		this.hitAngle = hitAngle;
+		this.attackAngle = attackAngle;
 	}
 
 	
 	
 	public static int GetCalculatedDamage(Damage damage_, DamageNegation negation_) {
-
+		
+		
 		int finalDamage = 0;
 		finalDamage += (int)((1 - negation_.physical) * damage_.physical);
 		finalDamage += (int)((1 - negation_.magic) * damage_.magic);
@@ -59,18 +61,19 @@ public class TakeHealthDamage : InstantEffect {
 		// DRAIN HP
 		player.CurHp -= GetCalculatedDamage(damage, player.attribute.damageNegation);
 		
-		// CANCEL ACTIONS
-		player.combat.CancelMagicOnGetHit();
-		
 		// INVOKE ACTION
 		player.combat.getHitAction();
 		
 		
 		// IF PLAYER HAS IMMUNE OF POISE BREAK, DON'T GIVE POISE BREAK 
-		if (player.immunePoiseBreak) {
+		if (player.immunePoiseBreak && !player.isDeath) {
 			return;
 		}
-		// IF PLAYER HAS DIED, POISE BREAK IS NOT RUNNING
+		
+		// CANCEL ACTIONS
+		player.combat.CancelMagicOnGetHit();
+
+		// IF PLAYER IS DEATH IN DRAIN HP PROCESS, DON'T PLAY ANIMATION
 		if (player.isDeath) {
 			return;
 		}
@@ -82,13 +85,13 @@ public class TakeHealthDamage : InstantEffect {
 		// DECIDE DIRECTION OF POISE BREAK ANIMATION BY HIT DIRECTION
 		string hitDirection;
 		// SET HIT DIRECTION	
-		if (hitAngle >= -45 && hitAngle < 45) {
+		if (attackAngle >= -45 && attackAngle < 45) {
 			hitDirection = "F";
 
-		} else if (hitAngle >= 45 && hitAngle < 135) {
+		} else if (attackAngle >= 45 && attackAngle < 135) {
 			hitDirection = "R";
 			
-		}  else if (hitAngle >= 135 && hitAngle < -135) {
+		}  else if (attackAngle >= 135 && attackAngle < -135) {
 			hitDirection = "B";
 			
 		} else {
@@ -105,7 +108,7 @@ public class TakeHealthDamage : InstantEffect {
 			stateName += "KnockDown_Start";
 			
 			Vector3 angle = player.transform.eulerAngles;
-			angle.y += hitAngle;
+			angle.y += attackAngle;
 			player.transform.eulerAngles = angle;
 
 		} else if (poiseBreakAmount >= 55) {

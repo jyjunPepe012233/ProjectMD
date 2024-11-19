@@ -99,7 +99,6 @@ public class Player : BaseEntity {
 
         base.Awake();
 
-        camera = FindObjectOfType<PlayerCamera>();
         locomotion = GetComponent<PlayerLocomotionHandler>();
         animation = GetComponent<PlayerAnimationHandler>();
         attribute = GetComponent<PlayerAttributeHandler>();
@@ -107,9 +106,11 @@ public class Player : BaseEntity {
         equipment = GetComponent<PlayerEquipmentHandler>();
         interaction = GetComponent<PlayerInteractionHandler>();
         combat = GetComponent<PlayerCombatHandler>();
+        
+        camera = FindObjectOfType<PlayerCamera>();
+        combat.defenseMagic = FindObjectOfType<PlayerDefenseMagic>();
 
 
-        camera.owner = this;
         locomotion.owner = this;
         animation.owner = this;
         attribute.owner = this;
@@ -117,6 +118,9 @@ public class Player : BaseEntity {
         equipment.owner = this;
         interaction.owner = this;
         combat.owner = this;
+
+        camera.owner = this;
+        combat.defenseMagic.owner = this;
 
     }
     void Start() {
@@ -136,6 +140,7 @@ public class Player : BaseEntity {
 
         camera.HandleCamera();
         locomotion.HandleAllLocomotion();
+        animation.HandleAllParameter();
         attribute.HandleStamina();
         inventory.HandleQuickSlotSwapping();
         interaction.HandleInteraction();
@@ -148,6 +153,7 @@ public class Player : BaseEntity {
     protected override IEnumerator Die() {
 
         isDeath = true;
+        isInvincible = true;
         // IF PLAYER DIED, EACH HANDLER WILL STOP A FEATURES
         
         animation.PlayTargetAction("Death", true, true, false, false);

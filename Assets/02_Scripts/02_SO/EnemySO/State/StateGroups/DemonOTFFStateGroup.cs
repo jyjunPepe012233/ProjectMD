@@ -267,7 +267,7 @@ public class DemonOTFFStateGroup {
 			TakeHealthDamage thisHit = (TakeHealthDamage)enemy.statusFx.instantEffectSlot;
 			int poiseBreakAmount = TakeHealthDamage.GetPoiseBreakAmount(thisHit.poiseBreakDamage, enemy.attribute.poiseBreakResistance);
 			
-			enemy.animation.AttemptHumanoidPoiseBreak(poiseBreakAmount, thisHit.hitAngle);
+			enemy.animation.AttemptHumanoidPoiseBreak(poiseBreakAmount, thisHit.attackAngle);
 		}
 
 		public override void Tick() {

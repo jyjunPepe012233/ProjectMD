@@ -137,7 +137,8 @@ SubShader {
         };
 
 
-        struct pixel_t {
+        struct
+        pixel_t {
             UNITY_VERTEX_INPUT_INSTANCE_ID
             UNITY_VERTEX_OUTPUT_STEREO
             float4	position        : SV_POSITION;
