@@ -185,7 +185,7 @@ namespace MinD.Runtime.UI {
 
         void OnSlotSelected(InventorySlot selectedSlot)
         {
-            // 여기서 필요한 처리를 추가
+            // 여기서 필요한 처리를 추가할 수 있습니다.
         }
         void UpdateCategoryPolygon()
         {
