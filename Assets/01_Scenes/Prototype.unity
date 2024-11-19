@@ -1773,7 +1773,7 @@ MonoBehaviour:
   usingMagic: 0
   usingDefenseMagic: 0
   isParrying: 0
-  defenseMagic: {fileID: 538687333}
+  defenseMagic: {fileID: 0}
   currentCastingMagic: {fileID: 0}
 --- !u!1 &552106009 stripped
 GameObject:
@@ -9973,8 +9973,7 @@ MonoBehaviour:
     type: 3}
   blinkVfx: {fileID: 1853418275489752793, guid: 71768db8bf1184a848228d8b61674da0,
     type: 3}
-  defenseMagicHexagon: {fileID: 5036567524009738203, guid: dac140ba286454422bdbc7a62ce14947,
-    type: 3}
+  defenseMagicHexagon: {fileID: 0}
 --- !u!4 &1749224850
 Transform:
   m_ObjectHideFlags: 0
