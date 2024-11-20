@@ -82,10 +82,11 @@ public class PlayerCombatHandler : MonoBehaviour {
 
 
 
-		} else if (currentCastingMagic != null) {
+		} else if (currentCastingMagic != null && !currentCastingMagic.isInputReleased) {
 
 			// IF INPUT IS NULL AND DURING CASTING => USE MAGIC INPUT IS END
 			currentCastingMagic.OnReleaseInput();
+			currentCastingMagic.isInputReleased = true;
 
 		}
 	}

@@ -17,7 +17,6 @@ public class LghtOfDrgnSlyng : Magic {
 	[SerializeField] private GameObject magicObject;
 	
 	[Header("[ Flags ]")]
-	public bool isInputReleased;
 	public bool isBlasting;
 	
 	private LghtOfDrgnSlyngMainObj currentMagic;
@@ -90,9 +89,8 @@ public class LghtOfDrgnSlyng : Magic {
 		}
 
 	}
-	
+
 	public override void OnReleaseInput() {
-		isInputReleased = true;
 	}
 
 	public override void OnCancel() {
