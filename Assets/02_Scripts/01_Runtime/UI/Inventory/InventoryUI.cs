@@ -9,6 +9,9 @@ namespace MinD.Runtime.UI {
 
     public class InventoryUI : MonoBehaviour
     {
+        // InventoryUI 클래스의 멤버 변수로 ItemActionPanel 추가
+        public ItemActionPanel itemActionPanel; // 아이템 액션 패널
+        
         public Text itemNameText; // 아이템 이름 표시
         public Text itemDescriptionText; // 아이템 설명 표시
         
@@ -75,6 +78,7 @@ namespace MinD.Runtime.UI {
         {
             HandleInput();
             MaintainFocus();
+            // Q 키를 눌렀을 때 패널을 숨김
         }
 
         void ToggleInventory()
@@ -103,8 +107,16 @@ namespace MinD.Runtime.UI {
                 ToggleInventory();
             }
 
-            if (!isInventoryActive) return;
+            if (!isInventoryActive) return; // 인벤토리가 활성화되지 않으면 아무것도 하지 않음
 
+            // Q 키를 눌렀을 때 패널을 숨김
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                itemActionPanel.HidePanel(); // 패널 숨기기
+                return; // 패널을 숨기면 추가 입력 처리 중단
+            }
+
+            // 슬롯 이동 관련 입력 처리
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 ChangeCategory(-1);
@@ -132,15 +144,18 @@ namespace MinD.Runtime.UI {
                 MoveSelection(inventoryWidth);
             }
 
-            // Enter 키로 선택된 슬롯 처리
+            // Enter 키를 눌렀을 때 패널을 띄움
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
-                OnSlotSelected(selectedSlot); // 슬롯 선택 로직 실행
-
-                selectedSlot.OnClick(); // 슬롯 클릭 메서드 직접 호출
+                var item = selectedSlot.GetCurrentItem();
+                if (item != null && item.itemCount > 0) // 아이템이 있을 때만 패널 표시
+                {
+                    itemActionPanel.ShowPanel(item, selectedSlotIndex); // 아이템과 슬롯 인덱스를 전달
+                }
             }
         }
+
 
 
 
@@ -183,9 +198,14 @@ namespace MinD.Runtime.UI {
             scrollRect.normalizedPosition = new Vector2(scrollRect.normalizedPosition.y, 0);
         }
 
+        // OnSlotSelected 메서드 수정
         void OnSlotSelected(InventorySlot selectedSlot)
         {
-            // 여기서 필요한 처리를 추가할 수 있습니다.
+            int selectedIndex = categorySlots[currentCategoryIndex].IndexOf(selectedSlot);
+            if (selectedIndex >= 0)
+            {
+                itemActionPanel.ShowPanel(selectedSlot.GetCurrentItem(), selectedIndex); // 슬롯 인덱스 전달
+            }
         }
         void UpdateCategoryPolygon()
         {
@@ -323,6 +343,10 @@ namespace MinD.Runtime.UI {
             }
         }
 
+        public int GetSlotIndex(InventorySlot slot)
+        {
+            return categorySlots[currentCategoryIndex].IndexOf(slot);
+        }
         public void UpdateInventoryUI()
         {
             Item[] playerItems = playerInventory.playerItemList;
