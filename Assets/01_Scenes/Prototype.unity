@@ -1726,10 +1726,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  currentToolSlot: 0
   toolSlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 73aabb41e65a840a188fdace1deb0048, type: 2}
+  - {fileID: 11400000, guid: aa1236ea5ad7048a6a1919ed4c6daf74, type: 2}
+  - {fileID: 11400000, guid: 6ab8a0eab9dca461eb7178d8d1b2ba2c, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -9973,7 +9974,6 @@ MonoBehaviour:
     type: 3}
   blinkVfx: {fileID: 1853418275489752793, guid: 71768db8bf1184a848228d8b61674da0,
     type: 3}
-  defenseMagicHexagon: {fileID: 0}
 --- !u!4 &1749224850
 Transform:
   m_ObjectHideFlags: 0

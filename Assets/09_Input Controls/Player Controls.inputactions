@@ -320,6 +320,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Use Tool",
+                    "type": "Button",
+                    "id": "c260ef30-805f-4a2d-ae87-67f3aacf3c58",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Swap Tool",
+                    "type": "Button",
+                    "id": "997e3b6a-187c-4efe-92d2-08277d81a3d9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Defense Magic",
                     "type": "Button",
                     "id": "ab7dcc72-6367-4eaa-9635-1e0f08a0efc9",
@@ -406,6 +424,61 @@
                     "action": "Defense Magic",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14abd203-23aa-4cfa-8348-37b9cb41441f",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Use Tool",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "627e398f-d8e7-45a5-b1e6-704a0418cabd",
+                    "path": "<SwitchProControllerHID>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Pro-Controller",
+                    "action": "Use Tool",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis [Keyboard]",
+                    "id": "c57dff1b-8f4d-47c8-850a-5f421b7b1a0a",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap Tool",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "d3578516-19ea-4a47-ad7f-08ab8772f8a6",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Swap Tool",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "979ff137-c99d-4b2e-888d-91e167961b6e",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Swap Tool",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

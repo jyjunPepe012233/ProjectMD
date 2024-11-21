@@ -342,6 +342,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Use Tool"",
+                    ""type"": ""Button"",
+                    ""id"": ""c260ef30-805f-4a2d-ae87-67f3aacf3c58"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Swap Tool"",
+                    ""type"": ""Button"",
+                    ""id"": ""997e3b6a-187c-4efe-92d2-08277d81a3d9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Defense Magic"",
                     ""type"": ""Button"",
                     ""id"": ""ab7dcc72-6367-4eaa-9635-1e0f08a0efc9"",
@@ -428,6 +446,61 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Defense Magic"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14abd203-23aa-4cfa-8348-37b9cb41441f"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Use Tool"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""627e398f-d8e7-45a5-b1e6-704a0418cabd"",
+                    ""path"": ""<SwitchProControllerHID>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Pro-Controller"",
+                    ""action"": ""Use Tool"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis [Keyboard]"",
+                    ""id"": ""c57dff1b-8f4d-47c8-850a-5f421b7b1a0a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap Tool"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""d3578516-19ea-4a47-ad7f-08ab8772f8a6"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Swap Tool"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""979ff137-c99d-4b2e-888d-91e167961b6e"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Swap Tool"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -479,6 +552,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
         m_Combat_UseMagic = m_Combat.FindAction("Use Magic", throwIfNotFound: true);
         m_Combat_SwapMagic = m_Combat.FindAction("Swap Magic", throwIfNotFound: true);
+        m_Combat_UseTool = m_Combat.FindAction("Use Tool", throwIfNotFound: true);
+        m_Combat_SwapTool = m_Combat.FindAction("Swap Tool", throwIfNotFound: true);
         m_Combat_DefenseMagic = m_Combat.FindAction("Defense Magic", throwIfNotFound: true);
     }
 
@@ -713,6 +788,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<ICombatActions> m_CombatActionsCallbackInterfaces = new List<ICombatActions>();
     private readonly InputAction m_Combat_UseMagic;
     private readonly InputAction m_Combat_SwapMagic;
+    private readonly InputAction m_Combat_UseTool;
+    private readonly InputAction m_Combat_SwapTool;
     private readonly InputAction m_Combat_DefenseMagic;
     public struct CombatActions
     {
@@ -720,6 +797,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public CombatActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @UseMagic => m_Wrapper.m_Combat_UseMagic;
         public InputAction @SwapMagic => m_Wrapper.m_Combat_SwapMagic;
+        public InputAction @UseTool => m_Wrapper.m_Combat_UseTool;
+        public InputAction @SwapTool => m_Wrapper.m_Combat_SwapTool;
         public InputAction @DefenseMagic => m_Wrapper.m_Combat_DefenseMagic;
         public InputActionMap Get() { return m_Wrapper.m_Combat; }
         public void Enable() { Get().Enable(); }
@@ -736,6 +815,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwapMagic.started += instance.OnSwapMagic;
             @SwapMagic.performed += instance.OnSwapMagic;
             @SwapMagic.canceled += instance.OnSwapMagic;
+            @UseTool.started += instance.OnUseTool;
+            @UseTool.performed += instance.OnUseTool;
+            @UseTool.canceled += instance.OnUseTool;
+            @SwapTool.started += instance.OnSwapTool;
+            @SwapTool.performed += instance.OnSwapTool;
+            @SwapTool.canceled += instance.OnSwapTool;
             @DefenseMagic.started += instance.OnDefenseMagic;
             @DefenseMagic.performed += instance.OnDefenseMagic;
             @DefenseMagic.canceled += instance.OnDefenseMagic;
@@ -749,6 +834,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwapMagic.started -= instance.OnSwapMagic;
             @SwapMagic.performed -= instance.OnSwapMagic;
             @SwapMagic.canceled -= instance.OnSwapMagic;
+            @UseTool.started -= instance.OnUseTool;
+            @UseTool.performed -= instance.OnUseTool;
+            @UseTool.canceled -= instance.OnUseTool;
+            @SwapTool.started -= instance.OnSwapTool;
+            @SwapTool.performed -= instance.OnSwapTool;
+            @SwapTool.canceled -= instance.OnSwapTool;
             @DefenseMagic.started -= instance.OnDefenseMagic;
             @DefenseMagic.performed -= instance.OnDefenseMagic;
             @DefenseMagic.canceled -= instance.OnDefenseMagic;
@@ -807,6 +898,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnUseMagic(InputAction.CallbackContext context);
         void OnSwapMagic(InputAction.CallbackContext context);
+        void OnUseTool(InputAction.CallbackContext context);
+        void OnSwapTool(InputAction.CallbackContext context);
         void OnDefenseMagic(InputAction.CallbackContext context);
     }
 }

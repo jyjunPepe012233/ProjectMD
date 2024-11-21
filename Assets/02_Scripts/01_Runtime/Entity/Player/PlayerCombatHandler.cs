@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
+using System.Linq;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
 using MinD.SO.Item;
+using UnityEditor;
 using UnityEngine;
+using Tool = MinD.SO.Item.Tool;
 
 
 namespace MinD.Runtime.Entity {
@@ -36,6 +39,7 @@ public class PlayerCombatHandler : MonoBehaviour {
 		}
 
 		HandleUsingMagic();
+		HandleUsingTool();
 		HandleDefenseMagic();
 	}
 
@@ -88,6 +92,37 @@ public class PlayerCombatHandler : MonoBehaviour {
 			currentCastingMagic.OnReleaseInput();
 			currentCastingMagic.isInputReleased = true;
 
+		}
+	}
+
+	private void HandleUsingTool() {
+
+		// HANDLE TOOL USING COOL TIME
+		Tool[] tools = owner.inventory.toolSlots.Where(i => i != null && i.remainingCoolTime > 0).ToArray();
+		for (int i = 0; i < tools.Length; i++) {
+			tools[i].remainingCoolTime = Mathf.Max((tools[i].remainingCoolTime - Time.deltaTime), 0); // SET MINIMUM TO 0
+		}
+		
+		
+		// USING TOOL
+		if (PlayerInputManager.Instance.useToolInput) {
+
+			if (owner.isPerformingAction) {
+				return;
+			}
+			if (!owner.isGrounded) {
+				return;
+			}
+
+			Tool useTool = owner.inventory.toolSlots[owner.inventory.currentToolSlot];
+
+			if (useTool.remainingCoolTime > 0) {
+				return;
+			}
+			
+
+			useTool.OnUse(owner);
+			useTool.remainingCoolTime = useTool.usingCoolTime;
 		}
 	}
 

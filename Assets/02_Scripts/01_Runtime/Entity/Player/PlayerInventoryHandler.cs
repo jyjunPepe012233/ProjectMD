@@ -19,15 +19,16 @@ public class PlayerInventoryHandler : MonoBehaviour {
 	[Space(5)]
 	public int allowedTalismanSlotCount;
 	public Talisman[] talismanSlots = new Talisman[5];
-
-	[Space(5)]
+	
+	[Header("[ Tool Slot ]")]
+	public int currentToolSlot;
 	public Tool[] toolSlots = new Tool[10];
 	
 
 	[Header("[ Magic Slot ]")]
 	public int currentMagicSlot;
 	public Magic[] magicSlots = new Magic[1]; // CHANGE SLOT SIZE BY ATTRIBUTE IN RUNTIME
-
+	
 	private int usingMemory; // MEMORY AMOUNT OF CURRENT USING MAGICS
 
 
@@ -55,7 +56,6 @@ public class PlayerInventoryHandler : MonoBehaviour {
 
 		// TODO: LOAD THE ITEM FROM SAVE DAT
 	}
-
 	// load quickslot data
 	// load slot and set selected Magic
 
@@ -361,12 +361,11 @@ public class PlayerInventoryHandler : MonoBehaviour {
 
 	}
 
-	// RESIZE MAGIC SLOT
-
 
 
 	public void HandleQuickSlotSwapping() {
 		HandleMagicSlotSwapping();
+		HandleToolSlotSwapping();
 	}
 
 	private void HandleMagicSlotSwapping() {
@@ -404,6 +403,40 @@ public class PlayerInventoryHandler : MonoBehaviour {
 		PlayerInputManager.Instance.swapMagicInput = 0;
 	}
 
+	private void HandleToolSlotSwapping() {
+
+		if (PlayerInputManager.Instance.swapToolInput == 0) {
+			return;
+		}
+
+		
+		// CANCEL SWAP IF PLAYER HASN'T ANY TOOL
+		if (toolSlots.Count(i => i != null) == 0) {
+			return;
+		}
+		
+		
+		if (PlayerInputManager.Instance.swapToolInput == 1) {
+			while (true) {
+				// TO SKIP EMPTY TOOL SLOT
+				// REMAINDER OPERATING TO CYCLE THE LIST
+				currentToolSlot = (currentToolSlot + 1) % toolSlots.Length;
+				if (toolSlots[currentToolSlot] != null) {
+					break;
+				}
+			}
+			
+		} else if (PlayerInputManager.Instance.swapToolInput == 1) {
+			while (true) {
+				currentToolSlot = (currentToolSlot - 1) % toolSlots.Length;
+				if (toolSlots[currentToolSlot] != null) {
+					break;
+				}
+			}
+		}
+		
+		PlayerInputManager.Instance.swapToolInput = 0;
+	}
 }
 
 }
