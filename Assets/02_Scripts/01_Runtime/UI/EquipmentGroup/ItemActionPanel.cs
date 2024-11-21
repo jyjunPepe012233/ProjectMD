@@ -17,6 +17,7 @@ namespace MinD.Runtime.UI
 
         private Item currentItem;
         private PlayerInventoryHandler playerInventoryHandler; // PlayerInventoryHandler 인스턴스
+        private InventoryUI inventoryUI; // InventoryUI 인스턴스 추가
 
         private int equippedTalismanCount => playerInventoryHandler.talismanSlots.Count(t => t != null);
 
@@ -32,6 +33,13 @@ namespace MinD.Runtime.UI
             if (playerInventoryHandler == null)
             {
                 Debug.LogError("PlayerInventoryHandler not found in the scene!");
+            }
+
+            // InventoryUI 인스턴스 찾기
+            inventoryUI = FindObjectOfType<InventoryUI>();
+            if (inventoryUI == null)
+            {
+                Debug.LogError("InventoryUI not found in the scene!");
             }
         }
 
@@ -131,6 +139,7 @@ namespace MinD.Runtime.UI
                 }
             }
             HidePanel(); // 패널 숨기기
+            inventoryUI.UpdateInventoryUI();
         }
 
 
@@ -145,6 +154,7 @@ namespace MinD.Runtime.UI
                 Debug.Log($"버리기: {currentItem.itemName}"); // 아이템 이름 로그 출력
             }
             HidePanel(); // 패널 숨기기
+            inventoryUI.UpdateInventoryUI(); // 인벤토리 갱신
         }
 
         private void OnDestroyButtonClicked()
@@ -156,6 +166,7 @@ namespace MinD.Runtime.UI
                 Debug.Log($"파기: {currentItem.itemName}"); // 아이템 이름 로그 출력
             }
             HidePanel(); // 패널 숨기기
+            inventoryUI.UpdateInventoryUI(); // 인벤토리 갱신
         }
     }
 }
