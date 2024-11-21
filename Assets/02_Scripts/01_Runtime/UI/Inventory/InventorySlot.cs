@@ -2,8 +2,8 @@ using MinD.SO.Item;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MinD.Runtime.UI {
-
+namespace MinD.Runtime.UI
+{
     public class InventorySlot : MonoBehaviour
     {
         public Image itemImage;
@@ -30,16 +30,25 @@ namespace MinD.Runtime.UI {
 
             currentItem = item;
 
-            if (item != null && item.itemCount > 0)
+            if (item != null)
             {
                 itemImage.sprite = item.itemImage;
                 itemImage.enabled = true;
-                itemCountText.text = item.itemCount.ToString();
-                itemCountText.enabled = true;
+
+                // 아이템 수가 2개 이상일 때만 카운트 표시
+                if (item.itemCount >= 2)
+                {
+                    itemCountText.text = item.itemCount.ToString();
+                    itemCountText.enabled = true; // 카운트 텍스트 활성화
+                }
+                else
+                {
+                    itemCountText.enabled = false; // 카운트 텍스트 비활성화
+                }
             }
             else
             {
-                ClearSlot();
+                ClearSlot(); // 아이템이 null인 경우 슬롯 비우기
             }
         }
 
@@ -73,8 +82,6 @@ namespace MinD.Runtime.UI {
                 }
             }
         }
-
-
 
         public Item GetCurrentItem()
         {
