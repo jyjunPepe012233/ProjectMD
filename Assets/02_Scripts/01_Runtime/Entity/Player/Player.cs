@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using MinD.Runtime.Managers;
 using MinD.Runtime.System;
-using UnityEditor.Playables;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
@@ -17,7 +15,6 @@ namespace MinD.Runtime.Entity {
 public class Player : BaseEntity {
     
     [HideInInspector] public PlayerCamera camera;
-
     [HideInInspector] public PlayerLocomotionHandler locomotion;
     [HideInInspector] public PlayerAnimationHandler animation;
     [HideInInspector] public PlayerAttributeHandler attribute;
@@ -150,7 +147,7 @@ public class Player : BaseEntity {
 
 
 
-    protected override IEnumerator Die() {
+    private IEnumerator Die() {
 
         isDeath = true;
         isInvincible = true;

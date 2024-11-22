@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using MinD.Runtime.Entity;
+using UnityEngine;
 
 namespace MinD.Runtime.Managers {
 
@@ -12,18 +13,25 @@ public class WorldEntityManager : Singleton<WorldEntityManager> {
 			return player_;
 		}
 	}
-	
 	private Player player_;
 	
-	private List<BaseEntity> worldEnemies = new List<BaseEntity>();
+	[SerializeField] private List<Enemy> worldEnemies;
 
 
 
 	public void RegisteringEnemyOnWorld(Enemy registeringEnemy) {
 
-		// ENEMY REGISTERING ON AWAKE
+		// A ENEMY WILL REGISTER ON SCENE AWAKE
 		worldEnemies.Add(registeringEnemy);
+	}
 
+
+	public void ResetAllEnemyOnWorld() {
+		for (int i = 0; i < worldEnemies.Count; i++) {
+
+			worldEnemies[i].Reload();
+
+		}
 	}
 
 }

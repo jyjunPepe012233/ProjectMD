@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using MinD.SO.EnemySO.State;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
@@ -33,14 +36,17 @@ public class EnemyStateMachine : MonoBehaviour {
 		}
 	}
 
-	public int GetCurrentStateIndex() {
-		return currentStateIndex;
-	}
-	public int GetCurrentGlobalStateIndex() {
-		return currentGlobalStateIndex;
+	public int FindStateIndex(EnemyState stateObject) {
+		
+		if (owner.states.Contains(stateObject)) {
+			return Array.FindIndex(owner.states, state => state == stateObject);
+		}
+
+		throw new UnityException("!! Can't find state " + stateObject.name + " in array");
 	}
 	
-
+	
+	
 	public void ChangeStateByIndex(int stateIndex) {
 
 		EnemyState newState = owner.states[stateIndex];

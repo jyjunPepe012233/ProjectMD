@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,9 +14,6 @@ public abstract class BaseEntity : MonoBehaviour {
 	public bool isInvincible;
 	public bool immunePoiseBreak;
 	public List<Transform> targetOptions;
-	
-	[Header("[ Attributes ]")]
-	
 
 	[HideInInspector] public bool isDeath;
 
@@ -43,8 +39,6 @@ public abstract class BaseEntity : MonoBehaviour {
 		statusFx.HandleAllEffect();
 		
 	}
-	
-	protected abstract IEnumerator Die();
 
 	private void OnDrawGizmos() {
 

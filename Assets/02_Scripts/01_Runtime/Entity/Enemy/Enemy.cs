@@ -1,15 +1,9 @@
 using System;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
-using MinD.Runtime.System;
 using MinD.SO.EnemySO;
 using MinD.SO.EnemySO.State;
-using MinD.SO.StatusFX.Effects;
-using Unity.VisualScripting;
-using UnityEngine.Serialization;
 
 namespace MinD.Runtime.Entity {
 
@@ -27,6 +21,10 @@ public abstract class Enemy : BaseEntity {
 	[HideInInspector] public EnemyAnimationHandler animation;
 	[HideInInspector] public EnemyUtilityHandler utility;
 	
+	[HideInInspector] public Vector3 worldPlacedPosition;
+	[HideInInspector] public Quaternion worldPlacedRotation;
+	
+	
 	[Space(15)]
 	public EnemyState currentState;
 	public EnemyState previousState;
@@ -41,16 +39,11 @@ public abstract class Enemy : BaseEntity {
 	[SerializeField] private int curHp;
 	public int CurHp {
 		get => curHp;
-		set {
-			curHp = value;
-			if (curHp <= 0) {
-				StartDie();
-			}
-			
-			curHp = Mathf.Clamp(curHp, 0, attribute.maxHp);
-		}
+		set => curHp = Mathf.Clamp(value, 0, attribute.maxHp);
 	}
 	public EnemyAttribute attribute;
+	
+	
 	
 	[Header("[ Flags ]")]
 	public bool isPerformingAction;
@@ -58,8 +51,9 @@ public abstract class Enemy : BaseEntity {
 	
 	public Action getHitAction = new Action(() => {});
 	
+	
 
-
+	// SETUP A OBJECT SETTINGS
 	protected override void Awake() {
 
 		base.Awake();
@@ -71,19 +65,23 @@ public abstract class Enemy : BaseEntity {
 		animation = GetComponent<EnemyAnimationHandler>();
 		utility = GetComponent<EnemyUtilityHandler>();
 		
-
 		stateMachine.owner = this;
 		combat.owner = this;
 		animation.owner = this;
 		utility.owner = this;
 		
-		
+
 		WorldEntityManager.Instance.RegisteringEnemyOnWorld(this);
-	} // SETUP A OBJECT SETTINGS
-	private void OnEnable() {
-		Setup();
-	} // SETUP CODES WHEN ENABLED
+		worldPlacedPosition = transform.position;
+		worldPlacedRotation = transform.rotation;
+		utility.AllCollisionIgnoreSetup();
+		
+		
+		SetupStatesArray();
+		Reload();
+	} 
 	
+	// CALL SETUP
 	protected override void Update() {
 		
 		base.Update();
@@ -93,25 +91,20 @@ public abstract class Enemy : BaseEntity {
 	}
 	
 	
-
-	protected virtual void Setup() {
-
-		SetupStates();
+	
+	
+	// ASSIGN STATE ARRAY AND 
+	protected abstract void SetupStatesArray();
+	
+	
+	// SETUP START STATE AND RUNTIME ATTRIBUTE SETTING
+	public virtual void Reload() {
 
 		curHp = attribute.maxHp;
-		utility.AllCollisionIgnoreSetup();
-	}
-	
-	protected abstract void SetupStates();
-
-	private void StartDie() {
+		transform.position = worldPlacedPosition;
+		transform.position = worldPlacedPosition;
 		
-		isDeath = true;
-		stateMachine.ExitAllState();
-
-		PhysicUtility.SetActiveChildrenColliders(transform, false);
-
-		StartCoroutine(Die());
+		// NEED TO SET THE START STATE IN OVERRIDE
 	}
 }
 
