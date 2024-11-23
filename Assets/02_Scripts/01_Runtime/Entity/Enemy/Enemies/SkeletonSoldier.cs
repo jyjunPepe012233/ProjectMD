@@ -1,19 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using MinD.Runtime.Entity;
 using MinD.SO.EnemySO.State;
 using MinD.SO.EnemySO.State.StateGroups;
-using UnityEditor;
-using UnityEngine;
-using NotImplementedException = System.NotImplementedException;
 
 
 namespace MinD.Runtime.Entity.Enemies {
 
 
-    public class skeltonSoldier : Enemy
+    public class SkeletonSoldier : Enemy
     {
-        protected override void SetupStates()
+        protected override void SetupStatesArray()
         {
             states = new EnemyState[10];
             states[(int)SkeletonSoldierStateGroup.States.Idle] = new SkeletonSoldierStateGroup.PursueTarget();
@@ -26,15 +20,6 @@ namespace MinD.Runtime.Entity.Enemies {
             states[(int)SkeletonSoldierStateGroup.States.Idle] = new SkeletonSoldierStateGroup.FackDath();
             states[(int)SkeletonSoldierStateGroup.States.Idle] = new SkeletonSoldierStateGroup.Deth();
             states[(int)SkeletonSoldierStateGroup.States.Idle] = new SkeletonSoldierStateGroup.GetHit();
-        }
-        
-        protected override IEnumerator Die()
-        {
-            animation.PlayTargetAnimation("Death",0.01f);
-            
-            yield return new WaitForSeconds(5.5f);
-            
-            Destroy(gameObject);
         }
     }
 }

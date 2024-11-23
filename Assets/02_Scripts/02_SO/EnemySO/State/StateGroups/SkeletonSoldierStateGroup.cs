@@ -71,7 +71,7 @@ public class SkeletonSoldierStateGroup
         //         //Idle
         //     }
         //     
-        // }
+        }
 
         public override void Exit() { }
     }
