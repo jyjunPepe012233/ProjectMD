@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.UI;
 
 namespace MinD.Runtime.UI {
 
@@ -13,6 +14,9 @@ public class PlayerHUD : MonoBehaviour {
     [Header("[ Burst Popup ]")]
     public PlayableDirector youDiedPopup;
     public PlayableDirector anchorDiscoveredPopup;
+    
+    [Header("[ Black Screen ]")]
+    public Image blackScreen;
 }
 
 }

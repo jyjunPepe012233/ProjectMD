@@ -4,18 +4,9 @@ using UnityEngine;
 
 namespace MinD.Runtime.Managers {
 
-public class WorldEntityManager : Singleton<WorldEntityManager> {
-
-	public Player player {
-		get {
-			if (player_ == null)
-				player_ = FindObjectOfType<Player>();
-			return player_;
-		}
-	}
-	private Player player_;
+public class WorldEnemyManager : Singleton<WorldEnemyManager> {
 	
-	[SerializeField] private List<Enemy> worldEnemies;
+	[SerializeField] private List<Enemy> worldEnemies = new List<Enemy>();
 
 
 

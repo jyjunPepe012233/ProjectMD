@@ -73,9 +73,9 @@ public class PlayerAttributeHandler : MonoBehaviour {
         divine = faith * 0.04f;
     }
 
-    void ModifyAttributesAsPerEquipment() {
-
-
+    public void CalculateAttributesByEquipment() {
+        
+        
     }
 
 

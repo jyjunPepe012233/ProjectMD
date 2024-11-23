@@ -85,7 +85,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
         if (blinkInput) {
             // WASN'T ELAPSE HOLD TIME
             
-            WorldEntityManager.Instance.player.locomotion.AttemptBlink();
+            PlayerManager.Instance.currentPlayerCharacter.locomotion.AttemptBlink();
         }
 
     }

@@ -71,7 +71,7 @@ public abstract class Enemy : BaseEntity {
 		utility.owner = this;
 		
 
-		WorldEntityManager.Instance.RegisteringEnemyOnWorld(this);
+		WorldEnemyManager.Instance.RegisteringEnemyOnWorld(this);
 		worldPlacedPosition = transform.position;
 		worldPlacedRotation = transform.rotation;
 		utility.AllCollisionIgnoreSetup();

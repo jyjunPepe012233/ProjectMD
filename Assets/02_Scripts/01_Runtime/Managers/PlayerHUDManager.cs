@@ -9,9 +9,13 @@ namespace MinD.Runtime.Managers {
 public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
 	public Player player;
-
 	public PlayerHUD playerHUD;
 
+	public bool isPlayingBurstPopup;
+	
+	public bool isFadingWithBlack;
+	private Coroutine fadingBlackScreenCoroutine; 
+	
 
 
 	public void Update() {
@@ -53,8 +57,21 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
 
 
-	public void PlayBurstPopup(PlayableDirector burstPopupDirector) {
-		StartCoroutine(PlayYouDiedPopupCoroutine(burstPopupDirector));
+	public void PlayBurstPopup(PlayableDirector burstPopupDirector, bool playWithForce = false) {
+
+		if (isPlayingBurstPopup) {
+			
+			if (playWithForce) {
+				StartCoroutine(PlayYouDiedPopupCoroutine(burstPopupDirector));
+			} else {
+				throw new UnityException("!! BURST POPUP IS ALREADY PLAYING!");
+			}
+			
+		} else {
+			StartCoroutine(PlayYouDiedPopupCoroutine(burstPopupDirector));
+			
+		}
+		
 	}
 
 	private IEnumerator PlayYouDiedPopupCoroutine(PlayableDirector burstPopupDirector) {
@@ -67,6 +84,56 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 		burstPopupDirector.gameObject.SetActive(false);
 
 	}
+
+
+
+	public void FadeInToBlack(float duration) {
+
+		if (isFadingWithBlack) {
+			StopCoroutine(fadingBlackScreenCoroutine);
+		}
+
+		fadingBlackScreenCoroutine = StartCoroutine(FadeBlackScreen(duration, true));
+	}
+
+	public void FadeOutFromBlack(float duration) {
+		
+		if (isFadingWithBlack) {
+			StopCoroutine(fadingBlackScreenCoroutine);
+		}
+		
+		fadingBlackScreenCoroutine = StartCoroutine(FadeBlackScreen(duration, false));
+	}
+
+	private IEnumerator FadeBlackScreen(float duration, bool fadeDirection) {
+		
+		isFadingWithBlack = true;
+		playerHUD.blackScreen.gameObject.SetActive(true);
+		
+		playerHUD.blackScreen.color = new Color(0, 0, 0, fadeDirection ? 0 : 1);
+		
+		
+		float elapsedTime = 0;
+		while (true) {
+
+			elapsedTime += Time.deltaTime;
+			
+			playerHUD.blackScreen.color = new Color(0, 0, 0, (fadeDirection ? (elapsedTime / duration) : (1-elapsedTime / duration))); 
+			yield return null;
+
+			if (elapsedTime > duration) { 
+				break;
+			}
+		}
+		
+		
+		isFadingWithBlack = false;
+		playerHUD.blackScreen.gameObject.SetActive(fadeDirection);
+		
+		playerHUD.blackScreen.color = new Color(0, 0, 0, fadeDirection ? 1 : 0);
+		
+	}
+
 	
 }
 
