@@ -2,6 +2,7 @@ using System.Collections;
 using MinD.Runtime.Entity;
 using MinD.Runtime.UI;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace MinD.Runtime.Managers {
 
@@ -52,20 +53,21 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
 
 
-	public void OpenYouDiedPopup() {
-		StartCoroutine(OpenYouDiedPopupCoroutine());
+	public void PlayBurstPopup(PlayableDirector burstPopupDirector) {
+		StartCoroutine(PlayYouDiedPopupCoroutine(burstPopupDirector));
 	}
 
-	private IEnumerator OpenYouDiedPopupCoroutine() {
+	private IEnumerator PlayYouDiedPopupCoroutine(PlayableDirector burstPopupDirector) {
 
-		playerHUD.youDiedPopup.gameObject.SetActive(true);
-		playerHUD.youDiedPopup.Play();
+		burstPopupDirector.gameObject.SetActive(true);
+		burstPopupDirector.Play();
 
-		yield return new WaitForSeconds((float)playerHUD.youDiedPopup.duration);
+		yield return new WaitForSeconds((float)burstPopupDirector.duration);
 		
-		playerHUD.youDiedPopup.gameObject.SetActive(false);
+		burstPopupDirector.gameObject.SetActive(false);
 
 	}
+	
 }
 
 }

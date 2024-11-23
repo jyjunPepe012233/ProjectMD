@@ -1,6 +1,7 @@
 using System.Collections;
 using MinD.Runtime.Managers;
 using MinD.Runtime.System;
+using MinD.Runtime.UI;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
@@ -158,7 +159,7 @@ public class Player : BaseEntity {
         
         yield return new WaitForSeconds(2.5f);
         
-        PlayerHUDManager.Instance.OpenYouDiedPopup();
+        PlayerHUDManager.Instance.PlayBurstPopup(PlayerHUDManager.Instance.playerHUD.youDiedPopup);
     }
 
         

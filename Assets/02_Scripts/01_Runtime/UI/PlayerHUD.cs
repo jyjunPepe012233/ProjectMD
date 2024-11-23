@@ -10,8 +10,9 @@ public class PlayerHUD : MonoBehaviour {
     public StatusBarHUD mpBar;
     public StatusBarHUD staminaBar;
 
-    [Header("[ You Died Popup ]")]
+    [Header("[ Burst Popup ]")]
     public PlayableDirector youDiedPopup;
+    public PlayableDirector anchorDiscoveredPopup;
 }
 
 }
