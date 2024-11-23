@@ -6,10 +6,13 @@ public class PlayerManager : Singleton<PlayerManager> {
 
 	public Player currentPlayerCharacter {
 		get {
-			if (currentPlayerCharacter_ == null ||
-			    !currentPlayerCharacter.gameObject.activeSelf)
-				// IF CURRENT PLAYER CHARACTER HASN'T BEEN ASSIGNED OR PLAYER IS MISSING
+			if (currentPlayerCharacter_ == null)
 				currentPlayerCharacter_ = FindObjectOfType<Player>();
+
+			// IF CURRENT PLAYER CHARACTER HASN'T BEEN ASSIGNED OR PLAYER IS MISSING
+			else if (currentPlayerCharacter_.gameObject.activeSelf) {
+				currentPlayerCharacter_ = FindObjectOfType<Player>();
+			}
 			
 			return currentPlayerCharacter_;
 		}
