@@ -1,7 +1,6 @@
 using MinD.Runtime.Utils;
-using MinD.SO.Utils;
+using MinD.SO.Object;
 using UnityEditor;
-using UnityEditor.AnimatedValues;
 using UnityEngine;
 
 namespace MinD.Editor.Inspector {

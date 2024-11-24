@@ -1,9 +1,9 @@
 using MinD.Structs;
 using UnityEngine;
 
-namespace MinD.SO.Utils {
+namespace MinD.SO.Object {
 
-[CreateAssetMenu(fileName = "Damage Data", menuName = "MinD/Utils/Damage Data")]
+[CreateAssetMenu(fileName = "Damage Data", menuName = "MinD/Object/Damage Data")]
 public class DamageData : ScriptableObject {
 	
 	public Damage damage; 

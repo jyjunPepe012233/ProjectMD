@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using MinD.Runtime.Entity;
+using MinD.SO.Object;
 using MinD.SO.StatusFX;
 using MinD.SO.StatusFX.Effects;
-using MinD.SO.Utils;
 using UnityEngine;
 
 namespace MinD.Runtime.Utils {

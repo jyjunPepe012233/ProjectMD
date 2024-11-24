@@ -1,8 +1,7 @@
 using MinD.Runtime.Entity;
 using MinD.Runtime.System;
 using MinD.Runtime.Utils;
-using MinD.SO.Utils;
-using MinD.Structs;
+using MinD.SO.Object;
 using UnityEngine;
 
 namespace MinD.Runtime.Object.Magics {

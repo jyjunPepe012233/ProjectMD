@@ -1,8 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using MinD.Runtime.Entity;
 using MinD.Runtime.Managers;
 using MinD.Runtime.System;
+using MinD.Runtime.UI;
+using MinD.SO.Object;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,7 +18,7 @@ public class GuffinsAnchor : Interactable {
 
 
 	[Header("[ Anchor Setting ]")]
-	public string anchorName;
+	public GuffinsAnchorInformation anchorInfo;
 	
 	[Space(5)]
 	public bool isDiscovered;
