@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using MinD.Enums;
 using MinD.Runtime.Entity;
@@ -16,14 +17,20 @@ namespace MinD.Runtime.UI
         public Button destroyButton; // 파기 버튼
 
         private Item currentItem;
-        private PlayerInventoryHandler playerInventoryHandler; // PlayerInventoryHandler 인스턴스
-        private InventoryUI inventoryUI; // InventoryUI 인스턴스 추가
+        private PlayerInventoryHandler playerInventoryHandler;
+        private InventoryUI inventoryUI;
+
+        public Button[] actionButtons; // 버튼 리스트 추가
+        public int selectedButtonIndex = 0; // 현재 선택된 버튼 인덱스
 
         private int equippedTalismanCount => playerInventoryHandler.talismanSlots.Count(t => t != null);
 
         void Start()
         {
             panel.SetActive(false); // 시작할 때 패널 비활성화
+            actionButtons = new Button[] { wearButton, dropButton, destroyButton }; // 버튼 배열 초기화
+
+            // 버튼 클릭 이벤트 등록
             wearButton.onClick.AddListener(OnEquipButtonClicked);
             dropButton.onClick.AddListener(OnDropButtonClicked);
             destroyButton.onClick.AddListener(OnDestroyButtonClicked);
@@ -43,10 +50,83 @@ namespace MinD.Runtime.UI
             }
         }
 
+        void Update()
+        {
+            if (panel.activeSelf) // 패널이 열려 있을 때만 입력 처리
+            {
+                HandleInput(); // 입력 처리
+            }
+        }
+
+
+        private void HandleInput()
+        {
+            // Q 키 입력 처리로 패널을 닫음
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                HidePanel(); // 패널 숨기기
+                return; // 입력 처리 종료
+            }
+
+            // 방향키 입력 처리
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                ChangeSelection(-1);
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                ChangeSelection(1);
+            }
+
+            // Enter 키 입력 처리
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                StartCoroutine(HandleButtonClickAfterDelay()); // 버튼 클릭을 지연 처리
+            }
+        }
+        private IEnumerator HandleButtonClickAfterDelay()
+        {
+            yield return null; // 다음 프레임까지 대기
+
+            if (selectedButtonIndex >= 0 && selectedButtonIndex < actionButtons.Length)
+            {
+                actionButtons[selectedButtonIndex].onClick.Invoke(); // 현재 선택된 버튼 클릭
+            }
+        }
+        private void ChangeSelection(int direction)
+        {
+            // 선택된 버튼 인덱스 변경
+            selectedButtonIndex += direction;
+            if (selectedButtonIndex < 0)
+            {
+                selectedButtonIndex = actionButtons.Length - 1; // 위로 스크롤 시 마지막으로 돌아감
+            }
+            else if (selectedButtonIndex >= actionButtons.Length)
+            {
+                selectedButtonIndex = 0; // 아래로 스크롤 시 처음으로 돌아감
+            }
+
+            UpdateButtonSelection(); // 선택된 버튼 업데이트
+        }
+
+        private void UpdateButtonSelection()
+        {
+            for (int i = 0; i < actionButtons.Length; i++)
+            {
+                // 선택된 버튼에 따라 활성화 상태 변경
+                ActionSlot actionSlot = actionButtons[i].GetComponent<ActionSlot>();
+                if (actionSlot != null)
+                {
+                    actionSlot.SetSelected(i == selectedButtonIndex); // 선택 여부에 따라 SetActive 호출
+                }
+            }
+        }
+
         public void ShowPanel(Item item, int slotIndex)
         {
-            currentItem = item; // 현재 아이템 저장
+            currentItem = item;
             panel.SetActive(true);
+            UpdateButtonSelection(); // 패널을 열 때 버튼 선택 초기화
         }
 
         public void HidePanel()
@@ -138,7 +218,10 @@ namespace MinD.Runtime.UI
                         break;
                 }
             }
-            HidePanel(); // 패널 숨기기
+            if (currentItem.itemCount == 0)
+            {
+                HidePanel(); // 아이템이 0개일 경우 패널 숨기기
+            }
             inventoryUI.UpdateInventoryUI();
         }
 
@@ -150,10 +233,20 @@ namespace MinD.Runtime.UI
             // 버리기 로직
             if (currentItem != null)
             {
-                playerInventoryHandler.ReduceItem(currentItem.itemId); // 아이템을 감소
-                Debug.Log($"버리기: {currentItem.itemName}"); // 아이템 이름 로그 출력
+                // 아이템 갯수 확인 후 감소
+                if (currentItem.itemCount > 0)
+                {
+                    currentItem.itemCount--; // 아이템 갯수 감소
+                    Debug.Log($"버리기: {currentItem.itemName}"); // 아이템 이름 로그 출력
+                }
+
+                // 아이템 갯수 확인 후 패널 숨기기
+                if (currentItem.itemCount == 0)
+                {
+                    HidePanel(); // 아이템이 0개일 경우 패널 숨기기
+                }
             }
-            HidePanel(); // 패널 숨기기
+
             inventoryUI.UpdateInventoryUI(); // 인벤토리 갱신
         }
 
@@ -162,11 +255,27 @@ namespace MinD.Runtime.UI
             // 파기 로직
             if (currentItem != null)
             {
-                playerInventoryHandler.ReduceItem(currentItem.itemId); // 아이템을 감소
-                Debug.Log($"파기: {currentItem.itemName}"); // 아이템 이름 로그 출력
+                // 아이템 갯수 확인 후 감소
+                if (currentItem.itemCount > 0)
+                {
+                    currentItem.itemCount--; // 아이템 갯수 감소
+                    Debug.Log($"파기: {currentItem.itemName}"); // 아이템 이름 로그 출력
+                }
+
+                // 아이템 갯수 확인 후 패널 숨기기
+                if (currentItem.itemCount == 0)
+                {
+                    HidePanel(); // 아이템이 0개일 경우 패널 숨기기
+                }
             }
-            HidePanel(); // 패널 숨기기
+
             inventoryUI.UpdateInventoryUI(); // 인벤토리 갱신
+        }
+
+
+        public bool IsActive()
+        {
+            return panel.activeSelf; // 또는 패널이 열렸는지 여부에 따라 true/false 반환
         }
     }
 }

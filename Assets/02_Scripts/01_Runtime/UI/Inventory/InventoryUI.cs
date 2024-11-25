@@ -9,12 +9,11 @@ namespace MinD.Runtime.UI {
 
     public class InventoryUI : MonoBehaviour
     {
-        // InventoryUI 클래스의 멤버 변수로 ItemActionPanel 추가
         public ItemActionPanel itemActionPanel; // 아이템 액션 패널
-        
+
         public Text itemNameText; // 아이템 이름 표시
         public Text itemDescriptionText; // 아이템 설명 표시
-        
+
         public GameObject slotPrefab;
         public ScrollRect scrollRect;
         public List<Transform> categoryPolygon;
@@ -31,22 +30,6 @@ namespace MinD.Runtime.UI {
         public GameObject inventoryPanel;
         private bool isInventoryActive = false;
 
-        void DisableScrollbarNavigation()
-        {
-            if (scrollRect.verticalScrollbar != null)
-            {
-                var nav = scrollRect.verticalScrollbar.navigation;
-                nav.mode = Navigation.Mode.None; // 네비게이션 비활성화
-                scrollRect.verticalScrollbar.navigation = nav;
-            }
-
-            if (scrollRect.horizontalScrollbar != null)
-            {
-                var nav = scrollRect.horizontalScrollbar.navigation;
-                nav.mode = Navigation.Mode.None; // 네비게이션 비활성화
-                scrollRect.horizontalScrollbar.navigation = nav;
-            }
-        }
         void Start()
         {
             playerInventory = FindObjectOfType<Player>().inventory;
@@ -109,57 +92,56 @@ namespace MinD.Runtime.UI {
 
             if (!isInventoryActive) return; // 인벤토리가 활성화되지 않으면 아무것도 하지 않음
 
-            // Q 키를 눌렀을 때 패널을 숨김
-            if (Input.GetKeyDown(KeyCode.Q))
+            // 인벤토리 액션 패널이 열려있지 않을 때만 입력 처리
+            if (!itemActionPanel.IsActive())
             {
-                itemActionPanel.HidePanel(); // 패널 숨기기
-                return; // 패널을 숨기면 추가 입력 처리 중단
-            }
-
-            // 슬롯 이동 관련 입력 처리
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                ChangeCategory(-1);
-            }
-            else if (Input.GetKeyDown(KeyCode.X))
-            {
-                ChangeCategory(1);
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                MoveSelection(1);
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                MoveSelection(-1);
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                ScrollUp();
-                MoveSelection(-inventoryWidth);
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                ScrollDown();
-                MoveSelection(inventoryWidth);
-            }
-
-            // Enter 키를 눌렀을 때 패널을 띄움
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
-                var item = selectedSlot.GetCurrentItem();
-                if (item != null && item.itemCount > 0) // 아이템이 있을 때만 패널 표시
+                // Q 키를 눌렀을 때 패널을 숨김
+                if (Input.GetKeyDown(KeyCode.Q))
                 {
-                    itemActionPanel.ShowPanel(item, selectedSlotIndex); // 아이템과 슬롯 인덱스를 전달
+                    itemActionPanel.HidePanel(); // 패널 숨기기
+                    return; // 패널을 숨기면 추가 입력 처리 중단
+                }
+
+                // 슬롯 이동 관련 입력 처리
+                if (Input.GetKeyDown(KeyCode.Z))
+                {
+                    ChangeCategory(-1);
+                }
+                else if (Input.GetKeyDown(KeyCode.X))
+                {
+                    ChangeCategory(1);
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    MoveSelection(1);
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    MoveSelection(-1);
+                }
+                else if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    ScrollUp();
+                    MoveSelection(-inventoryWidth);
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    ScrollDown();
+                    MoveSelection(inventoryWidth);
+                }
+
+                // Enter 키를 눌렀을 때 패널을 띄움
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
+                    var item = selectedSlot.GetCurrentItem();
+                    if (item != null && item.itemCount > 0) // 아이템이 있을 때만 패널 표시
+                    {
+                        itemActionPanel.ShowPanel(item, selectedSlotIndex); // 아이템과 슬롯 인덱스를 전달
+                    }
                 }
             }
         }
-
-
-
-
-
         void ChangeCategory(int direction)
         {
             currentCategoryIndex = (currentCategoryIndex + direction + categoryPanels.Count) % categoryPanels.Count;
@@ -389,6 +371,5 @@ namespace MinD.Runtime.UI {
                 EventSystem.current.SetSelectedGameObject(selectedSlotObject);
             }
         }
-
     }
 }

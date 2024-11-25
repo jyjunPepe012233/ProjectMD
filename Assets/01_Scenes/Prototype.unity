@@ -8940,7 +8940,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -0.000021597438}
-  m_SizeDelta: {x: 654, y: 0}
+  m_SizeDelta: {x: 654, y: 13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &4847421548308469748
 RectTransform:
@@ -9461,6 +9461,8 @@ MonoBehaviour:
   wearButton: {fileID: 139014793}
   dropButton: {fileID: 2047806610}
   destroyButton: {fileID: 2021348560}
+  actionButtons: []
+  selectedButtonIndex: 0
 --- !u!114 &6310732472095362939
 MonoBehaviour:
   m_ObjectHideFlags: 0
