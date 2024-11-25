@@ -56,12 +56,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Jump"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""e75cb1da-9f38-40da-8928-df82bb9fc095"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -503,6 +503,118 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""MenuControl"",
+            ""id"": ""c6596592-3bba-4284-ae63-bc6ab64092ff"",
+            ""actions"": [
+                {
+                    ""name"": ""Menu Quit Input"",
+                    ""type"": ""Button"",
+                    ""id"": ""ee2dd905-d2d7-4c0d-b486-0630beac73d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu Select Input"",
+                    ""type"": ""Button"",
+                    ""id"": ""e6c257b2-06d1-4317-8034-b0d0f48f58d3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu Dirx Input"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7390c10-e580-4f02-9708-7c5d1665fcfc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector [MouseNKey]"",
+                    ""id"": ""d2c7da69-ad6a-46d1-ba1d-e394c35cbf23"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu Dirx Input"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""4fb08ecc-dcc4-4159-825d-45d93169189d"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Menu Dirx Input"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""92b038b2-29c8-4d5d-ab0f-60cca3897894"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Menu Dirx Input"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""4f55def4-367d-4992-abec-74ea7d6034c1"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Menu Dirx Input"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""feab106b-2899-4936-ba24-8a3fbecfd548"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Menu Dirx Input"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cdfa01ae-1b59-40b2-a308-566f96f42a8f"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Menu Quit Input"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a0a5571-c106-4335-86d7-e55299a25631"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseNKey"",
+                    ""action"": ""Menu Select Input"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -555,6 +667,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Combat_UseTool = m_Combat.FindAction("Use Tool", throwIfNotFound: true);
         m_Combat_SwapTool = m_Combat.FindAction("Swap Tool", throwIfNotFound: true);
         m_Combat_DefenseMagic = m_Combat.FindAction("Defense Magic", throwIfNotFound: true);
+        // MenuControl
+        m_MenuControl = asset.FindActionMap("MenuControl", throwIfNotFound: true);
+        m_MenuControl_MenuQuitInput = m_MenuControl.FindAction("Menu Quit Input", throwIfNotFound: true);
+        m_MenuControl_MenuSelectInput = m_MenuControl.FindAction("Menu Select Input", throwIfNotFound: true);
+        m_MenuControl_MenuDirxInput = m_MenuControl.FindAction("Menu Dirx Input", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -860,6 +977,68 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public CombatActions @Combat => new CombatActions(this);
+
+    // MenuControl
+    private readonly InputActionMap m_MenuControl;
+    private List<IMenuControlActions> m_MenuControlActionsCallbackInterfaces = new List<IMenuControlActions>();
+    private readonly InputAction m_MenuControl_MenuQuitInput;
+    private readonly InputAction m_MenuControl_MenuSelectInput;
+    private readonly InputAction m_MenuControl_MenuDirxInput;
+    public struct MenuControlActions
+    {
+        private @PlayerControls m_Wrapper;
+        public MenuControlActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MenuQuitInput => m_Wrapper.m_MenuControl_MenuQuitInput;
+        public InputAction @MenuSelectInput => m_Wrapper.m_MenuControl_MenuSelectInput;
+        public InputAction @MenuDirxInput => m_Wrapper.m_MenuControl_MenuDirxInput;
+        public InputActionMap Get() { return m_Wrapper.m_MenuControl; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MenuControlActions set) { return set.Get(); }
+        public void AddCallbacks(IMenuControlActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MenuControlActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MenuControlActionsCallbackInterfaces.Add(instance);
+            @MenuQuitInput.started += instance.OnMenuQuitInput;
+            @MenuQuitInput.performed += instance.OnMenuQuitInput;
+            @MenuQuitInput.canceled += instance.OnMenuQuitInput;
+            @MenuSelectInput.started += instance.OnMenuSelectInput;
+            @MenuSelectInput.performed += instance.OnMenuSelectInput;
+            @MenuSelectInput.canceled += instance.OnMenuSelectInput;
+            @MenuDirxInput.started += instance.OnMenuDirxInput;
+            @MenuDirxInput.performed += instance.OnMenuDirxInput;
+            @MenuDirxInput.canceled += instance.OnMenuDirxInput;
+        }
+
+        private void UnregisterCallbacks(IMenuControlActions instance)
+        {
+            @MenuQuitInput.started -= instance.OnMenuQuitInput;
+            @MenuQuitInput.performed -= instance.OnMenuQuitInput;
+            @MenuQuitInput.canceled -= instance.OnMenuQuitInput;
+            @MenuSelectInput.started -= instance.OnMenuSelectInput;
+            @MenuSelectInput.performed -= instance.OnMenuSelectInput;
+            @MenuSelectInput.canceled -= instance.OnMenuSelectInput;
+            @MenuDirxInput.started -= instance.OnMenuDirxInput;
+            @MenuDirxInput.performed -= instance.OnMenuDirxInput;
+            @MenuDirxInput.canceled -= instance.OnMenuDirxInput;
+        }
+
+        public void RemoveCallbacks(IMenuControlActions instance)
+        {
+            if (m_Wrapper.m_MenuControlActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMenuControlActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MenuControlActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MenuControlActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MenuControlActions @MenuControl => new MenuControlActions(this);
     private int m_MouseNKeySchemeIndex = -1;
     public InputControlScheme MouseNKeyScheme
     {
@@ -901,5 +1080,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnUseTool(InputAction.CallbackContext context);
         void OnSwapTool(InputAction.CallbackContext context);
         void OnDefenseMagic(InputAction.CallbackContext context);
+    }
+    public interface IMenuControlActions
+    {
+        void OnMenuQuitInput(InputAction.CallbackContext context);
+        void OnMenuSelectInput(InputAction.CallbackContext context);
+        void OnMenuDirxInput(InputAction.CallbackContext context);
     }
 }

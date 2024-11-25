@@ -4,7 +4,7 @@ namespace MinD.Runtime.Managers {
 
 public class PlayerManager : Singleton<PlayerManager> {
 
-	public Player currentPlayerCharacter {
+	public static Player currentPlayerCharacter {
 		get {
 			if (currentPlayerCharacter_ == null)
 				currentPlayerCharacter_ = FindObjectOfType<Player>();
@@ -17,7 +17,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 			return currentPlayerCharacter_;
 		}
 	}
-	private Player currentPlayerCharacter_;
+	private static Player currentPlayerCharacter_;
 
 
 	

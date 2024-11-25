@@ -159,7 +159,7 @@ public class Player : BaseEntity {
         
         yield return new WaitForSeconds(2.5f);
         
-        PlayerHUDManager.Instance.PlayBurstPopup(PlayerHUDManager.Instance.playerHUD.youDiedPopup);
+        PlayerHUDManager.Instance.PlayBurstPopup(PlayerHUDManager.playerHUD.youDiedPopup);
     }
 
         

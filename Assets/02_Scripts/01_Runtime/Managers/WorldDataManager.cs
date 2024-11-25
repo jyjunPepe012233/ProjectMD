@@ -12,7 +12,7 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 	public void Awake() {
 		
 		worldAnchors = FindObjectsOfType<GuffinsAnchor>();
-		worldAnchors.OrderBy(i => i.anchorId);
+		worldAnchors.OrderBy(i => i.anchorInfo.anchorId);
 
 	}
 

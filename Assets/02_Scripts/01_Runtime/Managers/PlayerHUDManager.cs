@@ -1,20 +1,38 @@
 using System.Collections;
+using System.Numerics;
 using MinD.Runtime.Entity;
 using MinD.Runtime.UI;
 using UnityEngine;
 using UnityEngine.Playables;
+using NotImplementedException = System.NotImplementedException;
+using Vector2 = UnityEngine.Vector2;
 
 namespace MinD.Runtime.Managers {
 
 public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
+	
+	public static PlayerHUD playerHUD {
+		get {
+			if (playerHUD_ == null) {
+				playerHUD_ = FindObjectOfType<PlayerHUD>();
+			} else if (!playerHUD_.gameObject.activeSelf) {
+				playerHUD_ = FindObjectOfType<PlayerHUD>();
+			}
+
+			return playerHUD_;
+		}
+	}
+	private static PlayerHUD playerHUD_;
+	
 	public Player player;
-	public PlayerHUD playerHUD;
 
 	public bool isPlayingBurstPopup;
 	
 	public bool isFadingWithBlack;
-	private Coroutine fadingBlackScreenCoroutine; 
+	private Coroutine fadingBlackScreenCoroutine;
+
+	public PlayerMenu currentShowingMenu;
 	
 
 
@@ -24,6 +42,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 			return;
 
 		HandleStatusBar();
+		HandleMenuInput();
 	}
 	
 	
@@ -35,6 +54,37 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 		playerHUD.staminaBar.HandleTrailFollowing();
 
 	}
+
+	private void HandleMenuInput() {
+		
+		// MENU QUIT INPUT
+		if (PlayerInputManager.Instance.menuQuitInput) {
+			
+			if (currentShowingMenu != null) {
+				currentShowingMenu.OnQuitInput();
+			}
+			PlayerInputManager.Instance.menuQuitInput = false;
+		}
+		
+		// MENU SELECT INPUT
+		if (PlayerInputManager.Instance.menuSelectInput) {
+			
+			if (currentShowingMenu != null) {
+				currentShowingMenu.OnSelectInput();
+			}
+			PlayerInputManager.Instance.menuSelectInput = false;
+		}
+		
+		
+		// MENU DIRECTION INPUT
+		Vector2 dirxInput = PlayerInputManager.Instance.menuDirectionInput;
+		if (dirxInput.magnitude != 0 && currentShowingMenu != null) {
+			currentShowingMenu.OnInputWithDirection(dirxInput);
+		}
+		PlayerInputManager.Instance.menuDirectionInput = Vector2.zero;
+	}
+	
+	
 	
 	public void RefreshAllStatusBar() {
 		RefreshHPBar();
@@ -62,19 +112,19 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 		if (isPlayingBurstPopup) {
 			
 			if (playWithForce) {
-				StartCoroutine(PlayYouDiedPopupCoroutine(burstPopupDirector));
+				StartCoroutine(PlayBurstPopupCoroutine(burstPopupDirector));
 			} else {
 				throw new UnityException("!! BURST POPUP IS ALREADY PLAYING!");
 			}
 			
 		} else {
-			StartCoroutine(PlayYouDiedPopupCoroutine(burstPopupDirector));
+			StartCoroutine(PlayBurstPopupCoroutine(burstPopupDirector));
 			
 		}
 		
 	}
 
-	private IEnumerator PlayYouDiedPopupCoroutine(PlayableDirector burstPopupDirector) {
+	private IEnumerator PlayBurstPopupCoroutine(PlayableDirector burstPopupDirector) {
 
 		burstPopupDirector.gameObject.SetActive(true);
 		burstPopupDirector.Play();
@@ -134,7 +184,39 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 		
 	}
 
+
+
+	public void OpenMenu(PlayerMenu menu, bool openWithForce = false) {
+
+		if (currentShowingMenu != null) {
+			
+			if (!openWithForce) {
+				// OTHER MENU IS ALREADY SHOWING 
+				throw new UnityException("!! " + menu.name + " TRIED TO OPEN WHILE " + currentShowingMenu + " IS SHOWING");
+				
+			} else {
+				menu.Close();
+				StartCoroutine(currentShowingMenu.FadeOpenAndClose(0, false));
+			}
+		}
+		
+		menu.Open();
+		StartCoroutine(menu.FadeOpenAndClose(menu.fadeInTime, true));
+
+		currentShowingMenu = menu;
+	}
 	
+	public void CloseMenu(PlayerMenu menu) {
+
+		if (!menu.Equals(currentShowingMenu)) {
+			throw new UnityException("!! " + menu.name + " IS NOT CURRENT MENU! \n" + "CURRENT MENU IS " + currentShowingMenu.name);
+		}
+		
+		menu.Close();
+		StartCoroutine(menu.FadeOpenAndClose(menu.fadeOutTime, false));
+
+		currentShowingMenu = null;
+	}
 }
 
 }

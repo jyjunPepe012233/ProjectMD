@@ -17,6 +17,10 @@ public class PlayerHUD : MonoBehaviour {
     
     [Header("[ Black Screen ]")]
     public Image blackScreen;
+
+
+    [Header("[ Menus ]")]
+    public GuffinsAnchorMenu guffinsAnchorMenu;
 }
 
 }

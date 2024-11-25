@@ -11,10 +11,7 @@ namespace MinD.Runtime.Object.Interactables {
 
 public class GuffinsAnchor : Interactable {
 	
-	private static Vector3 playerPosition = new Vector3(0, 0f, 1.2f);
-	
-	
-	[HideInInspector] public int anchorId;
+	private static Vector3 playerPosition = new Vector3(0, 0f, 1.2f); // GLOBAL SETTING
 
 
 	[Header("[ Anchor Setting ]")]
@@ -58,7 +55,7 @@ public class GuffinsAnchor : Interactable {
 		PlayerHUDManager.Instance.FadeInToBlack(1.5f);
 		yield return new WaitForSeconds(2f);
 		
-		PlayerHUDManager.Instance.FadeOutFromBlack(0.5f);
+		PlayerHUDManager.Instance.FadeOutFromBlack(0.3f);
 		
 		// PLACE PLAYER TO RIGHT POSITION(WHERE IN FRONT OF ANCHOR)
 		if (NavMesh.SamplePosition(transform.TransformPoint(playerPosition), out NavMeshHit hitInfo, 1f, NavMesh.AllAreas)) {
@@ -76,7 +73,11 @@ public class GuffinsAnchor : Interactable {
 		
 		
 		WorldRefreshToGuffinsAnchor();
+
+		GuffinsAnchorMenu menu = PlayerHUDManager.playerHUD.guffinsAnchorMenu;
+		menu.ApplyGuffinsAnchorData(this);
 		
+		PlayerHUDManager.Instance.OpenMenu(menu);
 	}
 	
 	
@@ -85,7 +86,7 @@ public class GuffinsAnchor : Interactable {
 		
 		isDiscovered = true;
 			
-		var discoverPopup = PlayerHUDManager.Instance.playerHUD.anchorDiscoveredPopup;
+		var discoverPopup = PlayerHUDManager.playerHUD.anchorDiscoveredPopup;
 		PlayerHUDManager.Instance.PlayBurstPopup(discoverPopup);
 			
 		interactor.animation.PlayTargetAction("Anchor_Discover", 0.2f, true, true, false, false);

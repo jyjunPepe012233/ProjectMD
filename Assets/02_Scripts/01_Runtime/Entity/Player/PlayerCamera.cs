@@ -68,7 +68,11 @@ public class PlayerCamera : MonoBehaviour {
 
 	private void HandleRotation() {
 
-		if (owner.isLockOn) {
+		if (PlayerHUDManager.Instance.currentShowingMenu != null) {
+			// DO NOT ROTATE
+			
+			
+		} else if (owner.isLockOn) {
 			// AUTO ROTATION BY LOCK ON
 
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(currentTargetOption.position - transform.position), 10 * Time.deltaTime);

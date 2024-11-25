@@ -28,6 +28,11 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
     public bool defenseMagicInput;
         // LEFT MAGIC TO -1, RIGHT MAGIC TO 1
         // IF MAGIC IS SWAPPED, RESET TO 0
+        
+    // MENU CONTROL
+    public bool menuQuitInput;
+    public bool menuSelectInput;
+    public Vector2 menuDirectionInput;
 
 
     // on scene changed, Check the scene is world scene
@@ -76,7 +81,12 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
             
             playerControls.Combat.DefenseMagic.started += i => defenseMagicInput = true;
             playerControls.Combat.DefenseMagic.canceled += i => defenseMagicInput = false;
-
+            
+            
+            // MENU CONTROL
+            playerControls.MenuControl.MenuQuitInput.started += i => menuQuitInput = true;
+            playerControls.MenuControl.MenuSelectInput.started += i => menuSelectInput = true;
+            playerControls.MenuControl.MenuDirxInput.started += i => menuDirectionInput = i.ReadValue<Vector2>();
         }
     }
 
@@ -85,7 +95,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
         if (blinkInput) {
             // WASN'T ELAPSE HOLD TIME
             
-            PlayerManager.Instance.currentPlayerCharacter.locomotion.AttemptBlink();
+            PlayerManager.currentPlayerCharacter.locomotion.AttemptBlink();
         }
 
     }

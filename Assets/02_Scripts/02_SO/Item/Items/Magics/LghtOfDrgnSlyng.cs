@@ -1,8 +1,7 @@
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Object.Magics;
-using MinD.SO.Utils;
+using MinD.SO.Object;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 
 namespace MinD.SO.Item.Items {
 
