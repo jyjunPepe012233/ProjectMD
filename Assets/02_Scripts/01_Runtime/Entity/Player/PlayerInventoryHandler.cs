@@ -206,7 +206,7 @@ public class PlayerInventoryHandler : MonoBehaviour {
 			#endregion
 		}
 
-		ReduceItem(equipment.itemId);
+		// ReduceItem(equipment.itemId);
 		equipment.OnEquip(owner);
 
 		if (equipment is Weapon weapon)

@@ -80,8 +80,12 @@ namespace MinD.Runtime.UI {
             {
                 itemNameText.text = ""; // 인벤토리를 닫을 때 이름 초기화
                 itemDescriptionText.text = ""; // 설명 초기화
+
+                // 액션 패널 비활성화
+                itemActionPanel.HidePanel();
             }
         }
+
 
         void HandleInput()
         {
@@ -131,7 +135,7 @@ namespace MinD.Runtime.UI {
                 }
 
                 // Enter 키를 눌렀을 때 패널을 띄움
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetKeyDown(KeyCode.Return))
                 {
                     var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
                     var item = selectedSlot.GetCurrentItem();
