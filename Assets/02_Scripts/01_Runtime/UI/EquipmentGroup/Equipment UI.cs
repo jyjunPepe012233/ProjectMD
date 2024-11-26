@@ -21,22 +21,23 @@ public class EquipmentUI : MonoBehaviour
     }
 
     public void CreateEquipmentSlots()
-{
-    int[] slotCounts = { 5, 10, 1, 1 }; 
-
-    for (int i = 0; i < EquipmentPanels.Count; i++)
     {
-        Transform panel = EquipmentPanels[i];
-        for (int j = 0; j < slotCounts[i]; j++)
+        int[] slotCounts = { 5, 10, 1, 1 }; // Talisman, Tool, Protection, Weapon 순서
+
+        for (int i = 0; i < EquipmentPanels.Count; i++)
         {
-            GameObject slotObj = Instantiate(EquipmentslotPrefab, panel);
-            InventorySlot slot = slotObj.GetComponent<InventorySlot>();
-            if (slot != null)
+            Transform panel = EquipmentPanels[i];
+            for (int j = 0; j < slotCounts[i]; j++)
             {
-                slot.categoryId = i;
+                GameObject slotObj = Instantiate(EquipmentslotPrefab, panel);
+                EquipmentSlot slot = slotObj.GetComponent<EquipmentSlot>();
+                if (slot != null)
+                {
+                    slot.categoryId = i; // 카테고리 ID 할당 (0 = Talisman, 1 = Tool, 2 = Protection, 3 = Weapon)
+                }
             }
         }
     }
-}
+
 
 }
