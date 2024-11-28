@@ -13,6 +13,7 @@ namespace MinD.Runtime.UI {
 public class GuffinsAnchorMenu : PlayerMenu {
 	
 	public enum OptionType {
+		TeleportToOtherAnchor,
 		LevelUp,
 		Memorize,
 		ReadTheStory,
@@ -20,6 +21,7 @@ public class GuffinsAnchorMenu : PlayerMenu {
 	}
 
 	private static Dictionary<OptionType, string> optionTextDictionary = new Dictionary<OptionType, string>() {
+		{ OptionType.TeleportToOtherAnchor, "다른 닻으로 이동한다"}, 
 		{ OptionType.LevelUp, "레벨 업"}, 
 		{ OptionType.Memorize, "기억"}, 
 		{ OptionType.ReadTheStory, "이야기를 읽는다"}, 
@@ -32,6 +34,7 @@ public class GuffinsAnchorMenu : PlayerMenu {
 	
 
 	private Dictionary<OptionType, bool> optionActiveDictionary = new Dictionary<OptionType, bool>() {
+		{ OptionType.TeleportToOtherAnchor, default },
 		{ OptionType.LevelUp, default },
 		{ OptionType.Memorize, default },
 		{ OptionType.ReadTheStory, default },
@@ -53,7 +56,9 @@ public class GuffinsAnchorMenu : PlayerMenu {
 	public override void Open() {
 		
 		InstantiateOptionMenu();
-		SelectOption(0, 0);
+		
+		SelectOption(currentFocusOption, 0);
+		currentFocusOption = 0;
 
 	}
 
@@ -68,6 +73,7 @@ public class GuffinsAnchorMenu : PlayerMenu {
 	public void ApplyGuffinsAnchorData(GuffinsAnchor anchor) {
 		anchorName.text = anchor.anchorInfo.anchorName;
 
+		optionActiveDictionary[OptionType.TeleportToOtherAnchor] = true;
 		optionActiveDictionary[OptionType.LevelUp] = true;
 		optionActiveDictionary[OptionType.Memorize] = true;
 		optionActiveDictionary[OptionType.ReadTheStory] = anchor.anchorInfo.canReadStory;
