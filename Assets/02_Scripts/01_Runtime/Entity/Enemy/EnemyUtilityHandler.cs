@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using MinD.Runtime.Object;
 using MinD.Runtime.System;
 using MinD.Runtime.Utils;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace MinD.Runtime.Entity {
 
@@ -67,6 +63,7 @@ public class EnemyUtilityHandler : MonoBehaviour {
 		}
 
 	}
+
 	public void DisableObject(string targetObjects) {
 		// MULTIPLE OBJECTS ARE SEPARATE BY SPACE 
 
@@ -89,6 +86,7 @@ public class EnemyUtilityHandler : MonoBehaviour {
 		}
 	}
 	
+	
 	public void ResetDamageColliderToHitAgain(string colliderName) {
 
 		foreach (GameObject obj in ownedObjects) {
@@ -101,17 +99,16 @@ public class EnemyUtilityHandler : MonoBehaviour {
 
 				return;
 			}
-			
+
 		}
-		
+
 		throw new UnityException("!! CAN'T FIND " + owner.name + " OWNED DAMAGE COLLIDER THE NAMED " + colliderName);
 	}
-	
-	
-	
 
-	
-	
+
+
+
+
 }
 
 }

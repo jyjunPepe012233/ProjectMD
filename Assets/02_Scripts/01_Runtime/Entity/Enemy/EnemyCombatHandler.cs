@@ -10,14 +10,20 @@ public class EnemyCombatHandler : MonoBehaviour {
 
 	[HideInInspector] public Enemy owner;
 	
-	public BaseEntity target;
 	private List<BaseEntity> candidates = new List<BaseEntity>();
 
 	
 	
 	public float DistanceToTarget() {
-		return Vector3.Distance(target.transform.position, owner.transform.position);
+		return Vector3.Distance(owner.currentTarget.transform.position, owner.transform.position);
 	}
+	public float AngleToTarget() {
+		return Vector3.SignedAngle(owner.transform.forward, (owner.currentTarget.transform.position - transform.position), Vector3.up);
+	}
+	public float AngleToDesireOfAgent() {
+		return Vector3.SignedAngle(transform.forward, owner.navAgent.desiredVelocity, Vector3.up);
+	}
+	
 	public BaseEntity FindTargetBySight(float viewingAngle, float viewingRadius, float unConditionalDetectRadius = 0) {
 
 		Collider[] colliders = Physics.OverlapSphere(transform.position, viewingRadius, PhysicLayerDataBase.Instance.entityLayer);
@@ -100,7 +106,7 @@ public class EnemyCombatHandler : MonoBehaviour {
 	private IEnumerator RotateToTargetCoroutine(float duration) {
 
 		Quaternion startRotation = transform.rotation;
-		Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+		Quaternion targetRotation = Quaternion.LookRotation(owner.currentTarget.transform.position - transform.position);
 		targetRotation.eulerAngles = new Vector3(0, targetRotation.eulerAngles.y, 0);
 
 		float t = 0;
@@ -116,23 +122,6 @@ public class EnemyCombatHandler : MonoBehaviour {
 
 			yield return null;
 		}
-	}
-
-	
-	
-	
-	
-	
-
-	public void OnDrawGizmos() {
-
-		if (target != null) {
-
-			Gizmos.color = Color.yellow;
-			Gizmos.DrawLine(transform.position, target.transform.position);
-
-		}
-
 	}
 }
 

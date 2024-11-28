@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using MinD.SO.EnemySO.State;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
@@ -62,7 +61,7 @@ public class EnemyStateMachine : MonoBehaviour {
 
 
 		owner.currentState = newState;
-		owner.currentState.enemy = owner;
+		owner.currentState.self = owner;
 		owner.currentState.Enter();
 
 		
@@ -80,7 +79,7 @@ public class EnemyStateMachine : MonoBehaviour {
 		}
 		
 		owner.globalState = newState;
-		owner.globalState.enemy = owner;
+		owner.globalState.self = owner;
 		owner.globalState.Enter();
 		
 		

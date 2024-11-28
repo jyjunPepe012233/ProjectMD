@@ -10,7 +10,7 @@ public class EnemyAnimationHandler : MonoBehaviour {
 	
 	
 
-	public void SetBaseLocomotionParameter(float horizontal, float vertical) {
+	public void LerpMoveDirectionParameter(float horizontal, float vertical) {
 
 		locomotionParam = Vector2.Lerp(locomotionParam, new Vector2(horizontal, vertical), Time.deltaTime * 6f);
 
@@ -28,7 +28,7 @@ public class EnemyAnimationHandler : MonoBehaviour {
 
 	public void PlayTargetAnimation(string stateName, float normalizedTransformDuration = 0.2f) {
 
-		owner.animator.CrossFade(stateName, normalizedTransformDuration);
+		owner.animator.CrossFadeInFixedTime(stateName, normalizedTransformDuration);
 
 	}
 	
@@ -77,8 +77,6 @@ public class EnemyAnimationHandler : MonoBehaviour {
 	}
 
 	// PLAY POISE BREAK ANIMATION
-	
-	Debug.Log(81);
 	owner.animation.PlayTargetAnimation(stateName, owner.animator.GetCurrentAnimatorStateInfo(0).length * 0.003f);
 	
 }

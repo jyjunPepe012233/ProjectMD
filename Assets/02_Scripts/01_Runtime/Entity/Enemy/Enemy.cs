@@ -8,6 +8,7 @@ using MinD.SO.EnemySO.State;
 namespace MinD.Runtime.Entity {
 
 [RequireComponent(typeof(EnemyStateMachine))]
+[RequireComponent(typeof(EnemyLocomotionHandler))]
 [RequireComponent(typeof(EnemyCombatHandler))]
 [RequireComponent(typeof(EnemyAnimationHandler))]
 [RequireComponent(typeof(EnemyUtilityHandler))]
@@ -16,7 +17,8 @@ public abstract class Enemy : BaseEntity {
 	
 	[HideInInspector] public NavMeshAgent navAgent;
 	
-	[HideInInspector] public EnemyStateMachine stateMachine;
+	[HideInInspector] public EnemyStateMachine state;
+	[HideInInspector] public EnemyLocomotionHandler locomotion;
 	[HideInInspector] public EnemyCombatHandler combat;
 	[HideInInspector] public EnemyAnimationHandler animation;
 	[HideInInspector] public EnemyUtilityHandler utility;
@@ -34,6 +36,8 @@ public abstract class Enemy : BaseEntity {
 	[HideInInspector] public EnemyState[] states;
 	[HideInInspector] public EnemyState[] globalStates;
 	
+	[HideInInspector] public BaseEntity currentTarget;
+	
 
 	[Header("[ Attributes ]")]
 	[SerializeField] private int curHp;
@@ -42,7 +46,6 @@ public abstract class Enemy : BaseEntity {
 		set => curHp = Mathf.Clamp(value, 0, attribute.maxHp);
 	}
 	public EnemyAttribute attribute;
-	
 	
 	
 	[Header("[ Flags ]")]
@@ -60,20 +63,28 @@ public abstract class Enemy : BaseEntity {
 
 		navAgent = GetComponent<NavMeshAgent>();
 
-		stateMachine = GetComponent<EnemyStateMachine>();
+		state = GetComponent<EnemyStateMachine>();
+		locomotion = GetComponent<EnemyLocomotionHandler>();
 		combat = GetComponent<EnemyCombatHandler>();
 		animation = GetComponent<EnemyAnimationHandler>();
 		utility = GetComponent<EnemyUtilityHandler>();
 		
-		stateMachine.owner = this;
+		state.owner = this;
+		locomotion.owner = this;
 		combat.owner = this;
 		animation.owner = this;
 		utility.owner = this;
 		
 
 		WorldEnemyManager.Instance.RegisteringEnemyOnWorld(this);
-		worldPlacedPosition = transform.position;
+		
+		// SET START POSITION
+		NavMesh.SamplePosition(transform.position, out NavMeshHit placedPositionOnSurface, Mathf.Infinity, NavMesh.AllAreas);
+		worldPlacedPosition = placedPositionOnSurface.position;
+		transform.position = worldPlacedPosition;
+		
 		worldPlacedRotation = transform.rotation;
+		
 		utility.AllCollisionIgnoreSetup();
 		
 		
@@ -86,7 +97,8 @@ public abstract class Enemy : BaseEntity {
 		
 		base.Update();
 
-		stateMachine.ExecuteStateTick();
+		state.ExecuteStateTick();
+		locomotion.HandleAllLocomotion();
 
 	}
 	

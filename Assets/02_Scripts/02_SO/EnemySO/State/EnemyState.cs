@@ -1,11 +1,12 @@
 using MinD.Runtime.Entity;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MinD.SO.EnemySO.State {
 
 public abstract class EnemyState : ScriptableObject {
-
-	public Enemy enemy;
+	
+	public Enemy self;
 
 	public abstract void Enter();
 
