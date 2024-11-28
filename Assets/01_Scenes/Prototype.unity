@@ -8940,7 +8940,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -0.000021597438}
-  m_SizeDelta: {x: 654, y: 13}
+  m_SizeDelta: {x: 654, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &4847421548308469748
 RectTransform:
@@ -9443,7 +9443,7 @@ MonoBehaviour:
   - {fileID: 5381717447086178948}
   - {fileID: 6064036462514404275}
   - {fileID: 997788484234778500}
-  EquipmentslotPrefab: {fileID: 7135528804356901376, guid: 455423d3681b94d4396522695def9991,
+  EquipmentSlotPrefab: {fileID: 7135528804356901376, guid: 455423d3681b94d4396522695def9991,
     type: 3}
 --- !u!114 &6275713871743349637
 MonoBehaviour:
@@ -9461,7 +9461,10 @@ MonoBehaviour:
   wearButton: {fileID: 139014793}
   dropButton: {fileID: 2047806610}
   destroyButton: {fileID: 2021348560}
-  actionButtons: []
+  actionButtons:
+  - {fileID: 139014793}
+  - {fileID: 2047806610}
+  - {fileID: 2021348560}
   selectedButtonIndex: 0
 --- !u!114 &6310732472095362939
 MonoBehaviour:

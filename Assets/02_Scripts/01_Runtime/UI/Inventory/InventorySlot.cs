@@ -78,7 +78,7 @@ namespace MinD.Runtime.UI
                 if (item != null && item.itemCount > 0) // 아이템이 있을 때만 패널 표시
                 {
                     int slotIndex = inventoryUI.GetSlotIndex(this); // 슬롯의 인덱스를 가져오는 메서드 호출
-                    inventoryUI.itemActionPanel.ShowPanel(item, slotIndex); // 아이템과 슬롯 인덱스를 전달
+                    inventoryUI.itemActionPanel.ShowPanel(item); // 아이템과 슬롯 인덱스를 전달
                 }
             }
         }

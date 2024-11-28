@@ -141,7 +141,7 @@ namespace MinD.Runtime.UI {
                     var item = selectedSlot.GetCurrentItem();
                     if (item != null && item.itemCount > 0) // 아이템이 있을 때만 패널 표시
                     {
-                        itemActionPanel.ShowPanel(item, selectedSlotIndex); // 아이템과 슬롯 인덱스를 전달
+                        itemActionPanel.ShowPanel(item); // 아이템과 슬롯 인덱스를 전달
                     }
                 }
             }
@@ -190,7 +190,7 @@ namespace MinD.Runtime.UI {
             int selectedIndex = categorySlots[currentCategoryIndex].IndexOf(selectedSlot);
             if (selectedIndex >= 0)
             {
-                itemActionPanel.ShowPanel(selectedSlot.GetCurrentItem(), selectedIndex); // 슬롯 인덱스 전달
+                itemActionPanel.ShowPanel(selectedSlot.GetCurrentItem()); // 슬롯 인덱스 전달
             }
         }
         void UpdateCategoryPolygon()

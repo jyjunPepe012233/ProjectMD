@@ -35,24 +35,19 @@ namespace MinD.Runtime.UI
             dropButton.onClick.AddListener(OnDropButtonClicked);
             destroyButton.onClick.AddListener(OnDestroyButtonClicked);
 
-            // PlayerInventoryHandler 인스턴스 찾기
             playerInventoryHandler = FindObjectOfType<PlayerInventoryHandler>();
-            if (playerInventoryHandler == null)
-            {
-                Debug.LogError("PlayerInventoryHandler not found in the scene!");
-            }
-
-            // InventoryUI 인스턴스 찾기
             inventoryUI = FindObjectOfType<InventoryUI>();
+
+            if (playerInventoryHandler == null)
+                Debug.LogError("PlayerInventoryHandler not found in the scene!");
+
             if (inventoryUI == null)
-            {
                 Debug.LogError("InventoryUI not found in the scene!");
-            }
         }
 
         void Update()
         {
-            if (panel.activeSelf) // 패널이 열려 있을 때만 입력 처리
+            if (panel.activeSelf)
             {
                 HandleInput(); // 입력 처리
             }
@@ -60,14 +55,12 @@ namespace MinD.Runtime.UI
 
         private void HandleInput()
         {
-            // Q 키 입력 처리로 패널을 닫음
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q)) // Q 키로 패널 닫기
             {
-                HidePanel(); // 패널 숨기기
-                return; // 입력 처리 종료
+                HidePanel();
+                return;
             }
 
-            // 방향키 입력 처리
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 ChangeSelection(-1);
@@ -77,121 +70,116 @@ namespace MinD.Runtime.UI
                 ChangeSelection(1);
             }
 
-            // Enter 키 입력 처리
             if (Input.GetKeyDown(KeyCode.E))
             {
-                StartCoroutine(HandleButtonClickAfterDelay()); // 버튼 클릭을 지연 처리
+                StartCoroutine(HandleButtonClickAfterDelay());
             }
         }
 
         private IEnumerator HandleButtonClickAfterDelay()
         {
-            yield return null; // 다음 프레임까지 대기
+            yield return null;
 
             if (selectedButtonIndex >= 0 && selectedButtonIndex < actionButtons.Length)
             {
-                actionButtons[selectedButtonIndex].onClick.Invoke(); // 현재 선택된 버튼 클릭
+                actionButtons[selectedButtonIndex].onClick.Invoke();
             }
         }
 
         private void ChangeSelection(int direction)
         {
-            // 선택된 버튼 인덱스 변경
             selectedButtonIndex += direction;
             if (selectedButtonIndex < 0)
             {
-                selectedButtonIndex = actionButtons.Length - 1; // 위로 스크롤 시 마지막으로 돌아감
+                selectedButtonIndex = actionButtons.Length - 1;
             }
             else if (selectedButtonIndex >= actionButtons.Length)
             {
-                selectedButtonIndex = 0; // 아래로 스크롤 시 처음으로 돌아감
+                selectedButtonIndex = 0;
             }
 
-            UpdateButtonSelection(); // 선택된 버튼 업데이트
+            UpdateButtonSelection();
         }
 
         private void UpdateButtonSelection()
         {
             for (int i = 0; i < actionButtons.Length; i++)
             {
-                // 선택된 버튼에 따라 활성화 상태 변경
                 ActionSlot actionSlot = actionButtons[i].GetComponent<ActionSlot>();
                 if (actionSlot != null)
                 {
-                    actionSlot.SetSelected(i == selectedButtonIndex); // 선택 여부에 따라 활성화
+                    actionSlot.SetSelected(i == selectedButtonIndex);
                 }
             }
         }
 
-        public void ShowPanel(Item item, int slotIndex)
+        public void ShowPanel(Item item)
         {
-            currentItem = item; // 현재 아이템 설정
-            panel.SetActive(true); // 패널 활성화
-            UpdateButtonSelection(); // 패널을 열 때 버튼 선택 초기화
+            currentItem = item;
+            panel.SetActive(true);
+            UpdateButtonSelection();
         }
 
         public void HidePanel()
         {
-            panel.SetActive(false); // 패널 비활성화
+            panel.SetActive(false);
         }
 
         private void OnEquipButtonClicked()
         {
             if (currentItem is Equipment equipment)
             {
-                // categoryId에 맞는 슬롯 찾기
-                switch (equipment.categoryId)
-                {
-                    case 0: // Talisman
-                        EquipTalisman(equipment);
-                        break;
-
-                    case 1: // Tool
-                        EquipTool(equipment);
-                        break;
-
-                    case 2: // Protection
-                        EquipProtection(equipment);
-                        break;
-
-                    case 3: // Weapon
-                        EquipWeapon(equipment);
-                        break;
-
-                    default:
-                        Debug.LogWarning("알 수 없는 아이템 카테고리입니다.");
-                        break;
-                }
+                EquipItemBasedOnCategory(equipment);
             }
 
             if (currentItem.itemCount == 0)
             {
-                HidePanel(); // 아이템이 0개일 경우 패널 숨기기
+                HidePanel();
             }
 
-            inventoryUI.UpdateInventoryUI(); // 인벤토리 UI 업데이트
+            inventoryUI.UpdateInventoryUI();
+        }
+
+        private void EquipItemBasedOnCategory(Equipment equipment)
+        {
+            switch (equipment.categoryId)
+            {
+                case 0:
+                    EquipTalisman(equipment);
+                    break;
+                case 1:
+                    EquipTool(equipment);
+                    break;
+                case 2:
+                    EquipProtection(equipment);
+                    break;
+                case 3:
+                    EquipWeapon(equipment);
+                    break;
+                default:
+                    Debug.LogWarning("Unknown equipment category!");
+                    break;
+            }
         }
 
         private void EquipTalisman(Equipment equipment)
         {
-            // Talisman 슬롯에 장착
             if (equippedTalismanCount < 5) // 최대 탈리스만 슬롯 수 확인
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++) // Talisman 슬롯을 순회
                 {
-                    var talismanSlot = (EquipmentSlots)(2 + i); // Talisman_01부터 Talisman_05까지
-                    if (playerInventoryHandler.talismanSlots[i] == null) // 해당 슬롯이 비어있다면
+                    if (playerInventoryHandler.talismanSlots[i] == null) // 비어있는 슬롯 확인
                     {
-                        playerInventoryHandler.EquipEquipment(equipment, talismanSlot);
-                        Debug.Log($"착용: {currentItem.itemName} (탈리스만 {i + 1})");
+                        playerInventoryHandler.talismanSlots[i] = (Talisman)equipment; // 슬롯에 아이템 장착
+                        Debug.Log($"착용: {equipment.itemName} (탈리스만 {i + 1})");
 
-                        // EquipmentSlot 업데이트
+                        // UI 업데이트
                         var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
                         foreach (var slot in equipmentSlots)
                         {
-                            if (slot.categoryId == 0) // Talisman 카테고리 ID 확인
+                            if (slot.categoryId == 0) // Talisman 카테고리
                             {
-                                slot.UpdateSlot(currentItem); // 슬롯 업데이트
+                                slot.UpdateSlot(equipment);
                             }
                         }
                         break;
@@ -206,24 +194,22 @@ namespace MinD.Runtime.UI
 
         private void EquipTool(Equipment equipment)
         {
-            // Tool 슬롯에 장착
             if (playerInventoryHandler.toolSlots.Count(t => t != null) < 10) // 최대 도구 슬롯 수 확인
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 10; i++) // Tool 슬롯을 순회
                 {
-                    var toolSlot = (EquipmentSlots)(7 + i); // Tool_01부터 Tool_10까지
-                    if (playerInventoryHandler.toolSlots[i] == null) // 해당 슬롯이 비어있다면
+                    if (playerInventoryHandler.toolSlots[i] == null) // 비어있는 슬롯 확인
                     {
-                        playerInventoryHandler.EquipEquipment(equipment, toolSlot);
-                        Debug.Log($"착용: {currentItem.itemName} (도구 {i + 1})");
+                        playerInventoryHandler.toolSlots[i] = (Tool)equipment; // 슬롯에 아이템 장착
+                        Debug.Log($"착용: {equipment.itemName} (도구 {i + 1})");
 
-                        // EquipmentSlot 업데이트
+                        // UI 업데이트
                         var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
                         foreach (var slot in equipmentSlots)
                         {
-                            if (slot.categoryId == 1) // Tool 카테고리 ID 확인
+                            if (slot.categoryId == 1) // Tool 카테고리
                             {
-                                slot.UpdateSlot(currentItem); // 슬롯 업데이트
+                                slot.UpdateSlot(equipment);
                             }
                         }
                         break;
@@ -238,19 +224,18 @@ namespace MinD.Runtime.UI
 
         private void EquipProtection(Equipment equipment)
         {
-            // Protection 슬롯에 장착
             if (playerInventoryHandler.protectionSlot == null) // Protection 슬롯이 비어있다면
             {
-                playerInventoryHandler.EquipEquipment(equipment, EquipmentSlots.Protection); // Protection 슬롯에 장착
-                Debug.Log($"착용: {currentItem.itemName} (방어구)");
+                playerInventoryHandler.protectionSlot = (Protection)equipment; // Protection 슬롯에 아이템 장착
+                Debug.Log($"착용: {equipment.itemName} (방어구)");
 
-                // EquipmentSlot 업데이트
+                // UI 업데이트
                 var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
                 foreach (var slot in equipmentSlots)
                 {
-                    if (slot.categoryId == 2) // Protection 카테고리 ID 확인
+                    if (slot.categoryId == 2) // Protection 카테고리
                     {
-                        slot.UpdateSlot(currentItem); // 슬롯 업데이트
+                        slot.UpdateSlot(equipment);
                     }
                 }
             }
@@ -262,72 +247,62 @@ namespace MinD.Runtime.UI
 
         private void EquipWeapon(Equipment equipment)
         {
-            // Weapon 슬롯에 장착
             if (playerInventoryHandler.weaponSlot == null) // Weapon 슬롯이 비어있다면
             {
-                playerInventoryHandler.EquipEquipment(equipment, EquipmentSlots.Weapon); // Weapon 슬롯에 장착
-                Debug.Log($"착용: {currentItem.itemName} (무기)");
+                playerInventoryHandler.weaponSlot = (Weapon)equipment; // Weapon 슬롯에 아이템 장착
+                Debug.Log($"착용: {equipment.itemName} (무기)");
 
-                // EquipmentSlot 업데이트
+                // UI 업데이트
                 var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
                 foreach (var slot in equipmentSlots)
                 {
-                    if (slot.categoryId == 3) // Weapon 카테고리 ID 확인
+                    if (slot.categoryId == 3) // Weapon 카테고리
                     {
-                        slot.UpdateSlot(currentItem); // 슬롯 업데이트
+                        slot.UpdateSlot(equipment);
                     }
                 }
             }
             else
             {
-                Debug.LogWarning("무기 슬롯이 이미 가득 차 있습니다.");
+                Debug.LogWarning("무기 슬롯이 이미 가득 찼습니다.");
             }
         }
+
 
 
         private void OnDropButtonClicked()
         {
-            // 버리기 로직
             if (currentItem != null)
             {
-                if (currentItem.itemCount > 0)
-                {
-                    currentItem.itemCount--; // 아이템 갯수 감소
-                    Debug.Log($"버리기: {currentItem.itemName}"); // 아이템 이름 로그 출력
-                }
-
+                currentItem.itemCount--;
+                Debug.Log($"Dropped: {currentItem.itemName}");
                 if (currentItem.itemCount == 0)
                 {
-                    HidePanel(); // 아이템이 0개일 경우 패널 숨기기
+                    HidePanel();
                 }
             }
 
-            inventoryUI.UpdateInventoryUI(); // 인벤토리 갱신
+            inventoryUI.UpdateInventoryUI();
         }
 
         private void OnDestroyButtonClicked()
         {
-            // 파기 로직
             if (currentItem != null)
             {
-                if (currentItem.itemCount > 0)
-                {
-                    currentItem.itemCount--; // 아이템 갯수 감소
-                    Debug.Log($"파기: {currentItem.itemName}"); // 아이템 이름 로그 출력
-                }
-
+                currentItem.itemCount--;
+                Debug.Log($"Destroyed: {currentItem.itemName}");
                 if (currentItem.itemCount == 0)
                 {
-                    HidePanel(); // 아이템이 0개일 경우 패널 숨기기
+                    HidePanel();
                 }
             }
 
-            inventoryUI.UpdateInventoryUI(); // 인벤토리 갱신
+            inventoryUI.UpdateInventoryUI();
         }
 
         public bool IsActive()
         {
-            return panel.activeSelf; // 패널이 열렸는지 여부에 따라 true/false 반환
+            return panel.activeSelf;
         }
     }
 }

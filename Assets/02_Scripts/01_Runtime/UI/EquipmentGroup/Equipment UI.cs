@@ -4,40 +4,33 @@ using UnityEngine;
 
 public class EquipmentUI : MonoBehaviour
 {
-    public List<Transform> EquipmentPanels; // Tools, Talisman, Weapon, Protection 패널 순서대로
-    public GameObject EquipmentslotPrefab;
+    public List<Transform> EquipmentPanels; // 각 카테고리별 패널 (Talisman, Tool, Protection, Weapon)
+    public GameObject EquipmentSlotPrefab;
 
-    private InventoryUI inventoryUI; 
-    
-    public void Start()
+    private InventoryUI inventoryUI;
+
+    void Start()
     {
         inventoryUI = FindObjectOfType<InventoryUI>();
-        
-        if (inventoryUI != null)
-        {
-            CreateEquipmentSlots();
-            
-        }
+        CreateEquipmentSlots();
     }
 
     public void CreateEquipmentSlots()
     {
-        int[] slotCounts = { 5, 10, 1, 1 }; // Talisman, Tool, Protection, Weapon 순서
+        int[] slotCounts = { 5, 10, 1, 1 }; // 각 장비 슬롯 개수
 
         for (int i = 0; i < EquipmentPanels.Count; i++)
         {
             Transform panel = EquipmentPanels[i];
             for (int j = 0; j < slotCounts[i]; j++)
             {
-                GameObject slotObj = Instantiate(EquipmentslotPrefab, panel);
+                GameObject slotObj = Instantiate(EquipmentSlotPrefab, panel);
                 EquipmentSlot slot = slotObj.GetComponent<EquipmentSlot>();
                 if (slot != null)
                 {
-                    slot.categoryId = i; // 카테고리 ID 할당 (0 = Talisman, 1 = Tool, 2 = Protection, 3 = Weapon)
+                    slot.categoryId = i;
                 }
             }
         }
     }
-
-
 }
