@@ -5,9 +5,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyStateMachine : MonoBehaviour {
-
-	[HideInInspector] public Enemy owner;
+public class EnemyStateMachine : BaseEntityHandler<Enemy> {
 
 	private int currentStateIndex;
 	private int currentGlobalStateIndex;

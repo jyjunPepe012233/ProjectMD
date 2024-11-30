@@ -5,9 +5,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyUtilityHandler : MonoBehaviour {
-
-	[HideInInspector] public Enemy owner;
+public class EnemyUtilityHandler : BaseEntityHandler<Enemy> {
 	
 	[Space(10)]
 	[SerializeField] private GameObject[] ownedObjects;

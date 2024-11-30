@@ -5,11 +5,9 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerInteractionHandler : MonoBehaviour {
+public class PlayerInteractionHandler : BaseEntityHandler<Player>  {
 
-	[HideInInspector] public Player owner;
-
-	[SerializeField] private List<Interactable> currentInteractables = new List<Interactable>();
+	private List<Interactable> currentInteractables = new List<Interactable>();
 
 
 	public void AddInteractableInList(Interactable interactable) {

@@ -27,7 +27,7 @@ public class TakeDefensedHealthDamage : InstantEffect {
 	protected override void OnInstantiateAs(Player player) {
 		
 		// INVOKE ACTION
-		player.combat.getHitAction.Invoke();
+		player.getHitAction.Invoke();
 		
 		
 

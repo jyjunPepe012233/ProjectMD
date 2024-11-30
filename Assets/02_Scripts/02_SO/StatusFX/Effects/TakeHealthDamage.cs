@@ -62,7 +62,7 @@ public class TakeHealthDamage : InstantEffect {
 		player.CurHp -= GetCalculatedDamage(damage, player.attribute.damageNegation);
 		
 		// INVOKE ACTION
-		player.combat.getHitAction();
+		player.getHitAction();
 		
 		
 		// IF PLAYER HAS IMMUNE OF POISE BREAK, DON'T GIVE POISE BREAK 
@@ -132,7 +132,7 @@ public class TakeHealthDamage : InstantEffect {
 	protected override void OnInstantiateAs(Enemy enemy) {
 		
 		// DRAIN HP
-		enemy.CurHp -= GetCalculatedDamage(damage, enemy.attribute.damageNegation);
+		enemy.CurHp -= GetCalculatedDamage(damage, enemy.attribute.DamageNegation);
 		
 		enemy.getHitAction.Invoke();
 	}	

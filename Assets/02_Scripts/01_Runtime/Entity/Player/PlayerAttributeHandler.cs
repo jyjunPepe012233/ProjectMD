@@ -4,53 +4,40 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerAttributeHandler : MonoBehaviour {
+public class PlayerAttributeHandler : BaseEntityAttributeHandler<Player> {
 
-    [HideInInspector] public Player owner;
-
-    [Header("[ Debug ]")]
-    public bool resetAttributes;
-
+    public override int MaxHp {
+        get => maxHp;
+        set => maxHp = value;
+    }
+    public override DamageNegation DamageNegation {
+        get => damageNegation; 
+        set => damageNegation = value;
+    }
+    public override int PoiseBreakResistance {
+        get => poiseBreakResistance; 
+        set => poiseBreakResistance = value;
+    }
+    
+    
+    public int maxHp, maxMp, maxStamina;
+    public DamageNegation damageNegation;
+    public int poiseBreakResistance;
 
     [Header("[ Stats ]")]
     [Range(0, 99)] public int vitality;
     [Range(0, 99)] public int endurance, mind, intelligence, faith;
-
-    [Header("[ Status Attributes ]")]
-    public int maxHp;
-    public int maxMp, maxStamina;
-    [Space(5)]
-    public float magicForceModifier;
-    public float divine;
-    [Space(5)]
-    public DamageNegation damageNegation;
-    public int poiseBreakResistance;
-
     
-    [Header("[ Other Attributes ]")]
-    public int memoryCapacity;
-    public float staminaRecoverySpeed;
-    public float staminaRecoveryDelay;
-    public int blinkCostStamina;
+    [Header("[ ]")]
+    public float divine;
+    public int memoryCapacity = 5;
+    public float staminaRecoverySpeed = 50;
+    public float staminaRecoveryDelay = 1;
+    public int blinkCostStamina = 35;
 
     private float staminaRecoveryTimer;
     private float staminaRecoveryFloatTemp;
     
-    void OnValidate() {
-        if (resetAttributes) {
-            SetBaseAttributesAsPerStats();
-            owner.CurHp = maxHp;
-            owner.CurMp = maxMp;
-            owner.CurStamina = maxStamina;
-            resetAttributes = false;
-            PlayerHUDManager.Instance.RefreshAllStatusBar();
-        }
-    }
-
-
-    public void Awake() {
-        owner = GetComponent<Player>();
-    }
 
 
     public void SetBaseAttributesAsPerStats() {
@@ -67,7 +54,6 @@ public class PlayerAttributeHandler : MonoBehaviour {
         damageNegation.magic = (mind * 0.25f) / 100;
 
         // Intelligence
-        magicForceModifier = 1 + (intelligence * 0.035f);
 
         // Faith
         divine = faith * 0.04f;
@@ -113,7 +99,6 @@ public class PlayerAttributeHandler : MonoBehaviour {
             }
         }
     }
-    
 }
 
 }

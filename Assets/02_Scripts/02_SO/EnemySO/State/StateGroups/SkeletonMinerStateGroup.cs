@@ -245,8 +245,8 @@ public class SkeletonMinerStateGroup {
 		public override void Enter() {
 			TakeHealthDamage latestDamage = (TakeHealthDamage)self.statusFx.instantEffectSlot;
 
-			int poiseBreakAmount = TakeHealthDamage.GetPoiseBreakAmount(latestDamage.poiseBreakDamage, self.attribute.poiseBreakResistance);
-			self.animation.AttemptHumanoidPoiseBreak(poiseBreakAmount, latestDamage.attackAngle);
+			int poiseBreakAmount = TakeHealthDamage.GetPoiseBreakAmount(latestDamage.poiseBreakDamage, self.attribute.PoiseBreakResistance);
+			self.animation.PlayTargetAnimation(self.animation.GetPoiseBreakAnimation(poiseBreakAmount, latestDamage.attackAngle));
 		}
 
 		public override void Tick() {

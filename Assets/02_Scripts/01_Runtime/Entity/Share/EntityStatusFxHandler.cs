@@ -5,10 +5,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EntityStatusFxHandler : MonoBehaviour {
-
-	[HideInInspector] public BaseEntity owner;
-
+public class EntityStatusFxHandler : BaseEntityHandler<BaseEntity> {
 
 	[Header("[ Owned Effect List ]")] 
 	public InstantEffect instantEffectSlot; // LATEST EFFECT

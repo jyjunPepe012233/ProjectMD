@@ -7,10 +7,7 @@ using PlayerInputManager = MinD.Runtime.Managers.PlayerInputManager;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerLocomotionHandler : MonoBehaviour {
-
-	[HideInInspector] public Player owner;
-	
+public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 
 	[Header("[ Setting ]")]
 	[SerializeField] private float walkSpeed = 4;

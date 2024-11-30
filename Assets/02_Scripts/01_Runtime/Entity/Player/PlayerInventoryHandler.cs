@@ -7,10 +7,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerInventoryHandler : MonoBehaviour {
-
-	[HideInInspector] public Player owner;
-
+public class PlayerInventoryHandler : BaseEntityHandler<Player> {
 
 	[Header("[ Equipment Slot ]")]
 	public Weapon weaponSlot;

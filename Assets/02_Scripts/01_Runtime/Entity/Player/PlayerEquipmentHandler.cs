@@ -3,9 +3,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerEquipmentHandler : MonoBehaviour {
-
-	[HideInInspector] public Player owner;
+public class PlayerEquipmentHandler : BaseEntityHandler<Player> {
 	
 	public Transform rightHand;
 

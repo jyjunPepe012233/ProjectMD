@@ -2,9 +2,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyLocomotionHandler : MonoBehaviour {
-
-	[HideInInspector] public Enemy owner;
+public class EnemyLocomotionHandler : BaseEntityHandler<Enemy> {
 
 	public bool canMove {
 		get => _canMove;

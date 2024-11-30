@@ -2,15 +2,15 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
-using MinD.SO.EnemySO;
 using MinD.SO.EnemySO.State;
 
 namespace MinD.Runtime.Entity {
 
 [RequireComponent(typeof(EnemyStateMachine))]
+[RequireComponent(typeof(EnemyAnimationHandler))]
+[RequireComponent(typeof(EnemyAttributeHandler))]
 [RequireComponent(typeof(EnemyLocomotionHandler))]
 [RequireComponent(typeof(EnemyCombatHandler))]
-[RequireComponent(typeof(EnemyAnimationHandler))]
 [RequireComponent(typeof(EnemyUtilityHandler))]
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Enemy : BaseEntity {
@@ -18,16 +18,17 @@ public abstract class Enemy : BaseEntity {
 	[HideInInspector] public NavMeshAgent navAgent;
 	
 	[HideInInspector] public EnemyStateMachine state;
+	[HideInInspector] public EnemyAnimationHandler animation;
+	[HideInInspector] public EnemyAttributeHandler attribute;
 	[HideInInspector] public EnemyLocomotionHandler locomotion;
 	[HideInInspector] public EnemyCombatHandler combat;
-	[HideInInspector] public EnemyAnimationHandler animation;
 	[HideInInspector] public EnemyUtilityHandler utility;
 	
 	[HideInInspector] public Vector3 worldPlacedPosition;
 	[HideInInspector] public Quaternion worldPlacedRotation;
 	
 	
-	[Space(15)]
+	[Header("[ States ]")]
 	public EnemyState currentState;
 	public EnemyState previousState;
 	[Space(3)]
@@ -38,14 +39,10 @@ public abstract class Enemy : BaseEntity {
 	
 	[HideInInspector] public BaseEntity currentTarget;
 	
-
-	[Header("[ Attributes ]")]
-	[SerializeField] private int curHp;
-	public int CurHp {
+	public override int CurHp {
 		get => curHp;
-		set => curHp = Mathf.Clamp(value, 0, attribute.maxHp);
+		set => curHp = Mathf.Clamp(value, 0, attribute.MaxHp);
 	}
-	public EnemyAttribute attribute;
 	
 	
 	[Header("[ Flags ]")]
@@ -64,17 +61,11 @@ public abstract class Enemy : BaseEntity {
 		navAgent = GetComponent<NavMeshAgent>();
 
 		state = GetComponent<EnemyStateMachine>();
+		animation = GetComponent<EnemyAnimationHandler>();
+		attribute = GetComponent<EnemyAttributeHandler>();
 		locomotion = GetComponent<EnemyLocomotionHandler>();
 		combat = GetComponent<EnemyCombatHandler>();
-		animation = GetComponent<EnemyAnimationHandler>();
 		utility = GetComponent<EnemyUtilityHandler>();
-		
-		state.owner = this;
-		locomotion.owner = this;
-		combat.owner = this;
-		animation.owner = this;
-		utility.owner = this;
-		
 
 		WorldEnemyManager.Instance.RegisteringEnemyOnWorld(this);
 		
@@ -82,7 +73,6 @@ public abstract class Enemy : BaseEntity {
 		NavMesh.SamplePosition(transform.position, out NavMeshHit placedPositionOnSurface, Mathf.Infinity, NavMesh.AllAreas);
 		worldPlacedPosition = placedPositionOnSurface.position;
 		transform.position = worldPlacedPosition;
-		
 		worldPlacedRotation = transform.rotation;
 		
 		utility.AllCollisionIgnoreSetup();
@@ -111,10 +101,8 @@ public abstract class Enemy : BaseEntity {
 	
 	// SETUP START STATE AND RUNTIME ATTRIBUTE SETTING
 	public virtual void Reload() {
-
-		Debug.Log(curHp);
-		curHp = attribute.maxHp;
-		Debug.Log(curHp);
+		
+		curHp = attribute.MaxHp;
 		transform.position = worldPlacedPosition;
 		transform.position = worldPlacedPosition;
 		

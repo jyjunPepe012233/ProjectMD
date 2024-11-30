@@ -2,9 +2,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerAnimationHandler : MonoBehaviour {
-
-	[HideInInspector] public Player owner;
+public class PlayerAnimationHandler : BaseEntityHandler<Player> {
 	
 	private float moveBlendLerpSpeed = 6;
 	private float runBlendDampTime = 0.35f;
@@ -26,7 +24,6 @@ public class PlayerAnimationHandler : MonoBehaviour {
 		}
 		
 		
-
 		// SET HORIZONTAL AND VERTICAL PARAMETER
 		Vector3 localMoveDirx = transform.InverseTransformDirection(owner.locomotion.moveDirx);
 		if (owner.isMoving) {

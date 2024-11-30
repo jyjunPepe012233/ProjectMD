@@ -6,9 +6,7 @@ using MinD.Runtime.DataBase;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyCombatHandler : MonoBehaviour {
-
-	[HideInInspector] public Enemy owner;
+public class EnemyCombatHandler : BaseEntityHandler<Enemy> {
 	
 	private List<BaseEntity> candidates = new List<BaseEntity>();
 

@@ -1,6 +1,7 @@
 using MinD.SO.EnemySO.State;
 using MinD.SO.EnemySO.State.StateGroups;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace MinD.Runtime.Entity.Enemies {
 
@@ -29,6 +30,10 @@ public class SkeletonMiner : Enemy {
 		
 		state.ChangeStateByIndex((int)SkeletonMinerStateGroup.States.Idle);
 		state.ChangeGlobalStateByIndex((int)SkeletonMinerStateGroup.GlobalStates.PursueDamage);
+		
+	}
+
+	protected override void OnDeath() {
 		
 	}
 }

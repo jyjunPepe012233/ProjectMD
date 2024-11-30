@@ -1,14 +1,12 @@
 using System.Collections;
 using MinD.Runtime.Managers;
-using MinD.Runtime.System;
-using MinD.Runtime.UI;
 using UnityEngine;
+using NotImplementedException = System.NotImplementedException;
 
 namespace MinD.Runtime.Entity {
 
 [RequireComponent(typeof(PlayerLocomotionHandler))]
 [RequireComponent(typeof(PlayerAnimationHandler))]
-[RequireComponent(typeof(PlayerAttributeHandler))]
 [RequireComponent(typeof(PlayerInventoryHandler))]
 [RequireComponent(typeof(PlayerEquipmentHandler))]
 [RequireComponent(typeof(PlayerInteractionHandler))]
@@ -16,68 +14,41 @@ namespace MinD.Runtime.Entity {
 public class Player : BaseEntity {
     
     [HideInInspector] public PlayerCamera camera;
-    [HideInInspector] public PlayerLocomotionHandler locomotion;
     [HideInInspector] public PlayerAnimationHandler animation;
     [HideInInspector] public PlayerAttributeHandler attribute;
+    [HideInInspector] public PlayerLocomotionHandler locomotion;
     [HideInInspector] public PlayerInventoryHandler inventory;
     [HideInInspector] public PlayerEquipmentHandler equipment;
     [HideInInspector] public PlayerInteractionHandler interaction;
     [HideInInspector] public PlayerCombatHandler combat;
-
-    [Space(15)]
-    [SerializeField] private bool infiniteAttribute;
     
-
-    [Header("[ Attributes ]")]
-    [SerializeField] private int curHp;
-    [SerializeField] private int curMp;
-    [SerializeField] private int curStamina;
-    public int CurHp {
+    public override int CurHp {
         get => curHp;
         set {
-            // INFINITY ATTRIBUTES TO DEBUGGING
-            if (infiniteAttribute) {
-                curMp = attribute.maxMp;
-                return;
-            }
-            
             curHp = value;
             if (curHp <= 0) {
-                StartCoroutine(Die());
+                OnDeath();
             }
-
-            curHp = Mathf.Clamp(curHp, 0, attribute.maxHp);
-
+            curHp = Mathf.Clamp(curHp, 0, attribute.MaxHp);
             PlayerHUDManager.Instance.RefreshHPBar();
         }
     }
+    
+    [SerializeField] private int curMp;
+    [SerializeField] private int curStamina;
     public int CurMp {
         get => curMp;
         set {
-            // INFINITY ATTRIBUTES TO DEBUGGING
-            if (infiniteAttribute) {
-                curMp = attribute.maxMp;
-                return;
-            }
-            
             curMp = value;
             curMp = Mathf.Clamp(curMp, 0, attribute.maxMp);
-
             PlayerHUDManager.Instance.RefreshMPBar();
         }
     }
     public int CurStamina {
         get => curStamina;
         set {
-            // INFINITY ATTRIBUTES TO DEBUGGING
-            if (infiniteAttribute) {
-                curMp = attribute.maxMp;
-                return;
-            }
-            
             curStamina = value;
             curStamina = Mathf.Clamp(curStamina, 0, attribute.maxStamina);
-
             PlayerHUDManager.Instance.RefreshStaminaBar();
         }
     }
@@ -96,10 +67,10 @@ public class Player : BaseEntity {
     protected override void Awake() {
 
         base.Awake();
-
-        locomotion = GetComponent<PlayerLocomotionHandler>();
+        
         animation = GetComponent<PlayerAnimationHandler>();
         attribute = GetComponent<PlayerAttributeHandler>();
+        locomotion = GetComponent<PlayerLocomotionHandler>();
         inventory = GetComponent<PlayerInventoryHandler>();
         equipment = GetComponent<PlayerEquipmentHandler>();
         interaction = GetComponent<PlayerInteractionHandler>();
@@ -108,15 +79,6 @@ public class Player : BaseEntity {
         camera = FindObjectOfType<PlayerCamera>();
         combat.defenseMagic = FindObjectOfType<PlayerDefenseMagic>();
 
-
-        locomotion.owner = this;
-        animation.owner = this;
-        attribute.owner = this;
-        inventory.owner = this;
-        equipment.owner = this;
-        interaction.owner = this;
-        combat.owner = this;
-
         camera.owner = this;
         combat.defenseMagic.owner = this;
 
@@ -124,7 +86,7 @@ public class Player : BaseEntity {
     void Start() {
         
         // RESET PROPERTIES
-        combat.getHitAction += locomotion.CancelBlink;
+        getHitAction += locomotion.CancelBlink;
         
         inventory.LoadItemData();
         
@@ -135,41 +97,22 @@ public class Player : BaseEntity {
     protected override void Update() {
         
         base.Update();
+        
+        attribute.HandleStamina();
 
         camera.HandleCamera();
         locomotion.HandleAllLocomotion();
         animation.HandleAllParameter();
-        attribute.HandleStamina();
         inventory.HandleQuickSlotSwapping();
         interaction.HandleInteraction();
         combat.HandleAllCombatAction();
 
     }
 
+    protected override void OnDeath() {
 
-
-    private IEnumerator Die() {
-
-        isDeath = true;
-        isInvincible = true;
-        // IF PLAYER DIED, EACH HANDLER WILL STOP A FEATURES
-        
-        animation.PlayTargetAction("Death", true, true, false, false);
-        PhysicUtility.SetActiveChildrenColliders(transform, false);
-        
-        yield return new WaitForSeconds(2.5f);
-        
-        PlayerHUDManager.Instance.PlayBurstPopup(PlayerHUDManager.playerHUD.youDiedPopup);
     }
-
-        
     
-    public void CanRotate(bool active) {
-        canRotate = active;
-    }
-    public void CanMove(bool active) {
-        canMove = active;
-    }
 }
 
 }

@@ -11,9 +11,7 @@ using Tool = MinD.SO.Item.Tool;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerCombatHandler : MonoBehaviour {
-
-	[HideInInspector] public Player owner;
+public class PlayerCombatHandler : BaseEntityHandler<Player> {
 	
 	// LOCKING ON ENTITY
 	public BaseEntity target;
@@ -26,9 +24,6 @@ public class PlayerCombatHandler : MonoBehaviour {
 	
 	[HideInInspector] public PlayerDefenseMagic defenseMagic;
 	[HideInInspector] public Magic currentCastingMagic;
-	
-	// WHEN PLAYER GET HIT, CALL THIS ACTION IN 'TakeHealthDamage'
-	public Action getHitAction = new Action(()=>{});
 	
 	
 
