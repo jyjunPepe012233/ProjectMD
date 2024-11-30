@@ -1,12 +1,14 @@
 using System.Collections;
 using MinD.Runtime.Managers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using NotImplementedException = System.NotImplementedException;
 
 namespace MinD.Runtime.Entity {
 
 [RequireComponent(typeof(PlayerLocomotionHandler))]
 [RequireComponent(typeof(PlayerAnimationHandler))]
+[RequireComponent(typeof(PlayerAttributeHandler))]
 [RequireComponent(typeof(PlayerInventoryHandler))]
 [RequireComponent(typeof(PlayerEquipmentHandler))]
 [RequireComponent(typeof(PlayerInteractionHandler))]
