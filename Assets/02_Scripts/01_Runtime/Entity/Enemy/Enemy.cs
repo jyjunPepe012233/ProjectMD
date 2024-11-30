@@ -112,7 +112,9 @@ public abstract class Enemy : BaseEntity {
 	// SETUP START STATE AND RUNTIME ATTRIBUTE SETTING
 	public virtual void Reload() {
 
+		Debug.Log(curHp);
 		curHp = attribute.maxHp;
+		Debug.Log(curHp);
 		transform.position = worldPlacedPosition;
 		transform.position = worldPlacedPosition;
 		
