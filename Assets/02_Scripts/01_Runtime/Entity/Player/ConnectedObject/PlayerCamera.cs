@@ -171,7 +171,7 @@ public class PlayerCamera : MonoBehaviour {
 		
 
 		// GET ENTITY COLLIDERS IN AVAILABLE RADIUS
-		Collider[] colliders = Physics.OverlapSphere(transform.position, lockOnMaxRadius, PhysicLayerDataBase.Instance.entityLayer);
+		Collider[] colliders = Physics.OverlapSphere(transform.position, lockOnMaxRadius, WorldUtilityManager.damageableLayerMask);
 
 		if (colliders.Length == 0) {
 			return;
@@ -212,7 +212,7 @@ public class PlayerCamera : MonoBehaviour {
 					continue;
 
 				// CHECK OBSTACLE BETWEEN CAMERA AND TARGET
-				if (Physics.Linecast(owner.targetOptions[0].position, options[i].position, PhysicLayerDataBase.Instance.environmentLayer))
+				if (Physics.Linecast(owner.targetOptions[0].position, options[i].position, WorldUtilityManager.environmentLayerMask))
 					continue;
 
 				availableTargets.Add(options[i]);
