@@ -164,61 +164,35 @@ namespace MinD.Runtime.UI
 
         private void EquipTalisman(Equipment equipment)
         {
-            if (equippedTalismanCount < 5) // 최대 탈리스만 슬롯 수 확인
+            for (int i = 0; i < 5; i++) // Talisman 슬롯을 순회
             {
-                for (int i = 0; i < 5; i++) // Talisman 슬롯을 순회
+                if (playerInventoryHandler.talismanSlots[i] == null) // 비어있는 슬롯 확인
                 {
-                    if (playerInventoryHandler.talismanSlots[i] == null) // 비어있는 슬롯 확인
-                    {
-                        playerInventoryHandler.talismanSlots[i] = (Talisman)equipment; // 슬롯에 아이템 장착
-                        Debug.Log($"착용: {equipment.itemName} (탈리스만 {i + 1})");
+                    playerInventoryHandler.talismanSlots[i] = (Talisman)equipment; // 슬롯에 아이템 장착
+                    Debug.Log($"착용: {equipment.itemName} (탈리스만 {i + 1})");
 
-                        // UI 업데이트
-                        var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
-                        foreach (var slot in equipmentSlots)
-                        {
-                            if (slot.categoryId == 0) // Talisman 카테고리
-                            {
-                                slot.UpdateSlot(equipment);
-                            }
-                        }
-                        break;
-                    }
+                    // UI 업데이트 (해당 슬롯만 업데이트)
+                    var talismanSlot = FindObjectsOfType<EquipmentSlot>().FirstOrDefault(slot => slot.categoryId == 0 && slot.slotIndex == i);
+                    talismanSlot?.UpdateSlot(equipment);
+                    break; // 아이템 장착 후 종료
                 }
-            }
-            else
-            {
-                Debug.LogWarning("탈리스만 슬롯이 가득 찼습니다.");
             }
         }
 
         private void EquipTool(Equipment equipment)
         {
-            if (playerInventoryHandler.toolSlots.Count(t => t != null) < 10) // 최대 도구 슬롯 수 확인
+            for (int i = 0; i < 10; i++) // Tool 슬롯을 순회
             {
-                for (int i = 0; i < 10; i++) // Tool 슬롯을 순회
+                if (playerInventoryHandler.toolSlots[i] == null) // 비어있는 슬롯 확인
                 {
-                    if (playerInventoryHandler.toolSlots[i] == null) // 비어있는 슬롯 확인
-                    {
-                        playerInventoryHandler.toolSlots[i] = (Tool)equipment; // 슬롯에 아이템 장착
-                        Debug.Log($"착용: {equipment.itemName} (도구 {i + 1})");
+                    playerInventoryHandler.toolSlots[i] = (Tool)equipment; // 슬롯에 아이템 장착
+                    Debug.Log($"착용: {equipment.itemName} (도구 {i + 1})");
 
-                        // UI 업데이트
-                        var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
-                        foreach (var slot in equipmentSlots)
-                        {
-                            if (slot.categoryId == 1) // Tool 카테고리
-                            {
-                                slot.UpdateSlot(equipment);
-                            }
-                        }
-                        break;
-                    }
+                    // UI 업데이트 (해당 슬롯만 업데이트)
+                    var toolSlot = FindObjectsOfType<EquipmentSlot>().FirstOrDefault(slot => slot.categoryId == 1 && slot.slotIndex == i);
+                    toolSlot?.UpdateSlot(equipment);
+                    break; // 아이템 장착 후 종료
                 }
-            }
-            else
-            {
-                Debug.LogWarning("도구 슬롯이 가득 찼습니다.");
             }
         }
 
@@ -229,15 +203,9 @@ namespace MinD.Runtime.UI
                 playerInventoryHandler.protectionSlot = (Protection)equipment; // Protection 슬롯에 아이템 장착
                 Debug.Log($"착용: {equipment.itemName} (방어구)");
 
-                // UI 업데이트
-                var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
-                foreach (var slot in equipmentSlots)
-                {
-                    if (slot.categoryId == 2) // Protection 카테고리
-                    {
-                        slot.UpdateSlot(equipment);
-                    }
-                }
+                // UI 업데이트 (해당 슬롯만 업데이트)
+                var protectionSlot = FindObjectsOfType<EquipmentSlot>().FirstOrDefault(slot => slot.categoryId == 2);
+                protectionSlot?.UpdateSlot(equipment);
             }
             else
             {
@@ -252,21 +220,17 @@ namespace MinD.Runtime.UI
                 playerInventoryHandler.weaponSlot = (Weapon)equipment; // Weapon 슬롯에 아이템 장착
                 Debug.Log($"착용: {equipment.itemName} (무기)");
 
-                // UI 업데이트
-                var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
-                foreach (var slot in equipmentSlots)
-                {
-                    if (slot.categoryId == 3) // Weapon 카테고리
-                    {
-                        slot.UpdateSlot(equipment);
-                    }
-                }
+                // UI 업데이트 (해당 슬롯만 업데이트)
+                var weaponSlot = FindObjectsOfType<EquipmentSlot>().FirstOrDefault(slot => slot.categoryId == 3);
+                weaponSlot?.UpdateSlot(equipment);
             }
             else
             {
                 Debug.LogWarning("무기 슬롯이 이미 가득 찼습니다.");
             }
         }
+
+
 
 
 

@@ -17,8 +17,9 @@ public class EquipmentUI : MonoBehaviour
 
     public void CreateEquipmentSlots()
     {
-        int[] slotCounts = { 5, 10, 1, 1 }; // 각 장비 슬롯 개수
-
+        int[] slotCounts = { 1, 1, 5, 10 }; // 각 장비 슬롯 개수
+        int[] categoryIds = { 2, 3, 0, 1 }; // 슬롯의 카테고리 ID 배열
+        
         for (int i = 0; i < EquipmentPanels.Count; i++)
         {
             Transform panel = EquipmentPanels[i];
@@ -28,7 +29,8 @@ public class EquipmentUI : MonoBehaviour
                 EquipmentSlot slot = slotObj.GetComponent<EquipmentSlot>();
                 if (slot != null)
                 {
-                    slot.categoryId = i;
+                    slot.categoryId = categoryIds[i]; // 카테고리 ID 설정
+                    slot.slotIndex = j; // slotIndex 설정
                 }
             }
         }

@@ -7,6 +7,7 @@ public class EquipmentSlot : MonoBehaviour
     public Image itemImage;
     public Text itemCountText;
     public int categoryId;
+    public int slotIndex;
 
     public void UpdateSlot(Item item)
     {
