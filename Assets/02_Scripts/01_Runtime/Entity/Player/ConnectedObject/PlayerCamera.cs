@@ -181,18 +181,24 @@ public class PlayerCamera : MonoBehaviour {
 		// CHECK AVAILABLE TARGETS
 		availableTargets.Clear();
 		foreach (Collider collider in colliders) {
+			Debug.Log(collider.name);
 
 			// GET ENTITY
 			BaseEntity targetEntity = null;
 			
 			targetEntity = collider.GetComponentInParent<BaseEntity>();
-			if (targetEntity == null)
+			if (targetEntity == null) {
 				targetEntity = collider.GetComponent<BaseEntity>();
-			
+
+				if (targetEntity == null) {
+					continue;
+				}
+			}
+
 			// CHECK CONDITION OF TARGET ENTITY
-			if (targetEntity.isDeath)
-				return;
-			
+			if (targetEntity.isDeath) {
+				continue;
+			}
 			
 
 			// CHECK OPTIONS
