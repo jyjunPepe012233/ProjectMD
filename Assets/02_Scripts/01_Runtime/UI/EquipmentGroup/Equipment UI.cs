@@ -35,6 +35,11 @@ public class EquipmentUI : MonoBehaviour
             {
                 TriggerSlotAction();
             }
+
+            if (Input.GetKeyDown(KeyCode.E)) // E 키로 슬롯 해제
+            {
+                ClearSelectedSlot();
+            }
         }
     }
 
@@ -175,6 +180,20 @@ public class EquipmentUI : MonoBehaviour
         if (equipmentSlot != null)
         {
             equipmentSlot.selectionImage.SetActive(activate); // 선택 이미지 활성화 또는 비활성화
+        }
+    }
+
+    private void ClearSelectedSlot()
+    {
+        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return; // 유효하지 않은 경우 무시
+
+        Transform currentPanel = EquipmentPanels[currentPanelIndex];
+        Transform selectedSlot = currentPanel.GetChild(currentSlotIndex);
+        EquipmentSlot equipmentSlot = selectedSlot.GetComponent<EquipmentSlot>();
+
+        if (equipmentSlot != null)
+        {
+            equipmentSlot.ClearSlot(); // 슬롯의 정보를 지우고 비활성화
         }
     }
 

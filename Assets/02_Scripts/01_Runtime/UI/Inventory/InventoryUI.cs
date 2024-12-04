@@ -62,10 +62,6 @@ namespace MinD.Runtime.UI {
         }
         void Update()
         {
-            if (equipmentUI.isInteractingWithEquipmentPanel) // 장착 패널과 상호작용 중일 때 입력 무시
-            {
-                return;
-            }
             HandleInput();
             MaintainFocus();
             // Q 키를 눌렀을 때 패널을 숨김
@@ -102,7 +98,11 @@ namespace MinD.Runtime.UI {
             }
 
             if (!isInventoryActive) return; // 인벤토리가 활성화되지 않으면 아무것도 하지 않음
-
+            
+            if (equipmentUI.isInteractingWithEquipmentPanel) // 장착 패널과 상호작용 중일 때 입력 무시
+            {
+                return;
+            }
             // 인벤토리 액션 패널이 열려있지 않을 때만 입력 처리
             if (!itemActionPanel.IsActive())
             {
