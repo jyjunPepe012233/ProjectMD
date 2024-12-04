@@ -18,9 +18,9 @@ public static class PhysicUtility {
 	public static void SetActiveChildrenColliders(Transform root, bool active, int layerMask = ~0, bool includeInactive = false) {
 		
 		// GET COLLIDER COMPONENTS IN CHILDREN WHAT LAYER IS INCLUDED IN LAYERMASK PARAMETER
-		Collider[] cols = root.GetComponentsInChildren<Collider>(includeInactive)
-			.Where(col => layerMask == (layerMask | col.gameObject.layer)) .ToArray();
-
+		Collider[] cols = root.GetComponentsInChildren<Collider>(includeInactive) .Where(col => layerMask == (layerMask | 1 << col.gameObject.layer)) .ToArray();
+		
+		
 		foreach (Collider col in cols) {
 			col.enabled = active;
 		}

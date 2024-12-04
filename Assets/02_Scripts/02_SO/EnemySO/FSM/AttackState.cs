@@ -1,27 +1,39 @@
+using System.Buffers;
+using System.Collections.Generic;
 using MinD.Runtime.Entity;
+using MinD.Runtime.Managers;
+using MinD.Runtime.System;
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace MinD.SO.EnemySO {
 
-[CreateAssetMenu(menuName = "MinD/Enemy SO/FSM/Idle", fileName = "Type_Idle")]
-public class IdleState : EnemyState {
+[CreateAssetMenu(menuName = "MinD/Enemy SO/FSM/Attack", fileName = "Type_Attack")]
+public class AttackState : EnemyState {
 
 	public override EnemyState Tick(Enemy self) {
-		
-		self.animation.LerpMoveDirectionParameter(0, 0);
-		
-		
-		self.currentTarget = self.combat.FindTargetBySight();
 
-		// IF TARGET IS DETECTED, SWITCH STATE TO PURSUE TARGET
-		if (self.currentTarget == null) {
-			return this;
+		if (!self.isPerformingAction && !self.isInAttack) {
+			self.animation.PlayTargetAnimation(self.combat.latestAttack.motionStateName, 0.2f, true, true);
+
+			self.isInAttack = true;
+			return self.currentState;
+
+		} else if (!self.isPerformingAction && self.isInAttack) {
+			// EXIT ATTACK
+			self.isInAttack = false;
+			return self.combatStanceState;
+
+
 		} else {
-			return self.pursueTargetState;
+			// IS PERFORMING ACTION (PERFORMING ATTACK)
+			self.locomotion.RotateToTarget();
+			return self.currentState;
+
 		}
-		
 	}
-	
+
+
 }
 
 }

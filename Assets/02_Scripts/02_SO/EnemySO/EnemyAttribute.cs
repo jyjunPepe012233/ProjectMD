@@ -1,5 +1,6 @@
 using MinD.Structs;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MinD.SO.EnemySO {
 
@@ -7,12 +8,14 @@ namespace MinD.SO.EnemySO {
 public class EnemyAttribute : ScriptableObject {
 
 	[Header("[ Status ]")]
-	public int maxHp;
-	public float speed;
+	public int maxHp; 
+	public float moveSpeed = 1;
+	public float angularSpeed = 180;
 
 	[Space(10)]
 	public DamageNegation damageNegation;
 	[Range(0, 100)] public int poiseBreakResistance;
+	
 }
 
 }

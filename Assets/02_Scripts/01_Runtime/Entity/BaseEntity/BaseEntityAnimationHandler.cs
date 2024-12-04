@@ -5,7 +5,7 @@ namespace MinD.Runtime.Entity {
 
 public class BaseEntityAnimationHandler<TOwner> : BaseEntityHandler<TOwner> where TOwner : BaseEntity {
 
-	[SerializeField] private float moveDirectionLerpSpeed = 6;
+	[SerializeField] private float moveDirectionLerpSpeed = 3;
 	private Vector2 locomotionParam;
 	
 	public void LerpMoveDirectionParameter(float horizontal, float vertical) {

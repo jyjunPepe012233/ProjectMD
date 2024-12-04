@@ -1,15 +1,24 @@
-using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
-using MinD.Runtime.DataBase;
+using System.Linq;
+using MinD.Runtime.Managers;
+using MinD.SO.EnemySO;
+using UnityEditor.Animations;
 
 
 namespace MinD.Runtime.Entity {
 
 public class EnemyCombatHandler : BaseEntityHandler<Enemy> {
 	
-	private List<BaseEntity> candidates = new List<BaseEntity>();
+	public float attackActionRecoveryTimer; 
+	public EnemyAttackAction latestAttack;
 
+	[HideInInspector] public bool willPerformCombo;
+	[HideInInspector] public EnemyAttackAction comboAttack;
+
+	[HideInInspector] public float strafeTimer;
+	[HideInInspector] public bool isDashingToTarget;
+	
 	
 	
 	public float DistanceToTarget() {
@@ -18,108 +27,80 @@ public class EnemyCombatHandler : BaseEntityHandler<Enemy> {
 	public float AngleToTarget() {
 		return Vector3.SignedAngle(owner.transform.forward, (owner.currentTarget.transform.position - transform.position), Vector3.up);
 	}
-	public float AngleToDesireOfAgent() {
+	public float AngleToDesireDirection() {
 		return Vector3.SignedAngle(transform.forward, owner.navAgent.desiredVelocity, Vector3.up);
 	}
+
 	
-	public BaseEntity FindTargetBySight(float viewingAngle, float viewingRadius, float unConditionalDetectRadius = 0) {
+	
+	public BaseEntity FindTargetBySight(float detectRadius, float absoluteDetectRadius, float detectAngle) {
 
-		Collider[] colliders = Physics.OverlapSphere(transform.position, viewingRadius, PhysicLayerDataBase.Instance.entityLayer);
-
-		if (colliders.Length == 0)
+		Collider[] colliders = Physics.OverlapSphere(transform.position, detectRadius, WorldUtilityManager.damageableLayerMask);
+		if (colliders.Length == 0) {
 			return null;
-
-
-		// MAKE CANDIDATES ARRAY
-		candidates.Clear();
-		foreach (Collider collider in colliders) {
-
-			var candidate = collider.GetComponentInParent<BaseEntity>();
-			if (candidate == null) {
-
-				candidate = GetComponent<BaseEntity>();
-
-				if (candidate == null)
-					continue;
-			}
-			
-			if (candidates.Contains(candidate))
-				continue;
-
-			if (candidate == owner)
-				continue;
-			
-			if (candidate.isDeath)
-				continue;
-
-			candidates.Add(candidate);
 		}
+		
+		
+		List<BaseEntity> potentialTargets = new List<BaseEntity>();
+		for (int i = 0; i < colliders.Length; i++) {
 
+			var potentialTargetEntity = colliders[i].GetComponentInParent<BaseEntity>();
 
-		// SORTING CANDIDATES ARRAY BY PROXIMITY
-		if (candidates.Count > 1) {
-			for (int i = 0; i < candidates.Count; i++) {
-				// SELECTION SORT
-
-				BaseEntity closest = candidates[i];
-
-				for (int j = i; j < candidates.Count; j++) {
-
-					BaseEntity thisEntity = candidates[j];
-
-					if (Vector3.Distance(transform.position, thisEntity.transform.position) < Vector3.Distance(transform.position, closest.transform.position))
-						(candidates[i], candidates[j]) = (candidates[j], candidates[i]);
-				}
+			if (potentialTargetEntity == null) {
+				continue;
 			}
-
-		} else if (candidates.Count == 0) {
+			if (potentialTargets.Contains(potentialTargetEntity)) {
+				continue;
+			}
+			if (potentialTargetEntity == owner) {
+				continue;
+			}
+			if (potentialTargetEntity.isInvincible) {
+				continue;
+			}
+			if (potentialTargetEntity.isDeath) {
+				continue;
+			}
+			
+			potentialTargets.Add(potentialTargetEntity);
+		}
+		if (potentialTargets.Count == 0) {
 			return null;
 		}
 
-
-		// SET TARGET BY UNCONDITIONAL DETECT RADIUS
-		if (Vector3.Distance(candidates[0].transform.position, transform.position) < unConditionalDetectRadius) {
-			return candidates[0];
-		}
-
-
-		// SET TARGET BY SIGHT(ANGLE)
-		foreach (BaseEntity candidate in candidates) {
-
-			if (Vector3.Angle(transform.forward, candidate.transform.position - transform.position) < viewingAngle)
-				// IF CANDIDATE IN VIEWING ANGLE
-				if (!Physics.Linecast(owner.targetOptions[0] /* MY MAIN TARGET OPTION */.position, candidate.targetOptions[0].position, PhysicLayerDataBase.Instance.environmentLayer)) {
-					// IF NO OBSTACLE IS CHECKED BETWEEN CANDIDATE AND ENEMY
-					return candidate;
-				}
-		}
-
-		return null;
-	}
-
-	
-	public void RotateToTarget(float duration) {
-		StartCoroutine(RotateToTargetCoroutine(duration));
-	}
-	private IEnumerator RotateToTargetCoroutine(float duration) {
-
-		Quaternion startRotation = transform.rotation;
-		Quaternion targetRotation = Quaternion.LookRotation(owner.currentTarget.transform.position - transform.position);
-		targetRotation.eulerAngles = new Vector3(0, targetRotation.eulerAngles.y, 0);
-
-		float t = 0;
-		while (true) {
-
-			t += Time.deltaTime / duration;
-
-			transform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
-
-			if (t > 1) {
-				yield break;
+		
+		// SELECT POTENTIAL TARGETS THAT AVAILABLE 
+		List<BaseEntity> availableTargets  = new List<BaseEntity>();
+		for (int i = 0; i < potentialTargets.Count; i++) {
+			
+			// CHECK OBSTACLE BETWEEN POTENTIAL TARGET
+			if (Physics.Linecast(potentialTargets[i].targetOptions[0].transform.position, owner.targetOptions[0].transform.position, WorldUtilityManager.environmentLayerMask)) {
+				continue;
 			}
 
-			yield return null;
+			// IF TARGET IS IN ABSOLUTE DETECT RANGE:
+			if (Vector3.Distance(potentialTargets[i].transform.position, owner.transform.position) < absoluteDetectRadius) {
+				// MAKE TARGET TO AVAILABLE
+				
+				availableTargets.Add(potentialTargets[i]);
+				continue;
+			}
+			
+			// CHECK ANGLE TO TARGET
+			if (Vector3.SignedAngle(owner.transform.forward, (potentialTargets[i].transform.position - owner.transform.position), Vector3.up) > detectAngle) {
+				continue;
+			}
+			
+			availableTargets.Add(potentialTargets[i]);
 		}
+		if (availableTargets.Count == 0) {
+			return null;
+		}
+		
+		
+		// ORDER BY PROXIMITY
+		availableTargets.OrderBy(i => Vector3.Distance(i.targetOptions[0].transform.position, owner.targetOptions[0].transform.position));
+		return availableTargets[0];
 	}
 }
 

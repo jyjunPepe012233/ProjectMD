@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
-using MinD.SO.EnemySO.State;
+using MinD.SO.EnemySO;
 
 namespace MinD.Runtime.Entity {
 
@@ -29,13 +29,11 @@ public abstract class Enemy : BaseEntity {
 	
 	
 	[Header("[ States ]")]
-	public EnemyState currentState;
-	public EnemyState previousState;
-	[Space(3)]
-	public EnemyState globalState;
-	
-	[HideInInspector] public EnemyState[] states;
-	[HideInInspector] public EnemyState[] globalStates;
+	public EnemyState currentState; 
+	public IdleState idleState; 
+	public PursueTargetState pursueTargetState;
+	public CombatStanceState combatStanceState;
+	public AttackState attackState;
 	
 	[HideInInspector] public BaseEntity currentTarget;
 	
@@ -47,7 +45,7 @@ public abstract class Enemy : BaseEntity {
 	
 	[Header("[ Flags ]")]
 	public bool isPerformingAction;
-	public bool isInCombat;
+	public bool isInAttack;
 	
 	public Action getHitAction = new Action(() => {});
 	
@@ -77,36 +75,33 @@ public abstract class Enemy : BaseEntity {
 		
 		utility.AllCollisionIgnoreSetup();
 		
-		
-		SetupStatesArray();
 		Reload();
 	} 
 	
-	// CALL SETUP
+	
 	protected override void Update() {
 		
 		base.Update();
+		state.HandleState();
 
-		state.ExecuteStateTick();
-		locomotion.HandleAllLocomotion();
+	}
 
+	private void LateUpdate() {
+		locomotion.ResetMoveDirectionParameter();
 	}
 	
 	
 	
-	
-	// ASSIGN STATE ARRAY AND 
-	protected abstract void SetupStatesArray();
-	
-	
 	// SETUP START STATE AND RUNTIME ATTRIBUTE SETTING
-	public virtual void Reload() {
+	public void Reload() {
+		
+		transform.position = worldPlacedPosition;
+		transform.position = worldPlacedPosition;
+		
+		state.SetState(idleState);
 		
 		curHp = attribute.MaxHp;
-		transform.position = worldPlacedPosition;
-		transform.position = worldPlacedPosition;
 		
-		// NEED TO SET THE START STATE IN OVERRIDE
 	}
 }
 

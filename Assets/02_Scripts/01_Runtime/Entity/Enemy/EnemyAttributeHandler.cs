@@ -29,8 +29,12 @@ public class EnemyAttributeHandler : BaseEntityAttributeHandler<Enemy> {
 		}
 	}
 
-	public float speed {
-		get => attributeSO.speed;
+	public float moveSpeed {
+		get => attributeSO.moveSpeed;
+	}
+
+	public float angularSpeed {
+		get => attributeSO.angularSpeed;
 	}
 }
 

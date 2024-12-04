@@ -181,8 +181,7 @@ public class PlayerCamera : MonoBehaviour {
 		// CHECK AVAILABLE TARGETS
 		availableTargets.Clear();
 		foreach (Collider collider in colliders) {
-			Debug.Log(collider.name);
-
+			
 			// GET ENTITY
 			BaseEntity targetEntity = null;
 			

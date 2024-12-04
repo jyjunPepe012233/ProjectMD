@@ -12,7 +12,6 @@ public class ResetEnemyFlags : StateMachineBehaviour {
     [SerializeField] private bool applyRootMotion = true;
 
     [SerializeField] private bool isPerformingAction = false;
-    [SerializeField] private bool isInCombat;
 
 
     [HideInInspector] public Enemy owner;
@@ -26,7 +25,6 @@ public class ResetEnemyFlags : StateMachineBehaviour {
         animator.applyRootMotion = applyRootMotion;
 
         owner.isPerformingAction = isPerformingAction;
-        owner.isInCombat = isInCombat;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
