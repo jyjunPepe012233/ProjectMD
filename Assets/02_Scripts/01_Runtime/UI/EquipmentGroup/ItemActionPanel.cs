@@ -6,6 +6,7 @@ using MinD.SO.Item;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using NotImplementedException = System.NotImplementedException;
 
 namespace MinD.Runtime.UI
 {
@@ -240,13 +241,30 @@ namespace MinD.Runtime.UI
             {
                 currentItem.itemCount--;
                 Debug.Log($"Dropped: {currentItem.itemName}");
-                if (currentItem.itemCount == 0)
+                // EquipmentSlot 업데이트
+                UpdateEquipmentSlotCount();
+
+                if (currentItem.itemCount <= 0) // 아이템 수가 0이거나 이하일 경우
                 {
+                    currentItem = null; // 현재 아이템 초기화
                     HidePanel();
                 }
             }
 
             inventoryUI.UpdateInventoryUI();
+        }
+
+        private void UpdateEquipmentSlotCount()
+        {
+            var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
+            foreach (var slot in equipmentSlots)
+            {
+                if (slot.categoryId == currentItem.categoryId) // 현재 아이템의 카테고리 확인
+                {
+                    slot.UpdateSlot(currentItem); // 슬롯 업데이트
+                    break; // 첫 번째 슬롯만 업데이트
+                }
+            }
         }
 
         private void OnDestroyButtonClicked()
@@ -255,8 +273,12 @@ namespace MinD.Runtime.UI
             {
                 currentItem.itemCount--;
                 Debug.Log($"Destroyed: {currentItem.itemName}");
-                if (currentItem.itemCount == 0)
+                // EquipmentSlot 업데이트
+                UpdateEquipmentSlotCount();
+
+                if (currentItem.itemCount <= 0) // 아이템 수가 0이거나 이하일 경우
                 {
+                    currentItem = null; // 현재 아이템 초기화
                     HidePanel();
                 }
             }

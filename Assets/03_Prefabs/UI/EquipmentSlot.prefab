@@ -211,10 +211,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe681ade3fde441eab4d7148a10db825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotId: 0
   itemImage: {fileID: 569897253773963752}
   itemCountText: {fileID: 4594729043622386184}
+  selectionImage: {fileID: 4148668114876426675}
   categoryId: 0
+  slotIndex: 0
 --- !u!1 &7436395728280024487
 GameObject:
   m_ObjectHideFlags: 0

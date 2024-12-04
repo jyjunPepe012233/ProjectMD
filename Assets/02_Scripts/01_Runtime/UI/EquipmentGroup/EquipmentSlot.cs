@@ -6,6 +6,7 @@ public class EquipmentSlot : MonoBehaviour
 {
     public Image itemImage;
     public Text itemCountText;
+    public GameObject selectionImage;
     public int categoryId;
     public int slotIndex;
 
@@ -21,8 +22,13 @@ public class EquipmentSlot : MonoBehaviour
                 itemCountText.text = item.itemCount.ToString();
                 itemCountText.gameObject.SetActive(true);
             }
+            else if (item.itemCount == 1)
+            {
+                itemCountText.gameObject.SetActive(false);
+            }
             else
             {
+                itemImage.gameObject.SetActive(false);
                 itemCountText.gameObject.SetActive(false);
             }
         }
@@ -31,5 +37,10 @@ public class EquipmentSlot : MonoBehaviour
             itemImage.gameObject.SetActive(false);
             itemCountText.gameObject.SetActive(false);
         }
+    }
+
+    public void OnSlotClicked()
+    {
+        Debug.Log($"장착슬롯 클릭 categoryId: {categoryId}, slotIndex: {slotIndex}");
     }
 }

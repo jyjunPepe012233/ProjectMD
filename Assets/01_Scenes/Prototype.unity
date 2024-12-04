@@ -374,8 +374,7 @@ MonoBehaviour:
     type: 3}
   m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018,
     type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
+  m_SubmitAction: {fileID: 0}
   m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018,
     type: 3}
   m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018,
@@ -9439,12 +9438,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EquipmentPanels:
-  - {fileID: 1056441970742038750}
-  - {fileID: 5381717447086178948}
   - {fileID: 6064036462514404275}
   - {fileID: 997788484234778500}
+  - {fileID: 1056441970742038750}
+  - {fileID: 5381717447086178948}
   EquipmentSlotPrefab: {fileID: 7135528804356901376, guid: 455423d3681b94d4396522695def9991,
     type: 3}
+  isInteractingWithEquipmentPanel: 0
 --- !u!114 &6275713871743349637
 MonoBehaviour:
   m_ObjectHideFlags: 0

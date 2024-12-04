@@ -29,9 +29,12 @@ namespace MinD.Runtime.UI {
 
         public GameObject inventoryPanel;
         private bool isInventoryActive = false;
+        private bool isInteractingWithEquipmentPanel = false; // 장착 패널 상호작용 여부
+        private EquipmentUI equipmentUI; // EquipmentUI 참조 추가
 
         void Start()
         {
+            equipmentUI = FindObjectOfType<EquipmentUI>();
             playerInventory = FindObjectOfType<Player>().inventory;
             categorySlots = new List<List<InventorySlot>>();
 
@@ -59,6 +62,10 @@ namespace MinD.Runtime.UI {
         }
         void Update()
         {
+            if (equipmentUI.isInteractingWithEquipmentPanel) // 장착 패널과 상호작용 중일 때 입력 무시
+            {
+                return;
+            }
             HandleInput();
             MaintainFocus();
             // Q 키를 눌렀을 때 패널을 숨김
@@ -373,6 +380,21 @@ namespace MinD.Runtime.UI {
             {
                 GameObject selectedSlotObject = categorySlots[currentCategoryIndex][selectedSlotIndex].gameObject;
                 EventSystem.current.SetSelectedGameObject(selectedSlotObject);
+            }
+        }
+        public void DisableSelectionImage()
+        {
+            var slots = categorySlots[currentCategoryIndex];
+            for (int i = 0; i < slots.Count; i++)
+            {
+                slots[i].SetSelected(false); // 모든 슬롯의 선택 이미지 비활성화
+            }
+        }
+        public void EnableSelectionImage(int slotIndex)
+        {
+            if (slotIndex >= 0 && slotIndex < categorySlots[currentCategoryIndex].Count)
+            {
+                categorySlots[currentCategoryIndex][slotIndex].SetSelected(true); // 선택 이미지 활성화
             }
         }
     }
