@@ -1,8 +1,8 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
 using MinD.SO.EnemySO;
+using MinD.SO.StatusFX.Effects;
 
 namespace MinD.Runtime.Entity {
 
@@ -14,6 +14,12 @@ namespace MinD.Runtime.Entity {
 [RequireComponent(typeof(EnemyUtilityHandler))]
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Enemy : BaseEntity {
+
+	public HumanoidEnemy ToHumanoid {
+		get => this as HumanoidEnemy;
+	}
+	
+	
 	
 	[HideInInspector] public NavMeshAgent navAgent;
 	
@@ -27,14 +33,6 @@ public abstract class Enemy : BaseEntity {
 	[HideInInspector] public Vector3 worldPlacedPosition;
 	[HideInInspector] public Quaternion worldPlacedRotation;
 	
-	
-	[Header("[ States ]")]
-	public EnemyState currentState; 
-	public IdleState idleState; 
-	public PursueTargetState pursueTargetState;
-	public CombatStanceState combatStanceState;
-	public AttackState attackState;
-	
 	[HideInInspector] public BaseEntity currentTarget;
 	
 	public override int CurHp {
@@ -47,7 +45,9 @@ public abstract class Enemy : BaseEntity {
 	public bool isPerformingAction;
 	public bool isInAttack;
 	
-	public Action getHitAction = new Action(() => {});
+	[Header("[ States ]")]
+	public EnemyState currentState; 
+	
 	
 	
 
@@ -97,8 +97,6 @@ public abstract class Enemy : BaseEntity {
 		
 		transform.position = worldPlacedPosition;
 		transform.position = worldPlacedPosition;
-		
-		state.SetState(idleState);
 		
 		curHp = attribute.MaxHp;
 		

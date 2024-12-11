@@ -1,28 +1,28 @@
-using MinD.Enums;
 using MinD.Runtime.Entity;
 using MinD.Structs;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace MinD.SO.StatusFX.Effects {
 
 [CreateAssetMenu(fileName = "TakeHealthDamage", menuName = "MinD/Status Effect/Effects/TakeHealthDamage")]
 public class TakeHealthDamage : InstantEffect {
 
+	public BaseEntity perpetrator;
+
 	public Damage damage;
 	public int poiseBreakDamage;
+	
+	public float attackAngle;
 
-	[FormerlySerializedAs("hitAngle")] public float attackAngle;
 	
 	
 	
-	public TakeHealthDamage(Damage damage, int poiseBreakDamage, float attackAngle) {
+	public TakeHealthDamage(BaseEntity perpetrator, Damage damage, int poiseBreakDamage, float attackAngle) {
+		this.perpetrator = perpetrator;
 		this.damage = damage;
 		this.poiseBreakDamage = poiseBreakDamage;
 		this.attackAngle = attackAngle;
 	}
-
-	
 	
 	public static int GetCalculatedDamage(Damage damage_, DamageNegation negation_) {
 		
@@ -54,89 +54,16 @@ public class TakeHealthDamage : InstantEffect {
 		// ACTUALLY, POISE BREAK RESISTANCE CAN OUT OF RANGE 0-100.
 	}
 
+
 	
+	public override void OnInstantiate(BaseEntity victim) {
+		
+		victim.CurHp -= GetCalculatedDamage(damage, victim.GetComponent<BaseEntityAttributeHandler<BaseEntity>>().DamageNegation);
 
-	protected override void OnInstantiateAs(Player player) {
-
-		// DRAIN HP
-		player.CurHp -= GetCalculatedDamage(damage, player.attribute.damageNegation);
+		victim.OnDamaged(this);
+		victim.getHitAction.Invoke();
 		
-		// INVOKE ACTION
-		player.getHitAction();
-		
-		
-		// IF PLAYER HAS IMMUNE OF POISE BREAK, DON'T GIVE POISE BREAK 
-		if (player.immunePoiseBreak && !player.isDeath) {
-			return;
-		}
-		
-		// CANCEL ACTIONS
-		player.combat.CancelMagicOnGetHit();
-
-		// IF PLAYER IS DEATH IN DRAIN HP PROCESS, DON'T PLAY ANIMATION
-		if (player.isDeath) {
-			return;
-		}
-		
-		
-		#region SET_POISE_BREAK_ANIMATION
-		
-		
-		// DECIDE DIRECTION OF POISE BREAK ANIMATION BY HIT DIRECTION
-		string hitDirection;
-		// SET HIT DIRECTION	
-		if (attackAngle >= -45 && attackAngle < 45) {
-			hitDirection = "F";
-
-		} else if (attackAngle >= 45 && attackAngle < 135) {
-			hitDirection = "R";
-			
-		}  else if (attackAngle >= 135 && attackAngle < -135) {
-			hitDirection = "B";
-			
-		} else {
-			hitDirection = "L";
-		}
-		
-		
-		
-		string stateName = "Hit_";
-
-		// DECIDE ANIMATION BY CALCULATED POISE BREAK AMOUNT
-		int poiseBreakAmount = GetPoiseBreakAmount(poiseBreakDamage, player.attribute.poiseBreakResistance);
-		if (poiseBreakAmount >= 80) {
-			stateName += "KnockDown_Start";
-			
-			Vector3 angle = player.transform.eulerAngles;
-			angle.y += attackAngle;
-			player.transform.eulerAngles = angle;
-
-		} else if (poiseBreakAmount >= 55) {
-			stateName += "Large_";
-			stateName += hitDirection;
-
-		} else if (poiseBreakAmount >= 20) {
-			stateName += "Default_";
-			stateName += hitDirection;
-			
-		} else {
-			return; // IF POISE BREAK AMOUNT IS BELOW TO 20, POISE BREAK DOESN'T OCCUR
-		}
-		
-		#endregion
-
-		// PLAY POISE BREAK ANIMATION
-		player.animation.PlayTargetAction(stateName, true, true, false, false);
 	}
-
-	protected override void OnInstantiateAs(Enemy enemy) {
-		
-		// DRAIN HP
-		enemy.CurHp -= GetCalculatedDamage(damage, enemy.attribute.DamageNegation);
-		
-		enemy.getHitAction.Invoke();
-	}	
-
 }
 
 }

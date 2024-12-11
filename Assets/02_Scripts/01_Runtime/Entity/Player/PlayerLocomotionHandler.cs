@@ -1,6 +1,7 @@
 using System.Collections;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
+using MinD.SO.StatusFX.Effects;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;

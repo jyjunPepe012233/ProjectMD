@@ -45,11 +45,14 @@ public class DamageCollider : MonoBehaviour {
 		}
 		
 		
-		// GET HIT DIRECTION
-		Vector3 attackDirx = other.ClosestPoint(transform.position) - transform.position; // ATTACK DIRECTION AS TARGET
-		float attackAngle = Vector3.SignedAngle(damageTarget.transform.forward, -attackDirx, Vector3.up);
 		
 		damagedEntity.Add(damageTarget);
+		
+
+		BaseEntity perpetrator = other.GetComponentInParent<BaseEntity>(true);
+		
+		Vector3 attackDirx = other.ClosestPoint(transform.position) - transform.position; // ATTACK DIRECTION AS TARGET
+		float attackAngle = Vector3.SignedAngle(damageTarget.transform.forward, -attackDirx, Vector3.up);
 
 		InstantEffect damageEffect = null;
 		if (damageTarget is Player player) {
@@ -58,14 +61,14 @@ public class DamageCollider : MonoBehaviour {
 				damageEffect = new AbsorbMagic(soData.absorbMp, attackDirx);
 				
 			} else if (player.combat.usingDefenseMagic) {
-				damageEffect = new TakeDefensedHealthDamage(soData.damage, soData.poiseBreakDamage, attackDirx);
+				damageEffect = new TakeDefensedHealthDamage(perpetrator, soData.damage, soData.poiseBreakDamage, attackAngle, attackDirx);
 
 			} else {
-				damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, attackAngle);
+				damageEffect = new TakeHealthDamage(perpetrator, soData.damage, soData.poiseBreakDamage, attackAngle);
 			}
 			
 		} else { 
-			damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, attackAngle);
+			damageEffect = new TakeHealthDamage(perpetrator, soData.damage, soData.poiseBreakDamage, attackAngle);
 			
 		}
 

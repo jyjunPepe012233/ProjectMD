@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MinD.SO.StatusFX.Effects;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
@@ -28,7 +29,7 @@ public abstract class BaseEntity : MonoBehaviour {
 	public abstract int CurHp { get; set; }
 
 	
-	public Action getHitAction = new Action(()=>{});
+	public Action getHitAction = new Action(() => {});
 	public Action dieAction = new Action(() => {});
 	
 	
@@ -46,6 +47,8 @@ public abstract class BaseEntity : MonoBehaviour {
 		statusFx.HandleAllEffect();
 		
 	}
+
+	public abstract void OnDamaged(TakeHealthDamage damage);
 
 	protected abstract void OnDeath();
 }

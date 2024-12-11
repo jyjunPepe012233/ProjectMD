@@ -1,8 +1,7 @@
-using System.Collections;
 using MinD.Runtime.Managers;
+using MinD.Runtime.UI;
+using MinD.SO.StatusFX.Effects;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using NotImplementedException = System.NotImplementedException;
 
 namespace MinD.Runtime.Entity {
 
@@ -87,9 +86,6 @@ public class Player : BaseEntity {
     }
     void Start() {
         
-        // RESET PROPERTIES
-        getHitAction += locomotion.CancelBlink;
-        
         inventory.LoadItemData();
         
         attribute.SetBaseAttributesAsPerStats();
@@ -111,8 +107,35 @@ public class Player : BaseEntity {
 
     }
 
-    protected override void OnDeath() {
+    public override void OnDamaged(TakeHealthDamage damage) {
+        // HANDLE POISE BREAK AND CANCELING ACTION
+		
+        // IF PLAYER HAS IMMUNE OF POISE BREAK, DON'T GIVE POISE BREAK
+        // AND PLAYER IS DIED AFTER DRAIN HP, DON'T GIVE POISE BREAK
+        if (immunePoiseBreak || isDeath) {
+            return;
+        }
 
+        // CANCEL ACTIONS
+        combat.CancelMagicOnGetHit();
+        locomotion.CancelBlink();
+        
+        // PLAY POISE BREAK ANIMATION
+        int poiseBreakAmount = TakeHealthDamage.GetPoiseBreakAmount(damage.poiseBreakDamage, attribute.PoiseBreakResistance);
+        animation.PlayTargetAction(animation.GetPoiseBreakAnimation(poiseBreakAmount, damage.attackAngle), true, true, false, false);
+        
+    }
+
+    protected override void OnDeath() {
+        
+        // CANCEL ACTIONS
+        combat.CancelMagicOnGetHit();
+        locomotion.CancelBlink();
+        
+        PlayerHUDManager.Instance.PlayBurstPopup(PlayerHUDManager.playerHUD.youDiedPopup, true);
+        
+        animation.PlayTargetAction("Die", true, true, false, false);
+        
     }
     
 }

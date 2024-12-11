@@ -30,11 +30,11 @@ public class CombatStanceState : EnemyState {
 		}
 
 		if (self.currentTarget.isDeath) {
-			return self.pursueTargetState;
+			return self.ToHumanoid.pursueTargetState;
 		}
 
 		if (self.combat.DistanceToTarget() > exitCombatStanceRadius) {
-			return self.pursueTargetState;
+			return self.ToHumanoid.pursueTargetState;
 		}
 		
 		self.navAgent.SetDestination(self.currentTarget.transform.position);
@@ -72,7 +72,7 @@ public class CombatStanceState : EnemyState {
 				self.combat.willPerformCombo = Random.value < nextAttack.chanceToCombo && nextAttack.canPerformCombo;
 				self.combat.comboAttack = self.combat.willPerformCombo ? nextAttack.comboAttack : null;
 				
-				return self.attackState;
+				return self.ToHumanoid.attackState;
 			}
 		}
 		

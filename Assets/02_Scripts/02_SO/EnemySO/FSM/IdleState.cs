@@ -23,7 +23,7 @@ public class IdleState : EnemyState {
 		if (self.currentTarget == null) {
 			return this;
 		} else {
-			return self.pursueTargetState;
+			return self.ToHumanoid.pursueTargetState;
 		}
 		
 	}

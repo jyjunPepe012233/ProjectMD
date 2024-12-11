@@ -14,8 +14,9 @@ public class EnemyAttribute : ScriptableObject {
 
 	[Space(10)]
 	public DamageNegation damageNegation;
+	[Space(10)]
 	[Range(0, 100)] public int poiseBreakResistance;
-	
+
 }
 
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 namespace MinD.Runtime.Entity {
 
 public class EnemyLocomotionHandler : BaseEntityHandler<Enemy> {
-
+	
 	private bool isMoved;
 	
 	public void PivotTowards(Vector3 direction) {

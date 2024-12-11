@@ -22,7 +22,7 @@ public class AttackState : EnemyState {
 		} else if (!self.isPerformingAction && self.isInAttack) {
 			// EXIT ATTACK
 			self.isInAttack = false;
-			return self.combatStanceState;
+			return self.ToHumanoid.combatStanceState;
 
 
 		} else {

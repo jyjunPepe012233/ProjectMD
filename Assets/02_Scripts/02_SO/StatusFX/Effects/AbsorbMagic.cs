@@ -19,18 +19,10 @@ public class AbsorbMagic : InstantEffect {
 		this.worldAttackDirx = worldAttackDirx;
 	}
 
-	
-	protected override void OnInstantiateAs(Player player) {
 
-		player.CurMp += absorbMp;
-		
-		Debug.Log("Successfully Parryed");
-
+	public override void OnInstantiate(BaseEntity victim) {
+		throw new System.NotImplementedException();
 	}
-
-	protected override void OnInstantiateAs(Enemy enemy) {
-	}	
-
 }
 
 }

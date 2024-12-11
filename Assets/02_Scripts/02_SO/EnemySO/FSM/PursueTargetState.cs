@@ -21,7 +21,7 @@ public class PursueTargetState : EnemyState {
 		
 		// IF TARGET IS NOT EXIST IN DETECT RANGE
 		if (self.currentTarget == null) {
-			return self.idleState;
+			return self.ToHumanoid.idleState;
 		}
 		
 
@@ -29,7 +29,7 @@ public class PursueTargetState : EnemyState {
 		
 		// SWITCH STATE TO IDLE REMAINING PATH DISTANCE IS LONGER THAN GIVE UP DISTANCE 
 		if (self.navAgent.remainingDistance > giveUpDistance) {
-			return self.idleState;
+			return self.ToHumanoid.idleState;
 		}
 		
 		// PIVOT(TURN) TO DESIRE DIRECTION AND KEEP UP THIS STATE
@@ -40,7 +40,7 @@ public class PursueTargetState : EnemyState {
 
 		// SWITCH STATE TO COMBAT STANCE STATE IF TARGET IS IN COMBAT RANGE
 		if (Vector3.Distance(self.transform.position, self.currentTarget.transform.position) < enterCombatStanceRadius) {
-			return self.combatStanceState;
+			return self.ToHumanoid.idleState;
 		}
 		
 		// CHASING

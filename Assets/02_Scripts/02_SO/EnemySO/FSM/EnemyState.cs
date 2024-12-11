@@ -1,5 +1,6 @@
 using MinD.Runtime.Entity;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace MinD.SO.EnemySO {
 
