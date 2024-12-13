@@ -15,9 +15,6 @@ public class EnemyCombatHandler : BaseEntityHandler<Enemy> {
 
 	[HideInInspector] public bool willPerformCombo;
 	[HideInInspector] public EnemyAttackAction comboAttack;
-
-	[HideInInspector] public float strafeTimer;
-	[HideInInspector] public bool isDashingToTarget;
 	
 	
 	

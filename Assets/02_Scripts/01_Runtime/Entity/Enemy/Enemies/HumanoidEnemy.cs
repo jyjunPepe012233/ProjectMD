@@ -1,3 +1,4 @@
+using System.Buffers;
 using MinD.SO.EnemySO;
 using MinD.SO.StatusFX.Effects;
 using UnityEngine;
@@ -8,55 +9,58 @@ public abstract class HumanoidEnemy : Enemy {
 
 	private bool isKnockedDown;
 	
-	public IdleState idleState; 
-	public PursueTargetState pursueTargetState;
-	public CombatStanceState combatStanceState;
-	public AttackState attackState;
+	[HideInInspector] public bool isDashingToTarget; 
+	[HideInInspector] public float strafeTimer;
+
+	[HideInInspector] public Vector3 strafeDirx;
+	
+	
 	
 	public override void OnDamaged(TakeHealthDamage damage) {
+
+		float hitAngle = damage.attackAngle;
+		int poiseBreakAmount = TakeHealthDamage.GetPoiseBreakAmount(damage.poiseBreakDamage, attribute.PoiseBreakResistance);
 		
 		// DECIDE DIRECTION OF POISE BREAK ANIMATION BY HIT DIRECTION
-		Vector2 hitDirection = Vector2.zero;
+		string hitDirection;
 		// SET HIT DIRECTION	
-		if (damage.attackAngle >= -45 && damage.attackAngle < 45) {
-			hitDirection.y = 1;
+		if (hitAngle > -45 && hitAngle < 45) {
+			hitDirection = "F";
 
-		} else if (damage.attackAngle >= 45 && damage.attackAngle < 135) {
-			hitDirection.x = 1;
-			
-		}  else if (damage.attackAngle >= 135 && damage.attackAngle < -135) {
-			hitDirection.y = -1;
-			
+		} else if (hitAngle > 45 && hitAngle < 135) {
+			hitDirection = "R";
+		
+		}  else if (hitAngle > 135 && hitAngle < -135) {
+			hitDirection = "B";
+		
 		} else {
-			hitDirection.x = -1;
+			hitDirection = "L";
 		}
-
-
-		int actionAmount = 0;
+	
+	
+	
+		string stateName = "Hit_";
 
 		// DECIDE ANIMATION BY CALCULATED POISE BREAK AMOUNT
-		int poiseBreakAmount = TakeHealthDamage.GetPoiseBreakAmount(damage.poiseBreakDamage, attribute.PoiseBreakResistance);
 		if (poiseBreakAmount >= 80) {
-			actionAmount = 3;
-			hitDirection = Vector2.up;
-			
+			stateName += "KnockDown_Start";
+		
 			Vector3 angle = transform.eulerAngles;
-			angle.y += damage.attackAngle;
+			angle.y += hitAngle;
 			transform.eulerAngles = angle;
 
-		} else if (poiseBreakAmount >= 45) {
-			actionAmount = 2;
+		} else if (poiseBreakAmount >= 55) {
+			stateName += "Large_";
+			stateName += hitDirection;
 
 		} else if (poiseBreakAmount >= 20) {
-			actionAmount = 1;
-			
-		} else {
-			return; // IF POISE BREAK AMOUNT IS BELOW TO 20, POISE BREAK DOESN'T OCCUR
+			stateName += "Default_";
+			stateName += hitDirection;
+		
 		}
-
-		animator.SetFloat("HitHorizontal", hitDirection.x);
-		animator.SetFloat("HitVertical", hitDirection.y);
-		animation.PlayTargetAnimation("Hit_Direction_Tree", 0.2f, true, true);
+		
+		
+		animation.PlayTargetAnimation(stateName, 0.2f, true, true);
 	}
 }
 

@@ -1,123 +1,35 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using MinD.Runtime.Entity;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace MinD.SO.EnemySO {
 
-[CreateAssetMenu(menuName = "MinD/Enemy SO/FSM/Combat Stance", fileName = "Type_CombatStance")]
-public class CombatStanceState : EnemyState {
+public abstract class CombatStanceState : EnemyState {
 
-	public EnemyAttackAction[] attackActions;
+	[SerializeField] private EnemyAttackAction[] attackActions;
 	
 	[Space(10)]
-	[SerializeField] private float combatPursueMinDistance;
-	[SerializeField] private float combatPursueMaxDistance;
-	[Space(10)]
-	[SerializeField] private float exitCombatStanceRadius;
-
-	[Space(10)]
-	[SerializeField] private float maxStrafeTime; // WHEN STRAFE TIMER IS OVER MAXIMUM, START DASHING TO TARGET
+	[SerializeField] protected float exitCombatStanceRadius;
+	
 	
 
-	public override EnemyState Tick(Enemy self) {
+	protected AttackState AttemptAttackAction(Enemy self, EnemyAttackAction thisAttack) {
+		
+		self.combat.attackActionRecoveryTimer = 0;
+		((HumanoidEnemy)self).strafeTimer = 0;
+		((HumanoidEnemy)self).isDashingToTarget = false;
 
-		if (self.isPerformingAction) {
-			return self.currentState;
-		}
+		self.combat.latestAttack = thisAttack;
+		// DECIDE WHETHER TO USE COMBO
+		self.combat.willPerformCombo = Random.value < thisAttack.chanceToCombo && thisAttack.canPerformCombo;
+		self.combat.comboAttack = self.combat.willPerformCombo ? thisAttack.comboAttack : null;
 
-		if (self.currentTarget.isDeath) {
-			return self.ToHumanoid.pursueTargetState;
-		}
-
-		if (self.combat.DistanceToTarget() > exitCombatStanceRadius) {
-			return self.ToHumanoid.pursueTargetState;
-		}
-		
-		self.navAgent.SetDestination(self.currentTarget.transform.position);
-		
-		
-		// DASHING TO TARGET STATE
-		if (self.combat.isDashingToTarget) {
-			self.locomotion.RotateToDesireDirection();
-			self.locomotion.MoveToForward(true);
-
-			if (self.combat.DistanceToTarget() < combatPursueMinDistance) {
-				self.combat.isDashingToTarget = false;
-			}
-		}
-		
-		
-		
-
-		// CHECK NEXT ATTACK
-		if (self.combat.attackActionRecoveryTimer < (self.combat.latestAttack != null ? self.combat.latestAttack.actionRecoveryTime : 0) ) {
-			// IS IN RECOVERY
-			self.combat.attackActionRecoveryTimer += Time.deltaTime;
-			
-		} else {
-			
-			var nextAttack = GetAttackActionRandomly(self);
-			if (nextAttack != null) {
-				
-				self.combat.attackActionRecoveryTimer = 0;
-				self.combat.strafeTimer = 0;
-				self.combat.isDashingToTarget = false;
-
-				self.combat.latestAttack = nextAttack;
-				// DECIDE WHETHER TO USE COMBO
-				self.combat.willPerformCombo = Random.value < nextAttack.chanceToCombo && nextAttack.canPerformCombo;
-				self.combat.comboAttack = self.combat.willPerformCombo ? nextAttack.comboAttack : null;
-				
-				return self.ToHumanoid.attackState;
-			}
-		}
-		
-		
-		
-		// IF AVAILABLE STATE IS NOT EXISTS,
-		// PURSUE PROPER DISTANCE TO COMBAT
-		Vector3 strafeDirx = Vector3.zero;
-		
-		if (self.combat.DistanceToTarget() < combatPursueMinDistance) {
-			strafeDirx.z = -1;
-		} else if (self.combat.DistanceToTarget() > combatPursueMaxDistance) {
-			strafeDirx.z = 1;
-		}
-
-		
-		Vector3 targetLocalMoveDirx = self.currentTarget.transform.InverseTransformDirection(self.currentTarget.cc.velocity.normalized);
-		
-		if (targetLocalMoveDirx.x > 0.5) { // TARGET IS ON RIGHT
-			strafeDirx.x = 1;
-		} else if (targetLocalMoveDirx.x < -0.5) { // TARGET IS ON LEFT
-			strafeDirx.x = -1;
-		}
-		
-		
-		// WHEN STRAFE TIMER IS OVER MAXIMUM, START DASHING TO TARGET
-		self.combat.strafeTimer += Time.deltaTime;
-		if (self.combat.strafeTimer > maxStrafeTime) {
-			self.combat.isDashingToTarget = true;
-		}
-		
-		
-		if (!strafeDirx.Equals(Vector3.zero)) {
-			self.locomotion.StrafeToward(strafeDirx);
-		}
-		self.locomotion.RotateToDesireDirection();
-		
-		
-		
-		return self.currentState;
+		return self.attackState;
 	}
-
 	
-	
-	private EnemyAttackAction GetAttackActionRandomly(Enemy self) {
+	protected EnemyAttackAction GetAttackActionRandomly(Enemy self) {
 		
 		bool CanIUseThisAttack(EnemyAttackAction action) {
 
@@ -177,6 +89,7 @@ public class CombatStanceState : EnemyState {
 		
 		throw new UnityException();
 	}
+	
 }
 
 }

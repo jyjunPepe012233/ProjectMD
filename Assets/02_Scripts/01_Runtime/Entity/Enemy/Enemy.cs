@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
 using MinD.SO.EnemySO;
-using MinD.SO.StatusFX.Effects;
 
 namespace MinD.Runtime.Entity {
 
@@ -14,12 +13,6 @@ namespace MinD.Runtime.Entity {
 [RequireComponent(typeof(EnemyUtilityHandler))]
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Enemy : BaseEntity {
-
-	public HumanoidEnemy ToHumanoid {
-		get => this as HumanoidEnemy;
-	}
-	
-	
 	
 	[HideInInspector] public NavMeshAgent navAgent;
 	
@@ -47,7 +40,19 @@ public abstract class Enemy : BaseEntity {
 	
 	[Header("[ States ]")]
 	public EnemyState currentState; 
+	public IdleState idleState; 
+	public PursueTargetState pursueTargetState;
+	public CombatStanceState combatStanceState;
 	
+	private AttackState _attackState;
+	public AttackState attackState {
+		get {
+			if (_attackState == null) {
+				_attackState = new();
+			}
+			return _attackState;
+		}
+	} // ATTACK STATE IS INSTANTIATING AUTOMATICALLY
 	
 	
 
@@ -64,7 +69,9 @@ public abstract class Enemy : BaseEntity {
 		locomotion = GetComponent<EnemyLocomotionHandler>();
 		combat = GetComponent<EnemyCombatHandler>();
 		utility = GetComponent<EnemyUtilityHandler>();
-
+		
+		
+		
 		WorldEnemyManager.Instance.RegisteringEnemyOnWorld(this);
 		
 		// SET START POSITION
