@@ -15,10 +15,11 @@ MonoBehaviour:
   actionWeight: 1.3
   motionStateName: Attack1
   actionRecoveryTime: 0.5
+  rotateInAttackAction: 0
   minAngle: -35
   maxAngle: 35
   minDistance: 0
-  maxDistance: 1.7
+  maxDistance: 2.5
   canRepeatAction: 0
   canPerformCombo: 0
   chanceToCombo: 0.5

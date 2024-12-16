@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
+using MinD.Runtime.System;
 using MinD.SO.Item;
 using UnityEditor;
 using UnityEngine;
@@ -22,7 +23,6 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 	public bool isParrying;
 	
 	
-	[HideInInspector] public PlayerDefenseMagic defenseMagic;
 	[HideInInspector] public Magic currentCastingMagic;
 	
 	
@@ -146,6 +146,7 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 	private void ActivateDefenseMagic() {
 		
 		usingDefenseMagic = true; // IF THIS FLAG IS ENABLED, DAMAGE WILL CALCULATE SPECIAL
+		PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtilityManager.damageableLayerMask, false);
 
 		
 		
@@ -153,7 +154,7 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 		owner.animation.PlayTargetAction("Defense_Action_Start", 0.2f, true, true, true, false);
 		
 		// ACTIVE DEFENSE MAGIC
-		defenseMagic.EnableShield();
+		owner.defenseMagic.EnableShield();
 		
 
 		
@@ -163,6 +164,8 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 	public void ReleaseDefenseMagic(bool playAnimation = true, bool parrying = true) {
 
 		usingDefenseMagic = false;
+		PhysicUtility.SetActiveChildrenColliders(transform, true, WorldUtilityManager.damageableLayerMask, false);
+
 
 		
 		if (playAnimation) {
@@ -174,14 +177,11 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 		}
 
 		// DISABLE DEFENSE MAGIC
-		defenseMagic.DisableShield();
+		owner.defenseMagic.DisableShield();
 	}
 
 	public void StartParrying() => isParrying = true;
 	public void EndParrying() => isParrying = false;
-	
-	
-	
 	
 	
 	

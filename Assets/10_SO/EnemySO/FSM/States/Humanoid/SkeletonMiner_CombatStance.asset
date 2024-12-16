@@ -18,6 +18,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d8859a0298bd748d99ebf6e973457563, type: 2}
   - {fileID: 11400000, guid: 5a9dae2a077d94aaebebf57604564b01, type: 2}
   exitCombatStanceRadius: 14
-  combatPursueMinDistance: 2
-  combatPursueMaxDistance: 7
+  combatPursueMinDistance: 1
+  combatPursueMaxDistance: 6
   maxStrafeTime: 3.5

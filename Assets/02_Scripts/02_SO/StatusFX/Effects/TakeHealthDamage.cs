@@ -7,8 +7,6 @@ namespace MinD.SO.StatusFX.Effects {
 [CreateAssetMenu(fileName = "TakeHealthDamage", menuName = "MinD/Status Effect/Effects/TakeHealthDamage")]
 public class TakeHealthDamage : InstantEffect {
 
-	public BaseEntity perpetrator;
-
 	public Damage damage;
 	public int poiseBreakDamage;
 	
@@ -17,8 +15,7 @@ public class TakeHealthDamage : InstantEffect {
 	
 	
 	
-	public TakeHealthDamage(BaseEntity perpetrator, Damage damage, int poiseBreakDamage, float attackAngle) {
-		this.perpetrator = perpetrator;
+	public TakeHealthDamage(Damage damage, int poiseBreakDamage, float attackAngle) {
 		this.damage = damage;
 		this.poiseBreakDamage = poiseBreakDamage;
 		this.attackAngle = attackAngle;

@@ -14,6 +14,17 @@ public static class PhysicUtility {
 			Physics.IgnoreCollision(col, collider);
 		}
 	}
+	
+	public static void SetUpIgnoreBodyCollision(BaseEntity entity) {
+
+		Collider[] cols = entity.GetComponentsInChildren<Collider>(true);
+
+		foreach (Collider col1 in cols) {
+			foreach (Collider col2 in cols) {
+				Physics.IgnoreCollision(col1, col2);
+			}
+		}
+	}
 
 	public static void SetActiveChildrenColliders(Transform root, bool active, int layerMask = ~0, bool includeInactive = false) {
 		

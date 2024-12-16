@@ -1,4 +1,5 @@
 using MinD.Runtime.Managers;
+using MinD.Runtime.System;
 using MinD.Runtime.UI;
 using MinD.SO.StatusFX.Effects;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace MinD.Runtime.Entity {
 public class Player : BaseEntity {
     
     [HideInInspector] public PlayerCamera camera;
+    [HideInInspector] public PlayerDefenseMagic defenseMagic;
     [HideInInspector] public PlayerAnimationHandler animation;
     [HideInInspector] public PlayerAttributeHandler attribute;
     [HideInInspector] public PlayerLocomotionHandler locomotion;
@@ -69,6 +71,7 @@ public class Player : BaseEntity {
 
         base.Awake();
         
+        
         animation = GetComponent<PlayerAnimationHandler>();
         attribute = GetComponent<PlayerAttributeHandler>();
         locomotion = GetComponent<PlayerLocomotionHandler>();
@@ -78,13 +81,15 @@ public class Player : BaseEntity {
         combat = GetComponent<PlayerCombatHandler>();
         
         camera = FindObjectOfType<PlayerCamera>();
-        combat.defenseMagic = FindObjectOfType<PlayerDefenseMagic>();
-
         camera.owner = this;
-        combat.defenseMagic.owner = this;
+        defenseMagic = FindObjectOfType<PlayerDefenseMagic>();
+        defenseMagic.owner = this;
 
     }
     void Start() {
+        
+        PhysicUtility.IgnoreCollisionUtil(this, defenseMagic.defenseCollider);
+        
         
         inventory.LoadItemData();
         

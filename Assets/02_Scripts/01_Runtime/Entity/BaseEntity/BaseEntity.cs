@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MinD.Runtime.System;
 using MinD.SO.StatusFX.Effects;
 using UnityEngine;
 
@@ -35,6 +36,9 @@ public abstract class BaseEntity : MonoBehaviour {
 	
 
 	protected virtual void Awake() {
+
+		PhysicUtility.SetUpIgnoreBodyCollision(this);
+		
 		
 		statusFx = GetComponent<EntityStatusFxHandler>();
 

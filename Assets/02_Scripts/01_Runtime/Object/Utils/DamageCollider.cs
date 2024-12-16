@@ -15,66 +15,78 @@ public class DamageCollider : MonoBehaviour {
 	public List<BaseEntity> blackList = new List<BaseEntity>(); // IGNORE THIS DAMAGE COLLIDER
 	
 	private List<BaseEntity> damagedEntity = new List<BaseEntity>();
-
 	
-
+	
+	
 	private void OnTriggerEnter(Collider other) {
-		
-		if (soData == null) { // IF NO DAMAGE DATA IS REGISTERED, THE DAMAGE COLLIDER WILL DISABLE
-			gameObject.SetActive(false);
-;			return;
-		}
-		
-		
-		
+		GiveDamage(other);
+	}
+
+	private void GiveDamage(Collider other) {
+
 		BaseEntity damageTarget = other.GetComponentInParent<BaseEntity>();
 		if (damageTarget == null) {
-			return;
+			
+			var playerDefenseMagic = other.GetComponent<PlayerDefenseMagic>();
+			var entityComponentInCollider = other.GetComponent<BaseEntity>();
+
+			if (playerDefenseMagic != null) {
+				damageTarget = playerDefenseMagic.owner;
+				
+			} else if (playerDefenseMagic == null) {
+				return;
+			}
 		}
 		
+		GiveDamage(damageTarget, (other.bounds.center) - transform.position);
+	}
+
+	private void GiveDamage(BaseEntity damageTarget, Vector3 contactDirection) {
 		
-		
+		if (soData == null) { // IF NO DAMAGE DATA IS REGISTERED, THE DAMAGE COLLIDER WILL DISABLE
+			gameObject.SetActive(false); 
+			return;
+		}
+
 		if (damageTarget.isInvincible) {
 			return;
-		}  
-		if (damagedEntity.Contains(damageTarget)) { // CANCEL DAMAGE IF TARGET ENTITY ALREADY DAMAGED
+		}
+		if (damagedEntity.Contains(damageTarget)) {
 			return;
 		}
 		if (blackList.Contains(damageTarget)) {
 			return;
 		}
 		
-		
-		
+		contactDirection.Normalize();
 		damagedEntity.Add(damageTarget);
-		
 
-		BaseEntity perpetrator = other.GetComponentInParent<BaseEntity>(true);
 		
-		Vector3 attackDirx = other.ClosestPoint(transform.position) - transform.position; // ATTACK DIRECTION AS TARGET
-		float attackAngle = Vector3.SignedAngle(damageTarget.transform.forward, -attackDirx, Vector3.up);
+		
+		float getHitAngle = Vector3.SignedAngle(damageTarget.transform.forward, -contactDirection, Vector3.up);  // ATTACK ANGLE AS TARGET
 
 		InstantEffect damageEffect = null;
 		if (damageTarget is Player player) {
 			
 			if (player.combat.isParrying) {
-				damageEffect = new AbsorbMagic(soData.absorbMp, attackDirx);
+				damageEffect = new AbsorbMagic(soData.absorbMp, contactDirection);
 				
 			} else if (player.combat.usingDefenseMagic) {
-				damageEffect = new TakeDefensedHealthDamage(perpetrator, soData.damage, soData.poiseBreakDamage, attackAngle, attackDirx);
+				damageEffect = new TakeDefensedHealthDamage(soData.damage, soData.poiseBreakDamage, getHitAngle, contactDirection);
 
 			} else {
-				damageEffect = new TakeHealthDamage(perpetrator, soData.damage, soData.poiseBreakDamage, attackAngle);
+				damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, getHitAngle);
 			}
 			
 		} else { 
-			damageEffect = new TakeHealthDamage(perpetrator, soData.damage, soData.poiseBreakDamage, attackAngle);
+			damageEffect = new TakeHealthDamage(soData.damage, soData.poiseBreakDamage, getHitAngle);
 			
 		}
 
 		// GIVE EFFECT TO TARGET
 		damageTarget.statusFx.AddInstantEffect(damageEffect);
 	}
+	
 
 
 

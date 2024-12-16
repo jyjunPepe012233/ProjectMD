@@ -12,8 +12,8 @@ public class PlayerDefenseMagic : MonoBehaviour {
 
 	[HideInInspector] public Player owner;
 
-
-	[SerializeField] private Collider defenseCollider;
+	
+	public Collider defenseCollider;
 	[SerializeField] private ParticleSystem defenseVfxSystem;
 	[SerializeField] private ParticleSystem guardBreakVfxSystem;
 
@@ -44,7 +44,7 @@ public class PlayerDefenseMagic : MonoBehaviour {
 			owner.attribute.damageNegation *= owner.inventory.protectionSlot.negationBoost;
 
 
-			defenseCollider.gameObject.SetActive(true);
+			defenseCollider.enabled = true;
 			
 			defenseVfxSystem.Play();
 		}
@@ -60,8 +60,8 @@ public class PlayerDefenseMagic : MonoBehaviour {
 			// set negation
 			owner.attribute.damageNegation /= owner.inventory.protectionSlot.negationBoost;
 
-			
-			defenseCollider.gameObject.SetActive(false);
+
+			defenseCollider.enabled = false;
 			
 			defenseVfxSystem.Stop();
 		}
