@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using MinD.Enums;
+using MinD.Runtime.Entity;
 using MinD.Runtime.UI;
 using UnityEngine;
 
@@ -8,6 +10,7 @@ public class EquipmentUI : MonoBehaviour
     public GameObject EquipmentSlotPrefab;
 
     private InventoryUI inventoryUI; // 인벤토리 UI 참조
+    private PlayerInventoryHandler playerInventory; // 플레이어 인벤토리 핸들러 참조
     private int currentPanelIndex = -1; // 현재 활성화된 패널 인덱스 (-1: 인벤토리 모드)
     private int currentSlotIndex = 0; // 현재 선택된 슬롯 인덱스
     private int columns = 5; // 슬롯의 열 수
@@ -16,6 +19,7 @@ public class EquipmentUI : MonoBehaviour
     void Start()
     {
         inventoryUI = FindObjectOfType<InventoryUI>();
+        playerInventory = FindObjectOfType<PlayerInventoryHandler>();
         CreateEquipmentSlots();
         UpdateSelectedSlot(false); // 기본 선택 슬롯 비활성화
     }
@@ -45,28 +49,22 @@ public class EquipmentUI : MonoBehaviour
 
     private void ToggleEquipmentPanel()
     {
-        // 현재 패널의 선택 이미지 비활성화
         if (currentPanelIndex >= 0 && currentPanelIndex < EquipmentPanels.Count)
         {
             UpdateSelectedSlot(false); // 현재 패널의 선택 이미지 비활성화
         }
 
-        // 다음 패널 인덱스로 순환 (패널 전환)
         currentPanelIndex++;
         if (currentPanelIndex > EquipmentPanels.Count - 1) // 마지막 패널 이후에는 인벤토리로
         {
             currentPanelIndex = -1; // 인벤토리 모드로 전환
         }
 
-        // 상호작용 상태 업데이트
         isInteractingWithEquipmentPanel = (currentPanelIndex != -1);
 
         if (isInteractingWithEquipmentPanel) // 장비 패널 활성화 상태
         {
-            // 슬롯 인덱스 초기화 (현재 패널의 첫 번째 슬롯 선택)
             ResetSlotIndex();
-
-            // 현재 패널 활성화
             UpdateSelectedSlot(true); // 선택 이미지 활성화
             inventoryUI.DisableSelectionImage(); // 인벤토리 선택 이미지 비활성화
         }
@@ -98,36 +96,21 @@ public class EquipmentUI : MonoBehaviour
 
     private void MoveSelection(int direction)
     {
-        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return; // 잘못된 인덱스 예외 처리
+        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return;
 
         Transform currentPanel = EquipmentPanels[currentPanelIndex];
         int slotCount = currentPanel.childCount;
 
-        UpdateSelectedSlot(false); // 현재 선택된 슬롯 비활성화
+        UpdateSelectedSlot(false);
+        currentSlotIndex += direction;
 
-        currentSlotIndex += direction; // 인덱스 이동
+        if (currentSlotIndex % columns < 0) currentSlotIndex += columns;
+        else if (currentSlotIndex % columns >= columns) currentSlotIndex -= columns;
 
-        // 경계 체크 (가로 방향)
-        if (currentSlotIndex % columns < 0) // 왼쪽 경계
-        {
-            currentSlotIndex += columns; // 오른쪽 끝으로 이동
-        }
-        else if (currentSlotIndex % columns >= columns) // 오른쪽 경계
-        {
-            currentSlotIndex -= columns; // 왼쪽 끝으로 이동
-        }
+        if (currentSlotIndex < 0) currentSlotIndex = slotCount - 1;
+        else if (currentSlotIndex >= slotCount) currentSlotIndex = 0;
 
-        // 경계 체크 (세로 방향)
-        if (currentSlotIndex < 0) // 위쪽 경계
-        {
-            currentSlotIndex = slotCount - 1; // 아래쪽으로 이동
-        }
-        else if (currentSlotIndex >= slotCount) // 아래쪽 경계
-        {
-            currentSlotIndex = 0; // 위쪽으로 이동
-        }
-
-        UpdateSelectedSlot(true); // 현재 선택된 슬롯 활성화
+        UpdateSelectedSlot(true);
     }
 
     public void CreateEquipmentSlots()
@@ -156,17 +139,17 @@ public class EquipmentUI : MonoBehaviour
         if (currentPanelIndex >= 0 && currentPanelIndex < EquipmentPanels.Count)
         {
             int slotCount = EquipmentPanels[currentPanelIndex].childCount;
-            currentSlotIndex = Mathf.Clamp(currentSlotIndex, 0, slotCount - 1); // 현재 패널 슬롯 범위 내로 제한
+            currentSlotIndex = Mathf.Clamp(currentSlotIndex, 0, slotCount - 1);
         }
         else
         {
-            currentSlotIndex = 0; // 기본값
+            currentSlotIndex = 0;
         }
     }
 
     private void UpdateSelectedSlot(bool activate = true)
     {
-        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return; // 패널이 활성화되지 않은 경우 무시
+        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return;
 
         Transform currentPanel = EquipmentPanels[currentPanelIndex];
         int slotCount = currentPanel.childCount;
@@ -179,13 +162,13 @@ public class EquipmentUI : MonoBehaviour
 
         if (equipmentSlot != null)
         {
-            equipmentSlot.selectionImage.SetActive(activate); // 선택 이미지 활성화 또는 비활성화
+            equipmentSlot.selectionImage.SetActive(activate);
         }
     }
 
     private void ClearSelectedSlot()
     {
-        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return; // 유효하지 않은 경우 무시
+        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return;
 
         Transform currentPanel = EquipmentPanels[currentPanelIndex];
         Transform selectedSlot = currentPanel.GetChild(currentSlotIndex);
@@ -193,13 +176,15 @@ public class EquipmentUI : MonoBehaviour
 
         if (equipmentSlot != null)
         {
-            equipmentSlot.ClearSlot(); // 슬롯의 정보를 지우고 비활성화
+            equipmentSlot.ClearSlot();
+            playerInventory.UnequipEquipment((EquipmentSlots)equipmentSlot.slotIndex);
+            Debug.Log($"Slot cleared: Category {equipmentSlot.categoryId}, Index {equipmentSlot.slotIndex}");
         }
     }
 
     private void TriggerSlotAction()
     {
-        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return; // 패널이 활성화되지 않은 경우 무시
+        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return;
 
         Transform currentPanel = EquipmentPanels[currentPanelIndex];
         Transform selectedSlot = currentPanel.GetChild(currentSlotIndex);
@@ -207,7 +192,8 @@ public class EquipmentUI : MonoBehaviour
 
         if (equipmentSlot != null)
         {
-            equipmentSlot.OnSlotClicked(); // 슬롯 클릭 이벤트 호출
+            // Add logic for equipping items from inventory
+            Debug.Log($"Slot action triggered: Category {equipmentSlot.categoryId}, Index {equipmentSlot.slotIndex}");
         }
     }
 }

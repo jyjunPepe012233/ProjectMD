@@ -132,14 +132,10 @@ namespace MinD.Runtime.UI
             {
                 EquipItemBasedOnCategory(equipment);
             }
-
-            if (currentItem.itemCount == 0)
-            {
-                HidePanel();
-            }
-
+            HidePanel(); // 착용 후 패널 닫기
             inventoryUI.UpdateInventoryUI();
         }
+
 
         private void EquipItemBasedOnCategory(Equipment equipment)
         {

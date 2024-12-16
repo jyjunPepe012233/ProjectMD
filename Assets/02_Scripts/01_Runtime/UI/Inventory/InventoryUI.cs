@@ -97,32 +97,27 @@ namespace MinD.Runtime.UI {
                 ToggleInventory();
             }
 
-            if (!isInventoryActive) return; // 인벤토리가 활성화되지 않으면 아무것도 하지 않음
-            
-            if (equipmentUI.isInteractingWithEquipmentPanel) // 장착 패널과 상호작용 중일 때 입력 무시
+            if (!isInventoryActive) return;
+
+            // 장착 UI와 상호작용 중일 때도 카테고리 변경이 가능하도록 수정
+            if (Input.GetKeyDown(KeyCode.Z))
             {
-                return;
+                ChangeCategory(-1);
             }
-            // 인벤토리 액션 패널이 열려있지 않을 때만 입력 처리
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                ChangeCategory(1);
+            }
+            
             if (!itemActionPanel.IsActive())
             {
-                // Q 키를 눌렀을 때 패널을 숨김
                 if (Input.GetKeyDown(KeyCode.Q))
                 {
-                    itemActionPanel.HidePanel(); // 패널 숨기기
-                    return; // 패널을 숨기면 추가 입력 처리 중단
+                    itemActionPanel.HidePanel();
+                    return;
                 }
 
-                // 슬롯 이동 관련 입력 처리
-                if (Input.GetKeyDown(KeyCode.Z))
-                {
-                    ChangeCategory(-1);
-                }
-                else if (Input.GetKeyDown(KeyCode.X))
-                {
-                    ChangeCategory(1);
-                }
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
                     MoveSelection(1);
                 }
@@ -141,18 +136,18 @@ namespace MinD.Runtime.UI {
                     MoveSelection(inventoryWidth);
                 }
 
-                // Enter 키를 눌렀을 때 패널을 띄움
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
                     var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
                     var item = selectedSlot.GetCurrentItem();
-                    if (item != null && item.itemCount > 0) // 아이템이 있을 때만 패널 표시
+                    if (item != null && item.itemCount > 0)
                     {
-                        itemActionPanel.ShowPanel(item); // 아이템과 슬롯 인덱스를 전달
+                        itemActionPanel.ShowPanel(item);
                     }
                 }
             }
         }
+
         void ChangeCategory(int direction)
         {
             currentCategoryIndex = (currentCategoryIndex + direction + categoryPanels.Count) % categoryPanels.Count;
