@@ -36,6 +36,10 @@ public class EnemyAttributeHandler : BaseEntityAttributeHandler<Enemy> {
 	public float angularSpeed {
 		get => attributeSO.angularSpeed;
 	}
+
+	public float corpseFadeTime {
+		get => attributeSO.corpseFadeTime;
+	}
 }
 
 }

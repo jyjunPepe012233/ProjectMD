@@ -17,6 +17,9 @@ public class EnemyAttribute : ScriptableObject {
 	[Space(10)]
 	[Range(0, 100)] public int poiseBreakResistance;
 
+	[Header("[ Setting ]")]
+	public float corpseFadeTime = 2;
+
 }
 
 }

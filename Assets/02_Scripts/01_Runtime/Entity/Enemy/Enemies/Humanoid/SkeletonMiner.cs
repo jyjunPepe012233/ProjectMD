@@ -5,10 +5,6 @@ namespace MinD.Runtime.Entity.Enemies {
 
 public class SkeletonMiner : HumanoidEnemy {
 	
-	protected override void OnDeath() {
-
-	}
-	
 }
 
 }

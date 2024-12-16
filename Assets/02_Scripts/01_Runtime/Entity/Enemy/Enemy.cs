@@ -80,8 +80,6 @@ public abstract class Enemy : BaseEntity {
 		transform.position = worldPlacedPosition;
 		worldPlacedRotation = transform.rotation;
 		
-		utility.AllCollisionIgnoreSetup();
-		
 		Reload();
 	} 
 	
@@ -108,6 +106,7 @@ public abstract class Enemy : BaseEntity {
 		curHp = attribute.MaxHp;
 		
 	}
+	
 }
 
 }

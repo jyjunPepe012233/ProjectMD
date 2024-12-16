@@ -1,43 +1,16 @@
-using System.Linq;
-using MinD.Runtime.System;
+using System.Collections;
 using MinD.Runtime.Utils;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyUtilityHandler : BaseEntityHandler<Enemy> {
+public class EnemyUtilityHandler : EnemyHandler {
 	
 	[Space(10)]
 	[SerializeField] private GameObject[] ownedObjects;
 	[SerializeField] private GameObject[] prefabs;
-	
-	
-	
-	public void AllCollisionIgnoreSetup() {
-		
-		// RESET ARRAY TO THERE'S ONLY AVAILABLE(RIGHT LAYER) COLLIDER
-		Collider[] allCols = GetComponentsInChildren<Collider>(true);
 
-		
-		// IGNORE BODY COLLIDERS WITH OWNED DAMAGE COLLIDER
-		var ownedDamageCols = allCols.Where(c => c.gameObject.layer == LayerMask.NameToLayer("DamageCollider"));
-		
-		foreach (Collider col in ownedDamageCols) {
-			PhysicUtility.IgnoreCollisionUtil(owner, col);
-		}
-		
-	}
-
-
-	public GameObject InstantiateObject(string prefabName) {
-		foreach (GameObject obj in prefabs) {
-			if (obj.name == prefabName) {
-				return Instantiate(obj);
-			}
-		}
-		
-		throw new UnityException("!! CAN'T FIND " + owner.name + " REGISTERED PREFAB THE NAMED " + prefabName);
-	}
+	
 	
 	public void EnableObject(string targetObjects) {
 		// MULTIPLE OBJECTS ARE SEPARATE BY SPACE 
@@ -105,8 +78,27 @@ public class EnemyUtilityHandler : BaseEntityHandler<Enemy> {
 
 
 
-
-
-}
+	public float CorpseFadeWithParticle() {
+		StartCoroutine(CorpseFadeWithParticleCoroutine());
+		return owner.attribute.corpseFadeTime;
+	}
+	
+	private IEnumerator CorpseFadeWithParticleCoroutine() {
+		
+		var mat = GetComponentInChildren<Renderer>().material;
+		Color currentColor = mat.color;
+		
+		while (currentColor.a > 0) {
+			
+			currentColor.a -= 1 / owner.attribute.corpseFadeTime * Time.deltaTime;
+			mat.color = currentColor;
+			
+			yield return null;
+		}
+		
+		
+	}
+	
+	}
 
 }
