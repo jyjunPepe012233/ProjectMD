@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyUtilityHandler : EnemyHandler {
+public class EnemyUtilityHandler : BaseEntityHandler<Enemy> {
 	
 	[Space(10)]
 	[SerializeField] private GameObject[] ownedObjects;
