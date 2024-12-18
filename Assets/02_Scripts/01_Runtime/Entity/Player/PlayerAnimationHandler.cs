@@ -33,8 +33,8 @@ public class PlayerAnimationHandler : BaseEntityHandler<Player> {
 			moveBlend = Vector2.Lerp(moveBlend, Vector2.zero, Time.deltaTime * moveBlendLerpSpeed);
 		}
 
-		owner.animator.SetFloat("MoveHorizontal", moveBlend.x);
-		owner.animator.SetFloat("MoveVertical", moveBlend.y);
+		owner.animator.SetFloat("Horizontal", moveBlend.x);
+		owner.animator.SetFloat("Vertical", moveBlend.y);
 		
 		
 		
