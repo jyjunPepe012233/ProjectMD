@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyLocomotionHandler : BaseEntityHandler<Enemy> {
+public class EnemyLocomotionHandler : EntityOwnedHandler {
 	
 	private bool isMoved;
 	
@@ -18,38 +18,38 @@ public class EnemyLocomotionHandler : BaseEntityHandler<Enemy> {
 		// DIRECTION OF PIVOT ANIMATION IS DECIDE BY SIGN OF FACTOR VALUE.
 		// BLEND THRESHOLD OF 90 DEGREE TURN IS 1,
 		// 180 DEGREE TURN IS 2.
-		owner.animation.PlayTargetAnimation("Pivot_BlendTree", 0.2f, true, true);
+		((Enemy)owner).animation.PlayTargetAnimation("Pivot_BlendTree", 0.2f, true, true);
 		
 	}
 
 	public void RotateToDesireDirection() {
 
-		if (owner.navAgent.desiredVelocity.Equals(Vector3.zero)) {
+		if (((Enemy)owner).navAgent.desiredVelocity.Equals(Vector3.zero)) {
 			return;
 		}
 		
 		transform.rotation = Quaternion.RotateTowards(
 			transform.rotation,
-			Quaternion.LookRotation(owner.navAgent.desiredVelocity),
-			Time.deltaTime * owner.attribute.angularSpeed
+			Quaternion.LookRotation(((Enemy)owner).navAgent.desiredVelocity),
+			Time.deltaTime * ((Enemy)owner).attribute.angularSpeed
 			);
 	}
 	public void RotateToTarget() {
 
 		transform.rotation = Quaternion.RotateTowards(
 			transform.rotation,
-			Quaternion.LookRotation(owner.currentTarget.transform.position - transform.position), 
-			Time.deltaTime * owner.attribute.angularSpeed
+			Quaternion.LookRotation(((Enemy)owner).currentTarget.transform.position - transform.position), 
+			Time.deltaTime * ((Enemy)owner).attribute.angularSpeed
 			);
 
-		Debug.DrawRay(transform.position, owner.currentTarget.transform.position - transform.position, Color.red, 1f);
+		Debug.DrawRay(transform.position, ((Enemy)owner).currentTarget.transform.position - transform.position, Color.red, 1f);
 	}
 	
 	public void ResetMoveDirectionParameter() {
 		
 		// LERP ANIMATION FACTOR TO ZERO IF ENEMY IS NOT MOVING
 		if (!isMoved) {
-			owner.animation.LerpMoveDirectionParameter(0, 0);
+			((Enemy)owner).animation.LerpMoveDirectionParameter(0, 0);
 		}
 		isMoved = false;
 		
@@ -57,19 +57,19 @@ public class EnemyLocomotionHandler : BaseEntityHandler<Enemy> {
 	
 	public void MoveToForward(bool run = false) {
 		
-		owner.animator.SetFloat("Base Locomotion Speed", owner.attribute.moveSpeed);
-		owner.animation.LerpMoveDirectionParameter(0, (run ? 2 : 1));
+		owner.animator.SetFloat("Base Locomotion Speed", ((Enemy)owner).attribute.moveSpeed);
+		((Enemy)owner).animation.LerpMoveDirectionParameter(0, (run ? 2 : 1));
 
 		isMoved = true;
 	}
 
 	public void StrafeToward(Vector3 strafeLocalDirection) {
 
-		owner.animator.SetFloat("Base Locomotion Speed", owner.attribute.moveSpeed);
+		owner.animator.SetFloat("Base Locomotion Speed", ((Enemy)owner).attribute.moveSpeed);
 		
 		strafeLocalDirection.y = 0;
 		strafeLocalDirection.Normalize();
-		owner.animation.LerpMoveDirectionParameter(strafeLocalDirection.x, strafeLocalDirection.z);
+		((Enemy)owner).animation.LerpMoveDirectionParameter(strafeLocalDirection.x, strafeLocalDirection.z);
 
 		isMoved = true;
 	}

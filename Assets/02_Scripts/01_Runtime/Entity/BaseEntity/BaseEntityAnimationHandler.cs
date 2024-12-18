@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public abstract class BaseEntityAnimationHandler<TOwner> : BaseEntityHandler<TOwner> where TOwner : BaseEntity {
+public abstract class BaseEntityAnimationHandler : EntityOwnedHandler {
 
 	[SerializeField] private float moveDirectionLerpSpeed = 3;
 	private Vector2 locomotionParam;

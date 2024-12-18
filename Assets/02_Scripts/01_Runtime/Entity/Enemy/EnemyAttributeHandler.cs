@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyAttributeHandler : BaseEntityAttributeHandler<Enemy> {
+public class EnemyAttributeHandler : BaseEntityAttributeHandler {
 	
 	[SerializeField] private EnemyAttribute attributeSO;
 

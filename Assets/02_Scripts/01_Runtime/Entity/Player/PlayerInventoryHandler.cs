@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerInventoryHandler : BaseEntityHandler<Player> {
+public class PlayerInventoryHandler : EntityOwnedHandler {
 
 	[Header("[ Equipment Slot ]")]
 	public Weapon weaponSlot;
@@ -204,10 +204,10 @@ public class PlayerInventoryHandler : BaseEntityHandler<Player> {
 		}
 
 		ReduceItem(equipment.itemId);
-		equipment.OnEquip(owner);
+		equipment.OnEquip(((Player)owner));
 
 		if (equipment is Weapon weapon)
-			owner.equipment.ChangeWeapon(weapon);
+			((Player)owner).equipment.ChangeWeapon(weapon);
 
 	}
 
@@ -224,7 +224,7 @@ public class PlayerInventoryHandler : BaseEntityHandler<Player> {
 				if (weaponSlot != null) {
 
 					if (unequipedItem is Weapon weapon)
-						owner.equipment.ChangeWeapon(null);
+						((Player)owner).equipment.ChangeWeapon(null);
 
 					weaponSlot = null;
 				}
@@ -322,7 +322,7 @@ public class PlayerInventoryHandler : BaseEntityHandler<Player> {
 		}
 
 		AddItem(unequipedItem.itemId);
-		unequipedItem.OnUnequip(owner);
+		unequipedItem.OnUnequip(((Player)owner));
 	}
 
 
@@ -330,7 +330,7 @@ public class PlayerInventoryHandler : BaseEntityHandler<Player> {
 	public bool EquipMagic(Magic magic, int slotPos) {
 
 		// CANCEL IF EXCEED THE MEMORY CAPACITY
-		if (magic.memoryCost + usingMemory > owner.attribute.memoryCapacity) {
+		if (magic.memoryCost + usingMemory > ((Player)owner).attribute.memoryCapacity) {
 			return false;
 		}
 

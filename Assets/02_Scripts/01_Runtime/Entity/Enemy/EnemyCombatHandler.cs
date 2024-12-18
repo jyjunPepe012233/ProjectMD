@@ -8,7 +8,7 @@ using UnityEditor.Animations;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyCombatHandler : BaseEntityHandler<Enemy> {
+public class EnemyCombatHandler : EntityOwnedHandler {
 	
 	public float attackActionRecoveryTimer; 
 	public EnemyAttackAction latestAttack;
@@ -19,13 +19,13 @@ public class EnemyCombatHandler : BaseEntityHandler<Enemy> {
 	
 	
 	public float DistanceToTarget() {
-		return Vector3.Distance(owner.currentTarget.transform.position, owner.transform.position);
+		return Vector3.Distance( ((Enemy)owner).currentTarget.transform.position, owner.transform.position);
 	}
 	public float AngleToTarget() {
-		return Vector3.SignedAngle(owner.transform.forward, (owner.currentTarget.transform.position - transform.position), Vector3.up);
+		return Vector3.SignedAngle(owner.transform.forward, (((Enemy)owner).currentTarget.transform.position - transform.position), Vector3.up);
 	}
 	public float AngleToDesireDirection() {
-		return Vector3.SignedAngle(transform.forward, owner.navAgent.desiredVelocity, Vector3.up);
+		return Vector3.SignedAngle(transform.forward, ((Enemy)owner).navAgent.desiredVelocity, Vector3.up);
 	}
 
 	

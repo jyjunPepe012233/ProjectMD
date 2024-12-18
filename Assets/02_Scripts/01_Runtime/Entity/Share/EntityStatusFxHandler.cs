@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EntityStatusFxHandler : BaseEntityHandler<BaseEntity> {
+public class EntityStatusFxHandler : EntityOwnedHandler {
 
 	[Header("[ Owned Effect List ]")] 
 	public InstantEffect instantEffectSlot; // LATEST EFFECT

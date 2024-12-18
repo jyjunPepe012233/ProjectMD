@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerEquipmentHandler : BaseEntityHandler<Player> {
+public class PlayerEquipmentHandler : EntityOwnedHandler {
 	
 	public Transform rightHand;
 

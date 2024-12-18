@@ -3,7 +3,7 @@ using NotImplementedException = System.NotImplementedException;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerAnimationHandler : BaseEntityHandler<Player> {
+public class PlayerAnimationHandler : BaseEntityAnimationHandler {
 	
 	private float moveBlendLerpSpeed = 6;
 	private float runBlendDampTime = 0.35f;
@@ -20,14 +20,14 @@ public class PlayerAnimationHandler : BaseEntityHandler<Player> {
 
 	private void HandleLocomotionParameter() {
 
-		if (!owner.canRotate || !owner.canMove) {
+		if (!((Player)owner).canRotate || !((Player)owner).canMove) {
 			return;
 		}
 		
 		
 		// SET HORIZONTAL AND VERTICAL PARAMETER
-		Vector3 localMoveDirx = transform.InverseTransformDirection(owner.locomotion.moveDirx);
-		if (owner.isMoving) {
+		Vector3 localMoveDirx = transform.InverseTransformDirection(((Player)owner).locomotion.moveDirx);
+		if (((Player)owner).isMoving) {
 			moveBlend = Vector2.Lerp(moveBlend, new Vector2(localMoveDirx.x, localMoveDirx.z), Time.deltaTime * moveBlendLerpSpeed);
 		} else {
 			moveBlend = Vector2.Lerp(moveBlend, Vector2.zero, Time.deltaTime * moveBlendLerpSpeed);
@@ -39,7 +39,7 @@ public class PlayerAnimationHandler : BaseEntityHandler<Player> {
 		
 		
 		// SET RUN BLEND PARAMETER
-		runBlend += (owner.locomotion.isSprinting ? 1 : -1) / runBlendDampTime * Time.deltaTime;
+		runBlend += (((Player)owner).locomotion.isSprinting ? 1 : -1) / runBlendDampTime * Time.deltaTime;
 		runBlend = Mathf.Clamp01(runBlend);
 			
 		owner.animator.SetFloat("RunBlend", runBlend);
@@ -57,9 +57,9 @@ public class PlayerAnimationHandler : BaseEntityHandler<Player> {
 
 		owner.animator.applyRootMotion = applyRootMotion;
 
-		owner.isPerformingAction = isPerformingAnimation;
-		owner.canRotate = canRotate;
-		owner.canMove = canMove;
+		((Player)owner).isPerformingAction = isPerformingAnimation;
+		((Player)owner).canRotate = canRotate;
+		((Player)owner).canMove = canMove;
 		// THOSE FLAGS RESET WHEN STATE IS BACK TO 'DEFAULT MOVEMENT'
 
 	}
@@ -74,9 +74,9 @@ public class PlayerAnimationHandler : BaseEntityHandler<Player> {
 
 		owner.animator.applyRootMotion = applyRootMotion;
 
-		owner.isPerformingAction = isPerformingAnimation;
-		owner.canRotate = canRotate;
-		owner.canMove = canMove;
+		((Player)owner).isPerformingAction = isPerformingAnimation;
+		((Player)owner).canRotate = canRotate;
+		((Player)owner).canMove = canMove;
 		// THOSE FLAGS RESET WHEN STATE IS BACK TO 'DEFAULT MOVEMENT'
 
 	}

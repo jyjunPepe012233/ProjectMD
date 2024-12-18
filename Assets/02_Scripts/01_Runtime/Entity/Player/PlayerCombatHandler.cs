@@ -12,7 +12,7 @@ using Tool = MinD.SO.Item.Tool;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerCombatHandler : BaseEntityHandler<Player> {
+public class PlayerCombatHandler : EntityOwnedHandler {
 	
 	// LOCKING ON ENTITY
 	public BaseEntity target;
@@ -48,33 +48,33 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 		if (PlayerInputManager.Instance.useMagicInput) {
 
 			// CHECK BASIC FLAGS
-			if (usingMagic || owner.isPerformingAction) {
+			if (usingMagic || ((Player)owner).isPerformingAction) {
 				return;
 			}
 
 
-			Magic useMagic = owner.inventory.magicSlots[owner.inventory.currentMagicSlot];
+			Magic useMagic = ((Player)owner).inventory.magicSlots[((Player)owner).inventory.currentMagicSlot];
 
 			if (useMagic == null) {
 				return;
 			}
 
 			// CANCEL IF PLAYER HASN'T ENOUGH MP OR STAMINA
-			if (owner.CurMp < useMagic.mpCost) {
+			if (((Player)owner).CurMp < useMagic.mpCost) {
 				return;
 			}
 
-			if (owner.CurStamina < useMagic.staminaCost) {
+			if (((Player)owner).CurStamina < useMagic.staminaCost) {
 				return;
 			}
 
 
 			usingMagic = true;
 
-			owner.CurMp -= useMagic.mpCost;
-			owner.CurStamina -= useMagic.staminaCost;
+			((Player)owner).CurMp -= useMagic.mpCost;
+			((Player)owner).CurStamina -= useMagic.staminaCost;
 
-			useMagic.castPlayer = owner;
+			useMagic.castPlayer = ((Player)owner);
 
 			useMagic.OnUse();
 			currentCastingMagic = useMagic;
@@ -93,7 +93,7 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 	private void HandleUsingTool() {
 
 		// HANDLE TOOL USING COOL TIME
-		Tool[] tools = owner.inventory.toolSlots.Where(i => i != null && i.remainingCoolTime > 0).ToArray();
+		Tool[] tools = ((Player)owner).inventory.toolSlots.Where(i => i != null && i.remainingCoolTime > 0).ToArray();
 		for (int i = 0; i < tools.Length; i++) {
 			tools[i].remainingCoolTime = Mathf.Max((tools[i].remainingCoolTime - Time.deltaTime), 0); // SET MINIMUM TO 0
 		}
@@ -102,21 +102,21 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 		// USING TOOL
 		if (PlayerInputManager.Instance.useToolInput) {
 
-			if (owner.isPerformingAction) {
+			if (((Player)owner).isPerformingAction) {
 				return;
 			}
-			if (!owner.isGrounded) {
+			if (!((Player)owner).isGrounded) {
 				return;
 			}
 
-			Tool useTool = owner.inventory.toolSlots[owner.inventory.currentToolSlot];
+			Tool useTool = ((Player)owner).inventory.toolSlots[((Player)owner).inventory.currentToolSlot];
 
 			if (useTool.remainingCoolTime > 0) {
 				return;
 			}
 			
 
-			useTool.OnUse(owner);
+			useTool.OnUse(((Player)owner));
 			useTool.remainingCoolTime = useTool.usingCoolTime;
 		}
 	}
@@ -125,10 +125,10 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 		
 		if (!usingDefenseMagic && PlayerInputManager.Instance.defenseMagicInput) {
 			
-			if (owner.isPerformingAction) {
+			if (((Player)owner).isPerformingAction) {
 				return;
 			}
-			if (!owner.isGrounded) {
+			if (!((Player)owner).isGrounded) {
 				return;
 			}
 			
@@ -151,10 +151,10 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 		
 		
 		// PLAY DEFENSE ANIMATION (LOOPING)
-		owner.animation.PlayTargetAction("Defense_Action_Start", 0.2f, true, true, true, false);
+		((Player)owner).animation.PlayTargetAction("Defense_Action_Start", 0.2f, true, true, true, false);
 		
 		// ACTIVE DEFENSE MAGIC
-		owner.defenseMagic.EnableShield();
+		((Player)owner).defenseMagic.EnableShield();
 		
 
 		
@@ -170,14 +170,14 @@ public class PlayerCombatHandler : BaseEntityHandler<Player> {
 		
 		if (playAnimation) {
 			if (parrying) {
-				owner.animation.PlayTargetAction("Defense_Action_Parry", 0.2f, true, true, true, false);
+				((Player)owner).animation.PlayTargetAction("Defense_Action_Parry", 0.2f, true, true, true, false);
 			} else {
-				owner.animation.PlayTargetAction("Default Movement", 0.3f, false);
+				((Player)owner).animation.PlayTargetAction("Default Movement", 0.3f, false);
 			}
 		}
 
 		// DISABLE DEFENSE MAGIC
-		owner.defenseMagic.DisableShield();
+		((Player)owner).defenseMagic.DisableShield();
 	}
 
 	public void StartParrying() => isParrying = true;

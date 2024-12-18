@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyUtilityHandler : BaseEntityHandler<Enemy> {
+public class EnemyUtilityHandler : EntityOwnedHandler {
 	
 	[Space(10)]
 	[SerializeField] private GameObject[] ownedObjects;
@@ -80,7 +80,7 @@ public class EnemyUtilityHandler : BaseEntityHandler<Enemy> {
 
 	public float CorpseFadeWithParticle() {
 		StartCoroutine(CorpseFadeWithParticleCoroutine());
-		return owner.attribute.corpseFadeTime;
+		return ((Enemy)owner).attribute.corpseFadeTime;
 	}
 	
 	private IEnumerator CorpseFadeWithParticleCoroutine() {
@@ -90,7 +90,7 @@ public class EnemyUtilityHandler : BaseEntityHandler<Enemy> {
 		
 		while (currentColor.a > 0) {
 			
-			currentColor.a -= 1 / owner.attribute.corpseFadeTime * Time.deltaTime;
+			currentColor.a -= 1 / ((Enemy)owner).attribute.corpseFadeTime * Time.deltaTime;
 			mat.color = currentColor;
 			
 			yield return null;

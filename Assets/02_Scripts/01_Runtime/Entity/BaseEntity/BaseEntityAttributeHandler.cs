@@ -2,7 +2,7 @@ using MinD.Structs;
 
 namespace MinD.Runtime.Entity {
 
-public abstract class BaseEntityAttributeHandler<TOwner> : BaseEntityHandler<TOwner> where TOwner : BaseEntity {
+public abstract class BaseEntityAttributeHandler : EntityOwnedHandler {
 	
 	public abstract int MaxHp { get; set; }
 	

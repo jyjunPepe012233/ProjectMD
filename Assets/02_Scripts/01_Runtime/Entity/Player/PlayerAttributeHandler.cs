@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerAttributeHandler : BaseEntityAttributeHandler<Player> {
+public class PlayerAttributeHandler : BaseEntityAttributeHandler {
 
     public override int MaxHp {
         get => maxHp;
@@ -68,10 +68,10 @@ public class PlayerAttributeHandler : BaseEntityAttributeHandler<Player> {
     public void HandleStamina() {
 
         // FILL STAMINA
-        if (owner.CurStamina < maxStamina) {
+        if (((Player)owner).CurStamina < maxStamina) {
 
             // CHECK FLAGS AND CONTROL TIMER TO RECOVERY STAMINA
-            if (!owner.isPerformingAction && !owner.locomotion.isSprinting) {
+            if (!((Player)owner).isPerformingAction && !((Player)owner).locomotion.isSprinting) {
 
                 staminaRecoveryTimer += Time.deltaTime;
 
@@ -90,7 +90,7 @@ public class PlayerAttributeHandler : BaseEntityAttributeHandler<Player> {
                         if (staminaRecoveryFloatTemp < 1)
                             break;
 
-                        owner.CurStamina += 1;
+                        ((Player)owner).CurStamina += 1;
                         staminaRecoveryFloatTemp -= 1;
                     }
 

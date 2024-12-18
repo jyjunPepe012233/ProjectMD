@@ -2,7 +2,7 @@ using MinD.SO.EnemySO;
 
 namespace MinD.Runtime.Entity {
 
-public class EnemyStateMachine : BaseEntityHandler<Enemy> {
+public class EnemyStateMachine : EntityOwnedHandler {
 
 	public void SetState(EnemyState nextState) {
 
@@ -10,18 +10,18 @@ public class EnemyStateMachine : BaseEntityHandler<Enemy> {
 			return;
 		}
 		
-		if (nextState != owner.currentState) {
-			owner.currentState = nextState;
+		if (nextState != ((Enemy)owner).currentState) {
+			((Enemy)owner).currentState = nextState;
 		}
 	}
 	
 	public void HandleState() {
 
-		if (owner.currentState == null) {
+		if (((Enemy)owner).currentState == null) {
 			return;
 		}
 
-		SetState(owner.currentState.Tick(owner));
+		SetState(((Enemy)owner).currentState.Tick(((Enemy)owner)));
 	}
 	
 }

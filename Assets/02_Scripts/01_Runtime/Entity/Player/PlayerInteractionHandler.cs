@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerInteractionHandler : BaseEntityHandler<Player>  {
+public class PlayerInteractionHandler : EntityOwnedHandler {
 
 	private List<Interactable> currentInteractables = new List<Interactable>();
 
@@ -59,7 +59,7 @@ public class PlayerInteractionHandler : BaseEntityHandler<Player>  {
 			return;
 
 		if (currentInteractables[0].canInteraction)
-			currentInteractables[0].Interact(owner);
+			currentInteractables[0].Interact(((Player)owner));
 		else
 			RefreshInteractableList();
 

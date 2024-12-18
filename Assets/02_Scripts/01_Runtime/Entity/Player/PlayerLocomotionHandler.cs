@@ -9,7 +9,7 @@ using PlayerInputManager = MinD.Runtime.Managers.PlayerInputManager;
 
 namespace MinD.Runtime.Entity {
 
-public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
+public class PlayerLocomotionHandler : EntityOwnedHandler {
 
 	[Header("[ Setting ]")]
 	[SerializeField] private float walkSpeed = 4;
@@ -59,10 +59,10 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 
 	void HandleRotation() {
 
-		if (!owner.canRotate)
+		if (!((Player)owner).canRotate)
 			return;
 
-		if (owner.isDeath) {
+		if (((Player)owner).isDeath) {
 			return;
 		}
 		
@@ -70,17 +70,17 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 		
 		float rotationSpeedTemp = rotationSpeed;
 		
-		Vector3 camDirx = owner.camera.transform.forward;
+		Vector3 camDirx = ((Player)owner).camera.transform.forward;
 		camDirx.y = 0;
 		camDirx.Normalize();
 		
-		if (owner.isMoving) {
+		if (((Player)owner).isMoving) {
 
 			// DEGREASE ROTATION SPEED WHEN PLAYER IS NOT GROUNDED
-			if (!owner.isGrounded)
+			if (!((Player)owner).isGrounded)
 				rotationSpeedTemp *= 0.13f;
 
-			if (owner.isLockOn) {
+			if (((Player)owner).isLockOn) {
 				if (isSprinting)
 					transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(moveDirx), rotationSpeedTemp);
 				else
@@ -92,9 +92,9 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 			}
 		}
 
-		if (owner.combat.usingDefenseMagic) {
+		if (((Player)owner).combat.usingDefenseMagic) {
 
-			if (owner.isLockOn) {
+			if (((Player)owner).isLockOn) {
 				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(camDirx), rotationSpeedTemp);
 			}
 			
@@ -104,7 +104,7 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 
 	void HandleMovement() {
 
-		moveDirx = owner.camera.transform.forward;
+		moveDirx = ((Player)owner).camera.transform.forward;
 		moveDirx.y = 0;
 		moveDirx.Normalize();
 
@@ -118,22 +118,22 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 		// MOVEMENT INPUT IS 2D, SO MAKE
 		// INPUT DIRECTION = (MOVEMENT INPUT X, 0, MOVEMENT INPUT Y
 
-		owner.isMoving = inputDirx.magnitude != 0 && owner.canMove;
-		owner.animator.SetBool("IsMoving", owner.isMoving);
+		((Player)owner).isMoving = inputDirx.magnitude != 0 && ((Player)owner).canMove;
+		owner.animator.SetBool("IsMoving", ((Player)owner).isMoving);
 
 
-		if (owner.isMoving) {
+		if (((Player)owner).isMoving) {
 
 			// SET MOVE DIRECTION BASED ON ROTATION
 			moveDirx = Quaternion.LookRotation(moveDirx) * inputDirx;
 			moveDirx *= Time.deltaTime;
 
 			// CHECK FLAGS
-			if (!owner.canMove)
+			if (!((Player)owner).canMove)
 				return;
 
 			// IF PLAYER IS IN AIR, SET SPEED 1/4
-			if (!owner.isGrounded)
+			if (!((Player)owner).isGrounded)
 				moveDirx *= 0.25f;
 
 			if (isSprinting)
@@ -148,21 +148,21 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 
 	void HandleSprint() {
 
-		isSprinting = owner.isMoving && PlayerInputManager.Instance.sprintInput;
+		isSprinting = ((Player)owner).isMoving && PlayerInputManager.Instance.sprintInput;
 
 	}
 
 	void HandleGroundedCheck() {
 
-		owner.isGrounded = Physics.CheckSphere(transform.position, groundedCheckRadius, WorldUtilityManager.environmentLayerMask);
-		owner.animator.SetBool("IsGrounded", owner.isGrounded);
+		((Player)owner).isGrounded = Physics.CheckSphere(transform.position, groundedCheckRadius, WorldUtilityManager.environmentLayerMask);
+		owner.animator.SetBool("IsGrounded", ((Player)owner).isGrounded);
 
 	}
 
 	void HandleJump() {
 
 		// JUMP MOVEMENT
-		if (isJumping && !owner.isGrounded)
+		if (isJumping && !((Player)owner).isGrounded)
 			owner.cc.Move(jumpDirx * Time.deltaTime);
 
 
@@ -176,20 +176,20 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 			return;
 		}
 
-		if (owner.isPerformingAction)
+		if (((Player)owner).isPerformingAction)
 			return;
 
-		if (!owner.isGrounded)
+		if (!((Player)owner).isGrounded)
 			return;
 
 		isJumping = true;
 
 		yVelocity.y = jumpForce;
-		owner.animation.PlayTargetAction("Jump_Start", true, false, true, false);
+		((Player)owner).animation.PlayTargetAction("Jump_Start", true, false, true, false);
 
 		jumpDirx = moveDirx.normalized * (isSprinting ? runningSpeed : walkSpeed);
 		jumpDirx *= jumpSpeedMultiplier;
-		if (!owner.isMoving)
+		if (!((Player)owner).isMoving)
 			jumpDirx *= 0;
 
 
@@ -197,7 +197,7 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 
 	void HandleGravity() {
 
-		if (owner.isGrounded) {
+		if (((Player)owner).isGrounded) {
 
 			if (yVelocity.y < 0) {
 
@@ -231,25 +231,25 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 	public void AttemptBlink() { 
 		
 		// CHECK FLAGS TO MAKE SURE ATTEMPT BLINK
-		if (owner.CurStamina < owner.attribute.blinkCostStamina) {
+		if (((Player)owner).CurStamina < ((Player)owner).attribute.blinkCostStamina) {
 			return;
 		}
-		if (!owner.isMoving || isSprinting) {
+		if (!((Player)owner).isMoving || isSprinting) {
 			return;
 		}
-		if (!owner.isGrounded) {
+		if (!((Player)owner).isGrounded) {
 			return;
 		}
-		if (!owner.canMove) {
+		if (!((Player)owner).canMove) {
 			return;
 		}
-		if (owner.isPerformingAction) {
+		if (((Player)owner).isPerformingAction) {
 			return;
 		}
 
 		
 		// GET BLINK DIRECTION
-		Vector3 camDirx = owner.camera.transform.forward;
+		Vector3 camDirx = ((Player)owner).camera.transform.forward;
 		camDirx.y = 0;
 		
 		blinkDirx = Quaternion.LookRotation(camDirx) * new Vector3(PlayerInputManager.Instance.movementInput.x, 0, PlayerInputManager.Instance.movementInput.y);
@@ -293,7 +293,7 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 	
 	IEnumerator Blink(Vector3 blinkPoint) {
 		
-		owner.animation.PlayTargetAction("Blink_Direction_Tree", true, true, false, false);
+		((Player)owner).animation.PlayTargetAction("Blink_Direction_Tree", true, true, false, false);
 		
 		// HANDLE MOVE DIRECTION PARAMETER IN ANIMATOR DURING BLINK
 		Vector3 localBlinkDirx = transform.InverseTransformDirection(blinkPoint);
@@ -305,7 +305,7 @@ public class PlayerLocomotionHandler : BaseEntityHandler<Player> {
 		yield return new WaitForSeconds(0.2f);
 		
 		
-		owner.CurStamina -= owner.attribute.blinkCostStamina;
+		((Player)owner).CurStamina -= ((Player)owner).attribute.blinkCostStamina;
 		
 		// INSTANTIATE VFX AT OLD POSITION
 		GameObject vfx = Instantiate(VfxDataBase.Instance.blinkVfx);
