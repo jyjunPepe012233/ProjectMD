@@ -55,7 +55,7 @@ public class TakeHealthDamage : InstantEffect {
 	
 	public override void OnInstantiate(BaseEntity victim) {
 		
-//		victim.CurHp -= GetCalculatedDamage(damage, victim.GetComponent<BaseEntityAttributeHandler<BaseEntity>>().DamageNegation);
+		victim.CurHp -= GetCalculatedDamage(damage, victim.GetComponent<BaseEntityAttributeHandler>().DamageNegation);
 
 		victim.OnDamaged(this);
 		victim.getHitAction.Invoke();
