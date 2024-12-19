@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using MinD.Runtime.Object.Magics;
 using UnityEngine;
@@ -17,9 +18,9 @@ public class MagicSword : Magic
 
     public static readonly Vector3[] projectilePositions = new Vector3[3]
     {
-        new Vector3(-1, 4, 0).normalized * 2.5f,
-        new Vector3(0, 2.7f, 0),
-        new Vector3(1, 4, 0).normalized * 2.5f
+        new Vector3(-3, -1, 0).normalized * 0.8f,
+        new Vector3( 0,  0, 0),
+        new Vector3( 3, -1, 0).normalized * 0.8f
     };
     
 
@@ -28,38 +29,24 @@ public class MagicSword : Magic
         projectiles = new List<GameObject>();
         swordProjectiles = new List<MagicSwordProjectile>();
         
-        Debug.Log("Use MagicSword");
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++) // 마법검 생성 및 위치 조정
         {
-            projectiles.Add(Instantiate(magicSword, castPlayer.transform.position + projectilePositions[i], castPlayer.transform.rotation));
+
+            //  createSword
+            projectiles.Add(Instantiate(magicSword, castPlayer.transform.position + new Vector3(0,2.7f,0), castPlayer.transform.rotation));
             swordProjectiles.Add(projectiles[i].GetComponent<MagicSwordProjectile>());
-            Debug.Log("create MagicSword");
-        
-            // MagicSwordProjectile sword = swordProjectiles[i];
-            // sword.StartCoroutine(sword.SetSwordPosition(castPlayer,projectilePositions[i]));
-            // Debug.Log("set MagicSword");
+            Rigidbody swordRb = projectiles[i].GetComponent<Rigidbody>();
+
+            //  set swordPosition
+            Debug.Log(castPlayer.combat.target);
+            swordProjectiles[i].StartCoroutine(swordProjectiles[i].SetSwordPosition(castPlayer, castPlayer.combat.target ,swordRb.position + projectilePositions[i])); 
         }
         
-        Debug.Log($"projectiles.Count: {projectiles.Count}");
-
-        
-        // for (int i = 0; i < projectiles.Count; i++)
-        // {
-        //     MagicSwordProjectile sword = projectiles[i].GetComponent<MagicSwordProjectile>();
-        //     sword.StartCoroutine(sword.SetSwordPosition(castPlayer,projectilePositions[i]));
-        // }
-        
-        
-        // /*딜레이 만들기*/
-        //
-        // for (int i = 0; i < projectiles.Count; i++)
-        // {
-        //     MagicSwordProjectile sword = swordProjectiles[i];
-        //     sword.StartCoroutine(sword.ShootCoroutine(castPlayer.combat.target));
-        // }
         
     }
 
+
+    
     public override void Tick()
     {
         

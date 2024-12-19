@@ -27,5 +27,5 @@ MonoBehaviour:
   staminaCostDuring: 0
   castPlayer: {fileID: 0}
   isInputReleased: 0
-  magicSword: {fileID: 8664716602644970348, guid: 30e34811b6787413ebfafd73a323a25b,
+  magicSword: {fileID: 1382145619230593943, guid: 30e34811b6787413ebfafd73a323a25b,
     type: 3}

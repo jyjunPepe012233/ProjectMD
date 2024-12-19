@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using MinD.Runtime.Entity;
 using MinD.Runtime.Utils;
@@ -23,10 +24,14 @@ public class MagicSwordProjectile : MonoBehaviour
     [SerializeField] private Vector3 readyPosition;
     
     private bool isExploded;
-    
+
+    public void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+    }
+
     public IEnumerator ShootCoroutine(BaseEntity target)
     {
-
         float elapsedTime = 0f;
         
         if (target != null) // 적 감지 시 추척하여 발사
@@ -48,7 +53,10 @@ public class MagicSwordProjectile : MonoBehaviour
         {
             while (true)
             {
-                transform.rotation = Quaternion.RotateTowards(transform.rotation,Quaternion.LookRotation(target.transform.forward * 2 - transform.up), 10);
+                // /* 왜 타겟을 썻는가, 혹시 그대는 병신인가 */
+                transform.rotation = Quaternion.RotateTowards(transform.rotation,Quaternion.LookRotation(transform.forward * 2 - transform.up), 10);
+                // /* 너는 병신이야. 아니 진짜 아ㅏㅏㅏㅏㅏㅏㅏ */
+                /* 클라이언트 쪽 날아감 수요일 작업 복구해야함 */
                 rigidbody.velocity = transform.forward * 10;
                                 
                 elapsedTime += Time.deltaTime;
@@ -61,22 +69,22 @@ public class MagicSwordProjectile : MonoBehaviour
         }
     }
     
-    public IEnumerator SetSwordPosition(BaseEntity owner, Vector3 position)
+    public IEnumerator SetSwordPosition(BaseEntity owner, BaseEntity target, Vector3 position)
     {
         float elapsedTime = 0;
 
         while (true)
         {
             elapsedTime += Time.deltaTime;
-
-            if (elapsedTime >= 0.3f)
+            
+            transform.position = Vector3.Lerp(transform.position, owner.transform.position + position,0.65f);
+            
+            if (elapsedTime >= 0.8f)
             {
-                transform.position = Vector3.Lerp(transform.position, owner.transform.position + position,0.65f);
+                StartCoroutine(ShootCoroutine(target));
             }
-            else
-            {
-                yield break;
-            }
+            
+            
         }
         
     }
