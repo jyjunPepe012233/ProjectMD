@@ -12,6 +12,18 @@ public class EnemyUtilityHandler : EntityOwnedHandler {
 
 	
 	
+	
+	public GameObject InstantiatePrefab(string targetObject) {
+		
+		foreach (GameObject prefab in prefabs) {
+			if (prefab.name == targetObject) {
+				return Instantiate(prefab);
+			}
+		}
+		
+		throw new UnityException("!! CAN'T FIND " + owner.name + " OWNED OBJECT THE NAMED " + targetObject);
+	}
+	
 	public void EnableObject(string targetObjects) {
 		// MULTIPLE OBJECTS ARE SEPARATE BY SPACE 
 
