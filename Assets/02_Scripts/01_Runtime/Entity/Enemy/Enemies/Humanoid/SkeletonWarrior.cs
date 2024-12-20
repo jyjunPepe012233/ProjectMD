@@ -57,8 +57,10 @@ public class SkeletonWarrior : HumanoidEnemy {
 		obj.transform.eulerAngles = angle;
 
 		// INCREASE SCALE WHEN THIS iS FINAL ATTACK
-		obj.transform.localScale *= 2f;
-		
+		if (isFinalAttack) {
+			obj.transform.localScale *= 2f;
+		}
+
 		obj.GetComponent<SkeletonWarriorWaveSlash>().Shoot(transform.forward * 10, isFinalAttack ? slashDamageFinal : slashDamageDefault);
 		obj.GetComponent<DamageCollider>().blackList.Add(this);
 	}
