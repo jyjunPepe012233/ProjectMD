@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using MinD.Runtime.Utils;
 using UnityEngine;
@@ -7,8 +8,8 @@ namespace MinD.Runtime.Entity {
 public class EnemyUtilityHandler : EntityOwnedHandler {
 	
 	[Space(10)]
-	[SerializeField] private GameObject[] ownedObjects;
-	[SerializeField] private GameObject[] prefabs;
+	[SerializeField] private GameObject[] ownedObjects = Array.Empty<GameObject>();
+	[SerializeField] private GameObject[] prefabs = Array.Empty<GameObject>();
 
 	
 	

@@ -22,8 +22,9 @@ public abstract class CombatStanceState : EnemyState {
 		((HumanoidEnemy)self).isDashingToTarget = false;
 
 		self.combat.latestAttack = thisAttack;
-		// DECIDE WHETHER TO USE COMBO
-		self.combat.willPerformCombo = Random.value < thisAttack.chanceToCombo && thisAttack.canPerformCombo;
+
+		// DECIDE WHETHER TO USE COMBO ON NEXT ATTACK
+		self.combat.willPerformCombo = Random.value < thisAttack.chanceToCombo && thisAttack.canPerformCombo && thisAttack.comboAttack != null;
 		self.combat.comboAttack = self.combat.willPerformCombo ? thisAttack.comboAttack : null;
 
 		return self.attackState;
@@ -62,14 +63,8 @@ public abstract class CombatStanceState : EnemyState {
 		
 		
 		// IF NO COMBO IS RESERVED
-		List<EnemyAttackAction> availableAttacks = new List<EnemyAttackAction>();
-		for (int i = 0; i < attackActions.Length; i++) {
-
-			if (CanIUseThisAttack(attackActions[i])) {
-				availableAttacks.Add(attackActions[i]);
-			}
-		}
-		if (availableAttacks.Count == 0) {
+		EnemyAttackAction[] availableAttacks = attackActions.Where(CanIUseThisAttack).ToArray();
+		if (availableAttacks.Length == 0) {
 			return null;
 		}
 
@@ -78,7 +73,7 @@ public abstract class CombatStanceState : EnemyState {
 		float randomPointOnWeight = Random.Range(0, totalWeight);
 		
 		float w = 0;
-		for (int i = 0; i < availableAttacks.Count; i++) {
+		for (int i = 0; i < availableAttacks.Length; i++) {
 			
 			w += availableAttacks[i].actionWeight;
 			
