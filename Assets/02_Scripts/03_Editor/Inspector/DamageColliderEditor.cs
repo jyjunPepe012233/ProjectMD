@@ -59,7 +59,13 @@ public class DamageColliderEditor : UnityEditor.Editor {
 			
 			EditorGUILayout.Space(15);
 			soData.poiseBreakDamage = EditorGUILayout.IntSlider("Poise Break Damage", soData.poiseBreakDamage, 0, 100);
-			
+
+			EditorGUILayout.Space(15);
+			soData.isDirectional = EditorGUILayout.Toggle("Is Directional", soData.isDirectional);
+			if (soData.isDirectional) {
+				soData.damageDirection = EditorGUILayout.Vector3Field("Damage Direction", soData.damageDirection);
+			}
+
 			EditorGUILayout.Space(15);
 			if (GUILayout.Button("Reset To Hit Again")) {
 				component.ResetToHitAgain();

@@ -61,9 +61,13 @@ public class DamageCollider : MonoBehaviour {
 		contactDirection.Normalize();
 		damagedEntity.Add(damageTarget);
 
-		
-		
-		float getHitAngle = Vector3.SignedAngle(damageTarget.transform.forward, -contactDirection, Vector3.up);  // ATTACK ANGLE AS TARGET
+
+		float getHitAngle = 0;
+		if (soData.isDirectional) {
+			getHitAngle = Vector3.SignedAngle(damageTarget.transform.forward, transform.rotation * -soData.damageDirection, Vector3.up);
+		} else {
+			getHitAngle = Vector3.SignedAngle(damageTarget.transform.forward, -contactDirection, Vector3.up); // ATTACK ANGLE AS TARGET
+		}
 
 		InstantEffect damageEffect = null;
 		if (damageTarget is Player player) {
@@ -96,6 +100,14 @@ public class DamageCollider : MonoBehaviour {
 
 	public void ResetToHitAgain() {
 		damagedEntity.Clear();
+	}
+
+	public void OnDrawGizmosSelected() {
+		if (soData != null &&
+			soData.isDirectional) {
+			Gizmos.color = Color.yellow;
+			Gizmos.DrawRay(transform.position, transform.rotation * soData.damageDirection.normalized);
+		}
 	}
 
 }

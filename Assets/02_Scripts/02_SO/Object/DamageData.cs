@@ -14,6 +14,10 @@ public class DamageData : ScriptableObject {
 
 	[Space(10)]
 	public int absorbMp;
+
+	[Space(10)]
+	public bool isDirectional;
+	public Vector3 damageDirection;
 	
 	
 
