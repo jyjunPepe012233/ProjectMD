@@ -8,8 +8,6 @@ namespace MinD.Runtime.Object.Magics
 {
 public class MagicSwordProjectile : MonoBehaviour
 {
-    // public MagicSwordMain mainScript;
-    /*물리 기반으로 바꾸기*/ /*현 마지막*/
     
     [Space(10)]
     [SerializeField] private ParticleSystem flightFx;
@@ -25,14 +23,16 @@ public class MagicSwordProjectile : MonoBehaviour
     
     private bool isExploded;
 
-    public void Awake()
+    public void OnEnable()
     {
         rigidbody = GetComponent<Rigidbody>();
+        collider = GetComponent<Collider>();
     }
 
     public IEnumerator ShootCoroutine(BaseEntity target)
     {
         float elapsedTime = 0f;
+        collider.isTrigger = true;
         
         if (target != null) // 적 감지 시 추척하여 발사
         {
@@ -45,7 +45,7 @@ public class MagicSwordProjectile : MonoBehaviour
 
                 if (elapsedTime >= 5)
                 {
-                    StartCoroutine(Explode());
+                    yield return StartCoroutine(Explode());
                 }
             }
         }
@@ -53,17 +53,14 @@ public class MagicSwordProjectile : MonoBehaviour
         {
             while (true)
             {
-                // /* 왜 타겟을 썻는가, 혹시 그대는 병신인가 */
                 transform.rotation = Quaternion.RotateTowards(transform.rotation,Quaternion.LookRotation(transform.forward * 2 - transform.up), 10);
-                // /* 너는 병신이야. 아니 진짜 아ㅏㅏㅏㅏㅏㅏㅏ */
-                /* 클라이언트 쪽 날아감 수요일 작업 복구해야함 */
                 rigidbody.velocity = transform.forward * 10;
-                                
+                
                 elapsedTime += Time.deltaTime;
 
                 if (elapsedTime >= 5)
                 {
-                    StartCoroutine(Explode());
+                    yield return StartCoroutine(Explode());
                 }
             }
         }
@@ -71,46 +68,50 @@ public class MagicSwordProjectile : MonoBehaviour
     
     public IEnumerator SetSwordPosition(BaseEntity owner, BaseEntity target, Vector3 position)
     {
+        // /*보간이 무작위로 적용됨*/  /* 사라지기 전에 재사용 시 보간 적용 - 거짓으로 판명 */ 
         float elapsedTime = 0;
-
+        flightFx.Play();
+        
         while (true)
         {
             elapsedTime += Time.deltaTime;
             
-            transform.position = Vector3.Lerp(transform.position, owner.transform.position + position,0.65f);
-            
-            if (elapsedTime >= 0.8f)
-            {
-                StartCoroutine(ShootCoroutine(target));
-            }
-            
-            
-        }
+            transform.position = Vector3.Lerp(transform.position, owner.transform.position + position + new Vector3(0,2.7f,0),0.09f);
         
+            if (elapsedTime >= 1.2f)
+            {
+                yield return  null; //StartCoroutine(ShootCoroutine(target));
+            }
+        
+        }
+
     }
 
 
     public IEnumerator Explode()
     {
-        explosionDamageCollider.gameObject.SetActive(true);
-        
-        flightFx.Stop();
-        explosionFx.Play();
+        if (!isExploded)
+        {
+            isExploded = true;
+            explosionDamageCollider.gameObject.SetActive(true);
 
-        rigidbody.velocity = Vector3.zero;
-        
-        isExploded = true;
-        Destroy(gameObject,explosionFx.main.duration);
+            flightFx.Stop();
+            explosionFx.Play();
 
-        yield break;
+            rigidbody.velocity = Vector3.zero;
+            
+            Destroy(gameObject, explosionFx.main.duration);
+
+            yield break;
+        }
     }
 
-    // public void OnTriggerEnter(Collider other)
-    // {
-    //     if (!isExploded)
-    //     {
-    //         StartCoroutine(Explode());
-    //     }
-    // }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (!isExploded)
+        {
+            StartCoroutine(Explode());
+        }
+    }
 }
 }
