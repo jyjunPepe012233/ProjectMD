@@ -15,9 +15,11 @@ MonoBehaviour:
   itemId: 0
   itemName: "\uC61B \uBAA8\uB798\uC655\uC758 \uC218\uD638"
   itemDescription: 
+  itemImage: {fileID: 0}
   itemRarity: 2
   itemMaxCount: 1
   itemCount: 0
+  categoryId: 0
   negationBoost:
     _physical: 0.93
     _magic: 0.45

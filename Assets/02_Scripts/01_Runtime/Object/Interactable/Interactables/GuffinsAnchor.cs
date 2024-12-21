@@ -1,6 +1,7 @@
 using System.Collections;
 using MinD.Runtime.Entity;
 using MinD.Runtime.Managers;
+using MinD.Runtime.Object.Utils;
 using MinD.Runtime.System;
 using MinD.Runtime.UI;
 using MinD.SO.Object;
@@ -11,11 +12,17 @@ namespace MinD.Runtime.Object.Interactables {
 
 public class GuffinsAnchor : Interactable {
 	
-	private static Vector3 playerPosition = new Vector3(0, 0f, 1.2f); // GLOBAL SETTING
+	private static readonly Vector3 playerPosition = new Vector3(0, 0f, 1.2f); // GLOBAL SETTING
+	public const float TIME_LightFading = 1.5f;
 
 
 	[Header("[ Anchor Setting ]")]
 	public GuffinsAnchorInformation anchorInfo;
+	
+	[Header("[ Owned Object ]")]
+	[SerializeField] private ParticleSystem particleDiscovered;
+	[SerializeField] private ParticleSystem particleNotDiscovered;
+	[SerializeField] private FadingLight fadingLight;
 	
 	[Space(5)]
 	public bool isDiscovered;
@@ -41,6 +48,20 @@ public class GuffinsAnchor : Interactable {
 			DiscoverGuffinsAnchor(interactor);
 		}
 		
+	}
+
+	public void LoadGuffinsAnchorData(bool isDiscovered) {
+		this.isDiscovered = isDiscovered;
+		
+		if (isDiscovered) {
+			particleDiscovered.gameObject.SetActive(true);
+			fadingLight.FadeIn(0);
+			particleDiscovered.Play();
+		} else {
+			particleNotDiscovered.gameObject.SetActive(true);
+			fadingLight.FadeOut(0);
+			particleNotDiscovered.Play();
+		}
 	}
 
 
@@ -85,6 +106,11 @@ public class GuffinsAnchor : Interactable {
 	private void DiscoverGuffinsAnchor(Player interactor) {
 		
 		isDiscovered = true;
+		
+		particleNotDiscovered.Stop();
+		particleDiscovered.gameObject.SetActive(true);
+		fadingLight.FadeIn(TIME_LightFading);
+		particleDiscovered.Play();
 			
 		var discoverPopup = PlayerHUDManager.playerHUD.anchorDiscoveredPopup;
 		PlayerHUDManager.Instance.PlayBurstPopup(discoverPopup);
