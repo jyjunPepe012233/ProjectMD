@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using NotImplementedException = System.NotImplementedException;
 using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace MinD.Runtime.Managers {
 
@@ -42,6 +43,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 			return;
 
 		HandleStatusBar();
+		HandleLockOnSpot();
 		HandleMenuInput();
 	}
 	
@@ -53,6 +55,13 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 		playerHUD.mpBar.HandleTrailFollowing();
 		playerHUD.staminaBar.HandleTrailFollowing();
 
+	}
+
+	private void HandleLockOnSpot() {
+		playerHUD.lockOnSpot.position = player.camera.camera.WorldToScreenPoint(player.camera.currentTargetOption.position);
+		if (Vector3.Angle(player.camera.transform.forward, player.camera.currentTargetOption.position - player.camera.transform.position) > 90) {
+			playerHUD.lockOnSpot.gameObject.SetActive(false);
+		}
 	}
 
 	private void HandleMenuInput() {
@@ -103,6 +112,12 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	public void RefreshStaminaBar() {
 		playerHUD.staminaBar.SetMaxValue(player.attribute.maxStamina);
 		playerHUD.staminaBar.SetValue(player.CurStamina);
+	}
+
+	
+	
+	public void SetLockOnSpotActive(bool value) {
+		playerHUD.lockOnSpot.gameObject.SetActive(value);
 	}
 
 
