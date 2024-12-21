@@ -13,13 +13,16 @@ MonoBehaviour:
   m_Name: Dummy Staff
   m_EditorClassIdentifier: 
   itemId: 0
-  itemName: Dummy Staff
-  itemDescription: 
-  itemImage: {fileID: 21300000, guid: 9ed407b9f709547c69bf9557b3978079, type: 3}
+  itemName: "\uB354\uBBF8 \uC2A4\uD0DC\uD504"
+  itemDescription: "\uCD08\uBCF4\uC790\uAC00 \uC0AC\uC6A9\uD558\uB294 \uAE30\uBCF8\uC801\uC778
+    \uB9C8\uBC95 \uC2A4\uD0DC\uD504. \uAC15\uB825\uD55C \uB9C8\uBC95\uC744 \uC0AC\uC6A9\uD558\uAE30\uC5D0\uB294
+    \uADF8 \uC704\uB825\uC774 \uBD80\uC871\uD560 \uC218 \uC788\uC9C0\uB9CC, \uB9C8\uBC95\uC744
+    \uC5F0\uC2B5\uD558\uACE0 \uC775\uD788\uB294 \uB370 \uC801\uD569\uD55C \uC544\uC774\uD15C\uC774\uB2E4."
+  itemImage: {fileID: 21300000, guid: 07e11ab9028e249ddb9594c125e0cecb, type: 3}
   itemRarity: 0
-  itemMaxCount: 1
-  itemCount: 1
-  categoryId: 0
+  itemMaxCount: 3
+  itemCount: 0
+  categoryId: 3
   weaponPrefab: {fileID: 6419165690001192968, guid: 742b7c14a7c424bba83041964b11dcd0,
     type: 3}
   weaponPositionOffset: {x: 0.016, y: 0.115, z: -0.221}

@@ -17,12 +17,16 @@ public class PlayerEquipmentHandler : EntityOwnedHandler {
 			currentInstantiatedWeapon = null;
 		}
 
-		GameObject obj = Instantiate(weapon.weaponPrefab, rightHand);
+		if (weapon != null) {
+			GameObject obj = Instantiate(weapon.weaponPrefab, rightHand);
 
-		obj.transform.localPosition = weapon.weaponPositionOffset;
-		obj.transform.localEulerAngles = weapon.weaponAngleOffset;
+			obj.transform.localPosition = weapon.weaponPositionOffset;
+			obj.transform.localEulerAngles = weapon.weaponAngleOffset;
 
+			currentInstantiatedWeapon = obj;
+		}
 	}
+
 }
 
 }
