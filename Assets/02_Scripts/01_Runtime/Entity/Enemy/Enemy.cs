@@ -25,8 +25,8 @@ public abstract class Enemy : BaseEntity {
 	
 	[HideInInspector] public Vector3 worldPlacedPosition;
 	[HideInInspector] public Quaternion worldPlacedRotation;
-	
-	[HideInInspector] public BaseEntity currentTarget;
+
+	public BaseEntity currentTarget;
 	
 	public override int CurHp {
 		get => curHp;
@@ -98,6 +98,10 @@ public abstract class Enemy : BaseEntity {
 
 	private void LateUpdate() {
 		locomotion.ResetMoveDirectionParameter();
+	}
+
+	protected override void OnDeath() {
+		isDeath = true;
 	}
 	
 	

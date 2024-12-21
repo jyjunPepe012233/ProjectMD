@@ -19,6 +19,10 @@ public abstract class HumanoidEnemy : Enemy {
 
 	public override void OnDamaged(TakeHealthDamage damage) {
 
+		if (isDeath) {
+			return;
+		}
+
 		float hitAngle = damage.attackAngle;
 		int poiseBreakAmount = TakeHealthDamage.GetPoiseBreakAmount(damage.poiseBreakDamage, attribute.PoiseBreakResistance);
 
@@ -64,6 +68,7 @@ public abstract class HumanoidEnemy : Enemy {
 	}
 	
 	protected override void OnDeath() {
+		base.OnDeath();
 		StartCoroutine(Death());
 	}
 

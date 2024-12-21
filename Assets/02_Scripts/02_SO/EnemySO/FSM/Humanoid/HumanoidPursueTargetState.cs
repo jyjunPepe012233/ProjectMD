@@ -10,11 +10,11 @@ public class HumanoidPursueTargetState : PursueTargetState {
 	public override EnemyState Tick(Enemy self) {
 
 		// IF IN PIVOT, STAY IN PURSUE TARGET STATE
-		if (self.isPerformingAction) {
+		if (self.isPerformingAction) {	
 			return self.currentState;
 		}
-
 		
+		self.currentTarget = self.combat.FindTargetBySight(self.idleState.detectAngle, self.idleState.detectRadius, self.idleState.absoluteDetectRadius);
 		// IF TARGET IS NOT EXIST IN DETECT RANGE
 		if (self.currentTarget == null) {
 			return self.idleState;
