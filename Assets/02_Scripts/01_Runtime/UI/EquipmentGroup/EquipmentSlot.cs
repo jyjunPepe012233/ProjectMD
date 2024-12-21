@@ -1,29 +1,34 @@
+using System;
 using MinD.SO.Item;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EquipmentSlot : MonoBehaviour
 {
-    public Image itemImage; // 아이템 이미지를 표시하는 UI
-    public Text itemCountText; // 아이템 개수를 표시하는 UI
-    public GameObject selectionImage; // 슬롯 선택 이미지를 활성화/비활성화
-    public int categoryId; // 슬롯의 카테고리 ID
-    public int slotIndex; // 슬롯의 인덱스
+    public Image itemImage;
+    public Text itemCountText;
+    public GameObject selectionImage;
+    public int categoryId;
+    public int slotIndex;
 
-    [SerializeField] private Item currentItem; // 현재 슬롯에 담긴 아이템 (없으면 null)
+    [SerializeField] public Item currentItem;
 
-    /// <summary>
-    /// 슬롯에 새로운 아이템을 업데이트합니다.
-    /// </summary>
     public void UpdateSlot(Item item)
     {
         if (item == null)
         {
-            ClearSlot(); // null인 경우 슬롯 비우기
+            ClearSlot();
             return;
         }
 
         currentItem = item;
+
+        if (item.itemCount <= 0)
+        {
+            ClearSlot();
+            return;
+        }
+
         itemImage.sprite = item.itemImage;
         itemImage.gameObject.SetActive(true);
 
@@ -38,9 +43,6 @@ public class EquipmentSlot : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 슬롯을 초기화하여 아이템 정보를 제거합니다.
-    /// </summary>
     public void ClearSlot()
     {
         currentItem = null;
@@ -48,9 +50,6 @@ public class EquipmentSlot : MonoBehaviour
         itemCountText.gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// 슬롯 클릭 시 동작을 정의합니다.
-    /// </summary>
     public void OnSlotClicked()
     {
         if (currentItem != null)

@@ -9,88 +9,141 @@ public class EquipmentUI : MonoBehaviour
     public List<Transform> EquipmentPanels; // 각 카테고리별 패널 (Talisman, Tool, Protection, Weapon)
     public GameObject EquipmentSlotPrefab;
 
-    private InventoryUI inventoryUI; // 인벤토리 UI 참조
-    private PlayerInventoryHandler playerInventory; // 플레이어 인벤토리 핸들러 참조
-    private int currentPanelIndex = -1; // 현재 활성화된 패널 인덱스 (-1: 인벤토리 모드)
-    private int currentSlotIndex = 0; // 현재 선택된 슬롯 인덱스
-    private int columns = 5; // 슬롯의 열 수
-    public bool isInteractingWithEquipmentPanel = false; // 장착 패널 상호작용 여부
+    private InventoryUI inventoryUI;
+    private PlayerInventoryHandler playerInventory;
+    private int currentPanelIndex = -1; // (-1: 인벤토리 모드)
+    private int currentSlotIndex = 0;
+    private int columns = 5;
+    
+    public bool isInteractingWithEquipmentPanel = false;
+    public bool isEquipmentPanelActive = true;
 
     void Start()
     {
         inventoryUI = FindObjectOfType<InventoryUI>();
         playerInventory = FindObjectOfType<PlayerInventoryHandler>();
         CreateEquipmentSlots();
-        UpdateSelectedSlot(false); // 기본 선택 슬롯 비활성화
+        UpdateSelectedSlot(false);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C)) // C 키로 패널 전환
+        if (!inventoryUI.isInventoryActive)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            ToggleAllEquipmentPanels();
+        }
+
+        
+        if (isEquipmentPanelActive && Input.GetKeyDown(KeyCode.C))
         {
             ToggleEquipmentPanel();
         }
-
-        if (isInteractingWithEquipmentPanel) // 패널이 활성화된 경우
+        
+        if (isInteractingWithEquipmentPanel)
         {
             HandleSlotSelection();
 
-            if (Input.GetKeyDown(KeyCode.Return)) // Enter 키를 눌렀을 때
+            if (Input.GetKeyDown(KeyCode.Return))
             {
                 TriggerSlotAction();
             }
-
-            if (Input.GetKeyDown(KeyCode.E)) // E 키로 슬롯 해제
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 ClearSelectedSlot();
             }
         }
     }
+    
+    private void ToggleAllEquipmentPanels()
+    {
+        if (isInteractingWithEquipmentPanel)
+        {
+            return;
+        }
 
+        isEquipmentPanelActive = !isEquipmentPanelActive;
+
+        foreach (Transform panel in EquipmentPanels)
+        {
+            panel.gameObject.SetActive(isEquipmentPanelActive);
+        }
+
+        if (!isEquipmentPanelActive)
+        {
+            isInteractingWithEquipmentPanel = false;
+            currentPanelIndex = -1;
+            
+            Debug.Log($"Equipment Panels deactivated. Returning to inventory selection at index {currentSlotIndex}.");
+        }
+        else
+        {
+            if (currentPanelIndex == -1)
+            {
+                currentPanelIndex = -1;
+            }
+
+            ResetSlotIndex();
+            UpdateSelectedSlot(false);
+            Debug.Log("Equipment Panels activated.");
+        }
+    }
     private void ToggleEquipmentPanel()
     {
         if (currentPanelIndex >= 0 && currentPanelIndex < EquipmentPanels.Count)
         {
-            UpdateSelectedSlot(false); // 현재 패널의 선택 이미지 비활성화
+            UpdateSelectedSlot(false);
         }
 
-        currentPanelIndex++;
-        if (currentPanelIndex > EquipmentPanels.Count - 1) // 마지막 패널 이후에는 인벤토리로
+        if (currentPanelIndex == -1)
         {
-            currentPanelIndex = -1; // 인벤토리 모드로 전환
+            currentPanelIndex = 0;
+        }
+        else
+        {
+            currentPanelIndex++;
+        }
+
+        if (currentPanelIndex > EquipmentPanels.Count - 1)
+        {
+            currentPanelIndex = -1;
         }
 
         isInteractingWithEquipmentPanel = (currentPanelIndex != -1);
 
-        if (isInteractingWithEquipmentPanel) // 장비 패널 활성화 상태
+        if (isInteractingWithEquipmentPanel)
         {
             ResetSlotIndex();
-            UpdateSelectedSlot(true); // 선택 이미지 활성화
-            inventoryUI.DisableSelectionImage(); // 인벤토리 선택 이미지 비활성화
+            UpdateSelectedSlot(true);
+            inventoryUI.DisableSelectionImage();
         }
-        else // 인벤토리 모드로 돌아감
+        else
         {
-            inventoryUI.EnableSelectionImage(0); // 인벤토리의 첫 번째 슬롯 선택 이미지 활성화
+            inventoryUI.EnableSelectionImage(inventoryUI.SelectedSlotIndex);
         }
     }
 
+
+
     private void HandleSlotSelection()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             MoveSelection(-1);
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             MoveSelection(1);
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            MoveSelection(-columns); // 위로 이동
+            MoveSelection(-columns);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
-            MoveSelection(columns); // 아래로 이동
+            MoveSelection(columns);
         }
     }
 
@@ -115,8 +168,8 @@ public class EquipmentUI : MonoBehaviour
 
     public void CreateEquipmentSlots()
     {
-        int[] slotCounts = { 1, 1, 5, 10 }; // 각 장비 슬롯 개수
-        int[] categoryIds = { 2, 3, 0, 1 }; // 슬롯의 카테고리 ID 배열
+        int[] slotCounts = { 1, 1, 5, 10 };
+        int[] categoryIds = { 2, 3, 0, 1 };
 
         for (int i = 0; i < EquipmentPanels.Count; i++)
         {
@@ -127,8 +180,8 @@ public class EquipmentUI : MonoBehaviour
                 EquipmentSlot slot = slotObj.GetComponent<EquipmentSlot>();
                 if (slot != null)
                 {
-                    slot.categoryId = categoryIds[i]; // 카테고리 ID 설정
-                    slot.slotIndex = j; // slotIndex 설정
+                    slot.categoryId = categoryIds[i];
+                    slot.slotIndex = j;
                 }
             }
         }
@@ -154,7 +207,6 @@ public class EquipmentUI : MonoBehaviour
         Transform currentPanel = EquipmentPanels[currentPanelIndex];
         int slotCount = currentPanel.childCount;
 
-        // 슬롯 인덱스가 초과하지 않도록 제한
         currentSlotIndex = Mathf.Clamp(currentSlotIndex, 0, slotCount - 1);
 
         Transform selectedSlot = currentPanel.GetChild(currentSlotIndex);
@@ -192,7 +244,6 @@ public class EquipmentUI : MonoBehaviour
 
         if (equipmentSlot != null)
         {
-            // Add logic for equipping items from inventory
             Debug.Log($"Slot action triggered: Category {equipmentSlot.categoryId}, Index {equipmentSlot.slotIndex}");
         }
     }

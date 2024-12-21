@@ -6,32 +6,30 @@ using MinD.SO.Item;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using NotImplementedException = System.NotImplementedException;
 
 namespace MinD.Runtime.UI
 {
     public class ItemActionPanel : MonoBehaviour
     {
-        public GameObject panel; // 패널 오브젝트
-        public Button wearButton; // 착용 버튼
-        public Button dropButton; // 버리기 버튼
-        public Button destroyButton; // 파기 버튼
+        public GameObject panel;
+        public Button wearButton;
+        public Button dropButton;
+        public Button destroyButton;
 
-        private Item currentItem; // 현재 아이템
-        private PlayerInventoryHandler playerInventoryHandler; // 플레이어 인벤토리 핸들러
-        private InventoryUI inventoryUI; // 인벤토리 UI
+        private Item currentItem;
+        private PlayerInventoryHandler playerInventoryHandler;
+        private InventoryUI inventoryUI;
 
-        public Button[] actionButtons; // 버튼 리스트
-        public int selectedButtonIndex = 0; // 현재 선택된 버튼 인덱스
+        public Button[] actionButtons;
+        public int selectedButtonIndex = 0;
 
-        private int equippedTalismanCount => playerInventoryHandler.talismanSlots.Count(t => t != null); // 착용된 탈리스만 수
+        private int equippedTalismanCount => playerInventoryHandler.talismanSlots.Count(t => t != null);
 
         void Start()
         {
-            panel.SetActive(false); // 시작할 때 패널 비활성화
-            actionButtons = new Button[] { wearButton, dropButton, destroyButton }; // 버튼 배열 초기화
+            panel.SetActive(false);
+            actionButtons = new Button[] { wearButton, dropButton, destroyButton };
 
-            // 버튼 클릭 이벤트 등록
             wearButton.onClick.AddListener(OnEquipButtonClicked);
             dropButton.onClick.AddListener(OnDropButtonClicked);
             destroyButton.onClick.AddListener(OnDestroyButtonClicked);
@@ -50,13 +48,13 @@ namespace MinD.Runtime.UI
         {
             if (panel.activeSelf)
             {
-                HandleInput(); // 입력 처리
+                HandleInput();
             }
         }
 
         private void HandleInput()
         {
-            if (Input.GetKeyDown(KeyCode.Q)) // Q 키로 패널 닫기
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 HidePanel();
                 return;
@@ -132,10 +130,9 @@ namespace MinD.Runtime.UI
             {
                 EquipItemBasedOnCategory(equipment);
             }
-            HidePanel(); // 착용 후 패널 닫기
+            HidePanel();
             inventoryUI.UpdateInventoryUI();
         }
-
 
         private void EquipItemBasedOnCategory(Equipment equipment)
         {
@@ -161,46 +158,43 @@ namespace MinD.Runtime.UI
 
         private void EquipTalisman(Equipment equipment)
         {
-            for (int i = 0; i < 5; i++) // Talisman 슬롯을 순회
+            for (int i = 0; i < 5; i++)
             {
-                if (playerInventoryHandler.talismanSlots[i] == null) // 비어있는 슬롯 확인
+                if (playerInventoryHandler.talismanSlots[i] == null)
                 {
-                    playerInventoryHandler.talismanSlots[i] = (Talisman)equipment; // 슬롯에 아이템 장착
+                    playerInventoryHandler.talismanSlots[i] = (Talisman)equipment;
                     Debug.Log($"착용: {equipment.itemName} (탈리스만 {i + 1})");
 
-                    // UI 업데이트 (해당 슬롯만 업데이트)
                     var talismanSlot = FindObjectsOfType<EquipmentSlot>().FirstOrDefault(slot => slot.categoryId == 0 && slot.slotIndex == i);
                     talismanSlot?.UpdateSlot(equipment);
-                    break; // 아이템 장착 후 종료
+                    break;
                 }
             }
         }
 
         private void EquipTool(Equipment equipment)
         {
-            for (int i = 0; i < 10; i++) // Tool 슬롯을 순회
+            for (int i = 0; i < 10; i++)
             {
-                if (playerInventoryHandler.toolSlots[i] == null) // 비어있는 슬롯 확인
+                if (playerInventoryHandler.toolSlots[i] == null)
                 {
-                    playerInventoryHandler.toolSlots[i] = (Tool)equipment; // 슬롯에 아이템 장착
+                    playerInventoryHandler.toolSlots[i] = (Tool)equipment;
                     Debug.Log($"착용: {equipment.itemName} (도구 {i + 1})");
 
-                    // UI 업데이트 (해당 슬롯만 업데이트)
                     var toolSlot = FindObjectsOfType<EquipmentSlot>().FirstOrDefault(slot => slot.categoryId == 1 && slot.slotIndex == i);
                     toolSlot?.UpdateSlot(equipment);
-                    break; // 아이템 장착 후 종료
+                    break;
                 }
             }
         }
 
         private void EquipProtection(Equipment equipment)
         {
-            if (playerInventoryHandler.protectionSlot == null) // Protection 슬롯이 비어있다면
+            if (playerInventoryHandler.protectionSlot == null)
             {
-                playerInventoryHandler.protectionSlot = (Protection)equipment; // Protection 슬롯에 아이템 장착
+                playerInventoryHandler.protectionSlot = (Protection)equipment;
                 Debug.Log($"착용: {equipment.itemName} (방어구)");
 
-                // UI 업데이트 (해당 슬롯만 업데이트)
                 var protectionSlot = FindObjectsOfType<EquipmentSlot>().FirstOrDefault(slot => slot.categoryId == 2);
                 protectionSlot?.UpdateSlot(equipment);
             }
@@ -212,12 +206,11 @@ namespace MinD.Runtime.UI
 
         private void EquipWeapon(Equipment equipment)
         {
-            if (playerInventoryHandler.weaponSlot == null) // Weapon 슬롯이 비어있다면
+            if (playerInventoryHandler.weaponSlot == null)
             {
-                playerInventoryHandler.weaponSlot = (Weapon)equipment; // Weapon 슬롯에 아이템 장착
+                playerInventoryHandler.weaponSlot = (Weapon)equipment;
                 Debug.Log($"착용: {equipment.itemName} (무기)");
 
-                // UI 업데이트 (해당 슬롯만 업데이트)
                 var weaponSlot = FindObjectsOfType<EquipmentSlot>().FirstOrDefault(slot => slot.categoryId == 3);
                 weaponSlot?.UpdateSlot(equipment);
             }
@@ -227,22 +220,17 @@ namespace MinD.Runtime.UI
             }
         }
 
-
-
-
-
         private void OnDropButtonClicked()
         {
             if (currentItem != null)
             {
                 currentItem.itemCount--;
                 Debug.Log($"Dropped: {currentItem.itemName}");
-                // EquipmentSlot 업데이트
                 UpdateEquipmentSlotCount();
 
-                if (currentItem.itemCount <= 0) // 아이템 수가 0이거나 이하일 경우
+                if (currentItem.itemCount <= 0)
                 {
-                    currentItem = null; // 현재 아이템 초기화
+                    currentItem = null;
                     HidePanel();
                 }
             }
@@ -255,10 +243,10 @@ namespace MinD.Runtime.UI
             var equipmentSlots = FindObjectsOfType<EquipmentSlot>();
             foreach (var slot in equipmentSlots)
             {
-                if (slot.categoryId == currentItem.categoryId) // 현재 아이템의 카테고리 확인
+                if (slot.categoryId == currentItem.categoryId)
                 {
-                    slot.UpdateSlot(currentItem); // 슬롯 업데이트
-                    break; // 첫 번째 슬롯만 업데이트
+                    slot.UpdateSlot(currentItem);
+                    break;
                 }
             }
         }
@@ -269,12 +257,11 @@ namespace MinD.Runtime.UI
             {
                 currentItem.itemCount--;
                 Debug.Log($"Destroyed: {currentItem.itemName}");
-                // EquipmentSlot 업데이트
                 UpdateEquipmentSlotCount();
 
-                if (currentItem.itemCount <= 0) // 아이템 수가 0이거나 이하일 경우
+                if (currentItem.itemCount <= 0)
                 {
-                    currentItem = null; // 현재 아이템 초기화
+                    currentItem = null;
                     HidePanel();
                 }
             }
@@ -288,5 +275,3 @@ namespace MinD.Runtime.UI
         }
     }
 }
-
-                           
