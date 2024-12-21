@@ -28,9 +28,10 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	
 	public Player player;
 
+	public bool isLockOnSpotEnable;
 	public bool isPlayingBurstPopup;
-	
 	public bool isFadingWithBlack;
+	
 	private Coroutine fadingBlackScreenCoroutine;
 
 	public PlayerMenu currentShowingMenu;
@@ -58,6 +59,10 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	}
 
 	private void HandleLockOnSpot() {
+		if (!isLockOnSpotEnable) {
+			return;
+		}
+
 		playerHUD.lockOnSpot.position = player.camera.camera.WorldToScreenPoint(player.camera.currentTargetOption.position);
 		if (Vector3.Angle(player.camera.transform.forward, player.camera.currentTargetOption.position - player.camera.transform.position) > 90) {
 			playerHUD.lockOnSpot.gameObject.SetActive(false);
@@ -117,6 +122,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	
 	
 	public void SetLockOnSpotActive(bool value) {
+		isLockOnSpotEnable = value;
 		playerHUD.lockOnSpot.gameObject.SetActive(value);
 	}
 

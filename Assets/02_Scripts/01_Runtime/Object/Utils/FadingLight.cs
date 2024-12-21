@@ -16,8 +16,10 @@ public class FadingLight : MonoBehaviour {
 
 	
 	public void OnEnable() {
-		light = GetComponent<Light>();
-
+		if (light == null) {
+			light = GetComponent<Light>();
+		}
+		
 		light.intensity = minIntensityValue;
 		if (minIntensityValue == 0) {
 			light.enabled = false;
@@ -25,7 +27,10 @@ public class FadingLight : MonoBehaviour {
 	}
 
 	public void FadeIn(float duration) {
-
+		if (light == null) {
+			light = GetComponent<Light>();
+		}
+		
 		if (currentFade != null) {
 			StopCoroutine(currentFade);
 		}
@@ -34,6 +39,9 @@ public class FadingLight : MonoBehaviour {
 	}
 
 	public void FadeOut(float duration, bool destroyWithEnd = false) {
+		if (light == null) {
+			light = GetComponent<Light>();
+		}
 		
 		if (currentFade != null) {
 			StopCoroutine(currentFade);

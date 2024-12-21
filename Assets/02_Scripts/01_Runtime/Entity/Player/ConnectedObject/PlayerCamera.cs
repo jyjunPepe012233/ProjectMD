@@ -8,7 +8,7 @@ namespace MinD.Runtime.Entity {
 
 public class PlayerCamera : MonoBehaviour {
 	
-	private const lockOnInputPoint // MINIMUM DELTA MOUSE MOVEMENT 
+	private const float lockOnInputPoint = 3.5f; // MINIMUM DELTA MOUSE MOVEMENT 
 
 	[HideInInspector] public Player owner; 
 	private Camera _camera;
