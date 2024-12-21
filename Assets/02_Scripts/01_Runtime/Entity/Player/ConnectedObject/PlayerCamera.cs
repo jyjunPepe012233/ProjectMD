@@ -47,10 +47,10 @@ public class PlayerCamera : MonoBehaviour {
 
 	public void HandleCamera() {
 
+		HandleLockOn();
 		HandleFollowTarget();
 		HandleRotation();
 		HandleCollision();
-		HandleLockOn();
 
 	}
 
@@ -131,14 +131,20 @@ public class PlayerCamera : MonoBehaviour {
 		}
 
 		if (owner.isLockOn) {
-			
-			// IF TARGET IS DESTROYED OR DYING, WHATEVER TARGET IS UNSUITABLE AS TARGET 
-			if (currentTargetOption.GetComponentInParent<BaseEntity>().isDeath 
-			    || !currentTargetOption.gameObject.activeSelf // IF ENTITY OBJECT IS DISABLED OR DESTROYED(missing)
-			    || currentTargetOption == null) {
-				
+
+			// CHECK TARGET IS DESTROYED OR DYING, WHATEVER TARGET IS UNSUITABLE AS TARGET 
+			bool currentTargetIsAvailable = true;
+			try {
+				if (currentTargetOption.GetComponentInParent<BaseEntity>().isDeath
+				    || !currentTargetOption.gameObject.activeSelf) {
+					currentTargetIsAvailable = false;
+				}
+			} catch {
+				currentTargetIsAvailable = false;
+			}
+
+			if (!currentTargetIsAvailable) {
 				SetLockOnTarget();
-				
 				
 			} else if (Vector3.Angle(transform.forward, currentTargetOption.position - transform.position) > lockOnAngle) {
 				// IF TARGET IS OUT OF ALLOWED ANGLE

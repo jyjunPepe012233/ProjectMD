@@ -71,7 +71,7 @@ public class GuffinsAnchorMenu : PlayerMenu {
 	}
 
 	public void ApplyGuffinsAnchorData(GuffinsAnchor anchor) {
-		anchorName.text = anchor.anchorInfo.anchorName;
+ㅈ		anchorName.text = anchor.anchorInfo.anchorName;
 
 		optionActiveDictionary[OptionType.TeleportToOtherAnchor] = true;
 		optionActiveDictionary[OptionType.LevelUp] = true;

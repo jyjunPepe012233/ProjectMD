@@ -30,9 +30,14 @@ public abstract class Enemy : BaseEntity {
 	
 	public override int CurHp {
 		get => curHp;
-		set => curHp = Mathf.Clamp(value, 0, attribute.MaxHp);
+		set {
+			curHp = value;
+			if (curHp <= 0) {
+				OnDeath();
+			}
+			curHp = Mathf.Clamp(curHp, 0, attribute.MaxHp);
+		}
 	}
-	
 	
 	[Header("[ Flags ]")]
 	public bool isPerformingAction;
