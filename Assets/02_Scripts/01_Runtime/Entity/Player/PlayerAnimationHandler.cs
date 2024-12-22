@@ -53,7 +53,6 @@ public class PlayerAnimationHandler : BaseEntityAnimationHandler {
 		bool canRotate = true,
 		bool canMove = true) {
 		
-		Debug.Log("start Animation: " + stateName);
 		owner.animator.CrossFadeInFixedTime(stateName, 0.2f);
 
 		

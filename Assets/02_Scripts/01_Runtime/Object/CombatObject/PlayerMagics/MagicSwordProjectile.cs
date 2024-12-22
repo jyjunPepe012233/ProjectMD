@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using MinD.Runtime.Entity;
-using MinD.Runtime.Utils;
 using MinD.Runtime.System;
+using MinD.Runtime.Utils;
 using UnityEngine;
 
 namespace MinD.Runtime.Object.Magics
@@ -18,7 +18,9 @@ public class MagicSwordProjectile : MonoBehaviour
     
     private Rigidbody rigidbody;
     private Collider collider;
-
+    
+    private BaseEntity owner;
+    
     [SerializeField] private Vector3 startPosotion;
     [SerializeField] private Vector3 readyPosition;
     
@@ -26,6 +28,8 @@ public class MagicSwordProjectile : MonoBehaviour
 
     public void OnEnable()
     {
+        // flightFx.Play();
+        
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
 
@@ -33,92 +37,125 @@ public class MagicSwordProjectile : MonoBehaviour
         collider.enabled = false;
     }
 
-    public IEnumerator ShootCoroutine(BaseEntity target)
+    public IEnumerator ShootCoroutine( BaseEntity target )
     {
         float elapsedTime = 0f;
-        collider.isTrigger = true;
-
-        collider.enabled = true;
+        float speed = 15;
+            
+        rigidbody.isKinematic = false;
+        
+        // PhysicUtility.IgnoreCollisionUtil(owner, collider); /* 기능안함 */
+        
+        /* 콜라이더들 활성화 */
+        // collider.isTrigger = true;
+        // collider.enabled = true; // use Colllier
         
         if (target != null) // 적 감지 시 추척하여 발사
         {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,Quaternion.LookRotation((target.transform.position + new Vector3(0,target.transform.lossyScale.y * 1.2f,0) ) - transform.position), 360);
+            
             while (true)
             {
-                transform.rotation = Quaternion.RotateTowards(transform.rotation,Quaternion.LookRotation(target.transform.position),10);
-                rigidbody.velocity = transform.forward * 10;
-                                
                 elapsedTime += Time.deltaTime;
-
+                
+                transform.rotation = Quaternion.RotateTowards(transform.rotation,
+                                        Quaternion.LookRotation((target.transform.position + new Vector3(0,target.transform.lossyScale.y * 1.2f,0) ) - transform.position), 60 * Time.deltaTime);
+                rigidbody.velocity = transform.forward * speed;
+                
                 if (elapsedTime >= 5)
                 {
                     yield return StartCoroutine(Explode());
+                    continue;
                 }
+
+                yield return null;
+
             }
         }
         else // 적 감지 실패 시 그냥 발사
         {
             while (true)
             {
-                transform.rotation = Quaternion.RotateTowards(transform.rotation,Quaternion.LookRotation(transform.forward * 2 - transform.up), 10);
-                rigidbody.velocity = transform.forward * 10;
-                
                 elapsedTime += Time.deltaTime;
-
-                if (elapsedTime >= 5)
+                
+                rigidbody.velocity = transform.forward * speed;
+                
+                if (elapsedTime >= 3f)
                 {
                     yield return StartCoroutine(Explode());
+                    /*  이거 안됌, 왜?
+                     StartCoroutine(Explode()); 
+                     yield break;
+                     */
+                    continue;
                 }
+
+                yield return null;
+
             }
         }
         
     }
     
-    /* 버그진행 순서
-     * 애니메 이밴트
-     * set Position -> re anime --------------------------- set Position << 판독결과 얘 문제 아님 ( 거짓된 정보입니다. )
-     * re anime.evnet -> 에러
-     * NullReferenceException: Object reference not set to an instance of an object
-       MinD.Runtime.Entity.PlayerCombatHandler.OnSuccessfullyCast () (at Assets/02_Scripts/01_Runtime/Entity/Player/PlayerCombatHandler.cs:215)
-     */
     
-    public IEnumerator SetSwordPosition(BaseEntity owner, BaseEntity target, Vector3 position)
+    public IEnumerator SetSwordPosition(BaseEntity _owner, BaseEntity target, Vector3 position)
     {
-        // /*보간이 무작위로 적용됨*/  /* 사라지기 전에 재사용 시 보간 적용 - 거짓으로 판명 */ /* 재실행 이슈 고쳐지면 해결되지 않을까, 재실행 후 보간적용 */
         
-        Debug.Log("start SetPosition");
-        
-        PhysicUtility.IgnoreCollisionUtil(owner, collider);
+        owner = _owner;
+        PlayerCombatHandler combat = owner.GetComponent<PlayerCombatHandler>();
+        Player player = owner.GetComponent<Player>();
+
+        float high = 2.1f;
+        float lerpSpace = 0.5f;
         
         float elapsedTime = 0;
-        flightFx.Play();
 
-        while (true)
+        while (true) // 타겟 있을 시 카메라 따라가기, 평소에는 플레이어 시야
         {
             elapsedTime += Time.deltaTime;
             
-            transform.position = Vector3.Lerp(transform.position, owner.transform.position + position + new Vector3(0,2.7f,0),0.25f);
-            yield return null;
-            
-            if (elapsedTime >= 1.4f)
+            if (player.isLockOn) // is LookOn
             {
-                yield break; //StartCoroutine(ShootCoroutine(target));
+                // 카메라 기준
+                transform.position = Vector3.Lerp(transform.position,
+                    owner.transform.position + owner.transform.right * position.x +
+                    owner.transform.up * position.y +
+                    new Vector3(0, high, 0), lerpSpace);
+                transform.rotation = Quaternion.LookRotation(combat.target.transform.position - transform.position);
             }
-        
+            else
+            {
+                // 플레이어 기준
+                transform.position = Vector3.Lerp(transform.position,
+                    owner.transform.position + owner.transform.right * position.x +
+                    owner.transform.up * position.y +
+                    new Vector3(0, high, 0), lerpSpace);
+                transform.rotation = owner.transform.rotation;
+            }
+            
+            if (elapsedTime >= 1.2f)
+            {
+                StartCoroutine(ShootCoroutine(target));
+                yield break;
+            }
+            
+            yield return null;
+
         }
         
-        yield break;
     }
 
 
     public IEnumerator Explode()
     {
+        
         if (!isExploded)
         {
             isExploded = true;
             explosionDamageCollider.gameObject.SetActive(true);
 
-            flightFx.Stop();
-            explosionFx.Play();
+            // flightFx.Stop();
+            // explosionFx.Play();
 
             rigidbody.velocity = Vector3.zero;
             
@@ -130,10 +167,12 @@ public class MagicSwordProjectile : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!isExploded)
-        {
-            StartCoroutine(Explode());
-        }
+        Debug.Log("MagicSword: OnTriggerEnter: " + other);
+    //     
+    //     if (!isExploded && other != owner )
+    //     {
+    //         StartCoroutine(Explode());
+    //     }
     }
 }
 }
