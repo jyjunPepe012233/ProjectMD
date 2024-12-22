@@ -12,13 +12,13 @@ namespace MinD.Runtime.UI
         public GameObject selectionImage;
 
         private Item currentItem;
-        private InventoryUI inventoryUI;
+        private InventoryMenu _inventoryMenu;
 
         public int categoryId;
 
         void Start()
         {
-            inventoryUI = FindObjectOfType<InventoryUI>();
+            _inventoryMenu = FindObjectOfType<InventoryMenu>();
         }
 
         public void SetItem(Item item, int itemCategoryId)
@@ -70,15 +70,15 @@ namespace MinD.Runtime.UI
 
         public void OnClick()
         {
-            if (inventoryUI != null)
+            if (_inventoryMenu != null)
             {
-                inventoryUI.OnSlotClicked(this);
+                _inventoryMenu.OnSlotClicked(this);
 
                 var item = GetCurrentItem();
                 if (item != null && item.itemCount > 0)
                 {
-                    int slotIndex = inventoryUI.GetSlotIndex(this);
-                    inventoryUI.itemActionPanel.ShowPanel(item);
+                    int slotIndex = _inventoryMenu.GetSlotIndex(this);
+                    _inventoryMenu.itemActionPanel.ShowPanel(item);
                 }
             }
         }

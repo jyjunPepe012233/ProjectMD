@@ -9,7 +9,7 @@ public class EquipmentUI : MonoBehaviour
     public List<Transform> EquipmentPanels; // 각 카테고리별 패널 (Talisman, Tool, Protection, Weapon)
     public GameObject EquipmentSlotPrefab;
 
-    private InventoryUI inventoryUI;
+    private InventoryMenu _inventoryMenu;
     private PlayerInventoryHandler playerInventory;
     private int currentPanelIndex = -1; // (-1: 인벤토리 모드)
     private int currentSlotIndex = 0;
@@ -20,7 +20,7 @@ public class EquipmentUI : MonoBehaviour
 
     void Start()
     {
-        inventoryUI = FindObjectOfType<InventoryUI>();
+        _inventoryMenu = FindObjectOfType<InventoryMenu>();
         playerInventory = FindObjectOfType<PlayerInventoryHandler>();
         CreateEquipmentSlots();
         UpdateSelectedSlot(false);
@@ -28,7 +28,7 @@ public class EquipmentUI : MonoBehaviour
 
     private void Update()
     {
-        if (!inventoryUI.isInventoryActive)
+        if (!_inventoryMenu.isInventoryActive)
             return;
 
         if (Input.GetKeyDown(KeyCode.B))
@@ -117,11 +117,11 @@ public class EquipmentUI : MonoBehaviour
         {
             ResetSlotIndex();
             UpdateSelectedSlot(true);
-            inventoryUI.DisableSelectionImage();
+            _inventoryMenu.DisableSelectionImage();
         }
         else
         {
-            inventoryUI.EnableSelectionImage(inventoryUI.SelectedSlotIndex);
+            _inventoryMenu.EnableSelectionImage(_inventoryMenu.SelectedSlotIndex);
         }
     }
 

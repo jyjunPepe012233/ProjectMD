@@ -18,7 +18,7 @@ namespace MinD.Runtime.UI
 
         private Item currentItem;
         private PlayerInventoryHandler playerInventoryHandler;
-        private InventoryUI inventoryUI;
+        private InventoryMenu _inventoryMenu;
 
         public Button[] actionButtons;
         public int selectedButtonIndex = 0;
@@ -35,12 +35,12 @@ namespace MinD.Runtime.UI
             destroyButton.onClick.AddListener(OnDestroyButtonClicked);
 
             playerInventoryHandler = FindObjectOfType<PlayerInventoryHandler>();
-            inventoryUI = FindObjectOfType<InventoryUI>();
+            _inventoryMenu = FindObjectOfType<InventoryMenu>();
 
             if (playerInventoryHandler == null)
                 Debug.LogError("PlayerInventoryHandler not found in the scene!");
 
-            if (inventoryUI == null)
+            if (_inventoryMenu == null)
                 Debug.LogError("InventoryUI not found in the scene!");
         }
 
@@ -131,7 +131,7 @@ namespace MinD.Runtime.UI
                 EquipItemBasedOnCategory(equipment);
             }
             HidePanel();
-            inventoryUI.UpdateInventoryUI();
+            _inventoryMenu.UpdateInventoryUI();
         }
 
         private void EquipItemBasedOnCategory(Equipment equipment)
@@ -235,7 +235,7 @@ namespace MinD.Runtime.UI
                 }
             }
 
-            inventoryUI.UpdateInventoryUI();
+            _inventoryMenu.UpdateInventoryUI();
         }
 
         private void UpdateEquipmentSlotCount()
@@ -266,7 +266,7 @@ namespace MinD.Runtime.UI
                 }
             }
 
-            inventoryUI.UpdateInventoryUI();
+            _inventoryMenu.UpdateInventoryUI();
         }
 
         public bool IsActive()
