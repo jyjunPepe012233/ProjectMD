@@ -200,9 +200,9 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 			}
 		}
 		
-		menu.Open();
 		StartCoroutine(menu.FadeOpenAndClose(menu.fadeInTime, true));
-
+		menu.Open();
+		
 		currentShowingMenu = menu;
 	}
 	

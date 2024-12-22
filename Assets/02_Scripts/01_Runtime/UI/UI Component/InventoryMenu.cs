@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using MinD.Runtime.Entity;
+using MinD.Runtime.Managers;
 using MinD.SO.Item;
 using UnityEngine.EventSystems;
+using NotImplementedException = System.NotImplementedException;
 
 namespace MinD.Runtime.UI
 {
-    public class InventoryUI : MonoBehaviour
+    public class InventoryMenu : PlayerMenu
 {
     public ItemActionPanel itemActionPanel;
 
@@ -19,11 +21,11 @@ namespace MinD.Runtime.UI
     public ScrollRect scrollRect;
     public List<Transform> categoryPolygon;
     public List<Transform> categoryPanels;
-    private List<List<InventorySlot>> categorySlots;
+    private List<List<InventorySlot>> categorySlots = new();
 
     private int selectedSlotIndex = 0;
     private int inventoryWidth = 5;
-    private PlayerInventoryHandler playerInventory;
+    [SerializeField] PlayerInventoryHandler playerInventory;
     private ItemSoList itemSoList;
 
     private int currentCategoryIndex = 0;
@@ -31,25 +33,70 @@ namespace MinD.Runtime.UI
     public GameObject inventoryPanel;
     public bool isInventoryActive = false;
     private bool isInteractingWithEquipmentPanel = false;
+    private bool isSlotCreated = false;
     private EquipmentUI equipmentUI;
-    void Start()
+    void OnEnable()
     {
         equipmentUI = FindObjectOfType<EquipmentUI>();
-        playerInventory = FindObjectOfType<Player>().inventory;
-        categorySlots = new List<List<InventorySlot>>();
-        
-        for (int i = 0; i < categoryPanels.Count; i++)
+        playerInventory = FindObjectOfType<PlayerInventoryHandler>();
+
+        if (isSlotCreated == false)
         {
-            List<InventorySlot> slots = CreateSlots(categoryPanels[i], 25, i);
-            categorySlots.Add(slots);
+            for (int i = 0; i < categoryPanels.Count; i++)
+            {
+                List<InventorySlot> slots = CreateSlots(categoryPanels[i], 25, i);
+                categorySlots.Add(slots);
+            }
+
+            isSlotCreated = true;
         }
 
         UpdateCategory();
         UpdateInventoryUI();
         UpdateSelectionImage();
 
-        inventoryPanel.SetActive(false);
         UpdateItemDetails();
+    }
+    
+    public override void Open() // 인벤토리 열고 닫을때를 Open, Close로 변경
+    {
+        UpdateCategory();
+        UpdateSelectionImage();
+        UpdateItemDetails();
+    }
+
+    public override void Close()
+    {
+        itemNameText.text = "";
+        itemDescriptionText.text = "";
+
+        // 액션 패널 비활성화
+        itemActionPanel.HidePanel();
+    }
+
+    public override void OnInputWithDirection(Vector2 inputDirx)
+    {
+        if (inputDirx.y != 0)
+        {
+            if (inputDirx.y > 0)
+            {
+                ScrollDown();
+            }
+            else
+            {
+                ScrollUp();
+            }
+            MoveSelection((int)inputDirx.y * inventoryWidth);
+        }
+        else
+        {
+            MoveSelection((int)inputDirx.x);
+        }
+    }
+
+    public override void OnQuitInput()
+    {
+        PlayerHUDManager.Instance.CloseMenu(this);
     }
 
     void MaintainFocus()
@@ -78,26 +125,27 @@ namespace MinD.Runtime.UI
     }
 
 
-    void ToggleInventory()
-    {
-        isInventoryActive = !isInventoryActive;
-        inventoryPanel.SetActive(isInventoryActive);
-
-        if (isInventoryActive)
-        {
-            UpdateCategory();
-            UpdateSelectionImage();
-            UpdateItemDetails();
-        }
-        else
-        {
-            itemNameText.text = "";
-            itemDescriptionText.text = "";
-
-            // 액션 패널 비활성화
-            itemActionPanel.HidePanel();
-        }
-    }
+    
+    // void ToggleInventory()
+    // {
+    //     isInventoryActive = !isInventoryActive;
+    //     inventoryPanel.SetActive(isInventoryActive);
+    //
+    //     if (isInventoryActive)
+    //     {
+    //         UpdateCategory();
+    //         UpdateSelectionImage();
+    //         UpdateItemDetails();
+    //     }
+    //     else
+    //     {
+    //         itemNameText.text = "";
+    //         itemDescriptionText.text = "";
+    //
+    //         // 액션 패널 비활성화
+    //         itemActionPanel.HidePanel();
+    //     }
+    // }
 
     void HandleInput()
     {
@@ -105,10 +153,10 @@ namespace MinD.Runtime.UI
         {
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            ToggleInventory();
-        }
+        // if (Input.GetKeyDown(KeyCode.Tab))
+        // {
+        //     ToggleInventory();
+        // }
 
         if (!isInventoryActive) return;
 
@@ -128,24 +176,24 @@ namespace MinD.Runtime.UI
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-            {
-                MoveSelection(1);
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-            {
-                MoveSelection(-1);
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-            {
-                ScrollUp();
-                MoveSelection(-inventoryWidth);
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-            {
-                ScrollDown();
-                MoveSelection(inventoryWidth);
-            }
+            // if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+            // {
+            //     MoveSelection(1);
+            // }
+            // else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+            // {
+            //     MoveSelection(-1);
+            // }
+            // else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+            // {
+            //     ScrollUp();
+            //     MoveSelection(-inventoryWidth);
+            // }
+            // else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+            // {
+            //     ScrollDown();
+            //     MoveSelection(inventoryWidth);
+            // }
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -382,7 +430,7 @@ namespace MinD.Runtime.UI
         if (categorySlots[currentCategoryIndex].Count > selectedSlotIndex)
         {
             GameObject selectedSlotObject = categorySlots[currentCategoryIndex][selectedSlotIndex].gameObject;
-            EventSystem.current.SetSelectedGameObject(selectedSlotObject);
+            /*EventSystem.current.SetSelectedGameObject(selectedSlotObject);*/
         }
     }
     public void DisableSelectionImage()
@@ -405,5 +453,7 @@ namespace MinD.Runtime.UI
         get { return selectedSlotIndex; }
         set { selectedSlotIndex = value; }
     }
+
+   
 }
 }

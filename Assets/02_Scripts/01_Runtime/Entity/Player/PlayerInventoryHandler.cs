@@ -45,6 +45,13 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 
 
 
+	public void HandleInventoryOpen()
+	{
+		if (Input.GetKeyDown(KeyCode.Tab) && PlayerHUDManager.Instance.currentShowingMenu == null)
+		{
+			PlayerHUDManager.Instance.OpenMenu(PlayerHUDManager.playerHUD.inventoryMenu);
+		}
+	}
 
 	public void LoadItemData() {
 
