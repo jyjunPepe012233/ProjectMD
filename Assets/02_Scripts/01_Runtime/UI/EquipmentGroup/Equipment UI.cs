@@ -28,9 +28,6 @@ public class EquipmentUI : MonoBehaviour
 
     private void Update()
     {
-        if (!_inventoryMenu.isInventoryActive)
-            return;
-
         if (Input.GetKeyDown(KeyCode.B))
         {
             ToggleAllEquipmentPanels();
@@ -44,6 +41,8 @@ public class EquipmentUI : MonoBehaviour
         
         if (isInteractingWithEquipmentPanel)
         {
+            
+            
             HandleSlotSelection();
 
             if (Input.GetKeyDown(KeyCode.Return))
@@ -218,7 +217,7 @@ public class EquipmentUI : MonoBehaviour
         }
     }
 
-    private void ClearSelectedSlot()
+    public void ClearSelectedSlot()
     {
         if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return;
 

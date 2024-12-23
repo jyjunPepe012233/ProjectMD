@@ -216,6 +216,7 @@ MonoBehaviour:
   selectionImage: {fileID: 4148668114876426675}
   categoryId: 0
   slotIndex: 0
+  currentItem: {fileID: 0}
 --- !u!1 &7436395728280024487
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,7 +358,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 170e6ad58a7154778807280a7d6a6f78, type: 3}
+    m_Font: {fileID: 12800000, guid: 06c91851663a345f88680f95b986d781, type: 3}
     m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
