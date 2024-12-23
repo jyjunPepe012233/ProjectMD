@@ -27,9 +27,9 @@ public class SkeletonWarriorWaveSlash : MonoBehaviour {
 	
 	private void Update() {
 		
-		if (flightTimer > 1.5f && !isDestroying) {
+		if (flightTimer > 1f && !isDestroying) {
+			isDestroying = true;
 			StartCoroutine(DestroyCoroutine());
-			rigidbody.isKinematic = true;
 			
 		} else {
 			flightTimer += Time.deltaTime;
@@ -43,11 +43,11 @@ public class SkeletonWarriorWaveSlash : MonoBehaviour {
 
 	private IEnumerator DestroyCoroutine() {
 		
-		isDestroying = true;
 		float timer = 0;
 		
 		pSystem.Stop();
 		dCollider.enabled = false;
+		rigidbody.isKinematic = true;
 		
 
 		while (true) {
