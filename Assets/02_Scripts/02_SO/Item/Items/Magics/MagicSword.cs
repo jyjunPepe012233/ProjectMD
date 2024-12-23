@@ -27,9 +27,6 @@ public class MagicSword : Magic
         new Vector3(-1,  1, -1).normalized * 0.8f
     };
     
-/* 데미지 콜라이더 작업중이었슴 */ 
-    
-    
     public override void OnUse()
     {
         useElapsedTiem = 0;
@@ -40,15 +37,13 @@ public class MagicSword : Magic
         projectiles = new List<GameObject>();
         swordProjectiles = new List<MagicSwordProjectile>();
     }
-
-    /* 생성 각도 */ /*따라오기*/ /* 첫 생성 위치 문제있음 */
     
     
     public override void Tick()
     {
         useElapsedTiem += Time.deltaTime;
         
-        if (!castPlayer.isPerformingAction) // && useElapsedTiem >= 1.4f)
+        if (!castPlayer.isPerformingAction)
         {
             castPlayer.combat.ExitCurrentMagic();
         }

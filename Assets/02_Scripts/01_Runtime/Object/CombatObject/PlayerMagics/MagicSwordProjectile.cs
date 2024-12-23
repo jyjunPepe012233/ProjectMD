@@ -27,8 +27,6 @@ public class MagicSwordProjectile : MonoBehaviour
 
     public void OnEnable()
     {
-        // flightFx.Play();
-        // flightFx.enabled = true;
         
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
@@ -106,8 +104,7 @@ public class MagicSwordProjectile : MonoBehaviour
         
         owner = _owner;
         
-        // float high = 2.1f;
-        float high = 5f;
+        float high = 2.1f;
         float lerpSpace = 0.5f;
         
         float elapsedTime = 0;
@@ -156,7 +153,6 @@ public class MagicSwordProjectile : MonoBehaviour
 
     public IEnumerator Explode()
     {
-        Debug.Log("ex");
         if (!isExploded)
         {
             isExploded = true;
@@ -175,9 +171,8 @@ public class MagicSwordProjectile : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log("MagicSword: OnTriggerEnter: " + other.name);
     
-    if (!isExploded && other != owner )
+    if (!isExploded)
     {
         StartCoroutine(Explode());
     }
