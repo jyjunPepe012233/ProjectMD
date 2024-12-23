@@ -22,9 +22,9 @@ public class MagicSword : Magic
     
     public static readonly Vector3[] projectilePositions = new Vector3[3]
     {
-        new Vector3(-2, -1, 0).normalized * 0.8f,
+        new Vector3( 1, -1, 1).normalized * 0.8f,
         new Vector3( 0,  0, 0),
-        new Vector3( 2, -1, 0).normalized * 0.8f
+        new Vector3(-1,  1, -1).normalized * 0.8f
     };
     
 /* 데미지 콜라이더 작업중이었슴 */ 
@@ -86,7 +86,7 @@ public class MagicSword : Magic
 
             //  set swordPosition
             swordProjectiles[i].StartCoroutine(swordProjectiles[i]
-                .SetSwordPosition(castPlayer, castPlayer.combat.target, projectilePositions[i]));
+                .SetSwordPosition(castPlayer,projectilePositions[i]));
             
         }
 

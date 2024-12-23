@@ -17499,6 +17499,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1535226987222843068, guid: e81929ed19b714ddaa5e45c08a44556f,
         type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 1535226987222843068, guid: e81929ed19b714ddaa5e45c08a44556f,
+        type: 3}
       propertyPath: m_Name
       value: Skeleton Miner
       objectReference: {fileID: 0}
