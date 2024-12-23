@@ -76,17 +76,18 @@ namespace MinD.Runtime.UI
 
     public override void OnInputWithDirection(Vector2 inputDirx)
     {
+        if (itemActionPanel.isActionPanelActive) return;
         if (inputDirx.y != 0)
         {
+            MoveSelection((int)inputDirx.y * inventoryWidth * -1);
             if (inputDirx.y > 0)
-            {
-                ScrollDown();
-            }
-            else
             {
                 ScrollUp();
             }
-            MoveSelection((int)inputDirx.y * inventoryWidth);
+            else
+            {
+                ScrollDown();
+            }
         }
         else
         {
@@ -96,7 +97,33 @@ namespace MinD.Runtime.UI
 
     public override void OnQuitInput()
     {
+        if (itemActionPanel.isActionPanelActive)
+        {
+            itemActionPanel.HidePanel();
+            return;
+        }
+        if (itemActionPanel.isActionPanelActive) return;
         PlayerHUDManager.Instance.CloseMenu(this);
+    }
+
+    public override void OnSelectInput()
+    {
+        if (itemActionPanel.isActionPanelActive)
+        {
+            itemActionPanel.StartCoroutine(itemActionPanel.HandleButtonClickAfterDelay());
+            return;
+        }
+        if (equipmentUI.isInteractingWithEquipmentPanel)
+        {
+            equipmentUI.ClearSelectedSlot();
+            return;
+        }
+        var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
+        var item = selectedSlot.GetCurrentItem();
+        if (item != null && item.itemCount > 0)
+        {
+            itemActionPanel.ShowPanel(item);
+        }
     }
 
     void MaintainFocus()
@@ -149,17 +176,11 @@ namespace MinD.Runtime.UI
 
     void HandleInput()
     {
-        if (equipmentUI.isInteractingWithEquipmentPanel)
-        {
-            return;
-        }
         // if (Input.GetKeyDown(KeyCode.Tab))
         // {
         //     ToggleInventory();
         // }
-
-        if (!isInventoryActive) return;
-
+        
         if (Input.GetKeyDown(KeyCode.Z))
         {
             ChangeCategory(-1);
@@ -170,11 +191,11 @@ namespace MinD.Runtime.UI
         }
         if (!itemActionPanel.IsActive())
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                itemActionPanel.HidePanel();
-                return;
-            }
+            // if (Input.GetKeyDown(KeyCode.Q))
+            // {
+            //     itemActionPanel.HidePanel();
+            //     return;
+            // }
 
             // if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
             // {
@@ -195,15 +216,15 @@ namespace MinD.Runtime.UI
             //     MoveSelection(inventoryWidth);
             // }
 
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
-                var item = selectedSlot.GetCurrentItem();
-                if (item != null && item.itemCount > 0)
-                {
-                    itemActionPanel.ShowPanel(item);
-                }
-            }
+            // if (Input.GetKeyDown(KeyCode.Return))
+            // {
+            //     var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
+            //     var item = selectedSlot.GetCurrentItem();
+            //     if (item != null && item.itemCount > 0)
+            //     {
+            //         itemActionPanel.ShowPanel(item);
+            //     }
+            // }
         }
     }
 

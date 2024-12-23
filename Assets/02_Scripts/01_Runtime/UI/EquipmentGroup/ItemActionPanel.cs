@@ -23,6 +23,8 @@ namespace MinD.Runtime.UI
         public Button[] actionButtons;
         public int selectedButtonIndex = 0;
 
+        public bool isActionPanelActive = false;
+
         private int equippedTalismanCount => playerInventoryHandler.talismanSlots.Count(t => t != null);
 
         void Start()
@@ -46,10 +48,7 @@ namespace MinD.Runtime.UI
 
         void Update()
         {
-            if (panel.activeSelf)
-            {
-                HandleInput();
-            }
+            HandleInput();
         }
 
         private void HandleInput()
@@ -69,16 +68,17 @@ namespace MinD.Runtime.UI
                 ChangeSelection(1);
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                StartCoroutine(HandleButtonClickAfterDelay());
-            }
+            // if (Input.GetKeyDown(KeyCode.E))
+            // {
+            //     Debug.Log(isActionPanelActive);
+            //     StartCoroutine(HandleButtonClickAfterDelay());
+            // }
         }
 
-        private IEnumerator HandleButtonClickAfterDelay()
+        public IEnumerator HandleButtonClickAfterDelay()
         {
             yield return null;
-
+            
             if (selectedButtonIndex >= 0 && selectedButtonIndex < actionButtons.Length)
             {
                 actionButtons[selectedButtonIndex].onClick.Invoke();
@@ -116,12 +116,14 @@ namespace MinD.Runtime.UI
         {
             currentItem = item;
             panel.SetActive(true);
+            isActionPanelActive = true;
             UpdateButtonSelection();
         }
 
         public void HidePanel()
         {
             panel.SetActive(false);
+            isActionPanelActive = false;
         }
 
         private void OnEquipButtonClicked()
