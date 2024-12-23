@@ -146,7 +146,7 @@ public class PlayerCombatHandler : EntityOwnedHandler {
 	private void ActivateDefenseMagic() {
 		
 		usingDefenseMagic = true; // IF THIS FLAG IS ENABLED, DAMAGE WILL CALCULATE SPECIAL
-		PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtilityManager.damageableLayerMask, false);
+		PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtility.damageableLayerMask, false);
 
 		
 		
@@ -164,7 +164,7 @@ public class PlayerCombatHandler : EntityOwnedHandler {
 	public void ReleaseDefenseMagic(bool playAnimation = true, bool parrying = true) {
 
 		usingDefenseMagic = false;
-		PhysicUtility.SetActiveChildrenColliders(transform, true, WorldUtilityManager.damageableLayerMask, false);
+		PhysicUtility.SetActiveChildrenColliders(transform, true, WorldUtility.damageableLayerMask, false);
 
 
 		

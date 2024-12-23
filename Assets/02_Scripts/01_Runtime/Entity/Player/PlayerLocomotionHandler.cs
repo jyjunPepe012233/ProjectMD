@@ -1,10 +1,8 @@
 using System.Collections;
 using MinD.Runtime.DataBase;
-using MinD.Runtime.Managers;
-using MinD.SO.StatusFX.Effects;
+using MinD.Utility;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 using PlayerInputManager = MinD.Runtime.Managers.PlayerInputManager;
 
 namespace MinD.Runtime.Entity {
@@ -154,7 +152,7 @@ public class PlayerLocomotionHandler : EntityOwnedHandler {
 
 	void HandleGroundedCheck() {
 
-		((Player)owner).isGrounded = Physics.CheckSphere(transform.position, groundedCheckRadius, WorldUtilityManager.environmentLayerMask);
+		((Player)owner).isGrounded = Physics.CheckSphere(transform.position, groundedCheckRadius, WorldUtility.environmentLayerMask);
 		owner.animator.SetBool("IsGrounded", ((Player)owner).isGrounded);
 
 	}
@@ -278,7 +276,7 @@ public class PlayerLocomotionHandler : EntityOwnedHandler {
 		// CHECK OBSTACLE BETWEEN CURRENT CORE(player's main target option) POSITION AND NEW(after move) CORE POSITION 
 		// FOR BEING PLAYER CAN'T PASS THROUGH THE WALL
 		Vector3 playerCoreLocalPosition = owner.targetOptions[0].position - transform.position;
-		if (Physics.Linecast(hitInfo.position + playerCoreLocalPosition, owner.targetOptions[0].position, WorldUtilityManager.environmentLayerMask)) {
+		if (Physics.Linecast(hitInfo.position + playerCoreLocalPosition, owner.targetOptions[0].position, WorldUtility.environmentLayerMask)) {
 			return;
 		}
 		

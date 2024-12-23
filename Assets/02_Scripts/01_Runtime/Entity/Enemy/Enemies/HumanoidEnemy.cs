@@ -77,7 +77,7 @@ public abstract class HumanoidEnemy : Enemy {
 		currentState = null;
 		animation.PlayTargetAnimation("Death", 0.2f, true, true);
 		
-		PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtilityManager.damageableLayerMask);
+		PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtility.damageableLayerMask);
 
 		yield return new WaitForSeconds(3);
 		Destroy(gameObject);

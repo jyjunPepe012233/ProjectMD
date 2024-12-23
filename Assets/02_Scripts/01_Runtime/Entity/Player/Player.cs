@@ -134,7 +134,7 @@ public class Player : BaseEntity {
 
     protected override void OnDeath() {
         isDeath = true;
-        PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtilityManager.damageableLayerMask);
+        PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtility.damageableLayerMask);
         
         // CANCEL ACTIONS
         combat.CancelMagicOnGetHit();
