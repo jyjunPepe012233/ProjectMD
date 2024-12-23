@@ -1,6 +1,6 @@
 using System.Collections;
 using MinD.Runtime.Entity;
-using MinD.Runtime.System;
+using MinD.Utility;
 using MinD.Runtime.Utils;
 using UnityEngine;
 using UnityEngine.Serialization;

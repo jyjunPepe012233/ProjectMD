@@ -2,7 +2,7 @@ using System.Linq;
 using MinD.Runtime.Entity;
 using UnityEngine;
 
-namespace MinD.Runtime.System {
+namespace MinD.Utility {
 
 public static class PhysicUtility {
 	

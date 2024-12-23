@@ -1,6 +1,6 @@
 using System.Linq;
 using MinD.Enums;
-using MinD.Runtime.System;
+using MinD.Utility;
 using UnityEngine;
 
 namespace MinD.Runtime.Object.Utils {

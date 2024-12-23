@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using MinD.Runtime.System;
+using MinD.Utility;
 using MinD.SO.StatusFX.Effects;
 using UnityEngine;
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
-using MinD.Runtime.System;
+using MinD.Utility;
 using MinD.SO.Item;
 using UnityEditor;
 using UnityEngine;

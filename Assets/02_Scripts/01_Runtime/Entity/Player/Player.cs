@@ -1,5 +1,5 @@
 using MinD.Runtime.Managers;
-using MinD.Runtime.System;
+using MinD.Utility;
 using MinD.Runtime.UI;
 using MinD.SO.StatusFX.Effects;
 using UnityEngine;

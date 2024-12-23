@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MinD.Runtime.System {
+namespace MinD.Utility {
 
 public class GizmosUtility {
 

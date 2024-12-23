@@ -2,7 +2,7 @@ using System.Collections;
 using MinD.Runtime.Entity;
 using MinD.Runtime.Managers;
 using MinD.Runtime.Object.Utils;
-using MinD.Runtime.System;
+using MinD.Utility;
 using MinD.Runtime.UI;
 using MinD.SO.Object;
 using UnityEngine;
