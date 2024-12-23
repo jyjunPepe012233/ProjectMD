@@ -41,6 +41,7 @@ public class DemonFlameSpirit : MonoBehaviour {
 	public void Shoot(BaseEntity owner, BaseEntity target) {
 		
 		PhysicUtility.IgnoreCollisionUtil(owner, GetComponent<Collider>());
+		explosionDamageCollider.blackList.Add(owner);
 
 		// PREVENT NULL REFERENCE ERROR
 		if (target != null) {
@@ -130,7 +131,13 @@ public class DemonFlameSpirit : MonoBehaviour {
 		// SET LIFETIME
 		float elapsedTime = 0;
 		while (true) {
+			
+			explosionDamageCollider.gameObject.SetActive(true);
 
+			if (elapsedTime > 0.3f) {
+				explosionDamageCollider.gameObject.SetActive(false);
+			}
+			
 			if (elapsedTime > explosionFx.main.duration)
 				break;
 

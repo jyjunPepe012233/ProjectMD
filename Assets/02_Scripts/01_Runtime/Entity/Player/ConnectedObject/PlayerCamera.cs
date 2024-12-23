@@ -7,10 +7,20 @@ using UnityEngine.Serialization;
 namespace MinD.Runtime.Entity {
 
 public class PlayerCamera : MonoBehaviour {
+	
+	private const float lockOnInputPoint = 3.5f; // MINIMUM DELTA MOUSE MOVEMENT 
 
-	[HideInInspector] public Player owner;
-	
-	
+	[HideInInspector] public Player owner; 
+	private Camera _camera;
+	public Camera camera {
+		get {
+			if (_camera == null) {
+				_camera = GetComponent<Camera>();
+			}
+			return _camera;
+		}
+	}
+
 	public float rotationMultiplier = 1.5f;
 	
 
@@ -47,10 +57,10 @@ public class PlayerCamera : MonoBehaviour {
 
 	public void HandleCamera() {
 
+		HandleLockOn();
 		HandleFollowTarget();
 		HandleRotation();
 		HandleCollision();
-		HandleLockOn();
 
 	}
 
@@ -131,14 +141,20 @@ public class PlayerCamera : MonoBehaviour {
 		}
 
 		if (owner.isLockOn) {
-			
-			// IF TARGET IS DESTROYED OR DYING, WHATEVER TARGET IS UNSUITABLE AS TARGET 
-			if (currentTargetOption.GetComponentInParent<BaseEntity>().isDeath 
-			    || !currentTargetOption.gameObject.activeSelf // IF ENTITY OBJECT IS DISABLED OR DESTROYED(missing)
-			    || currentTargetOption == null) {
-				
+
+			// CHECK TARGET IS DESTROYED OR DYING, WHATEVER TARGET IS UNSUITABLE AS TARGET 
+			bool currentTargetIsAvailable = true;
+			try {
+				if (currentTargetOption.GetComponentInParent<BaseEntity>().isDeath
+				    || !currentTargetOption.gameObject.activeSelf) {
+					currentTargetIsAvailable = false;
+				}
+			} catch {
+				currentTargetIsAvailable = false;
+			}
+
+			if (!currentTargetIsAvailable) {
 				SetLockOnTarget();
-				
 				
 			} else if (Vector3.Angle(transform.forward, currentTargetOption.position - transform.position) > lockOnAngle) {
 				// IF TARGET IS OUT OF ALLOWED ANGLE
@@ -151,9 +167,9 @@ public class PlayerCamera : MonoBehaviour {
 					SetLockOnTarget();
 				}
 				
-			} else if (PlayerInputManager.Instance.rotationInput.x < -5) {
+			} else if (PlayerInputManager.Instance.rotationInput.x < -3.5) {
 				MoveLockOnToLeftTarget();
-			} else if (PlayerInputManager.Instance.rotationInput.x > 5) {
+			} else if (PlayerInputManager.Instance.rotationInput.x > 3.5) {
 				MoveLockOnToRightTarget();
 				
 			} else {
@@ -245,6 +261,8 @@ public class PlayerCamera : MonoBehaviour {
 			currentTargetOption = availableTargets[0];
 			owner.combat.target = currentTargetOption.GetComponentInParent<BaseEntity>();
 			owner.isLockOn = true;
+			
+			PlayerHUDManager.Instance.SetLockOnSpotActive(true);
 
 		}
 
@@ -253,6 +271,8 @@ public class PlayerCamera : MonoBehaviour {
 
 		currentTargetOption = null;
 		owner.isLockOn = false;
+		
+		PlayerHUDManager.Instance.SetLockOnSpotActive(false);
 
 	}
 	

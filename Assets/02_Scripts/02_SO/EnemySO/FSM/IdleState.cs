@@ -5,9 +5,9 @@ namespace MinD.SO.EnemySO {
 
 public abstract class IdleState : EnemyState {
 	
-	[SerializeField] protected float detectAngle;
-	[SerializeField] protected float detectRadius;
-	[SerializeField] protected float absoluteDetectRadius;
+	public float detectAngle; 
+	public float detectRadius; 
+	public float absoluteDetectRadius;
 	
 }
 

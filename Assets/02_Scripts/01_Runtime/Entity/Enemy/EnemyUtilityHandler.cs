@@ -6,25 +6,24 @@ using UnityEngine;
 namespace MinD.Runtime.Entity {
 
 public class EnemyUtilityHandler : EntityOwnedHandler {
-	
-	[Space(10)]
-	[SerializeField] private GameObject[] ownedObjects = Array.Empty<GameObject>();
+
+	[Space(10)] [SerializeField] private GameObject[] ownedObjects = Array.Empty<GameObject>();
 	[SerializeField] private GameObject[] prefabs = Array.Empty<GameObject>();
 
-	
-	
-	
+
+
+
 	public GameObject InstantiatePrefab(string targetObject) {
-		
+
 		foreach (GameObject prefab in prefabs) {
 			if (prefab.name == targetObject) {
 				return Instantiate(prefab);
 			}
 		}
-		
+
 		throw new UnityException("!! CAN'T FIND " + owner.name + " OWNED OBJECT THE NAMED " + targetObject);
 	}
-	
+
 	public void EnableObject(string targetObjects) {
 		// MULTIPLE OBJECTS ARE SEPARATE BY SPACE 
 
@@ -69,8 +68,8 @@ public class EnemyUtilityHandler : EntityOwnedHandler {
 			}
 		}
 	}
-	
-	
+
+
 	public void ResetDamageColliderToHitAgain(string colliderName) {
 
 		foreach (GameObject obj in ownedObjects) {
@@ -88,30 +87,6 @@ public class EnemyUtilityHandler : EntityOwnedHandler {
 
 		throw new UnityException("!! CAN'T FIND " + owner.name + " OWNED DAMAGE COLLIDER THE NAMED " + colliderName);
 	}
-
-
-
-	public float CorpseFadeWithParticle() {
-		StartCoroutine(CorpseFadeWithParticleCoroutine());
-		return ((Enemy)owner).attribute.corpseFadeTime;
-	}
-	
-	private IEnumerator CorpseFadeWithParticleCoroutine() {
-		
-		var mat = GetComponentInChildren<Renderer>().material;
-		Color currentColor = mat.color;
-		
-		while (currentColor.a > 0) {
-			
-			currentColor.a -= 1 / ((Enemy)owner).attribute.corpseFadeTime * Time.deltaTime;
-			mat.color = currentColor;
-			
-			yield return null;
-		}
-		
-		
-	}
-	
-	}
+}
 
 }

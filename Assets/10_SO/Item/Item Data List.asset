@@ -17,7 +17,10 @@ MonoBehaviour:
   protectionList:
   - {fileID: 11400000, guid: 79ee1f72431d9433caec6971842f7ac6, type: 2}
   talismanList: []
-  toolList: []
+  toolList:
+  - {fileID: 11400000, guid: 6ab8a0eab9dca461eb7178d8d1b2ba2c, type: 2}
+  - {fileID: 11400000, guid: aa1236ea5ad7048a6a1919ed4c6daf74, type: 2}
+  - {fileID: 11400000, guid: 73aabb41e65a840a188fdace1deb0048, type: 2}
   magicList:
   - {fileID: 11400000, guid: ae03470a4bda843eb9e4abfe84af54c1, type: 2}
   - {fileID: 11400000, guid: 92e3add1df5e84ca382ebb4d6ba66260, type: 2}

@@ -11,6 +11,9 @@ public class PlayerHUD : MonoBehaviour {
     public StatusBarHUD mpBar;
     public StatusBarHUD staminaBar;
 
+    [Header("[ Lock On Spot ]")]
+    public RectTransform lockOnSpot;
+
     [Header("[ Burst Popup ]")]
     public PlayableDirector youDiedPopup;
     public PlayableDirector anchorDiscoveredPopup;

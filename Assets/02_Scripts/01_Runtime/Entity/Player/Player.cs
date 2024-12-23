@@ -133,6 +133,8 @@ public class Player : BaseEntity {
     }
 
     protected override void OnDeath() {
+        isDeath = true;
+        PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtilityManager.damageableLayerMask);
         
         // CANCEL ACTIONS
         combat.CancelMagicOnGetHit();
@@ -140,7 +142,7 @@ public class Player : BaseEntity {
         
         PlayerHUDManager.Instance.PlayBurstPopup(PlayerHUDManager.playerHUD.youDiedPopup, true);
         
-        animation.PlayTargetAction("Die", true, true, false, false);
+        animation.PlayTargetAction("Death", true, true, false, false);
         
     }
     
