@@ -24,9 +24,9 @@ MonoBehaviour:
   itemCount: 0
   categoryId: 2
   negationBoost:
-    physical: 0
-    magic: 0
-    fire: 0
-    frost: 0
-    lightning: 0
-    holy: 0
+    _physical: 0.95
+    _magic: 0.7
+    _fire: 0.86
+    _frost: 0.55
+    _lightning: 0.7
+    _holy: 0.55

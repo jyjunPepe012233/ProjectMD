@@ -12,6 +12,9 @@ public class SkeletonWarriorWaveSlash : MonoBehaviour {
 	[SerializeField] private ParticleSystem pSystem;
 	
 	private Rigidbody rigidbody;
+	private float flightTimer;
+
+	private bool isDestroying;
 	
 	private void OnEnable() {
 		rigidbody = GetComponent<Rigidbody>();
@@ -23,7 +26,15 @@ public class SkeletonWarriorWaveSlash : MonoBehaviour {
 	}
 	
 	private void Update() {
-		rigidbody.velocity = velocity;
+		
+		if (flightTimer > 1f && !isDestroying) {
+			isDestroying = true;
+			StartCoroutine(DestroyCoroutine());
+			
+		} else {
+			flightTimer += Time.deltaTime;
+			rigidbody.velocity = velocity;
+		}
 	}
 
 	private void OnTriggerEnter(Collider other) {
@@ -31,15 +42,18 @@ public class SkeletonWarriorWaveSlash : MonoBehaviour {
 	}
 
 	private IEnumerator DestroyCoroutine() {
-
+		
 		float timer = 0;
+		
+		pSystem.Stop();
+		dCollider.enabled = false;
+		rigidbody.isKinematic = true;
+		
 
 		while (true) {
 			timer += Time.deltaTime;
 			yield return null;
 			
-			pSystem.Stop();
-
 			if (timer > 2) {
 				Destroy(gameObject);
 			}

@@ -25,14 +25,19 @@ public abstract class Enemy : BaseEntity {
 	
 	[HideInInspector] public Vector3 worldPlacedPosition;
 	[HideInInspector] public Quaternion worldPlacedRotation;
-	
-	[HideInInspector] public BaseEntity currentTarget;
+
+	public BaseEntity currentTarget;
 	
 	public override int CurHp {
 		get => curHp;
-		set => curHp = Mathf.Clamp(value, 0, attribute.MaxHp);
+		set {
+			curHp = value;
+			if (curHp <= 0) {
+				OnDeath();
+			}
+			curHp = Mathf.Clamp(curHp, 0, attribute.MaxHp);
+		}
 	}
-	
 	
 	[Header("[ Flags ]")]
 	public bool isPerformingAction;
@@ -93,6 +98,10 @@ public abstract class Enemy : BaseEntity {
 
 	private void LateUpdate() {
 		locomotion.ResetMoveDirectionParameter();
+	}
+
+	protected override void OnDeath() {
+		isDeath = true;
 	}
 	
 	

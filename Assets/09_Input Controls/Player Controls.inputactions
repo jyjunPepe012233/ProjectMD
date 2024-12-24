@@ -404,6 +404,39 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "1D Axis [Gamepad]",
+                    "id": "b0974164-2cec-4df6-8f9b-5ffdcefcdcc0",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap Magic",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "f6418648-76e9-4e66-aa2e-945780b7426b",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap Magic",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "a36e22a7-1d47-4971-b7a7-04adef595ce1",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap Magic",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "e1f41101-e5f7-4461-b2ef-f05575fce512",
                     "path": "<Mouse>/rightButton",
@@ -476,6 +509,39 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseNKey",
+                    "action": "Swap Tool",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis [Gamepad]",
+                    "id": "8a1e3935-439b-4191-b021-e4ecf6fd9d3d",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap Tool",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "182d5ce7-d2d2-4bc0-b228-ca52b6ee0ced",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap Tool",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "3d8228d8-1eae-4d07-a44b-01661f289e89",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Swap Tool",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -571,6 +637,61 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "2D Vector [MouseNKey]",
+                    "id": "c164d2f2-18d0-4cc5-973a-41479822395b",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Menu Dirx Input",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "db2bc950-36a5-43fc-a1aa-3fb200c04d6c",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Menu Dirx Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "8411206b-0813-47e5-808b-3cdb8a8153a0",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Menu Dirx Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "234933a2-6a53-4615-934d-88f51ad484e1",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Menu Dirx Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "2d954aaf-e826-4058-b109-5663324b0cbb",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Menu Dirx Input",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "cdfa01ae-1b59-40b2-a308-566f96f42a8f",
                     "path": "<Keyboard>/q",
@@ -583,11 +704,33 @@
                 },
                 {
                     "name": "",
+                    "id": "e02b8ab1-3f16-4ff1-ae99-08a04cd1e82f",
+                    "path": "<SwitchProControllerHID>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Menu Quit Input",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2a0a5571-c106-4335-86d7-e55299a25631",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseNKey",
+                    "action": "Menu Select Input",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d5fc64a-b449-4b87-bceb-b47dcf95b1f9",
+                    "path": "<SwitchProControllerHID>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Menu Select Input",
                     "isComposite": false,
                     "isPartOfComposite": false

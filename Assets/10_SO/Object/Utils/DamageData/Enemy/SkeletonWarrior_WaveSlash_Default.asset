@@ -15,11 +15,11 @@ MonoBehaviour:
   damage:
     physical: 0
     magic: 0
-    fire: 244
+    fire: 165
     frost: 0
     lightning: 0
     holy: 0
-  totalDamage: 244
+  totalDamage: 165
   poiseBreakDamage: 55
   absorbMp: 13
   isDirectional: 1

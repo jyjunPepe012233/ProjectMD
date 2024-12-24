@@ -31,7 +31,7 @@ public class EnemyCombatHandler : EntityOwnedHandler {
 	
 	
 	public BaseEntity FindTargetBySight(float detectRadius, float absoluteDetectRadius, float detectAngle) {
-
+		
 		Collider[] colliders = Physics.OverlapSphere(transform.position, detectRadius, WorldUtilityManager.damageableLayerMask);
 		if (colliders.Length == 0) {
 			return null;
@@ -56,6 +56,9 @@ public class EnemyCombatHandler : EntityOwnedHandler {
 				continue;
 			}
 			if (potentialTargetEntity.isDeath) {
+				continue;
+			}
+			if (potentialTargetEntity is Enemy) {
 				continue;
 			}
 			
@@ -96,8 +99,7 @@ public class EnemyCombatHandler : EntityOwnedHandler {
 		
 		
 		// ORDER BY PROXIMITY
-		availableTargets.OrderBy(i => Vector3.Distance(i.targetOptions[0].transform.position, owner.targetOptions[0].transform.position));
-		return availableTargets[0];
+		return availableTargets.OrderBy(i => Vector3.Distance(i.targetOptions[0].transform.position, owner.targetOptions[0].transform.position)).ToArray()[0];
 	}
 }
 
