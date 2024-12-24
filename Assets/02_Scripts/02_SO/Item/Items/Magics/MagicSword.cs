@@ -18,18 +18,18 @@ public class MagicSword : Magic
     private List<GameObject> projectiles; // 발사체 저장 리스트
     private List<MagicSwordProjectile> swordProjectiles; // 발사체들 MagicSwordProjectile
 
-    private float useElapsedTiem;
     
     public static readonly Vector3[] projectilePositions = new Vector3[3]
     {
-        new Vector3( 1, -1, 1).normalized * 0.8f,
-        new Vector3( 0,  0, 0),
+        new Vector3( 1, -1,  1).normalized * 0.8f,
+        new Vector3( 0,  0,  0),
         new Vector3(-1,  1, -1).normalized * 0.8f
     };
     
+    /*ToDo :: setPosition 리팩토링, 이팩트 조정, 록온 상태가 아닐 시 추적 안하기(록온 이었으면 따라감)*/
+    
     public override void OnUse()
     {
-        useElapsedTiem = 0;
         
         if (!castPlayer.isPerformingAction){
             castPlayer.animation.PlayTargetAction("MagicSword",true, true, false, false);
@@ -41,7 +41,6 @@ public class MagicSword : Magic
     
     public override void Tick()
     {
-        useElapsedTiem += Time.deltaTime;
         
         if (!castPlayer.isPerformingAction)
         {
