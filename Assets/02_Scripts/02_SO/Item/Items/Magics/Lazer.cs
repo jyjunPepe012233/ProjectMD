@@ -34,9 +34,23 @@ public class Lazer : Magic
         {
             castPlayer.animation.PlayTargetAction("Lazer", true, true, true, false);
             targetOption = castPlayer.camera.currentTargetOption;
-            copyLazer = Instantiate(lazer, castPlayer.transform.position + castPlayer.transform.forward * 1.4f + castPlayer.transform.up * createHigh, castPlayer.transform.rotation);
+            if (castPlayer.isLockOn)
+            {
+                copyLazer = Instantiate(
+                    lazer,
+                    (castPlayer.combat.target.transform.position - castPlayer.transform.position).normalized*1.4f
+                        + castPlayer.transform.up * createHigh
+                        + castPlayer.transform.position
+                        , Quaternion.LookRotation(castPlayer.combat.target.transform.position - castPlayer.transform.position));
+            }
+            else
+            {
+                copyLazer = Instantiate(lazer, castPlayer.transform.position + castPlayer.transform.forward * 1.4f + castPlayer.transform.up * createHigh, castPlayer.transform.rotation);
+            }
+            
+            
             lazerProjectile = copyLazer.GetComponent<LazerProjectile>();
-            lazerProjectile.SetPlayer(castPlayer);
+            lazerProjectile.SetUseMagic(castPlayer);
         }
         
     }
@@ -66,15 +80,14 @@ public class Lazer : Magic
 
     public override void OnSuccessfullyCast()
     {
-        Debug.Log("start Coroutine");
         copyLazer.SetActive(true);
         if (castPlayer.isLockOn)
         {
-            lazerProjectile.ShootCommonMagic(targetOption.position);
+            lazerProjectile.ShootLazer(targetOption.position);
         }
         else
         {
-            lazerProjectile.ShootCommonMagic();
+            lazerProjectile.ShootLazer();
         }
     }
 

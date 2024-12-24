@@ -3,6 +3,7 @@ using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using MinD.Runtime.Entity;
+using MinD.Runtime.System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
@@ -17,40 +18,97 @@ public class LazerProjectile : MonoBehaviour // LazerProjectile
     private const float flightTime = 3;
     
     [SerializeField] private GameObject useFx;
-    [SerializeField] private ParticleSystem damageFx;
+    [SerializeField] private GameObject damageFx;
+    [SerializeField] private GameObject magicCircleFx;
+    [SerializeField] private GameObject ShootProjectileFx;
+    
+    private ParticleSystem usePc;
+    private ParticleSystem damagePc;
+    private ParticleSystem magicCirclePc;
+    private ParticleSystem ShootProjectilePc;
+    
+    [SerializeField] private Rigidbody rigidbody;
+    [SerializeField] private Collider collider;
     
     [Header("[ Status ]")] [SerializeField]
-    private float lazerSpeed = 30;
+    private float lazerSpeed;
 
     private Player castPlayer;
     private Vector3 targetDirx;
 
+    private bool doShoot = false;
+
     private float _flightTime;
 
-    [SerializeField] private Rigidbody rigidbody;
+    /* ToDo :: 콜라이저 무시랑 달리기 중 시전 시 방향 */
 
-    /* ToDo :: 이팩트 수정시키기 */
-    
-    public void SetPlayer(Player player)
+    private void OnEnable()
     {
-        castPlayer = player;
+        magicCirclePc = magicCircleFx.GetComponent<ParticleSystem>();
+        usePc = useFx.GetComponent<ParticleSystem>();
+        damagePc = damageFx.GetComponent<ParticleSystem>();
+        ShootProjectilePc = ShootProjectileFx.GetComponent<ParticleSystem>();
     }
 
-    public void ShootCommonMagic(Vector3 targetDirx)
+    public void SetUseMagic(Player player)
     {
+        castPlayer = player;
+        lazerSpeed = 0;
+        magicCirclePc.Play();
+        
+        PhysicUtility.IgnoreCollisionUtil(castPlayer,collider);
+        
+        StartCoroutine(SetRotation());
+
+    }
+
+    private IEnumerator SetRotation()
+    {
+        while (true)
+        {
+            if (castPlayer.isLockOn)
+            {
+                castPlayer.transform.rotation = UnityEngine.Quaternion.RotateTowards
+                (castPlayer.transform.rotation, UnityEngine.Quaternion.LookRotation(castPlayer.transform.position),
+                    720 * Time.deltaTime);
+            }
+
+            if (doShoot)
+            {
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+        
+        
+    public void SetShootLazer()
+    {
+        lazerSpeed = 30;
+        magicCircleFx.SetActive(false);
+        ShootProjectilePc.Play();
+        useFx.SetActive(true);
+        doShoot = true;
+    }
+
+    public void ShootLazer(Vector3 targetDirx)
+    {
+        SetShootLazer();
         this.targetDirx = targetDirx;
-        Debug.Log(targetDirx);
         transform.rotation = UnityEngine.Quaternion.LookRotation(targetDirx - transform.position);
     }
 
-    public void ShootCommonMagic()
+    public void ShootLazer()
     {
+        SetShootLazer();
         targetDirx = castPlayer.transform.forward;
     }
 
     public void Update()
     {
         rigidbody.velocity = transform.forward * lazerSpeed;
+
 
         _flightTime += Time.deltaTime;
         if (flightTime < _flightTime)
@@ -61,9 +119,8 @@ public class LazerProjectile : MonoBehaviour // LazerProjectile
 
     public void Explode()
     {
-        Debug.Log("ex");
         useFx.SetActive(false);
-        damageFx.Play();
+        damagePc.Play();
 
         rigidbody.isKinematic = true;
         Destroy(gameObject,1);

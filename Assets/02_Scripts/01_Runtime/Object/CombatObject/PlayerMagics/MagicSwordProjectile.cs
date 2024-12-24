@@ -30,7 +30,6 @@ public class MagicSwordProjectile : MonoBehaviour
     {
         
         rigidbody = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
 
         collider = GetComponent<Collider>();
         collider.enabled = false;
