@@ -2,6 +2,7 @@ using System.Linq;
 using MinD.Enums;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
+using MinD.Runtime.UI;
 using MinD.SO.Item;
 using UnityEngine;
 
@@ -390,6 +391,7 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 				// TO SKIP EMPTY MAGIC
 				// REMAINDER OPERATING TO CYCLE THE LIST
 				currentMagicSlot = (currentMagicSlot + 1) % magicSlots.Length;
+				// 
 				if (magicSlots[currentMagicSlot] != null) {
 					break;
 				}
@@ -430,7 +432,7 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 				}
 			}
 			
-		} else if (PlayerInputManager.Instance.swapToolInput == 1) {
+		} else if (PlayerInputManager.Instance.swapToolInput == -1) {
 			while (true) {
 				currentToolSlot = (currentToolSlot - 1) % toolSlots.Length;
 				if (toolSlots[currentToolSlot] != null) {

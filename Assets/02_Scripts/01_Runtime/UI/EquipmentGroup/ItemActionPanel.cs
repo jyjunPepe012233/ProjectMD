@@ -19,6 +19,7 @@ namespace MinD.Runtime.UI
         private Item currentItem;
         private PlayerInventoryHandler playerInventoryHandler;
         private InventoryMenu _inventoryMenu;
+        private QuickSlotUIManager QuickSlotUIManager;
 
         public Button[] actionButtons;
         public int selectedButtonIndex = 0;
@@ -38,6 +39,7 @@ namespace MinD.Runtime.UI
 
             playerInventoryHandler = FindObjectOfType<PlayerInventoryHandler>();
             _inventoryMenu = FindObjectOfType<InventoryMenu>();
+            QuickSlotUIManager = FindObjectOfType<QuickSlotUIManager>();
 
             if (playerInventoryHandler == null)
                 Debug.LogError("PlayerInventoryHandler not found in the scene!");
@@ -134,6 +136,7 @@ namespace MinD.Runtime.UI
             }
             HidePanel();
             _inventoryMenu.UpdateInventoryUI();
+            QuickSlotUIManager.InitializeQuickSlots();
         }
 
         private void EquipItemBasedOnCategory(Equipment equipment)

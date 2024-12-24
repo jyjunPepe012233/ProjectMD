@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b992e96be6994dffab1860b6570ac40b, type: 3}
   m_Name: LghtOfDrgnSlyng
   m_EditorClassIdentifier: 
-  itemId: 3
+  itemId: 5
   itemName: "\uBA78\uB8E1\uC758 \uBE5B"
   itemDescription: "\uC804\uC124\uC801\uC778 \uB9C8\uBC95\uC73C\uB85C, \uACE0\uB300
     \uC6A9\uC758 \uD798\uC744 \uBE4C\uB824 \uAD11\uB300\uD55C \uBE5B\uC758 \uC5D0\uB108\uC9C0\uB97C
@@ -23,7 +23,7 @@ MonoBehaviour:
     \uC774\uB978\uB2E4. \uBA78\uB8E1\uC758 \uBE5B\uC740 \uC804\uC124\uC801\uC778
     \uB9C8\uBC95\uC0AC\uB9CC\uC774 \uC0AC\uC6A9\uD560 \uC218 \uC788\uB294, \uAC00\uC7A5
     \uAC15\uB825\uD55C \uB9C8\uBC95 \uC911 \uD558\uB098\uB85C \uAC04\uC8FC\uB41C\uB2E4."
-  itemImage: {fileID: 21300000, guid: 6695601adcc1d4a0b946a31da31b6c19, type: 3}
+  itemImage: {fileID: 21300000, guid: 822339121107343b287adef890deff0b, type: 3}
   itemRarity: 2
   itemMaxCount: 1
   itemCount: 0
@@ -34,9 +34,9 @@ MonoBehaviour:
   mpCostDuring: 21
   staminaCostDuring: 17
   castPlayer: {fileID: 0}
+  isInputReleased: 0
   damageData: {fileID: 11400000, guid: b7f265946d8e140b8aaa35ce5adf9654, type: 2}
   damageTick: 0.2
   magicObject: {fileID: 5664770137503069860, guid: bc4e1690c90ee4125b98ca1df131282d,
     type: 3}
-  isInputReleased: 0
   isBlasting: 0
