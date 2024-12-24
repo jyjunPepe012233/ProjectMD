@@ -17,13 +17,7 @@ public class WorldEnemyManager : Singleton<WorldEnemyManager> {
 	}
 
 
-	public void ResetAllEnemyOnWorld() {
-		for (int i = 0; i < worldEnemies.Count; i++) {
-
-			worldEnemies[i].Reload();
-
-		}
-	}
+	
 
 }
 

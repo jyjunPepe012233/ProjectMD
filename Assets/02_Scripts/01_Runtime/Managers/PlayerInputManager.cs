@@ -1,3 +1,4 @@
+using MinD.Runtime.Entity;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -95,7 +96,7 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
         if (blinkInput) {
             // WASN'T ELAPSE HOLD TIME
             
-            PlayerManager.currentPlayerCharacter.locomotion.AttemptBlink();
+            Player.player.locomotion.AttemptBlink();
         }
 
     }

@@ -62,9 +62,9 @@ public abstract class Enemy : BaseEntity {
 	
 
 	// SETUP A OBJECT SETTINGS
-	protected override void Awake() {
+	protected override void Setup() {
 
-		base.Awake();
+		base.Setup();
 
 		navAgent = GetComponent<NavMeshAgent>();
 

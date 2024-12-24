@@ -37,6 +37,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
             Destroy(gameObject);
             return;
         }
+
+        instance = this as T;
         
         if (transform != transform.root) {
             DontDestroyOnLoad(transform.root);

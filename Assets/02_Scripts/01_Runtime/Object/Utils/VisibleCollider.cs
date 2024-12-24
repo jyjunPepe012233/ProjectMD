@@ -65,6 +65,7 @@ public class VisibleCollider : MonoBehaviour {
 			
 		foreach (Collider col in cols) {
 			if (col.gameObject.activeInHierarchy &&
+			    col.enabled &&
 			    showLayers == (showLayers | (1 << col.gameObject.layer))) {
 				// IS OBJECT IS ENABLE AND IN ALLOWED LAYERS
 				
@@ -80,6 +81,7 @@ public class VisibleCollider : MonoBehaviour {
 		}
 		
 		if (col.gameObject.activeInHierarchy &&
+		    col.enabled &&
 			showLayers == (showLayers | (1 << col.gameObject.layer))) {
 			
 			GizmosUtility.DrawColliderGizmo(col, color);

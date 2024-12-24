@@ -1,22 +1,61 @@
-using MinD.Runtime.Entity;
-using MinD.Runtime.Object.Interactables;
+using System;
+using System.Collections;
+using MinD.Runtime.UI;
 using MinD.Utility;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace MinD.Runtime.Managers {
 
 public class GameManager : Singleton<GameManager> {
+
+	private const float TIME_FirstGameLoadedFadeOut = 0.5f;
+	private const float TIME_ReloadByGuffinsAnchorFadeIn = 1.5f;
+
+	private WaitForSeconds fadeWait = new(TIME_ReloadByGuffinsAnchorFadeIn);
 	
 //	[SerializeField] private WorldBakeData _worldData;
 //	public WorldBakeData worldData => _worldData;
 	
+	public bool willAwakeFromLatestAnchor; // Player and Other Managers will get this value, and decide loading method
+	
 	
 	
 	private void Awake() {
-		WorldDataManager.Instance.OnSceneChanged();
+		
+		base.Awake();
+		
 		Debug.Log("Scene Changed To '" + SceneManager.GetActiveScene().name + "'. \n Is This World Scene = " + WorldUtility.IsThisWorldScene());
+
+		PlayerHUDManager.Instance.FadeOutFromBlack(TIME_FirstGameLoadedFadeOut);
+		WorldDataManager.Instance.OnSceneChanged();
+		WorldDataManager.Instance.LoadGameData();
+
+		willAwakeFromLatestAnchor = false;
+	}
+
+	public void StartReloadWorldByGuffinsAnchor() {
+		StartCoroutine(ReloadByGuffinsAnchor());
+	}
+	private IEnumerator ReloadByGuffinsAnchor() {
+		
+		PlayerHUDManager.Instance.FadeInToBlack(TIME_ReloadByGuffinsAnchorFadeIn);
+		yield return fadeWait;
+
+		WorldDataManager.Instance.SaveGameData();
+		willAwakeFromLatestAnchor = true;
+		AsyncOperation reloadSceneAsync = WorldDataManager.Instance.LoadWorldScene();
+		
+		// wait for successfully reload scene  
+		while (!reloadSceneAsync.isDone) {
+			yield return null;
+		}
+		
+		GuffinsAnchorMenu menu = PlayerHUDManager.playerHUD.guffinsAnchorMenu;
+		menu.ApplyGuffinsAnchorData(WorldDataManager.Instance.GetGuffinsAnchorInstanceToId(WorldDataManager.Instance.latestUsedAnchorId));
+		
+		PlayerHUDManager.Instance.OpenMenu(menu);
 	}
 
 //	public void BakeWorld() {
