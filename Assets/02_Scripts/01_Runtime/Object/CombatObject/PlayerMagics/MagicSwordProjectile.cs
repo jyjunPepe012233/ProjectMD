@@ -2,17 +2,27 @@ using System.Collections;
 using MinD.Runtime.Entity;
 using MinD.Runtime.System;
 using MinD.Runtime.Utils;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MinD.Runtime.Object.Magics
 {
 public class MagicSwordProjectile : MonoBehaviour
 {
 
+    [FormerlySerializedAs("magicProjectile")]
     [Space(10)] 
-    [SerializeField] private GameObject magicProjectile;
+    [SerializeField] private GameObject magicProjectileFx;
     [SerializeField] private GameObject flightFx;
-    [SerializeField] private ParticleSystem explosionFx;
+    [SerializeField] private GameObject explosionFx;
+    [SerializeField] private GameObject ShootProjectileFx;
+    
+    private ParticleSystem magicProjectilePc;
+    private ParticleSystem flightPc;
+    private ParticleSystem explosionPc;
+    private ParticleSystem ShootProjectilePc;
+    
     [Space(10)]
     [SerializeField] private DamageCollider explosionDamageCollider;
     
@@ -33,9 +43,12 @@ public class MagicSwordProjectile : MonoBehaviour
 
         collider = GetComponent<Collider>();
         collider.enabled = false;
-        
-        // Physics.IgnoreCollision(owner.GetComponent<Collider>() , collider);
-        
+
+        magicProjectilePc = magicProjectileFx.GetComponent<ParticleSystem>();
+        flightPc = flightFx.GetComponent<ParticleSystem>();
+        explosionPc = explosionFx.GetComponent<ParticleSystem>();
+        ShootProjectilePc = ShootProjectileFx.GetComponent<ParticleSystem>();
+
     }
     
     /* ToDo :: 삭제 이펙트 만들기 */
@@ -47,6 +60,7 @@ public class MagicSwordProjectile : MonoBehaviour
         
         PhysicUtility.IgnoreCollisionUtil(castPlayer, collider);
         
+        ShootProjectilePc.Play();
         flightFx.SetActive(true);
             
         GetComponent<Rigidbody>().isKinematic = false;
@@ -165,9 +179,9 @@ public class MagicSwordProjectile : MonoBehaviour
             isExploded = true;
             explosionDamageCollider.gameObject.SetActive(true);
 
-            magicProjectile.SetActive(false);
+            magicProjectileFx.SetActive(false);
             flightFx.SetActive(false);
-            explosionFx.Play();
+            explosionPc.Play();
 
             rigidbody.velocity = Vector3.zero;
             

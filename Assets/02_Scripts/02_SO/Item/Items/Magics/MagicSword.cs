@@ -25,7 +25,7 @@ public class MagicSword : Magic
         new Vector3(-1,  1, -1).normalized * 0.8f
     };
     
-    /*ToDo :: setPosition 리팩토링, 이팩트 조정, 록온 상태가 아닐 시 추적 안하기(록온 이었으면 따라감)*/
+    /*ToDo :: setPosition 리팩토링, 이팩트 조정*/
     
     public override void OnUse()
     {

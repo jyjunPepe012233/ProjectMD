@@ -2272,13 +2272,13 @@ PrefabInstance:
         type: 3}
       propertyPath: magicSlots.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: b740be62c917e42a88681cf15cb1f0e1,
+      objectReference: {fileID: 11400000, guid: 5f96f131cea5842b69587c5f180cca59,
         type: 2}
     - target: {fileID: 2461252931394882415, guid: f9886860743344bb8a23b4f40c3de641,
         type: 3}
       propertyPath: magicSlots.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 5f96f131cea5842b69587c5f180cca59,
+      objectReference: {fileID: 11400000, guid: b740be62c917e42a88681cf15cb1f0e1,
         type: 2}
     - target: {fileID: 3644618915051541659, guid: f9886860743344bb8a23b4f40c3de641,
         type: 3}
