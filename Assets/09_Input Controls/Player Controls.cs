@@ -659,7 +659,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""2D Vector [MouseNKey]"",
+                    ""name"": ""2D Vector [Gamepad]"",
                     ""id"": ""c164d2f2-18d0-4cc5-973a-41479822395b"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
