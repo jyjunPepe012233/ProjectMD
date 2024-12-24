@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1974497390990177100
 Transform:
   m_ObjectHideFlags: 0
@@ -30,7 +30,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0.461}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6710204717515861841}
   m_Father: {fileID: 6285650372652343151}
   m_LocalEulerAnglesHint: {x: -180, y: 0, z: 0}
 --- !u!198 &6908527421237020649
@@ -50,7 +51,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4820,7 +4821,6 @@ Transform:
   m_Children:
   - {fileID: 2573472490864356984}
   - {fileID: 1974497390990177100}
-  - {fileID: 6710204717515861841}
   - {fileID: 1938551500486725393}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4873,7 +4873,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c92c413fd3c2141ddba5ea9b4c5e7d15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flightFx: {fileID: 6908527421237020649}
+  magicProjectile: {fileID: 714948672385036231}
+  flightFx: {fileID: 492823284794878394}
   explosionFx: {fileID: 5863153871189097154}
   explosionDamageCollider: {fileID: 4399684740167370403}
   startPosotion: {x: 0, y: 0, z: 0}
@@ -4953,8 +4954,8 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
-  prewarm: 1
+  looping: 0
+  prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -9623,7 +9624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6710204717515861841
 Transform:
   m_ObjectHideFlags: 0
@@ -9632,12 +9633,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7679442258558172734}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.308}
+  m_LocalRotation: {x: 1, y: -0, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.15299991}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6285650372652343151}
+  m_Father: {fileID: 1974497390990177100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!96 &8526653426394163726
 TrailRenderer:

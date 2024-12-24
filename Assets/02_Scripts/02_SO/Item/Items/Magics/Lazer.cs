@@ -20,7 +20,7 @@ public class Lazer : Magic
      [SerializeField] private GameObject lazer;
      private Transform targetOption;
 
-     [SerializeField] private UnityEngine.Vector3 createHigh = new UnityEngine.Vector3(0,0.5f,0);
+     [SerializeField] private float createHigh = 1.2f;
 
      
     private LazerProjectile lazerProjectile;
@@ -34,7 +34,7 @@ public class Lazer : Magic
         {
             castPlayer.animation.PlayTargetAction("Lazer", true, true, true, false);
             targetOption = castPlayer.camera.currentTargetOption;
-            copyLazer = Instantiate(lazer, castPlayer.transform.position + castPlayer.transform.forward * 1.25f + createHigh , castPlayer.transform.rotation);
+            copyLazer = Instantiate(lazer, castPlayer.transform.position + castPlayer.transform.forward * 1.4f + castPlayer.transform.up * createHigh, castPlayer.transform.rotation);
             lazerProjectile = copyLazer.GetComponent<LazerProjectile>();
             lazerProjectile.SetPlayer(castPlayer);
         }

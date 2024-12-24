@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using MinD.Runtime.Entity;
+using MinD.Runtime.System;
 using MinD.Runtime.Utils;
 using UnityEngine;
 
@@ -8,9 +8,10 @@ namespace MinD.Runtime.Object.Magics
 {
 public class MagicSwordProjectile : MonoBehaviour
 {
-    
-    [Space(10)]
-    [SerializeField] private ParticleSystem flightFx;
+
+    [Space(10)] 
+    [SerializeField] private GameObject magicProjectile;
+    [SerializeField] private GameObject flightFx;
     [SerializeField] private ParticleSystem explosionFx;
     [Space(10)]
     [SerializeField] private DamageCollider explosionDamageCollider;
@@ -18,7 +19,7 @@ public class MagicSwordProjectile : MonoBehaviour
     private Rigidbody rigidbody;
     private Collider collider;
     
-    private Player owner;
+    private Player castPlayer;
     
     [SerializeField] private Vector3 startPosotion;
     [SerializeField] private Vector3 readyPosition;
@@ -33,18 +34,26 @@ public class MagicSwordProjectile : MonoBehaviour
 
         collider = GetComponent<Collider>();
         collider.enabled = false;
+        
+        // Physics.IgnoreCollision(owner.GetComponent<Collider>() , collider);
+        
     }
+    
+    /* ToDo :: 삭제 이펙트 만들기 */
 
     public IEnumerator ShootCoroutine( BaseEntity target )
     {
         float elapsedTime = 0f;
         float speed = 15;
         
-        flightFx.Play();
+        PhysicUtility.IgnoreCollisionUtil(castPlayer, collider);
+        
+        flightFx.SetActive(true);
             
-        rigidbody.isKinematic = false;
+        GetComponent<Rigidbody>().isKinematic = false;
         
         // PhysicUtility.IgnoreCollisionUtil(owner, collider); /* 기능안함 */
+        
         
         /* 콜라이더들 활성화 */
         collider.isTrigger = true;
@@ -101,8 +110,7 @@ public class MagicSwordProjectile : MonoBehaviour
     
     public IEnumerator SetSwordPosition(Player _owner, Vector3 position)
     {
-        
-        owner = _owner;
+        castPlayer = _owner;
         
         float high = 2.1f;
         float lerpSpace = 0.5f;
@@ -113,34 +121,34 @@ public class MagicSwordProjectile : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
 
-            if (owner.isLockOn)  // is LookOn
+            if (castPlayer.isLockOn)  // is LookOn
             {
-                Vector3 lookTarget = owner.transform.position - owner.combat.target.transform.position;
+                Vector3 lookTarget = castPlayer.transform.position - castPlayer.combat.target.transform.position;
 
                 // 카메라 기준
                 transform.position = Vector3.Lerp(transform.position,
                     new Vector3(lookTarget.z * position.y, 0, lookTarget.x * position.x).normalized * 0.8f // 좌,우 방향벡터
                     + new Vector3(0, position.x * position.y, 0) // 아래 방향벡터
-                    + new Vector3(0, high, 0) + owner.transform.position // 상수 (사실아님)
+                    + new Vector3(0, high, 0) + castPlayer.transform.position // 상수 (사실아님)
                     , lerpSpace);
                 
-                transform.rotation = Quaternion.LookRotation( owner.combat.target.transform.position - transform.position);
+                transform.rotation = Quaternion.LookRotation( castPlayer.combat.target.transform.position - transform.position);
                 
             }
             else
             {
                 // 플레이어 기준
                 transform.position = Vector3.Lerp(transform.position,
-                owner.transform.right * position.x * 1.6f // 좌,우 방향벡터
-                + owner.transform.up * position.y * position.z // 아래 방향벡터
-                + new Vector3(0, high, 0) + owner.transform.position // 상수 (사실아님)
+                castPlayer.transform.right * position.x * 1.6f // 좌,우 방향벡터
+                + castPlayer.transform.up * position.y * position.z // 아래 방향벡터
+                + new Vector3(0, high, 0) + castPlayer.transform.position // 상수 (사실아님)
                 , lerpSpace);
-                transform.rotation = owner.transform.rotation;
+                transform.rotation = castPlayer.transform.rotation;
             }
             
             if (elapsedTime >= 1.2f)
             {
-                StartCoroutine(ShootCoroutine(owner.combat.target));
+                StartCoroutine(ShootCoroutine(castPlayer.combat.target));
                 yield break;
             }
             
@@ -158,12 +166,14 @@ public class MagicSwordProjectile : MonoBehaviour
             isExploded = true;
             explosionDamageCollider.gameObject.SetActive(true);
 
-            flightFx.Stop();
+            magicProjectile.SetActive(false);
+            flightFx.SetActive(false);
             explosionFx.Play();
 
             rigidbody.velocity = Vector3.zero;
             
-            Destroy(gameObject, explosionFx.main.duration);
+            // Destroy(gameObject, explosionFx.main.duration);
+            Destroy(gameObject, 3);
 
             yield break;
         }
@@ -171,7 +181,7 @@ public class MagicSwordProjectile : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-    
+        Debug.Log(other.name);
     if (!isExploded)
     {
         StartCoroutine(Explode());

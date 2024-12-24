@@ -17,7 +17,6 @@ public class MagicSword : Magic
     
     private List<GameObject> projectiles; // 발사체 저장 리스트
     private List<MagicSwordProjectile> swordProjectiles; // 발사체들 MagicSwordProjectile
-
     
     public static readonly Vector3[] projectilePositions = new Vector3[3]
     {
