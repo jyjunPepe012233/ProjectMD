@@ -31,12 +31,18 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
         }
     }
 
-    private void Awake() {
+    protected void Awake() {
 
-        if (transform != transform.root)
+        if (instance != null) {
+            Destroy(gameObject);
+            return;
+        }
+        
+        if (transform != transform.root) {
             DontDestroyOnLoad(transform.root);
-        else
+        } else {
             DontDestroyOnLoad(this);
+        }
     }
 }
 
