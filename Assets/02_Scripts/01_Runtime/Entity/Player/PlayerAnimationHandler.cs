@@ -56,6 +56,7 @@ public class PlayerAnimationHandler : BaseEntityAnimationHandler {
 		
 		owner.animator.CrossFadeInFixedTime(stateName, 0.2f);
 
+		
 		owner.animator.applyRootMotion = applyRootMotion;
 
 		((Player)owner).isPerformingAction = isPerformingAnimation;
