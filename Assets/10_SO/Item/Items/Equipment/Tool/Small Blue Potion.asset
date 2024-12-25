@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adee05aa6708420cbfbe2328c7f42181, type: 3}
   m_Name: Small Blue Potion
   m_EditorClassIdentifier: 
-  itemId: 0
+  itemId: 5
   itemName: "\uC18C\uD615 \uD478\uB978 \uD3EC\uC158"
   itemDescription: "\uC18C\uB7C9\uC758 \uB9C8\uB098\uB97C \uCC44\uC6B4\uB2E4."
   itemImage: {fileID: 21300000, guid: 3985de44e5342499ab6432f3e96f2bfb, type: 3}
   itemRarity: 0
   itemMaxCount: 1
   itemCount: 0
-  categoryId: 0
+  categoryId: 1
   isConsumable: 1
   usingCoolTime: 1
   remainingCoolTime: 0

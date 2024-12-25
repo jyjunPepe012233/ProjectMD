@@ -5345,9 +5345,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29eb409d74cc8457fb737eaf392e119c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusFx: {fileID: 0}
   cc: {fileID: 0}
   animator: {fileID: 0}
+  statusFx: {fileID: 0}
   isDeath: 0
   isInvincible: 0
   immunePoiseBreak: 0
@@ -5454,7 +5454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponSlot: {fileID: 0}
-  protectionSlot: {fileID: 11400000, guid: 79ee1f72431d9433caec6971842f7ac6, type: 2}
+  protectionSlot: {fileID: 0}
   allowedTalismanSlotCount: 0
   talismanSlots:
   - {fileID: 0}
@@ -5464,9 +5464,9 @@ MonoBehaviour:
   - {fileID: 0}
   currentToolSlot: 0
   toolSlots:
-  - {fileID: 11400000, guid: 73aabb41e65a840a188fdace1deb0048, type: 2}
-  - {fileID: 11400000, guid: aa1236ea5ad7048a6a1919ed4c6daf74, type: 2}
-  - {fileID: 11400000, guid: 6ab8a0eab9dca461eb7178d8d1b2ba2c, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -5478,6 +5478,8 @@ MonoBehaviour:
   magicSlots:
   - {fileID: 11400000, guid: ae03470a4bda843eb9e4abfe84af54c1, type: 2}
   - {fileID: 11400000, guid: 92e3add1df5e84ca382ebb4d6ba66260, type: 2}
+  - {fileID: 11400000, guid: b740be62c917e42a88681cf15cb1f0e1, type: 2}
+  - {fileID: 11400000, guid: 5f96f131cea5842b69587c5f180cca59, type: 2}
   playerItemList: []
   equipMagic: {fileID: 0}
 --- !u!114 &1846267967897579461

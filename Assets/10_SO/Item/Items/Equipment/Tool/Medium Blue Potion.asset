@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adee05aa6708420cbfbe2328c7f42181, type: 3}
   m_Name: Medium Blue Potion
   m_EditorClassIdentifier: 
-  itemId: 0
+  itemId: 6
   itemName: "\uC911\uD615 \uD478\uB978 \uD3EC\uC158"
   itemDescription: 
   itemImage: {fileID: 21300000, guid: 7426369abbf99444dacacca2c26f107b, type: 3}
   itemRarity: 0
   itemMaxCount: 1
   itemCount: 0
-  categoryId: 0
+  categoryId: 1
   isConsumable: 1
   usingCoolTime: 1
   remainingCoolTime: 0
