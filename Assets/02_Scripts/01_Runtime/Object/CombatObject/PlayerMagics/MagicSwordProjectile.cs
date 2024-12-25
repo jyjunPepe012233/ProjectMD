@@ -76,13 +76,15 @@ public class MagicSwordProjectile : MonoBehaviour
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation,Quaternion.LookRotation((target.transform.position + new Vector3(0,target.transform.lossyScale.y * 1.2f,0) ) - transform.position), 360);
             
-            
             while (true)
             {
                 elapsedTime += Time.deltaTime;
-                
-                transform.rotation = Quaternion.RotateTowards(transform.rotation,
-                                        Quaternion.LookRotation(target.transform.position + new Vector3(0, /*1.5f*/ target.transform.lossyScale.y * 1.2f ,0) - transform.position), 360 * Time.deltaTime * 2);
+
+                if (!target.isDeath)
+                {
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation,
+                        Quaternion.LookRotation(target.transform.position + new Vector3(0, /*1.5f*/ target.transform.lossyScale.y * 1.2f ,0) - transform.position), 360 * Time.deltaTime * 2);
+                }
                 rigidbody.velocity = transform.forward * speed;
                 
                 if (elapsedTime >= 5)
@@ -194,7 +196,6 @@ public class MagicSwordProjectile : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
     if (!isExploded)
     {
         StartCoroutine(Explode());
