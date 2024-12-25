@@ -1,7 +1,10 @@
 using System.Collections;
+using System.Linq;
 using MinD.Enums;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Entity;
+using MinD.Runtime.Managers;
+using MinD.Runtime.UI;
 using MinD.SO.Item;
 using UnityEngine;
 
@@ -46,9 +49,12 @@ public class DroppedItem : Interactable {
 			interactor.interaction.RemoveInteractableInList(this);
 			interactor.interaction.RefreshInteractableList();
 
+			// TODO: Temp. it just for make prototype successfully
 			if (item.categoryId == 3)
 			{
-				interactor.inventory.magicSlots[interactor.inventory.magicSlots.Length] = item as Magic;
+				Debug.Log(interactor.inventory.magicSlots.Length);
+				interactor.inventory.magicSlots[interactor.inventory.magicSlots.Count(i => i != null)] = item as Magic;
+				FindObjectOfType<MagicQuickSlot>().UpdateUI();
 			}
 			canInteraction = false;
 

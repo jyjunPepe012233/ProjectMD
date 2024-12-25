@@ -48,7 +48,7 @@ namespace MinD.Runtime.UI
 
             for (int i = 0; i < slotImages.Length; i++)
             {
-                int offsetIndex = (currentIndex + i - 2 + magicList.Count) % magicList.Count;
+                int offsetIndex = (currentIndex + i - (slotImages.Length / 2) + magicList.Count) % magicList.Count;
 
                 slotImages[i].sprite = magicList[offsetIndex].itemImage;
                 slotImages[i].enabled = true;
