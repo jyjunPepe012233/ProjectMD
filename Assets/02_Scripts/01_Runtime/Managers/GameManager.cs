@@ -19,7 +19,7 @@ namespace MinD.Runtime.Managers {
 public class GameManager : Singleton<GameManager> {
 
 	private const float TIME_FirstGameLoadedFadeOut = 0.5f;
-	private const float TIME_ReloadCauseDeathFadeIn = 2f;
+	private const float TIME_ReloadCauseDeathFadeIn = 1.5f;
 	private const float TIME_ReloadByGuffinsAnchorFadeIn = 1.5f;
 
 	public bool willAwakeWithAnchorIdle;

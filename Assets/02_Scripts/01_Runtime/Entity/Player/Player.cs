@@ -121,7 +121,7 @@ public class Player : BaseEntity {
         Vector3 playerPosition = default;
         Vector3 playerDirx = default;
         
-        if (GameManager.Instance.willAwakeFromLatestAnchor) {
+        if (WorldDataManager.Instance.GetDiscoveredGuffinsAnchorCount() > 0 && GameManager.Instance.willAwakeFromLatestAnchor) {
             GuffinsAnchor latestAnchor = WorldDataManager.Instance.GetGuffinsAnchorInstanceToId(WorldDataManager.Instance.latestUsedAnchorId);
             if (NavMesh.SamplePosition(latestAnchor.transform.TransformPoint(GuffinsAnchor.playerPosition), out NavMeshHit hitInfo, 1.5f, NavMesh.AllAreas)) {
                 playerPosition = hitInfo.position;
@@ -199,7 +199,7 @@ public class Player : BaseEntity {
         
         animation.PlayTargetAction("Death", 0.2f, true, true, false, false, false);
 
-        GameManager.Instance.StartReloadWorldCauseDeath(3);
+        GameManager.Instance.StartReloadWorldCauseDeath(4);
     }
 }
 
