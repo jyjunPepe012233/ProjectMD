@@ -163,6 +163,11 @@ namespace MinD.Runtime.UI
 
         private void EquipTalisman(Equipment equipment)
         {
+            if (playerInventoryHandler.talismanSlots.Contains(equipment))
+            {
+                Debug.LogWarning("이 탈리스만은 이미 장창되어 있습니다.");
+                return;
+            }
             for (int i = 0; i < 5; i++)
             {
                 if (playerInventoryHandler.talismanSlots[i] == null)
@@ -179,6 +184,11 @@ namespace MinD.Runtime.UI
 
         private void EquipTool(Equipment equipment)
         {
+            if (playerInventoryHandler.toolSlots.Contains(equipment))
+            {
+                Debug.LogWarning("이 도구는 이미 장착되어 있습니다.");
+                return;
+            }
             for (int i = 0; i < 10; i++)
             {
                 if (playerInventoryHandler.toolSlots[i] == null)
