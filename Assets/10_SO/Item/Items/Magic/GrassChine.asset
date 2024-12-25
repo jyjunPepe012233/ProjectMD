@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GrassChine
   m_EditorClassIdentifier: 
   itemId: 0
-  itemName: 
+  itemName: "\uCD08\uBC15"
   itemDescription: 
   itemImage: {fileID: 0}
   itemRarity: 0
@@ -26,5 +26,6 @@ MonoBehaviour:
   mpCostDuring: 0
   staminaCostDuring: 0
   castPlayer: {fileID: 0}
-  isInputReleased: 0
-  projectile: {fileID: 0}
+  isInputReleased: 1
+  projectile: {fileID: 325821750627238434, guid: ac7ef05f383cd488a8399427745d332f,
+    type: 3}
