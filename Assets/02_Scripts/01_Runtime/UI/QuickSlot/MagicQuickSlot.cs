@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using MinD.SO.Item;
+using TMPro;
 
 namespace MinD.Runtime.UI
 {
     public class MagicQuickSlot : MonoBehaviour
     {
+        public TextMeshProUGUI itemName;
         public Image[] slotImages;
         private List<Magic> magicList = new();
         private int currentIndex = 0;
@@ -24,7 +26,7 @@ namespace MinD.Runtime.UI
                 magicList = new List<Magic>(magicSlots);
                 magicList.RemoveAll(magic => magic == null); // Null 항목 제거
             }
-
+            
             currentIndex = 0;
             UpdateUI();
         }
@@ -40,7 +42,7 @@ namespace MinD.Runtime.UI
                 }
                 return;
             }
-
+            itemName.text = magicList[currentIndex].itemName;
             for (int i = 0; i < slotImages.Length; i++)
             {
                 int index = (currentIndex + i - 2 + magicList.Count) % magicList.Count; // 순환 인덱스 계산

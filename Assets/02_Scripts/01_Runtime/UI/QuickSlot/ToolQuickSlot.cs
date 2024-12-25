@@ -3,11 +3,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using MinD.SO.Item;
+using TMPro;
+using UnityEngine.Serialization;
 
 namespace MinD.Runtime.UI
 {
     public class ToolQuickSlot : MonoBehaviour
     {
+        public TextMeshProUGUI toolName;
         public Image[] slotImages;
         private List<Tool> toolList = new();
         private int currentIndex = 0;
@@ -39,7 +42,7 @@ namespace MinD.Runtime.UI
                 }
                 return;
             }
-
+            toolName.text = toolList[currentIndex].itemName;
             for (int i = 0; i < slotImages.Length; i++)
             {
                 int index = (currentIndex + i - 2 + toolList.Count) % toolList.Count;
