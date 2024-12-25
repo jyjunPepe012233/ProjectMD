@@ -1,3 +1,4 @@
+using MinD.Interfaces;
 using UnityEngine;
 using UnityEngine.AI;
 using MinD.Runtime.Managers;
@@ -12,7 +13,7 @@ namespace MinD.Runtime.Entity {
 [RequireComponent(typeof(EnemyCombatHandler))]
 [RequireComponent(typeof(EnemyUtilityHandler))]
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class Enemy : BaseEntity {
+public abstract class Enemy : BaseEntity, IWorldIndexable {
 	
 	[HideInInspector] public NavMeshAgent navAgent;
 	
@@ -22,10 +23,21 @@ public abstract class Enemy : BaseEntity {
 	[HideInInspector] public EnemyLocomotionHandler locomotion;
 	[HideInInspector] public EnemyCombatHandler combat;
 	[HideInInspector] public EnemyUtilityHandler utility;
-	
+
+	private bool _hasBeenIndexed;
+	public bool hasBeenIndexed {
+		get => _hasBeenIndexed;
+		set => _hasBeenIndexed = value;
+	}
+
+	private int _worldIndex;
+	public int worldIndex {
+		get => _worldIndex;
+		set => _worldIndex = value;
+	}
 	[HideInInspector] public Vector3 worldPlacedPosition;
 	[HideInInspector] public Quaternion worldPlacedRotation;
-
+	
 	public BaseEntity currentTarget;
 	
 	public override int CurHp {
@@ -77,9 +89,8 @@ public abstract class Enemy : BaseEntity {
 		
 		
 		
-		WorldEnemyManager.Instance.RegisteringEnemyOnWorld(this);
-		
 		// SET START POSITION
+		// TODO: Remake this method with save data
 		NavMesh.SamplePosition(transform.position, out NavMeshHit placedPositionOnSurface, Mathf.Infinity, NavMesh.AllAreas);
 		worldPlacedPosition = placedPositionOnSurface.position;
 		transform.position = worldPlacedPosition;

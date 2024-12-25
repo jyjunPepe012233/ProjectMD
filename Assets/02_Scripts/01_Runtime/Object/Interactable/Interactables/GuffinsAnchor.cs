@@ -1,4 +1,5 @@
 using System.Collections;
+using MinD.Interfaces;
 using MinD.Runtime.Entity;
 using MinD.Runtime.Managers;
 using MinD.Runtime.Object.Utils;
@@ -11,12 +12,22 @@ using UnityEngine.SceneManagement;
 
 namespace MinD.Runtime.Object.Interactables {
 
-public class GuffinsAnchor : Interactable {
+public class GuffinsAnchor : Interactable, IWorldIndexable {
 	
 	public static readonly Vector3 playerPosition = new Vector3(0, 0f, 1.2f); // GLOBAL SETTING
 	private const float TIME_LightFading = 1.5f;
-	
-	
+
+	[SerializeField] private bool _hasBeenIndexed;
+	public bool hasBeenIndexed {
+		get => _hasBeenIndexed;
+		set => _hasBeenIndexed = value;
+	}
+
+	[SerializeField] private int _worldIndex;
+	public int worldIndex {
+		get => _worldIndex;
+		set => _worldIndex = value;
+	}
 
 	[Header("[ Anchor Setting ]")]
 	public GuffinsAnchorInformation anchorInfo;

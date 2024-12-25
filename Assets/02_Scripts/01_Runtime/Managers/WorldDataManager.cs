@@ -50,9 +50,13 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 
 	private void FindGuffinsAnchorOnWorld() {
 		GuffinsAnchor[] _searchedAnchors = FindObjectsOfType<GuffinsAnchor>();
+		// Find anchors on world by key(anchor information id)
+
 		for (int i = 0; i < _searchedAnchors.Length; i++) {
-			// TODO: Temp. SHOULD BE BASED ON WORLD BAKE DATA. COULDN'T AUTOMATICALLY INDEXING
-			_worldAnchors[i] = _searchedAnchors[i];
+			if (!_searchedAnchors[i].hasBeenIndexed) {
+				throw new UnityException("Hasn't been indexed Guffin's Anchor is exist!!");
+			}
+			_worldAnchors[_searchedAnchors[i].worldIndex] = _searchedAnchors[i];
 		}
 	}
 

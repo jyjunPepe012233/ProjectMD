@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 namespace MinD.Utility {
 
 public static class WorldUtility {
-
+	
 	public const string SCENENAME_dungeon = "PrototypeDungeon";
 	public static bool IsThisWorldScene() {
 		return SceneManager.GetActiveScene().name == SCENENAME_dungeon;

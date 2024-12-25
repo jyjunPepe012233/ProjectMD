@@ -1,12 +1,11 @@
 using MinD.Runtime.Managers;
 using MinD.Runtime.Utils;
-using MinD.SO.Object;
 using UnityEditor;
 using UnityEngine;
 
 namespace MinD.Editor.Inspector {
 
-[CustomEditor(typeof(DamageCollider))]
+[CustomEditor(typeof(GameManager))]
 public class GameManagerEditor : UnityEditor.Editor {
 
 	private GameManager component;
@@ -22,11 +21,13 @@ public class GameManagerEditor : UnityEditor.Editor {
 	public override void OnInspectorGUI() {
 		
 		base.OnInspectorGUI();
-
+		
 		if (GUILayout.Button("Bake World")) {
-//			component.BakeWorld();
+			component.BakeWorld();
 		}
-
+		if (GUILayout.Button("Clear Bake Data")) {
+			component.ClearBakeData();
+		}
 	}
 
 

@@ -1,10 +1,18 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using MinD.Interfaces;
+using MinD.Runtime.Entity;
+using MinD.Runtime.Object.Interactables;
 using MinD.Runtime.UI;
+using MinD.SO.Game;
 using MinD.Utility;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using UnityEngine.Windows;
 
 namespace MinD.Runtime.Managers {
 
@@ -15,14 +23,14 @@ public class GameManager : Singleton<GameManager> {
 
 	private WaitForSeconds fadeWait = new(TIME_ReloadByGuffinsAnchorFadeIn);
 	
-//	[SerializeField] private WorldBakeData _worldData;
-//	public WorldBakeData worldData => _worldData;
+	
 	
 	public bool willAwakeFromLatestAnchor; // Player and Other Managers will get this value, and decide loading method
 	
 	
 	
 	private void Awake() {
+
 		
 		base.Awake();
 		
@@ -57,26 +65,46 @@ public class GameManager : Singleton<GameManager> {
 		
 		PlayerHUDManager.Instance.OpenMenu(menu);
 	}
+	
+	public void BakeWorld() {
 
-//	public void BakeWorld() {
-//		
-//		WorldBakeData newWorldData = ScriptableObject.CreateInstance<WorldBakeData>();
-//		AssetDatabase.CreateAsset(newWorldData, SceneManager.GetActiveScene().path + SceneManager.GetActiveScene().name);
-//	
-//		// INDEXING ENEMIES ON WORLD
-//		Enemy[] worldEnemies = FindObjectsOfType<Enemy>();
-//		for (int i = 0; i < worldEnemies.Length; i++) {
-//			_worldData.AddEnemyWorldData(i, worldEnemies[i].transform.position, worldEnemies[i].transform.eulerAngles);
-//		}
-//
-//		// INDEXING GUFFIN'S ANCHOR ON WORLD (MATCHING ANCHOR-ID WITH INSTANCE-ID)
-//		GuffinsAnchor[] worldAnchors = FindObjectsOfType<GuffinsAnchor>();
-//		for (int i = 0; i < worldAnchors.Length; i++) {
-//			worldAnchors[i].anchorId = i; // SET ID (INDEX)
-//			_worldData.AddGuffinsAnchorWorldData(i, worldAnchors[i].GetInstanceID()); // TO MATCH ID AND INSTANCE ID
-//		}
-//
-//	}
+		void IndexingObjects<TObject>() where TObject : MonoBehaviour, IWorldIndexable { 
+			TObject[] worldIndexables = FindObjectsOfType<TObject>();
+			
+			int index = 0;
+			while (worldIndexables.Any(o => !o.hasBeenIndexed) && index < 100) {
+				
+				// Aren't there exists an object with a worldIndex matching 'index'?
+				if (!worldIndexables.Any(o => o.hasBeenIndexed && o.worldIndex == index)) {
+					
+					TObject newIndexing = worldIndexables.First(o => !o.hasBeenIndexed);
+					newIndexing.hasBeenIndexed = true;
+					newIndexing.worldIndex = index;
+					EditorUtility.SetDirty(newIndexing);
+				}
+				
+				index += 1;
+			}
+		}
+
+		IndexingObjects<Enemy>();
+		IndexingObjects<GuffinsAnchor>();
+	}
+
+	public void ClearBakeData() {
+
+		void ClearObjectsIndex<TObject>() where TObject : MonoBehaviour, IWorldIndexable {
+			TObject[] worldIndexables = FindObjectsOfType<TObject>();
+			for (int i = 0; i < worldIndexables.Length; i++) {
+				worldIndexables[i].hasBeenIndexed = false;
+				worldIndexables[i].worldIndex = -1;
+				EditorUtility.SetDirty(worldIndexables[i]);
+			}
+		}
+
+		ClearObjectsIndex<Enemy>();
+		ClearObjectsIndex<GuffinsAnchor>();
+	}
 
 }
 
