@@ -1,8 +1,13 @@
+using System.Runtime.CompilerServices;
 using MinD.Runtime.Managers;
-using MinD.Runtime.System;
+using MinD.Runtime.Object.Interactables;
+using MinD.Utility;
 using MinD.Runtime.UI;
 using MinD.SO.StatusFX.Effects;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace MinD.Runtime.Entity {
 
@@ -14,6 +19,16 @@ namespace MinD.Runtime.Entity {
 [RequireComponent(typeof(PlayerInteractionHandler))]
 [RequireComponent(typeof(PlayerCombatHandler))]
 public class Player : BaseEntity {
+    
+    public static Player player {
+        get {
+            if (_player == null) {
+                _player = FindObjectOfType<Player>();
+            }
+            return _player;
+        }
+    }
+    private static Player _player;
     
     [HideInInspector] public PlayerCamera camera;
     [HideInInspector] public PlayerDefenseMagic defenseMagic;
@@ -67,10 +82,9 @@ public class Player : BaseEntity {
     
 
 
-    protected override void Awake() {
+    protected override void Setup() {
 
-        base.Awake();
-        
+        base.Setup();
         
         animation = GetComponent<PlayerAnimationHandler>();
         attribute = GetComponent<PlayerAttributeHandler>();
@@ -84,18 +98,58 @@ public class Player : BaseEntity {
         camera.owner = this;
         defenseMagic = FindObjectOfType<PlayerDefenseMagic>();
         defenseMagic.owner = this;
-
-    }
-    void Start() {
-        
         PhysicUtility.IgnoreCollisionUtil(this, defenseMagic.defenseCollider);
-        
-        
-        inventory.LoadItemData();
-        
-        attribute.SetBaseAttributesAsPerStats();
-        PlayerHUDManager.Instance.RefreshAllStatusBar();
     }
+    
+    
+    
+    public void LoadData() { // TODO: Need getting save data instance to parameter(Currently, method only work as refreshing method)
+
+        if (!hasBeenSetup) {
+            Setup();
+        }
+        
+        // TODO: Load(Apply to save data) Attribute Data(MaxHp, DamageNegation.. etc.)
+        attribute.SetBaseAttributesAsPerStats();
+        attribute.CalculateAttributesByEquipment();
+        PlayerHUDManager.Instance.RefreshAllStatusBar();
+
+        inventory.LoadItemData();
+        // TODO: Load equipment data
+
+        
+        // TODO: Load camera direction
+        #region LOAD_CHARACTER_TRANSFORM_DATA
+        Vector3 playerPosition = default;
+        Vector3 playerDirx = default;
+        
+        if (GameManager.Instance.willAwakeFromLatestAnchor) {
+            GuffinsAnchor latestAnchor = WorldDataManager.Instance.GetGuffinsAnchorInstanceToId(WorldDataManager.Instance.latestUsedAnchorId);
+            if (NavMesh.SamplePosition(latestAnchor.transform.TransformPoint(GuffinsAnchor.playerPosition), out NavMeshHit hitInfo, 1.5f, NavMesh.AllAreas)) {
+                playerPosition = hitInfo.position;
+                playerDirx = latestAnchor.transform.position - playerPosition;
+                playerDirx.y = 0; 
+            }
+        } else {
+            // TODO: Temp.  
+            playerPosition = transform.position;
+            playerDirx = transform.forward;
+        }
+        
+        // Disable character controller to setting position by transform operation 
+        cc.enabled = false;
+        transform.position = playerPosition;
+        cc.enabled = true;
+        
+        transform.forward = playerDirx;
+        #endregion
+        
+        // IF AWAKE FROM ANCHOR, 
+        if (GameManager.Instance.willAwakeFromLatestAnchor) {
+            animation.PlayTargetAction("Anchor_Idle", 0, true, true, false, false);
+        }
+    }
+    
     
     protected override void Update() {
         
@@ -134,7 +188,6 @@ public class Player : BaseEntity {
 
     protected override void OnDeath() {
         isDeath = true;
-        PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtilityManager.damageableLayerMask);
         
         // CANCEL ACTIONS
         combat.CancelMagicOnGetHit();
@@ -142,7 +195,7 @@ public class Player : BaseEntity {
         
         PlayerHUDManager.Instance.PlayBurstPopup(PlayerHUDManager.playerHUD.youDiedPopup, true);
         
-        animation.PlayTargetAction("Death", true, true, false, false);
+        animation.PlayTargetAction("Death", 0.2f, true, true, false, false, false);
         
     }
     

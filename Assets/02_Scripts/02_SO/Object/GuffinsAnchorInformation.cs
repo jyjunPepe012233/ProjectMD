@@ -5,7 +5,6 @@ namespace MinD.SO.Object {
 [CreateAssetMenu(menuName = "MinD/Object/Guffins Anchor Info")]
 public class GuffinsAnchorInformation : ScriptableObject {
 
-	public int anchorId;
 	public string anchorName;
 
 	[Space(10)]

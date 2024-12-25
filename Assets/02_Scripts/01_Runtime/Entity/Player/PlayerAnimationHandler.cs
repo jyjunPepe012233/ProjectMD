@@ -1,3 +1,4 @@
+using MinD.Utility;
 using UnityEngine;
 using NotImplementedException = System.NotImplementedException;
 
@@ -68,7 +69,8 @@ public class PlayerAnimationHandler : BaseEntityAnimationHandler {
 		bool isPerformingAnimation,
 		bool applyRootMotion = false,
 		bool canRotate = true,
-		bool canMove = true) {
+		bool canMove = true,
+		bool colliderEnable = true) {
 		
 		owner.animator.CrossFadeInFixedTime(stateName, transitionDuration, 0);
 
@@ -77,7 +79,9 @@ public class PlayerAnimationHandler : BaseEntityAnimationHandler {
 		((Player)owner).isPerformingAction = isPerformingAnimation;
 		((Player)owner).canRotate = canRotate;
 		((Player)owner).canMove = canMove;
-		// THOSE FLAGS RESET WHEN STATE IS BACK TO 'DEFAULT MOVEMENT'
+		
+		PhysicUtility.SetActiveChildrenColliders(owner.transform, colliderEnable, LayerMask.GetMask("Damageable Entity"));
+		// THOSE FLAGS RESET WHEN STATE IS BACK TO 'DEFAULT MOVEMENT' BY ResetPlayerFlags the StateBehaviour
 
 	}
 	

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
+using MinD.Utility;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace MinD.Runtime.Entity {
 
@@ -187,7 +186,7 @@ public class PlayerCamera : MonoBehaviour {
 		
 
 		// GET ENTITY COLLIDERS IN AVAILABLE RADIUS
-		Collider[] colliders = Physics.OverlapSphere(transform.position, lockOnMaxRadius, WorldUtilityManager.damageableLayerMask);
+		Collider[] colliders = Physics.OverlapSphere(transform.position, lockOnMaxRadius, WorldUtility.damageableLayerMask);
 
 		if (colliders.Length == 0) {
 			return;
@@ -233,7 +232,7 @@ public class PlayerCamera : MonoBehaviour {
 					continue;
 
 				// CHECK OBSTACLE BETWEEN CAMERA AND TARGET
-				if (Physics.Linecast(owner.targetOptions[0].position, options[i].position, WorldUtilityManager.environmentLayerMask))
+				if (Physics.Linecast(owner.targetOptions[0].position, options[i].position, WorldUtility.environmentLayerMask))
 					continue;
 
 				availableTargets.Add(options[i]);

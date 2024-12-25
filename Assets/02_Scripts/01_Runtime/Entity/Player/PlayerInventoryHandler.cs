@@ -54,16 +54,14 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 		}
 	}
 
-	public void LoadItemData() {
+	public void LoadItemData() { // TODO: Need getting item data by parameter
 
 		// SET DATA LIST LENGTH
 		playerItemList = new Item[ItemDataBase.Instance.GetAllItemsCount()];
 
-		// TODO: LOAD THE ITEM FROM SAVE DAT
+		// TODO: Insert loaded item data that from loaded item data to item array
+		// TODO: Load quick slot data
 	}
-	// load quickslot data
-	// load slot and set selected Magic
-
 
 
 	private Item CreateItem(int itemId) {

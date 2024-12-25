@@ -1,9 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using MinD.Runtime.Managers;
 using MinD.SO.EnemySO;
-using UnityEditor.Animations;
+using MinD.Utility;
 
 
 namespace MinD.Runtime.Entity {
@@ -32,7 +31,7 @@ public class EnemyCombatHandler : EntityOwnedHandler {
 	
 	public BaseEntity FindTargetBySight(float detectRadius, float absoluteDetectRadius, float detectAngle) {
 		
-		Collider[] colliders = Physics.OverlapSphere(transform.position, detectRadius, WorldUtilityManager.damageableLayerMask);
+		Collider[] colliders = Physics.OverlapSphere(transform.position, detectRadius, WorldUtility.damageableLayerMask);
 		if (colliders.Length == 0) {
 			return null;
 		}
@@ -74,7 +73,7 @@ public class EnemyCombatHandler : EntityOwnedHandler {
 		for (int i = 0; i < potentialTargets.Count; i++) {
 			
 			// CHECK OBSTACLE BETWEEN POTENTIAL TARGET
-			if (Physics.Linecast(potentialTargets[i].targetOptions[0].transform.position, owner.targetOptions[0].transform.position, WorldUtilityManager.environmentLayerMask)) {
+			if (Physics.Linecast(potentialTargets[i].targetOptions[0].transform.position, owner.targetOptions[0].transform.position, WorldUtility.environmentLayerMask)) {
 				continue;
 			}
 

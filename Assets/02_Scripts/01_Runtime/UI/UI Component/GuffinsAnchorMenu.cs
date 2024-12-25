@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using MinD.Runtime.Entity;
 using MinD.Runtime.Managers;
 using MinD.Runtime.Object.Interactables;
-using MinD.SO.Object;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace MinD.Runtime.UI {
 
@@ -136,19 +133,18 @@ public class GuffinsAnchorMenu : PlayerMenu {
 		switch (instantiatedOptions[currentFocusOption].optionType) {
 			
 			case OptionType.LevelUp:
-				// Open Level up menu;
+				// TODO: Open Level up menu;
 				break;
 			
 			case OptionType.Memorize:
-				// Open Memorize menu;
+				// TODO: Open Memorize menu;
 				break;
 			
 			case OptionType.ReadTheStory:
-				// Open Story menu
+				// TODO: Open Story menu
 				break;
 			
 			case OptionType.Leave:
-				// Open Leave menu
 				Leave();
 				break;
 			
@@ -162,11 +158,8 @@ public class GuffinsAnchorMenu : PlayerMenu {
 
 
 	private void Leave() {
-		
 		PlayerHUDManager.Instance.CloseMenu(this);
-		
-		PlayerManager.currentPlayerCharacter.animation.PlayTargetAction("Anchor_End", 0.05f, true, true, false, false);
-		
+		Player.player.animation.PlayTargetAction("Anchor_End", 0.05f, true, true, false, false);
 	}
 }
 

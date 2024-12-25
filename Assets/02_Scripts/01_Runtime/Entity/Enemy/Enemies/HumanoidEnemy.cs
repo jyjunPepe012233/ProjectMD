@@ -1,6 +1,6 @@
 using System.Collections;
 using MinD.Runtime.Managers;
-using MinD.Runtime.System;
+using MinD.Utility;
 using MinD.SO.StatusFX.Effects;
 using UnityEngine;
 
@@ -77,7 +77,7 @@ public abstract class HumanoidEnemy : Enemy {
 		currentState = null;
 		animation.PlayTargetAnimation("Death", 0.2f, true, true);
 		
-		PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtilityManager.damageableLayerMask);
+		PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtility.damageableLayerMask);
 
 		yield return new WaitForSeconds(3);
 		Destroy(gameObject);

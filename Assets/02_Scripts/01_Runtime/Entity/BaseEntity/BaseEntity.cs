@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using MinD.Runtime.System;
+using MinD.Utility;
 using MinD.SO.StatusFX.Effects;
 using UnityEngine;
 
@@ -11,17 +11,15 @@ namespace MinD.Runtime.Entity {
 [RequireComponent(typeof(Animator))]
 
 public abstract class BaseEntity : MonoBehaviour {
-	
-	[HideInInspector] public EntityStatusFxHandler statusFx;
 
 	[HideInInspector] public CharacterController cc;
 	[HideInInspector] public Animator animator;
-	
-	
-	
-	[HideInInspector] public bool isDeath;
 
-	[Space(5)]
+	[HideInInspector] public EntityStatusFxHandler statusFx;
+	protected bool hasBeenSetup;
+	
+	
+	public bool isDeath;
 	public bool isInvincible;
 	public bool immunePoiseBreak;
 	public List<Transform> targetOptions;
@@ -32,18 +30,20 @@ public abstract class BaseEntity : MonoBehaviour {
 	
 	public Action getHitAction = new Action(() => {});
 	public Action dieAction = new Action(() => {});
-	
-	
 
-	protected virtual void Awake() {
+
+	private void Awake() {
+		Setup();
+	}
+
+	protected virtual void Setup() {
 
 		PhysicUtility.SetUpIgnoreBodyCollision(this);
 		
-		
-		statusFx = GetComponent<EntityStatusFxHandler>();
-
 		cc = GetComponent<CharacterController>();
 		animator = GetComponent<Animator>();
+		statusFx = GetComponent<EntityStatusFxHandler>();
+
 
 	}
 	protected virtual void Update() {

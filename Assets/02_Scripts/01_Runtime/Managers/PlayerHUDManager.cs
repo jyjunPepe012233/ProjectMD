@@ -17,16 +17,13 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 		get {
 			if (playerHUD_ == null) {
 				playerHUD_ = FindObjectOfType<PlayerHUD>();
-			} else if (!playerHUD_.gameObject.activeSelf) {
-				playerHUD_ = FindObjectOfType<PlayerHUD>();
 			}
-
 			return playerHUD_;
 		}
 	}
 	private static PlayerHUD playerHUD_;
-	
-	public Player player;
+
+	private Player player => Player.player;
 
 	public bool isLockOnSpotEnable;
 	public bool isPlayingBurstPopup;
@@ -39,9 +36,6 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
 
 	public void Update() {
-
-		if (player == null)
-			return;
 
 		HandleStatusBar();
 		HandleLockOnSpot();

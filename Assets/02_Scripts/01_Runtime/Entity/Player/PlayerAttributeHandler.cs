@@ -60,7 +60,7 @@ public class PlayerAttributeHandler : BaseEntityAttributeHandler {
 
     public void CalculateAttributesByEquipment() {
         
-        
+        // TODO: Need Implement this method to calculating player attributes by current equipment
     }
 
 

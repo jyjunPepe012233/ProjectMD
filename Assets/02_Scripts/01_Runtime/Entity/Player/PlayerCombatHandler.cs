@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
-using MinD.Runtime.System;
+using MinD.Utility;
 using MinD.SO.Item;
 using UnityEditor;
 using UnityEngine;
@@ -146,7 +146,7 @@ public class PlayerCombatHandler : EntityOwnedHandler {
 	private void ActivateDefenseMagic() {
 		
 		usingDefenseMagic = true; // IF THIS FLAG IS ENABLED, DAMAGE WILL CALCULATE SPECIAL
-		PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtilityManager.damageableLayerMask, false);
+		PhysicUtility.SetActiveChildrenColliders(transform, false, WorldUtility.damageableLayerMask, false);
 
 		
 		
@@ -164,7 +164,7 @@ public class PlayerCombatHandler : EntityOwnedHandler {
 	public void ReleaseDefenseMagic(bool playAnimation = true, bool parrying = true) {
 
 		usingDefenseMagic = false;
-		PhysicUtility.SetActiveChildrenColliders(transform, true, WorldUtilityManager.damageableLayerMask, false);
+		PhysicUtility.SetActiveChildrenColliders(transform, true, WorldUtility.damageableLayerMask, false);
 
 
 		
