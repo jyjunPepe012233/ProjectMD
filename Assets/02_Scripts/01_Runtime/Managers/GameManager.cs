@@ -21,9 +21,8 @@ public class GameManager : Singleton<GameManager> {
 	private const float TIME_FirstGameLoadedFadeOut = 0.5f;
 	private const float TIME_ReloadCauseDeathFadeIn = 2f;
 	private const float TIME_ReloadByGuffinsAnchorFadeIn = 1.5f;
-	
-	
-	
+
+	public bool willAwakeWithAnchorIdle;
 	public bool willAwakeFromLatestAnchor; // Player and Other Managers will get this value, and decide loading method
 	
 	
@@ -41,6 +40,7 @@ public class GameManager : Singleton<GameManager> {
 		PlayerHUDManager.Instance.FadeOutFromBlack(TIME_FirstGameLoadedFadeOut);
 		WorldDataManager.Instance.LoadGameData();
 
+		willAwakeWithAnchorIdle = false;
 		willAwakeFromLatestAnchor = false;
 	}
 
@@ -53,6 +53,7 @@ public class GameManager : Singleton<GameManager> {
 		yield return new WaitForSeconds(TIME_ReloadCauseDeathFadeIn);
 
 		WorldDataManager.Instance.SaveGameData();
+		willAwakeWithAnchorIdle = true;
 		willAwakeFromLatestAnchor = true;
 		AsyncOperation reloadSceneAsync = WorldDataManager.Instance.LoadWorldScene();
 		
@@ -64,8 +65,7 @@ public class GameManager : Singleton<GameManager> {
 		GuffinsAnchorMenu menu = PlayerHUDManager.playerHUD.guffinsAnchorMenu;
 		menu.ApplyGuffinsAnchorData(WorldDataManager.Instance.GetGuffinsAnchorInstanceToId(WorldDataManager.Instance.latestUsedAnchorId));
 		PlayerHUDManager.Instance.OpenMenu(menu);
-
-		Player.player.isUsingAnchor = true;
+		
 		Debug.Log(Player.player.GetInstanceID());
 	}
 	

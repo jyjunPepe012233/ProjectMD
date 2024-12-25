@@ -75,7 +75,6 @@ public class Player : BaseEntity {
     public bool isGrounded;
     public bool isMoving;
     public bool isLockOn;
-    public bool isUsingAnchor;
     public bool canRotate;
     public bool canMove;
     
@@ -144,7 +143,7 @@ public class Player : BaseEntity {
         #endregion
         
         
-        if (isUsingAnchor) {
+        if (GameManager.Instance.willAwakeWithAnchorIdle) {
             animation.PlayTargetAction("Anchor_Idle", 0, true, true, false, false);
             
         } else if (GameManager.Instance.willAwakeFromLatestAnchor) {
