@@ -30,4 +30,5 @@ MonoBehaviour:
   usingCoolTime: 1
   remainingCoolTime: 0
   hpFillAmount: 725
-  healVfxName: 
+  healVfxPrefab: {fileID: 5184521679103169182, guid: 065b2c7683d3f43f99a7fcda1318bc0b,
+    type: 3}

@@ -115,6 +115,10 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		}
 		return null;
 	}
+
+	public int GetDiscoveredGuffinsAnchorCount() {
+		return _worldAnchors.Count(a => a.Value.isDiscovered);
+	}
 }
 
 }

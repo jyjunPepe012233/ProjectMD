@@ -13962,6 +13962,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canInteraction: 1
   interactionText: "\uAC70\uD540\uC758 \uB2FB\uC744 \uC0AC\uC6A9\uD55C\uB2E4"
+  _hasBeenIndexed: 0
+  _worldIndex: 0
   anchorInfo: {fileID: 0}
   particleDiscovered: {fileID: 6905082978251794029}
   particleNotDiscovered: {fileID: 6474383884033482347}
@@ -13986,8 +13988,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 1, z: 1.5}
+  m_Radius: 0.7
+  m_Center: {x: 0, y: 1, z: 1}
 --- !u!1 &8080690481186041409
 GameObject:
   m_ObjectHideFlags: 0

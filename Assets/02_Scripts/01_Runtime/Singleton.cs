@@ -33,7 +33,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
 
     protected void Awake() {
 
-        if (instance != null) {
+        if (Instance != this) {
             Destroy(gameObject);
             return;
         }
