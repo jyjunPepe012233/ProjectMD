@@ -19,7 +19,7 @@ MonoBehaviour:
   itemRarity: 0
   itemMaxCount: 1
   itemCount: 0
-  categoryId: 0
+  categoryId: 3
   memoryCost: 1
   mpCost: 35
   staminaCost: 80
