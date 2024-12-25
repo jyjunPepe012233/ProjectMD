@@ -1214,6 +1214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9aa0737d2f4485088b14be2a11acbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemName: {fileID: 7767448668950513671}
   slotImages:
   - {fileID: 6878386102881438942}
   - {fileID: 8154324148013266632}
@@ -1461,6 +1462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec776a3dfe5ca424dab77039b092aa26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toolName: {fileID: 7928255797939731164}
   slotImages:
   - {fileID: 7429925618670739245}
   - {fileID: 1649795947589051306}

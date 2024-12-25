@@ -434,7 +434,7 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 			
 		} else if (PlayerInputManager.Instance.swapToolInput == -1) {
 			while (true) {
-				currentToolSlot = (currentToolSlot - 1) % toolSlots.Length;
+				currentToolSlot = (currentToolSlot - 1 + toolSlots.Length) % toolSlots.Length;
 				if (toolSlots[currentToolSlot] != null) {
 					break;
 				}
