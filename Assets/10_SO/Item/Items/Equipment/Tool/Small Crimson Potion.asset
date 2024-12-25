@@ -20,7 +20,7 @@ MonoBehaviour:
     \uBAA8\uB974\uAC8C \uC21C\uD658\uD55C\uB2E4.\n\n\uBC8C\uB808\uC758 \uC2DC\uCCB4\uB294
     \uAC1C\uBBF8\uC758 \uC2DD\uC0AC\uAC00 \uB418\uACE0\n\uC2DD\uBB3C\uC758 \uBFCC\uB9AC\uC640
     \uC591\uC758 \uD53C, \uC124\uD0D5\uC740\n\uC0AC\uB78C\uC758 \uC0B4\uC744 \uB9E4\uAFBC\uB2E4."
-  itemImage: {fileID: 21300000, guid: 407224850f6384d7a890981f0c461c92, type: 3}
+  itemImage: {fileID: 21300000, guid: c9ba0278e541b4998861ddf648237e24, type: 3}
   itemRarity: 0
   itemMaxCount: 299
   itemCount: 0
