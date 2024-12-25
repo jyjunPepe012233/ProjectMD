@@ -70,7 +70,7 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 		toolSlots = inventoryData.tools ?? new Tool[10];
 		playerItemList = inventoryData.allItems ?? new Item[ItemDataBase.Instance.GetAllItemsCount()];
 
-		FindObjectOfType<QuickSlotUIManager>().UpdateToolQuickSlot(currentToolSlot);
+//		FindObjectOfType<QuickSlotUIManager>().UpdateToolQuickSlot(currentToolSlot);
 	}
 
 
