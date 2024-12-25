@@ -39,7 +39,7 @@ public class LghtOfDrgnSlyng : Magic {
 		Vector3 pivot = castPlayer.targetOptions[0].position;
 
 		// SET MAGIC POSITION AND DIRECTION
-		if (castPlayer.combat.target != null) {
+		if (castPlayer.isLockOn) {
 
 			// POSITION
 			Vector3 targetDirx = (castPlayer.camera.currentTargetOption.position - pivot).normalized;
@@ -95,7 +95,7 @@ public class LghtOfDrgnSlyng : Magic {
 	public override void OnCancel() {
 		
 		// DESTROY MAGIC
-		currentMagic.StartCoroutine(currentMagic.EndBlastingCoroutine(2f));
+		Destroy(currentMagic.gameObject);
 		
 		// FORCE EXIT
 		castPlayer.combat.ExitCurrentMagic();

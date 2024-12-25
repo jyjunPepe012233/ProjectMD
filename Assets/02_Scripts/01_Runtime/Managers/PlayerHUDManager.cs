@@ -11,7 +11,6 @@ using Vector3 = UnityEngine.Vector3;
 namespace MinD.Runtime.Managers {
 
 public class PlayerHUDManager : Singleton<PlayerHUDManager> {
-
 	
 	public static PlayerHUD playerHUD {
 		get {
@@ -25,15 +24,21 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
 	private Player player => Player.player;
 
-	public bool isLockOnSpotEnable;
-	public bool isPlayingBurstPopup;
-	public bool isFadingWithBlack;
+	private bool _isLockOnSpotEnable;
+	private bool _isPlayingBurstPopup;
+	private bool _isFadingWithBlack;
 	
 	private Coroutine fadingBlackScreenCoroutine;
 
 	public PlayerMenu currentShowingMenu;
-	
 
+
+	public void OnSceneChanged() {
+		_isLockOnSpotEnable = false;
+		_isPlayingBurstPopup = false;
+		_isFadingWithBlack = false;
+		fadingBlackScreenCoroutine = null;
+	}
 
 	public void Update() {
 
@@ -41,7 +46,6 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 		HandleLockOnSpot();
 		HandleMenuInput();
 	}
-	
 	
 	
 	private void HandleStatusBar() {
@@ -53,7 +57,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	}
 
 	private void HandleLockOnSpot() {
-		if (!isLockOnSpotEnable) {
+		if (!_isLockOnSpotEnable) {
 			return;
 		}
 
@@ -116,7 +120,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	
 	
 	public void SetLockOnSpotActive(bool value) {
-		isLockOnSpotEnable = value;
+		_isLockOnSpotEnable = value;
 		playerHUD.lockOnSpot.gameObject.SetActive(value);
 	}
 
@@ -124,7 +128,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
 	public void PlayBurstPopup(PlayableDirector burstPopupDirector, bool playWithForce = false) {
 
-		if (isPlayingBurstPopup) {
+		if (_isPlayingBurstPopup) {
 			
 			if (playWithForce) {
 				StartCoroutine(PlayBurstPopupCoroutine(burstPopupDirector));
@@ -154,7 +158,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
 	public void FadeInToBlack(float duration) {
 
-		if (isFadingWithBlack) {
+		if (_isFadingWithBlack) {
 			StopCoroutine(fadingBlackScreenCoroutine);
 		}
 
@@ -163,7 +167,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
 	public void FadeOutFromBlack(float duration) {
 		
-		if (isFadingWithBlack) {
+		if (_isFadingWithBlack) {
 			StopCoroutine(fadingBlackScreenCoroutine);
 		}
 		
@@ -172,7 +176,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 
 	private IEnumerator FadeBlackScreen(float duration, bool fadeDirection) {
 		
-		isFadingWithBlack = true;
+		_isFadingWithBlack = true;
 		playerHUD.blackScreen.gameObject.SetActive(true);
 		
 		playerHUD.blackScreen.color = new Color(0, 0, 0, fadeDirection ? 0 : 1);
@@ -192,7 +196,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 		}
 		
 		
-		isFadingWithBlack = false;
+		_isFadingWithBlack = false;
 		playerHUD.blackScreen.gameObject.SetActive(fadeDirection);
 		
 		playerHUD.blackScreen.color = new Color(0, 0, 0, fadeDirection ? 1 : 0);

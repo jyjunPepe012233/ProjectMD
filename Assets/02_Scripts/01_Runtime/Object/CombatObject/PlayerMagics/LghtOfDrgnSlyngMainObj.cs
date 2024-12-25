@@ -106,14 +106,12 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 
 	// CALL BY EndBlasting() METHOD IN MAGIC ITEM SO
 	public IEnumerator EndBlastingCoroutine(float duration) {
-
+		
 		if (blastingCoroutine != null) {
 			StopCoroutine(blastingCoroutine);
-		} else {
-			StopAllCoroutines();
 		}
-
-
+		
+		
 		// OFF BLASTING FX
 		blastSystem.Stop();
 		blastLight.FadeOut(1.5f);
@@ -124,6 +122,7 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 
 		float elapsedTime = 0;
 		while (elapsedTime < duration) {
+			Debug.Log(elapsedTime);
 
 			// SET MAGIC CIRCLE FADE IN
 			Color fadingColor = Color.Lerp(circleEndColor, circleStartColor, elapsedTime / duration);

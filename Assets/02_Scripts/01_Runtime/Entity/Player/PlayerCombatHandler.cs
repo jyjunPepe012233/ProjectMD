@@ -209,10 +209,14 @@ public class PlayerCombatHandler : EntityOwnedHandler {
 
 
 	public void OnInstantiateWarmUpFx() {
-		currentCastingMagic.InstantiateWarmupFX();
+		if (currentCastingMagic != null) {
+			currentCastingMagic.InstantiateWarmupFX();
+		}
 	}
 	public void OnSuccessfullyCast() {
-		currentCastingMagic.OnSuccessfullyCast();
+		if (currentCastingMagic != null) {
+			currentCastingMagic.OnSuccessfullyCast();
+		}
 	}
 
 }

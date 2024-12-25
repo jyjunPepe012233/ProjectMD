@@ -19,9 +19,8 @@ namespace MinD.Runtime.Managers {
 public class GameManager : Singleton<GameManager> {
 
 	private const float TIME_FirstGameLoadedFadeOut = 0.5f;
+	private const float TIME_ReloadCauseDeathFadeIn = 2f;
 	private const float TIME_ReloadByGuffinsAnchorFadeIn = 1.5f;
-
-	private WaitForSeconds fadeWait = new(TIME_ReloadByGuffinsAnchorFadeIn);
 	
 	
 	
@@ -36,8 +35,10 @@ public class GameManager : Singleton<GameManager> {
 		
 		Debug.Log("Scene Changed To '" + SceneManager.GetActiveScene().name + "'. \n Is This World Scene = " + WorldUtility.IsThisWorldScene());
 
-		PlayerHUDManager.Instance.FadeOutFromBlack(TIME_FirstGameLoadedFadeOut);
+		PlayerHUDManager.Instance.OnSceneChanged();
 		WorldDataManager.Instance.OnSceneChanged();
+		
+		PlayerHUDManager.Instance.FadeOutFromBlack(TIME_FirstGameLoadedFadeOut);
 		WorldDataManager.Instance.LoadGameData();
 
 		willAwakeFromLatestAnchor = false;
@@ -49,7 +50,7 @@ public class GameManager : Singleton<GameManager> {
 	private IEnumerator ReloadByGuffinsAnchor() {
 		
 		PlayerHUDManager.Instance.FadeInToBlack(TIME_ReloadByGuffinsAnchorFadeIn);
-		yield return fadeWait;
+		yield return new WaitForSeconds(TIME_ReloadCauseDeathFadeIn);
 
 		WorldDataManager.Instance.SaveGameData();
 		willAwakeFromLatestAnchor = true;
@@ -62,9 +63,27 @@ public class GameManager : Singleton<GameManager> {
 		
 		GuffinsAnchorMenu menu = PlayerHUDManager.playerHUD.guffinsAnchorMenu;
 		menu.ApplyGuffinsAnchorData(WorldDataManager.Instance.GetGuffinsAnchorInstanceToId(WorldDataManager.Instance.latestUsedAnchorId));
-		
 		PlayerHUDManager.Instance.OpenMenu(menu);
+
+		Player.player.isUsingAnchor = true;
+		Debug.Log(Player.player.GetInstanceID());
 	}
+	
+	
+	public void StartReloadWorldCauseDeath(float delay) {
+		StartCoroutine(ReloadWorldCauseDeath(delay));
+	}
+	private IEnumerator ReloadWorldCauseDeath(float delay) {
+		yield return new WaitForSeconds(delay);
+		
+		PlayerHUDManager.Instance.FadeInToBlack(TIME_ReloadCauseDeathFadeIn);
+		yield return new WaitForSeconds(TIME_ReloadCauseDeathFadeIn);
+
+		WorldDataManager.Instance.SaveGameData();
+		willAwakeFromLatestAnchor = true;
+		AsyncOperation reloadSceneAsync = WorldDataManager.Instance.LoadWorldScene();
+	}
+	
 	
 	#if UNITY_EDITOR
 	public void BakeWorld() {

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using MinD.Runtime.Managers;
 using MinD.Runtime.Object.Interactables;
 using MinD.Utility;
@@ -73,6 +75,7 @@ public class Player : BaseEntity {
     public bool isGrounded;
     public bool isMoving;
     public bool isLockOn;
+    public bool isUsingAnchor;
     public bool canRotate;
     public bool canMove;
     
@@ -140,10 +143,14 @@ public class Player : BaseEntity {
         transform.forward = playerDirx;
         #endregion
         
-        // IF AWAKE FROM ANCHOR, 
-        if (GameManager.Instance.willAwakeFromLatestAnchor) {
+        
+        if (isUsingAnchor) {
             animation.PlayTargetAction("Anchor_Idle", 0, true, true, false, false);
+            
+        } else if (GameManager.Instance.willAwakeFromLatestAnchor) {
+            animation.PlayTargetAction("Anchor_End", 0, true, true, false, false);
         }
+        
     }
     
     
@@ -192,9 +199,9 @@ public class Player : BaseEntity {
         PlayerHUDManager.Instance.PlayBurstPopup(PlayerHUDManager.playerHUD.youDiedPopup, true);
         
         animation.PlayTargetAction("Death", 0.2f, true, true, false, false, false);
-        
+
+        GameManager.Instance.StartReloadWorldCauseDeath(3);
     }
-    
 }
 
 }
