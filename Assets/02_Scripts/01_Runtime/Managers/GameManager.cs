@@ -66,6 +66,7 @@ public class GameManager : Singleton<GameManager> {
 		PlayerHUDManager.Instance.OpenMenu(menu);
 	}
 	
+	#if UNITY_EDITOR
 	public void BakeWorld() {
 
 		void IndexingObjects<TObject>() where TObject : MonoBehaviour, IWorldIndexable { 
@@ -106,6 +107,7 @@ public class GameManager : Singleton<GameManager> {
 		ClearObjectsIndex<GuffinsAnchor>();
 	}
 
+	#endif
 }
 
 }

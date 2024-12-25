@@ -3,6 +3,7 @@ using MinD.SO.Object;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace MinD.Editor.Inspector {
 
 [CustomEditor(typeof(DamageCollider))]
@@ -82,3 +83,4 @@ public class DamageColliderEditor : UnityEditor.Editor {
 }
 
 }
+#endif

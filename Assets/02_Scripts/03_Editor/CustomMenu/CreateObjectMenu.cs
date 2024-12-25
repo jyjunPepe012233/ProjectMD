@@ -5,11 +5,11 @@ using MinD.Runtime.Utils;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace MinD.Editor.CustomMenu {
 
-public class CreateObjectMenu : MonoBehaviour {
-
-
+public class CreateObjectMenu {
+	
 	[MenuItem("GameObject/Create With MinD/Create Damage Collider", false, int.MinValue + 0)]
 	public static void CreateNewDamageCollider() {
 
@@ -87,8 +87,8 @@ public class CreateObjectMenu : MonoBehaviour {
 			foreach (SceneView sceneView in SceneView.sceneViews)
 				sceneView.ShowNotification(new GUIContent("The new target option wasn't bound to entity"));
 	}
-
-
+	
 }
 
 }
+#endif
