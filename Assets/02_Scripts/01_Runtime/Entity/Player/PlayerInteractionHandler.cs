@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using MinD.Runtime.Managers;
 using MinD.Runtime.Object;
+using MinD.Runtime.UI;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
 
 public class PlayerInteractionHandler : EntityOwnedHandler {
 
-	private List<Interactable> currentInteractables = new List<Interactable>();
+	public List<Interactable> currentInteractables = new List<Interactable>();
+	private InteractionPanelController panelCtrl;
 
 
 	public void AddInteractableInList(Interactable interactable) {
@@ -24,9 +26,6 @@ public class PlayerInteractionHandler : EntityOwnedHandler {
 
 	public void RefreshInteractableList() {
 
-		if (currentInteractables.Count == 0)
-			return;
-
 		for (int i = currentInteractables.Count - 1; i < -1; i--) /*REVERSE FOR*/ {
 
 			Interactable interactable = currentInteractables[i];
@@ -41,6 +40,11 @@ public class PlayerInteractionHandler : EntityOwnedHandler {
 		}
 
 		// refresh popup
+		if (panelCtrl == null)
+		{
+			panelCtrl = FindObjectOfType<InteractionPanelController>();
+		}
+		panelCtrl.RefreshInteractionPanel();
 	}
 
 	public void HandleInteraction() {
