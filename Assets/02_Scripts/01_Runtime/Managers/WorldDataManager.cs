@@ -15,6 +15,9 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 	private Dictionary<int, bool> _isAnchorsDiscovered = new(); // TODO: his is temp. Need change to referencing the save data
 	public int latestUsedAnchorId;
 
+	private Dictionary<int, DroppedItem> _worldPlacedItems = new ();
+	private Dictionary<int, bool> _isPlacedItemsCollected = new ();
+
 	private AsyncOperation _currentReloadSceneAsync;
 	public AsyncOperation currentReloadSceneAsync => _currentReloadSceneAsync;
 
@@ -45,6 +48,7 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 	public void OnSceneChanged() {
 		if (WorldUtility.IsThisWorldScene()) {
 			FindGuffinsAnchorOnWorld();
+			FindPlacedItemOnWorld();
 		}
 	}
 
@@ -59,6 +63,18 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 			_worldAnchors[_searchedAnchors[i].worldIndex] = _searchedAnchors[i];
 		}
 	}
+	
+	private void FindPlacedItemOnWorld() {
+		DroppedItem[] _searchedItem = FindObjectsOfType<DroppedItem>();
+		// Find anchors on world by key(anchor information id)
+
+		for (int i = 0; i < _searchedItem.Length; i++) {
+			if (!_searchedItem[i].hasBeenIndexed) {
+				throw new UnityException("Hasn't been indexed Guffin's Anchor is exist!!");
+			}
+			_worldPlacedItems[_searchedItem[i].worldIndex] = _searchedItem[i];
+		}
+	}
 
 	public void LoadGameData() {
 		
@@ -67,22 +83,32 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		}
 		
 		LoadGuffinsAnchorData();
+		LoadPlacedItemData();
 		// TODO: Load world object data
 		// TODO: Load Enemy(Normal Enemies, Bosses) Data
 		Player.player.LoadData();
 	}
-	 
 	
 	private void LoadGuffinsAnchorData() {
 		for (int i = 0; i < _worldAnchors.Count; i++) {
-			// Add pair into discover info dictionary WHEN FIRST LOAD
-			// TODO: This code is temp. Assign dictionary references save data
+			// TODO: This code is temp. Assign isDiscovered dictionary references save data
 			if (!_isAnchorsDiscovered.ContainsKey(i)) {
 				_isAnchorsDiscovered[i] = false;
 			}
 			_worldAnchors[i].LoadData(_isAnchorsDiscovered[i]);
 		}
 	}
+
+	private void LoadPlacedItemData() {
+		for (int i = 0; i < _worldPlacedItems.Count; i++) {
+			// TODO: This code is temp. should references save data
+			if (!_isPlacedItemsCollected.ContainsKey(i)) {
+				_isPlacedItemsCollected[i] = false;
+			}
+			_worldPlacedItems[i].LoadDataAsPlacedItem(_isPlacedItemsCollected[i]);
+		}
+	}
+	
 
 	public void SaveGameData() {
 		
@@ -91,6 +117,7 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		}
 	
 		SaveGuffinsAnchorData();
+		SavePlacedItemData(); // TODO: Save with item dropped by enemy
 		// TODO: SAVE WORLD OBJECT DATA
 		// TODO: SAVE ENEMY DATA
 		// TODO: SAVE PLAYER DATA
@@ -100,6 +127,13 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		
 		for (int i = 0; i < _worldAnchors.Count; i++) {
 			_isAnchorsDiscovered[i] = _worldAnchors[i].isDiscovered;
+		}
+	}
+
+	private void SavePlacedItemData() {
+		
+		for (int i = 0; i < _worldPlacedItems.Count; i++) {
+			_isPlacedItemsCollected[i] = _worldPlacedItems[i] == null;
 		}
 	}
 

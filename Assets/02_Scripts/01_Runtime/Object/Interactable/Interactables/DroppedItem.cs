@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using MinD.Enums;
+using MinD.Interfaces;
 using MinD.Runtime.DataBase;
 using MinD.Runtime.Entity;
 using MinD.Runtime.Managers;
@@ -10,8 +11,20 @@ using UnityEngine;
 
 namespace MinD.Runtime.Object.Interactables {
 
-public class DroppedItem : Interactable {
-
+public class DroppedItem : Interactable, IWorldIndexable {
+	
+	[SerializeField, HideInInspector] private int _worldIndex;
+	public int worldIndex {
+		get => _worldIndex;
+		set => _worldIndex = value;
+	}
+	[SerializeField, HideInInspector] private bool _hasBeenIndexed;
+	public bool hasBeenIndexed {
+		get => _hasBeenIndexed;
+		set => _hasBeenIndexed = value;
+	}
+	
+	
 	[Header("[ Item Settings ]")]
 	[SerializeField]
 	public Item item;
@@ -74,7 +87,12 @@ public class DroppedItem : Interactable {
 			// function when item count is exceeded
 
 		}
+	}
 
+	public void LoadDataAsPlacedItem(bool isCollected) {
+		if (isCollected) {
+			Destroy(gameObject);
+		}
 	}
 
 	public IEnumerator FadeOutDestroy(float fadeTime) {

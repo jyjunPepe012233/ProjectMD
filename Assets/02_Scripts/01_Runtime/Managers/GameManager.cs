@@ -81,7 +81,7 @@ public class GameManager : Singleton<GameManager> {
 
 		WorldDataManager.Instance.SaveGameData();
 		willAwakeFromLatestAnchor = true;
-		AsyncOperation reloadSceneAsync = WorldDataManager.Instance.LoadWorldScene();
+		WorldDataManager.Instance.LoadWorldScene();
 	}
 	
 	
@@ -109,6 +109,7 @@ public class GameManager : Singleton<GameManager> {
 
 		IndexingObjects<Enemy>();
 		IndexingObjects<GuffinsAnchor>();
+		IndexingObjects<DroppedItem>();
 	}
 
 	public void ClearBakeData() {
@@ -124,6 +125,7 @@ public class GameManager : Singleton<GameManager> {
 
 		ClearObjectsIndex<Enemy>();
 		ClearObjectsIndex<GuffinsAnchor>();
+		ClearObjectsIndex<DroppedItem>();
 	}
 
 	#endif
