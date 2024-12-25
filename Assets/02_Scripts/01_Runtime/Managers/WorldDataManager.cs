@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using MinD.Runtime.Entity;
 using MinD.Runtime.Object.Interactables;
+using MinD.SO.Item;
+using MinD.Structs;
 using MinD.Utility;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +19,11 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 
 	private Dictionary<int, DroppedItem> _worldPlacedItems = new ();
 	private Dictionary<int, bool> _isPlacedItemsCollected = new ();
+
+	
+	private PlayerInventoryData _playerInventoryData;
+	
+
 
 	private AsyncOperation _currentReloadSceneAsync;
 	public AsyncOperation currentReloadSceneAsync => _currentReloadSceneAsync;
@@ -87,6 +94,7 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		// TODO: Load world object data
 		// TODO: Load Enemy(Normal Enemies, Bosses) Data
 		Player.player.LoadData();
+		Player.player.inventory.LoadItemData(_playerInventoryData);
 	}
 	
 	private void LoadGuffinsAnchorData() {
@@ -121,6 +129,7 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		// TODO: SAVE WORLD OBJECT DATA
 		// TODO: SAVE ENEMY DATA
 		// TODO: SAVE PLAYER DATA
+		SavePlayerData();
 	}
 
 	private void SaveGuffinsAnchorData() { // TODO: Temp. SHOULD BE BASED ON WORLD BAKE DATA. COULDN'T SAVE DATA AT '_isAnchorDiscovered(CAUSE IT IS TEMP VARIABLE)'
@@ -135,6 +144,17 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		for (int i = 0; i < _worldPlacedItems.Count; i++) {
 			_isPlacedItemsCollected[i] = _worldPlacedItems[i] == null;
 		}
+	}
+
+	private void SavePlayerData() {
+
+		PlayerInventoryHandler inventory = Player.player.inventory; 
+		
+		_playerInventoryData.weapon = inventory.weaponSlot;
+		_playerInventoryData.protection = inventory.protectionSlot;
+		_playerInventoryData.talismans = inventory.talismanSlots;
+		_playerInventoryData.tools = inventory.toolSlots;
+		_playerInventoryData.allItems = inventory.playerItemList;
 	}
 
 	

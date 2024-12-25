@@ -4,6 +4,7 @@ using MinD.Runtime.DataBase;
 using MinD.Runtime.Managers;
 using MinD.Runtime.UI;
 using MinD.SO.Item;
+using MinD.Structs;
 using UnityEngine;
 
 namespace MinD.Runtime.Entity {
@@ -60,13 +61,16 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 		}
 	}
 
-	public void LoadItemData() { // TODO: Need getting item data by parameter
+	public void LoadItemData(PlayerInventoryData inventoryData) { // TODO: Need getting item data by parameter
 
 		// SET DATA LIST LENGTH
-		playerItemList = new Item[ItemDataBase.Instance.GetAllItemsCount()];
+		weaponSlot = inventoryData.weapon;
+		protectionSlot = inventoryData.protection;
+		talismanSlots = inventoryData.talismans ?? new Talisman[5];
+		toolSlots = inventoryData.tools ?? new Tool[10];
+		playerItemList = inventoryData.allItems ?? new Item[ItemDataBase.Instance.GetAllItemsCount()];
 
-		// TODO: Insert loaded item data that from loaded item data to item array
-		// TODO: Load quick slot data
+		FindObjectOfType<QuickSlotUIManager>().UpdateToolQuickSlot(currentToolSlot);
 	}
 
 

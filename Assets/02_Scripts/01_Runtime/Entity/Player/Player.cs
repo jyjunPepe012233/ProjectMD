@@ -111,9 +111,8 @@ public class Player : BaseEntity {
         attribute.SetBaseAttributesAsPerStats();
         attribute.CalculateAttributesByEquipment();
         PlayerHUDManager.Instance.RefreshAllStatusBar();
+        
 
-        inventory.LoadItemData();
-        // TODO: Load equipment data
 
         
         // TODO: Load camera direction
