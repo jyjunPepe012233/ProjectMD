@@ -46,6 +46,10 @@ public class DroppedItem : Interactable {
 			interactor.interaction.RemoveInteractableInList(this);
 			interactor.interaction.RefreshInteractableList();
 
+			if (item.categoryId == 3)
+			{
+				interactor.inventory.magicSlots[interactor.inventory.magicSlots.Length] = item as Magic;
+			}
 			canInteraction = false;
 
 			StartCoroutine(FadeOutDestroy(2));
