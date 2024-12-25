@@ -13,7 +13,8 @@ namespace MinD.Runtime.Object.Interactables {
 public class DroppedItem : Interactable {
 
 	[Header("[ Item Settings ]")]
-	[SerializeField] private Item item;
+	[SerializeField]
+	public Item item;
 	[SerializeField] private int itemCount;
 
 
@@ -46,9 +47,16 @@ public class DroppedItem : Interactable {
 		if (interactor.inventory.AddItem(item.itemId, itemCount, false)) {
 			// ADD ITEM IS CLEARLY WORK ELSE ITEM IS EXCEEDED
 
+			InteractionPanelController panelController = FindObjectOfType<InteractionPanelController>();
+			if (panelController != null)
+			{
+				panelController.ShowLootingPanel(item);
+			}
+			
 			interactor.interaction.RemoveInteractableInList(this);
 			interactor.interaction.RefreshInteractableList();
 
+			
 			// TODO: Temp. it just for make prototype successfully
 			if (item.categoryId == 3)
 			{
