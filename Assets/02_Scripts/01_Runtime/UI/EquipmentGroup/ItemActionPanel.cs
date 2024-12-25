@@ -28,6 +28,12 @@ namespace MinD.Runtime.UI
 
         private int equippedTalismanCount => playerInventoryHandler.talismanSlots.Count(t => t != null);
 
+        private const int columns = 5; // 인벤토리의 열 개수
+        private const float baseX = -20f; // 기본 x 위치
+        private const float baseY = 100f; // 기본 y 위치
+        private const float offsetX = 120f; // x 증가량
+        private const float offsetY = -120f; // y 감소량
+        
         void Start()
         {
             panel.SetActive(false);
@@ -117,6 +123,7 @@ namespace MinD.Runtime.UI
         public void ShowPanel(Item item)
         {
             currentItem = item;
+            UpdatePanelPosition(_inventoryMenu.SelectedSlotIndex);
             panel.SetActive(true);
             isActionPanelActive = true;
             UpdateButtonSelection();
@@ -287,6 +294,19 @@ namespace MinD.Runtime.UI
         public bool IsActive()
         {
             return panel.activeSelf;
+        }
+        public void UpdatePanelPosition(int index)
+        {
+            // 열(row)과 행(column) 계산
+            int row = index / columns;
+            int column = index % columns;
+
+            // 새로운 위치 계산
+            float newX = baseX + (column * offsetX);
+            float newY = baseY + (row * offsetY);
+
+            // 패널의 위치 업데이트
+            panel.transform.localPosition = new Vector3(newX, newY, panel.transform.localPosition.z);
         }
     }
 }
