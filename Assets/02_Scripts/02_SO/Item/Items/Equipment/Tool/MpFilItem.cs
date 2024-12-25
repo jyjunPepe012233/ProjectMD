@@ -25,7 +25,7 @@ public class MpFillItem : Tool {
 	
 	public override void OnUse(Player owner) {
 
-		owner.CurHp += mpFillAmount;
+		owner.CurMp += mpFillAmount;
 
 		if (healVfxPrefab != null) {
 			GameObject healVfx = Instantiate(healVfxPrefab, owner.transform, true);
