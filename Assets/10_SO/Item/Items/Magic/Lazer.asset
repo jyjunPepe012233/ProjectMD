@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Lazer
   m_EditorClassIdentifier: 
   itemId: 0
-  itemName: "\uAD11\uC0AC"
+  itemName: "\uD3EC\uD1A4\uCE90\uB10C"
   itemDescription: "\uD788\uD788 \uAD11\uC120\uBC1C\uC0AC"
   itemImage: {fileID: 0}
   itemRarity: 0
@@ -28,4 +28,4 @@ MonoBehaviour:
   castPlayer: {fileID: 0}
   isInputReleased: 1
   lazer: {fileID: 7280914768442363304, guid: a99395f8ff23f4b51b39a1a29db549e5, type: 3}
-  createHigh: {x: 0, y: 2, z: 0}
+  createHigh: 1.2
