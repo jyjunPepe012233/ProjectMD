@@ -5476,12 +5476,15 @@ MonoBehaviour:
   - {fileID: 0}
   currentMagicSlot: 0
   magicSlots:
-  - {fileID: 11400000, guid: ae03470a4bda843eb9e4abfe84af54c1, type: 2}
-  - {fileID: 11400000, guid: 92e3add1df5e84ca382ebb4d6ba66260, type: 2}
-  - {fileID: 11400000, guid: b740be62c917e42a88681cf15cb1f0e1, type: 2}
-  - {fileID: 11400000, guid: 5f96f131cea5842b69587c5f180cca59, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   playerItemList: []
   equipMagic: {fileID: 0}
+  quickSlotUIManager: {fileID: 0}
 --- !u!114 &1846267967897579461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5507,6 +5510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e626ad6d9fa4126bacd9ef145fd2112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentInteractables: []
 --- !u!114 &1630959733286635946
 MonoBehaviour:
   m_ObjectHideFlags: 0
