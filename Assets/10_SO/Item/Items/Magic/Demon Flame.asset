@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5534c37db7204f239e4d5faf96f3c70b, type: 3}
   m_Name: Demon Flame
   m_EditorClassIdentifier: 
-  itemId: 4
-  itemName: " \uB9C8\uC5FC (\u9B54\u708E)"
+  itemId: 8
+  itemName: " \uB9C8\uC5FC"
   itemDescription: "\uBD88\uC758 \uC5D0\uB108\uC9C0\uB97C \uB2E4\uB904 \uC801\uC744
     \uD0DC\uC6B0\uB294 \uACF5\uACA9 \uB9C8\uBC95\uC73C\uB85C, \uB9C8\uBC95\uC0AC\uC758
     \uC758\uC9C0\uC5D0 \uB530\uB77C \uBD88\uAF43\uC744 \uB9CC\uB4E4\uC5B4\uB0B8\uB2E4.
