@@ -36,7 +36,13 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 	
 	[Header("[ Debug ]")]
 	public Magic equipMagic;
+	
+	[HideInInspector] public QuickSlotUIManager quickSlotUIManager;
 
+	private void Start()
+	{
+		quickSlotUIManager = FindObjectOfType<QuickSlotUIManager>();
+	}
 	public void OnValidate() {
 		if (equipMagic != null) {
 			EquipMagic(equipMagic, 0);
@@ -403,7 +409,7 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 				}
 			}
 		}
-
+		quickSlotUIManager?.UpdateMagicQuickSlot(currentMagicSlot);
 		PlayerInputManager.Instance.swapMagicInput = 0;
 	}
 
@@ -438,7 +444,7 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 				}
 			}
 		}
-		
+		quickSlotUIManager?.UpdateToolQuickSlot(currentToolSlot);
 		PlayerInputManager.Instance.swapToolInput = 0;
 	}
 }

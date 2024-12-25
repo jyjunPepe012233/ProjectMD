@@ -15,7 +15,7 @@ namespace MinD.Runtime.UI
         private List<Tool> toolList = new();
         private int currentIndex = 0;
 
-        public void Initialize(List<Tool> toolSlots)
+        public void Initialize(List<Tool> toolSlots, int playerCurrentToolSlot)
         {
             if (toolSlots == null)
             {
@@ -28,7 +28,7 @@ namespace MinD.Runtime.UI
                 toolList.RemoveAll(tool => tool == null);
             }
 
-            currentIndex = 0;
+            currentIndex = playerCurrentToolSlot;
             UpdateUI();
         }
 
@@ -36,34 +36,41 @@ namespace MinD.Runtime.UI
         {
             if (toolList.Count == 0)
             {
+                // 슬롯이 비어 있는 경우 처리
                 foreach (var image in slotImages)
                 {
                     image.enabled = false;
                 }
+                toolName.text = string.Empty;
                 return;
             }
+
+            // 현재 선택된 툴 이름 표시
             toolName.text = toolList[currentIndex].itemName;
+
             for (int i = 0; i < slotImages.Length; i++)
             {
-                int index = (currentIndex + i - 2 + toolList.Count) % toolList.Count;
-                slotImages[i].sprite = toolList[index].itemImage;
+                // 중앙(currentIndex)을 기준으로 인덱스 계산
+                int offsetIndex = (currentIndex + i - (slotImages.Length / 2) + toolList.Count) % toolList.Count;
+
+                slotImages[i].sprite = toolList[offsetIndex].itemImage;
                 slotImages[i].enabled = true;
             }
         }
-
-        public void Rotate(int direction)
-        {
-            if (toolList.Count == 0) return;
-
-            currentIndex = (currentIndex + direction + toolList.Count) % toolList.Count;
-            UpdateUI();
-        }
-
         public Tool GetCurrentTool()
         {
             if (toolList.Count == 0) return null;
 
             return toolList[currentIndex];
         }
+
+        public void SetCurrentToolSlot(int newIndex)
+        {
+            if (toolList.Count == 0) return;
+
+            currentIndex = newIndex % toolList.Count;
+            UpdateUI();
+        }
     }
+
 }
