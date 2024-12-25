@@ -13,6 +13,10 @@ public static class PhysicUtility {
 		foreach (Collider col in cols) {
 			Physics.IgnoreCollision(col, collider);
 		}
+
+		if (entity is Player player) {
+			Physics.IgnoreCollision(player.defenseMagic.defenseCollider, collider);
+		}
 	}
 	
 	public static void SetUpIgnoreBodyCollision(BaseEntity entity) {
