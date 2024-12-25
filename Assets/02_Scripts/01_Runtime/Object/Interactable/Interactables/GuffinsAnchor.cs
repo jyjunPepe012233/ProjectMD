@@ -17,18 +17,19 @@ public class GuffinsAnchor : Interactable, IWorldIndexable {
 	public static readonly Vector3 playerPosition = new Vector3(0, 0f, 1.2f); // GLOBAL SETTING
 	private const float TIME_LightFading = 1.5f;
 
-	private bool _hasBeenIndexed;
+	[SerializeField, HideInInspector] private bool _hasBeenIndexed;
 	public bool hasBeenIndexed {
 		get => _hasBeenIndexed;
 		set => _hasBeenIndexed = value;
 	}
-
-	private int _worldIndex;
+	
+	[SerializeField, HideInInspector] private int _worldIndex;
 	public int worldIndex {
 		get => _worldIndex;
 		set => _worldIndex = value;
 	}
 
+	
 	[Header("[ Anchor Setting ]")]
 	public GuffinsAnchorInformation anchorInfo;
 	

@@ -24,17 +24,18 @@ public abstract class Enemy : BaseEntity, IWorldIndexable {
 	[HideInInspector] public EnemyCombatHandler combat;
 	[HideInInspector] public EnemyUtilityHandler utility;
 
-	private bool _hasBeenIndexed;
+	[SerializeField, HideInInspector] private bool _hasBeenIndexed;
 	public bool hasBeenIndexed {
 		get => _hasBeenIndexed;
 		set => _hasBeenIndexed = value;
 	}
 
-	private int _worldIndex;
+	[SerializeField, HideInInspector] private int _worldIndex;
 	public int worldIndex {
 		get => _worldIndex;
 		set => _worldIndex = value;
 	}
+	
 	[HideInInspector] public Vector3 worldPlacedPosition;
 	[HideInInspector] public Quaternion worldPlacedRotation;
 	
