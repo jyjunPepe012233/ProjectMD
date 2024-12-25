@@ -15,7 +15,7 @@ namespace MinD.Runtime.UI
         private List<Magic> magicList = new();
         private int currentIndex = 0;
 
-        public void Initialize(List<Magic> magicSlots)
+        public void Initialize(List<Magic> magicSlots, int playerCurrentMagicSlot)
         {
             if (magicSlots == null)
             {
@@ -28,7 +28,7 @@ namespace MinD.Runtime.UI
                 magicList.RemoveAll(magic => magic == null);
             }
 
-            currentIndex = 0;
+            currentIndex = playerCurrentMagicSlot;
             UpdateUI();
         }
 
@@ -60,7 +60,7 @@ namespace MinD.Runtime.UI
         {
             if (magicList.Count == 0) return;
 
-            currentIndex = (newIndex + magicList.Count) % magicList.Count;
+            currentIndex = newIndex % magicList.Count;
             UpdateUI();
         }
 

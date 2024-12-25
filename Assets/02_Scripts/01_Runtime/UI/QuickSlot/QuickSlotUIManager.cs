@@ -27,7 +27,7 @@ namespace MinD.Runtime.UI
             }
 
             // MagicQuickSlot 초기화
-            magicQuickSlotUI.Initialize(new List<Magic>(inventoryHandler.magicSlots));
+            magicQuickSlotUI.Initialize(new List<Magic>(inventoryHandler.magicSlots), inventoryHandler.currentMagicSlot);
 
             // ToolQuickSlot 초기화
             toolQuickSlotUI.Initialize(new List<Tool>(inventoryHandler.toolSlots), inventoryHandler.currentToolSlot);
