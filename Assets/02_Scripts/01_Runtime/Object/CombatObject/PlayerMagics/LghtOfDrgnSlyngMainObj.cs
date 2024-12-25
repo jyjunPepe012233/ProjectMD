@@ -122,7 +122,6 @@ public class LghtOfDrgnSlyngMainObj : MonoBehaviour {
 
 		float elapsedTime = 0;
 		while (elapsedTime < duration) {
-			Debug.Log(elapsedTime);
 
 			// SET MAGIC CIRCLE FADE IN
 			Color fadingColor = Color.Lerp(circleEndColor, circleStartColor, elapsedTime / duration);
