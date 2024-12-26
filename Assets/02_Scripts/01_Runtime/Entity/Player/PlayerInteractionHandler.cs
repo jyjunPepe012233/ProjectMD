@@ -55,7 +55,9 @@ public class PlayerInteractionHandler : EntityOwnedHandler {
 		// CHECK INPUT
 		if (!PlayerInputManager.Instance.interactionInput)
 			return;
+		PlayerInputManager.Instance.interactionInput = false;
 
+		
 		if (currentInteractables.Count == 0)
 			return;
 
@@ -67,7 +69,6 @@ public class PlayerInteractionHandler : EntityOwnedHandler {
 		else
 			RefreshInteractableList();
 
-		PlayerInputManager.Instance.interactionInput = false;
 	}
 }
 
