@@ -577,6 +577,24 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Move Menu Tab",
+                    "type": "Button",
+                    "id": "857e0960-3125-467a-8140-10f8b47d7f62",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Open Inventory",
+                    "type": "Button",
+                    "id": "8f14563b-c4c9-4447-a236-f0cf3263ae63",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -637,59 +655,15 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "2D Vector [Gamepad]",
-                    "id": "c164d2f2-18d0-4cc5-973a-41479822395b",
-                    "path": "2DVector",
+                    "name": "",
+                    "id": "002d6d7a-edf5-4672-9048-0cd64b7f4009",
+                    "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Menu Dirx Input",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "db2bc950-36a5-43fc-a1aa-3fb200c04d6c",
-                    "path": "<Gamepad>/dpad/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "MouseNKey",
-                    "action": "Menu Dirx Input",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "8411206b-0813-47e5-808b-3cdb8a8153a0",
-                    "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "MouseNKey",
-                    "action": "Menu Dirx Input",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "234933a2-6a53-4615-934d-88f51ad484e1",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "MouseNKey",
-                    "action": "Menu Dirx Input",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "2d954aaf-e826-4058-b109-5663324b0cbb",
-                    "path": "<Gamepad>/dpad/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "MouseNKey",
-                    "action": "Menu Dirx Input",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -734,6 +708,116 @@
                     "action": "Menu Select Input",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "331ce0ab-6d6b-4f40-9f12-3ded103764aa",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Open Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cb5b18eb-c6dc-4adc-9947-0d6c941a0685",
+                    "path": "<SwitchProControllerHID>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Open Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis [MouseNKey]",
+                    "id": "c3013904-7103-41ca-9ee1-6e80b675cd1f",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Menu Tab",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "6ef0ab3a-cdc4-4ca6-8bcb-35f9370a9cd4",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Move Menu Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "f9c7401d-5095-4e45-a05f-20c695c016b8",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseNKey",
+                    "action": "Move Menu Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis [Switch Pro Controller]",
+                    "id": "42dd6e8a-b5c9-4af6-b2e9-b8c1965ad0ab",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Menu Tab",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "d2c3affe-0284-4bec-b27a-86de70f6d1a0",
+                    "path": "<SwitchProControllerHID>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Menu Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "negative",
+                    "id": "4f266353-da69-4afa-a30f-0b005079c14a",
+                    "path": "<SwitchProControllerHID>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Menu Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "eaed0880-4129-4db3-bcd9-08e12595f662",
+                    "path": "<SwitchProControllerHID>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Menu Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "7b9b007b-db73-4933-8f62-760a27c83510",
+                    "path": "<SwitchProControllerHID>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Menu Tab",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
