@@ -94,6 +94,15 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 			currentShowingMenu.OnInputWithDirection(dirxInput);
 		}
 		PlayerInputManager.Instance.menuDirectionInput = Vector2.zero;
+		
+		
+		// Moving Menu Tab Input
+		int moveTabInput = PlayerInputManager.Instance.moveMenuTabInput;
+		if (moveTabInput != 0 && currentShowingMenu != null) {
+			currentShowingMenu.OnMoveTabInput(moveTabInput);
+		} 
+		PlayerInputManager.Instance.moveMenuTabInput = 0;
+		
 	}
 	
 	

@@ -26,6 +26,8 @@ public abstract class PlayerMenu : MonoBehaviour {
 	}
 	public virtual void OnQuitInput() {
 	}
+	public virtual void OnMoveTabInput(int inputDirx) {
+	}
 	
 	public IEnumerator FadeOpenAndClose(float duration, bool fadeDirection) {
 

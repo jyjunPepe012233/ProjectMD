@@ -55,9 +55,15 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 
 	public void HandleInventoryOpen()
 	{
-		if (Input.GetKeyDown(KeyCode.Tab) && PlayerHUDManager.Instance.currentShowingMenu == null)
-		{
-			PlayerHUDManager.Instance.OpenMenu(PlayerHUDManager.playerHUD.inventoryMenu);
+		if (PlayerInputManager.Instance.openInventoryInput ) {
+			if (PlayerHUDManager.Instance.currentShowingMenu == null) {
+				PlayerHUDManager.Instance.OpenMenu(PlayerHUDManager.playerHUD.inventoryMenu);
+			} else if (PlayerHUDManager.Instance.currentShowingMenu == PlayerHUDManager.playerHUD.inventoryMenu) {
+				// If current inventory menu is opened, close inventory
+				PlayerHUDManager.Instance.CloseMenu(PlayerHUDManager.playerHUD.inventoryMenu);
+			}
+
+			PlayerInputManager.Instance.openInventoryInput = false;
 		}
 	}
 

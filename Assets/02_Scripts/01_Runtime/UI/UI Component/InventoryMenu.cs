@@ -126,6 +126,10 @@ namespace MinD.Runtime.UI
         }
     }
 
+    public override void OnMoveTabInput(int inputDirx) {
+        ChangeCategory(inputDirx);
+    }
+
     void MaintainFocus()
     {
         if (isInventoryActive && EventSystem.current.currentSelectedGameObject == null)
@@ -136,7 +140,6 @@ namespace MinD.Runtime.UI
 
     void Update()
     {
-        HandleInput();
         MaintainFocus();
 
         if (equipmentUI.isEquipmentPanelActive)
@@ -173,60 +176,8 @@ namespace MinD.Runtime.UI
     //         itemActionPanel.HidePanel();
     //     }
     // }
-
-    void HandleInput()
-    {
-        // if (Input.GetKeyDown(KeyCode.Tab))
-        // {
-        //     ToggleInventory();
-        // }
-        
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            ChangeCategory(-1);
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            ChangeCategory(1);
-        }
-        if (!itemActionPanel.IsActive())
-        {
-            // if (Input.GetKeyDown(KeyCode.Q))
-            // {
-            //     itemActionPanel.HidePanel();
-            //     return;
-            // }
-
-            // if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-            // {
-            //     MoveSelection(1);
-            // }
-            // else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-            // {
-            //     MoveSelection(-1);
-            // }
-            // else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-            // {
-            //     ScrollUp();
-            //     MoveSelection(-inventoryWidth);
-            // }
-            // else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-            // {
-            //     ScrollDown();
-            //     MoveSelection(inventoryWidth);
-            // }
-
-            // if (Input.GetKeyDown(KeyCode.Return))
-            // {
-            //     var selectedSlot = categorySlots[currentCategoryIndex][selectedSlotIndex];
-            //     var item = selectedSlot.GetCurrentItem();
-            //     if (item != null && item.itemCount > 0)
-            //     {
-            //         itemActionPanel.ShowPanel(item);
-            //     }
-            // }
-        }
-    }
+    
+    
 
     void ChangeCategory(int direction)
     {
