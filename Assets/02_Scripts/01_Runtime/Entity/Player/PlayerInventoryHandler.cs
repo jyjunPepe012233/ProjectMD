@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using MinD.Enums;
 using MinD.Runtime.DataBase;
@@ -74,6 +75,7 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 		protectionSlot = inventoryData.protection;
 		talismanSlots = inventoryData.talismans ?? new Talisman[5];
 		toolSlots = inventoryData.tools ?? new Tool[10];
+		magicSlots = inventoryData.magics ?? magicSlots;
 		playerItemList = inventoryData.allItems ?? new Item[ItemDataBase.Instance.GetAllItemsCount()];
 
 //		FindObjectOfType<QuickSlotUIManager>().UpdateToolQuickSlot(currentToolSlot);

@@ -154,6 +154,7 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		_playerInventoryData.protection = inventory.protectionSlot;
 		_playerInventoryData.talismans = inventory.talismanSlots;
 		_playerInventoryData.tools = inventory.toolSlots;
+		_playerInventoryData.magics = inventory.magicSlots;
 		_playerInventoryData.allItems = inventory.playerItemList;
 	}
 

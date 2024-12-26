@@ -29,6 +29,9 @@ public class GameManager : Singleton<GameManager> {
 	
 	private void Awake() {
 
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+
 		
 		base.Awake();
 		
