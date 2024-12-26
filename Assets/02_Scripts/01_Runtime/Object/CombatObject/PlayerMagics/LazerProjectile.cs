@@ -69,7 +69,7 @@ public class LazerProjectile : MonoBehaviour // LazerProjectile
             if (castPlayer.isLockOn)
             {
                 castPlayer.transform.rotation = UnityEngine.Quaternion.RotateTowards
-                (castPlayer.transform.rotation, UnityEngine.Quaternion.LookRotation(castPlayer.transform.position),
+                (castPlayer.transform.rotation, UnityEngine.Quaternion.LookRotation(castPlayer.combat.target.transform.position - castPlayer.transform.position),
                     720 * Time.deltaTime);
             }
 
