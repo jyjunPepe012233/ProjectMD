@@ -68,8 +68,6 @@ public class GameManager : Singleton<GameManager> {
 		GuffinsAnchorMenu menu = PlayerHUDManager.playerHUD.guffinsAnchorMenu;
 		menu.ApplyGuffinsAnchorData(WorldDataManager.Instance.GetGuffinsAnchorInstanceToId(WorldDataManager.Instance.latestUsedAnchorId));
 		PlayerHUDManager.Instance.OpenMenu(menu);
-		
-		Debug.Log(Player.player.GetInstanceID());
 	}
 	
 	
