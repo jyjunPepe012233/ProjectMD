@@ -77,10 +77,11 @@ namespace MinD.Runtime.UI
     public override void OnInputWithDirection(Vector2 inputDirx)
     {
         if (itemActionPanel.isActionPanelActive) return;
-        if (inputDirx.y != 0)
+        
+        if (Mathf.Abs(inputDirx.y) > Mathf.Abs(inputDirx.x))
         {
-            MoveSelection((int)inputDirx.y * inventoryWidth * -1);
-            if (inputDirx.y > 0)
+            MoveSelection((int)Mathf.Sign(inputDirx.y) * inventoryWidth * -1);
+            if (Mathf.Sign(inputDirx.y) > 0)
             {
                 ScrollUp();
             }
@@ -91,7 +92,7 @@ namespace MinD.Runtime.UI
         }
         else
         {
-            MoveSelection((int)inputDirx.x);
+            MoveSelection((int)Mathf.Sign(inputDirx.x));
         }
     }
 

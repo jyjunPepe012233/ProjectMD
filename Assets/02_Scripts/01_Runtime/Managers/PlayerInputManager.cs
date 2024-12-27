@@ -89,8 +89,9 @@ public class PlayerInputManager : Singleton<PlayerInputManager> {
             // MENU CONTROL
             playerControls.MenuControl.MenuQuitInput.started += i => menuQuitInput = true;
             playerControls.MenuControl.MenuSelectInput.started += i => menuSelectInput = true;
-            playerControls.MenuControl.MenuDirxInput.started += i => menuDirectionInput = i.ReadValue<Vector2>();
+            playerControls.MenuControl.MenuDirxInput.performed += i => menuDirectionInput = i.ReadValue<Vector2>();
             playerControls.MenuControl.MoveMenuTab.started += i => moveMenuTabInput = (int)i.ReadValue<float>();
+            
             playerControls.MenuControl.OpenInventory.started += i => openInventoryInput = true;
 
 

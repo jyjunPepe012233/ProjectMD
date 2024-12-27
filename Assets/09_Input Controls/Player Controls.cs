@@ -594,9 +594,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Menu Dirx Input"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""c7390c10-e580-4f02-9708-7c5d1665fcfc"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -621,6 +621,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""002d6d7a-edf5-4672-9048-0cd64b7f4009"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Pro-Controller"",
+                    ""action"": ""Menu Dirx Input"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
                 {
                     ""name"": ""2D Vector [MouseNKey]"",
                     ""id"": ""d2c7da69-ad6a-46d1-ba1d-e394c35cbf23"",
@@ -675,17 +686,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Menu Dirx Input"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""002d6d7a-edf5-4672-9048-0cd64b7f4009"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Menu Dirx Input"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",

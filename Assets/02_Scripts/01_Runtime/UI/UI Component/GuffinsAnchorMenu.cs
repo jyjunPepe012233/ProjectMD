@@ -105,11 +105,10 @@ public class GuffinsAnchorMenu : PlayerMenu {
 	}
 
 	public override void OnInputWithDirection(Vector2 inputDirx) {
-
-		float moveFocusDirection = -inputDirx.y; // -1 or 1
+		int moveFocusDirection = (int)-Mathf.Sign(inputDirx.y); // -1 or 1
 		
 		int previousOption = currentFocusOption;
-		currentFocusOption = Mathf.Clamp(currentFocusOption + (int)moveFocusDirection, 0, instantiatedOptions.Count - 1);
+		currentFocusOption = Mathf.Clamp(currentFocusOption + moveFocusDirection, 0, instantiatedOptions.Count - 1);
 		
 		SelectOption(previousOption, currentFocusOption);
 	}

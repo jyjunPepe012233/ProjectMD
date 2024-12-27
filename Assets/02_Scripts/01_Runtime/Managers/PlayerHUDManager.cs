@@ -11,6 +11,9 @@ using Vector3 = UnityEngine.Vector3;
 namespace MinD.Runtime.Managers {
 
 public class PlayerHUDManager : Singleton<PlayerHUDManager> {
+
+	private const float TIME_menuDirectionMinCool = 0.1f;
+	
 	
 	public static PlayerHUD playerHUD {
 		get {
@@ -27,6 +30,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	private bool _isLockOnSpotEnable;
 	private bool _isPlayingBurstPopup;
 	private bool _isFadingWithBlack;
+	private float _menuDirectionCoolDown;
 	
 	private Coroutine fadingBlackScreenCoroutine;
 
@@ -90,10 +94,19 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 		
 		// MENU DIRECTION INPUT
 		Vector2 dirxInput = PlayerInputManager.Instance.menuDirectionInput;
-		if (dirxInput.magnitude != 0 && currentShowingMenu != null) {
-			currentShowingMenu.OnInputWithDirection(dirxInput);
+		if (dirxInput.magnitude != 0) {
+			if (currentShowingMenu != null && _menuDirectionCoolDown <= 0) {
+				while (_menuDirectionCoolDown <= 0) {
+					currentShowingMenu.OnInputWithDirection(dirxInput);
+					_menuDirectionCoolDown += TIME_menuDirectionMinCool / Mathf.Clamp(dirxInput.magnitude, 0.5f, 1f);
+				}
+			} else {
+				_menuDirectionCoolDown -= Time.deltaTime;
+			}
+			
+		} else {
+			_menuDirectionCoolDown = 0;
 		}
-		PlayerInputManager.Instance.menuDirectionInput = Vector2.zero;
 		
 		
 		// Moving Menu Tab Input
