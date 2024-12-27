@@ -24,21 +24,18 @@ public class GameManager : Singleton<GameManager> {
 
 	public bool willAwakeWithAnchorIdle;
 	public bool willAwakeFromLatestAnchor; // Player and Other Managers will get this value, and decide loading method
-	
-	
-	
-	private void Awake() {
 
+
+	private void Awake() {
+		base.Awake();
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
-
+	}
+	
+	
+	protected override void OnSceneChanged(Scene oldScene, Scene newScene) {
 		
-		base.Awake();
-		
-		Debug.Log("Scene Changed To '" + SceneManager.GetActiveScene().name + "'. \n Is This World Scene = " + WorldUtility.IsThisWorldScene());
-
-		PlayerHUDManager.Instance.OnSceneChanged();
-		WorldDataManager.Instance.OnSceneChanged();
+		Debug.Log("Scene Changed To '" + newScene.name + "'. \n Is This World Scene = " + WorldUtility.IsWorldScene(newScene));
 		
 		PlayerHUDManager.Instance.FadeOutFromBlack(TIME_FirstGameLoadedFadeOut);
 		WorldDataManager.Instance.LoadGameData();
@@ -47,6 +44,7 @@ public class GameManager : Singleton<GameManager> {
 		willAwakeFromLatestAnchor = false;
 	}
 
+	
 	public void StartReloadWorldByGuffinsAnchor() {
 		StartCoroutine(ReloadByGuffinsAnchor());
 	}
@@ -112,7 +110,6 @@ public class GameManager : Singleton<GameManager> {
 		IndexingObjects<GuffinsAnchor>();
 		IndexingObjects<DroppedItem>();
 	}
-
 	public void ClearBakeData() {
 
 		void ClearObjectsIndex<TObject>() where TObject : MonoBehaviour, IWorldIndexable {
@@ -128,7 +125,6 @@ public class GameManager : Singleton<GameManager> {
 		ClearObjectsIndex<GuffinsAnchor>();
 		ClearObjectsIndex<DroppedItem>();
 	}
-
 	#endif
 }
 

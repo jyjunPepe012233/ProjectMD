@@ -1,4 +1,7 @@
+using MinD.Utility;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MinD.Runtime {
 
@@ -13,14 +16,14 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
                 instance = FindObjectOfType<T>();
 
                 if (instance == null) {
-
                     GameObject newSingleton = new GameObject(typeof(T).Name, typeof(T));
                     instance = newSingleton.GetComponent<T>();
 
-                    if (instance.transform != instance.transform.root)
+                    if (instance.transform != instance.transform.root) {
                         DontDestroyOnLoad(instance.transform.root);
-                    else
+                    } else {
                         DontDestroyOnLoad(instance);
+                    }
 
                 }
 
@@ -32,19 +35,16 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
     }
 
     protected void Awake() {
-
         if (Instance != this) {
             Destroy(gameObject);
             return;
         }
-
-        instance = this as T;
         
-        if (transform != transform.root) {
-            DontDestroyOnLoad(transform.root);
-        } else {
-            DontDestroyOnLoad(this);
-        }
+        SceneManager.activeSceneChanged += OnSceneChanged;
+    }
+    
+
+    protected virtual void OnSceneChanged(Scene oldScene, Scene newScene) {
     }
 }
 

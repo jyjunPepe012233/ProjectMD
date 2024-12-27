@@ -4,6 +4,7 @@ using MinD.Runtime.Entity;
 using MinD.Runtime.UI;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 using NotImplementedException = System.NotImplementedException;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -37,7 +38,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	public PlayerMenu currentShowingMenu;
 
 
-	public void OnSceneChanged() {
+	protected override void OnSceneChanged(Scene oldScee, Scene newScene) {
 		_isLockOnSpotEnable = false;
 		_isPlayingBurstPopup = false;
 		_isFadingWithBlack = false;

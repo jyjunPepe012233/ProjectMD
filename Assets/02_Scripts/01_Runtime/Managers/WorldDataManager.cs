@@ -29,6 +29,36 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 	public AsyncOperation currentReloadSceneAsync => _currentReloadSceneAsync;
 
 
+	protected override void OnSceneChanged(Scene oldScene, Scene newScene) {
+		if (WorldUtility.IsWorldScene(newScene)) {
+			FindGuffinsAnchorOnWorld();
+			FindPlacedItemOnWorld();
+		}
+	}
+	private void FindGuffinsAnchorOnWorld() {
+		GuffinsAnchor[] _searchedAnchors = FindObjectsOfType<GuffinsAnchor>();
+		// Find anchors on world by key(anchor information id)
+
+		for (int i = 0; i < _searchedAnchors.Length; i++) {
+			if (!_searchedAnchors[i].hasBeenIndexed) {
+				throw new UnityException("Hasn't been indexed Guffin's Anchor is exist!!");
+			}
+			_worldAnchors[_searchedAnchors[i].worldIndex] = _searchedAnchors[i];
+		}
+	}
+	private void FindPlacedItemOnWorld() {
+		DroppedItem[] _searchedItem = FindObjectsOfType<DroppedItem>();
+		// Find anchors on world by key(anchor information id)
+
+		for (int i = 0; i < _searchedItem.Length; i++) {
+			if (!_searchedItem[i].hasBeenIndexed) {
+				throw new UnityException("Hasn't been indexed Guffin's Anchor is exist!!");
+			}
+			_worldPlacedItems[_searchedItem[i].worldIndex] = _searchedItem[i];
+		}
+	}
+	
+	
 	public AsyncOperation LoadWorldScene() {
 
 		if (_currentReloadSceneAsync == null) {
@@ -50,38 +80,6 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		_currentReloadSceneAsync = null;
 	}
 	
-	
-
-	public void OnSceneChanged() {
-		if (WorldUtility.IsThisWorldScene()) {
-			FindGuffinsAnchorOnWorld();
-			FindPlacedItemOnWorld();
-		}
-	}
-
-	private void FindGuffinsAnchorOnWorld() {
-		GuffinsAnchor[] _searchedAnchors = FindObjectsOfType<GuffinsAnchor>();
-		// Find anchors on world by key(anchor information id)
-
-		for (int i = 0; i < _searchedAnchors.Length; i++) {
-			if (!_searchedAnchors[i].hasBeenIndexed) {
-				throw new UnityException("Hasn't been indexed Guffin's Anchor is exist!!");
-			}
-			_worldAnchors[_searchedAnchors[i].worldIndex] = _searchedAnchors[i];
-		}
-	}
-	
-	private void FindPlacedItemOnWorld() {
-		DroppedItem[] _searchedItem = FindObjectsOfType<DroppedItem>();
-		// Find anchors on world by key(anchor information id)
-
-		for (int i = 0; i < _searchedItem.Length; i++) {
-			if (!_searchedItem[i].hasBeenIndexed) {
-				throw new UnityException("Hasn't been indexed Guffin's Anchor is exist!!");
-			}
-			_worldPlacedItems[_searchedItem[i].worldIndex] = _searchedItem[i];
-		}
-	}
 
 	public void LoadGameData() {
 		
@@ -96,7 +94,6 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		Player.player.LoadData();
 		Player.player.inventory.LoadItemData(_playerInventoryData);
 	}
-	
 	private void LoadGuffinsAnchorData() {
 		for (int i = 0; i < _worldAnchors.Count; i++) {
 			// TODO: This code is temp. Assign isDiscovered dictionary references save data
@@ -106,7 +103,6 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 			_worldAnchors[i].LoadData(_isAnchorsDiscovered[i]);
 		}
 	}
-
 	private void LoadPlacedItemData() {
 		for (int i = 0; i < _worldPlacedItems.Count; i++) {
 			// TODO: This code is temp. should references save data
@@ -131,21 +127,18 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		// TODO: SAVE PLAYER DATA
 		SavePlayerData();
 	}
-
 	private void SaveGuffinsAnchorData() { // TODO: Temp. SHOULD BE BASED ON WORLD BAKE DATA. COULDN'T SAVE DATA AT '_isAnchorDiscovered(CAUSE IT IS TEMP VARIABLE)'
 		
 		for (int i = 0; i < _worldAnchors.Count; i++) {
 			_isAnchorsDiscovered[i] = _worldAnchors[i].isDiscovered;
 		}
 	}
-
 	private void SavePlacedItemData() {
 		
 		for (int i = 0; i < _worldPlacedItems.Count; i++) {
 			_isPlacedItemsCollected[i] = _worldPlacedItems[i] == null;
 		}
 	}
-
 	private void SavePlayerData() {
 
 		PlayerInventoryHandler inventory = Player.player.inventory; 
@@ -170,7 +163,6 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 		}
 		return null;
 	}
-
 	public int GetDiscoveredGuffinsAnchorCount() {
 		return _worldAnchors.Count(a => a.Value.isDiscovered);
 	}
