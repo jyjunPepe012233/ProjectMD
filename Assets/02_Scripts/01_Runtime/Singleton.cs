@@ -1,5 +1,3 @@
-using MinD.Utility;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
