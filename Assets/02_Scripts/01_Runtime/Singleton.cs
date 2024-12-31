@@ -1,3 +1,5 @@
+using System.Collections;
+using MinD.Runtime.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,16 +35,28 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
     }
 
     protected void Awake() {
-        if (Instance != this) {
-            Destroy(gameObject);
-            return;
+        if (instance != null) {
+            if (instance != this) {
+                Destroy(gameObject);
+                return;
+            }
+        } else {
+            instance = this as T;
+            Debug.Log(instance.name);
+
+            if (transform != transform.root) {
+                DontDestroyOnLoad(transform.root);
+            } else {
+                DontDestroyOnLoad(this);
+            }
         }
-        
-        SceneManager.activeSceneChanged += OnSceneChanged;
+
+        SceneManager.sceneLoaded += (i, j) => OnSceneLoaded(i);
     }
     
-
-    protected virtual void OnSceneChanged(Scene oldScene, Scene newScene) {
+    
+    
+    protected virtual void OnSceneLoaded(Scene newScene) {
     }
 }
 

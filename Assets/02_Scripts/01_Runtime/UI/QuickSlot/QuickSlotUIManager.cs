@@ -33,8 +33,7 @@ namespace MinD.Runtime.UI
             toolQuickSlotUI.Initialize(new List<Tool>(inventoryHandler.toolSlots), inventoryHandler.currentToolSlot);
         }
 
-        public void UpdateMagicQuickSlot(int newMagicIndex)
-        {
+        public void UpdateMagicQuickSlot(int newMagicIndex) {
             magicQuickSlotUI.SetCurrentMagicSlot(newMagicIndex);
         }
 

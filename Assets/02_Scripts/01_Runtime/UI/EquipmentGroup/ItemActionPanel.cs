@@ -160,7 +160,6 @@ namespace MinD.Runtime.UI
                     EquipProtection(equipment);
                     break;
                 case 3:
-                    EquipWeapon(equipment);
                     break;
                 default:
                     Debug.LogWarning("Unknown equipment category!");

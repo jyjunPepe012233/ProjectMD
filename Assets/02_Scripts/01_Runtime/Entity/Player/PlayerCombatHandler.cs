@@ -51,6 +51,9 @@ public class PlayerCombatHandler : EntityOwnedHandler {
 			if (usingMagic || ((Player)owner).isPerformingAction) {
 				return;
 			}
+			if (PlayerHUDManager.Instance.currentShowingMenu != null) {
+				return;
+			}
 
 
 			Magic useMagic = ((Player)owner).inventory.magicSlots[((Player)owner).inventory.currentMagicSlot];
@@ -108,6 +111,9 @@ public class PlayerCombatHandler : EntityOwnedHandler {
 			if (!((Player)owner).isGrounded) {
 				return;
 			}
+			if (PlayerHUDManager.Instance.currentShowingMenu != null) {
+				return;
+			}
 
 			Tool useTool = ((Player)owner).inventory.toolSlots[((Player)owner).inventory.currentToolSlot];
 
@@ -129,6 +135,9 @@ public class PlayerCombatHandler : EntityOwnedHandler {
 				return;
 			}
 			if (!((Player)owner).isGrounded) {
+				return;
+			}
+			if (PlayerHUDManager.Instance.currentShowingMenu != null) {
 				return;
 			}
 			
@@ -163,6 +172,10 @@ public class PlayerCombatHandler : EntityOwnedHandler {
 	}
 	public void ReleaseDefenseMagic(bool playAnimation = true, bool parrying = true) {
 
+		if (!usingDefenseMagic) {
+			return;
+		}
+		
 		usingDefenseMagic = false;
 		PhysicUtility.SetActiveChildrenColliders(transform, true, WorldUtility.damageableLayerMask, false);
 

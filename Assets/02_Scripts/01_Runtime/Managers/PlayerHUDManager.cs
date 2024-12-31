@@ -38,7 +38,7 @@ public class PlayerHUDManager : Singleton<PlayerHUDManager> {
 	public PlayerMenu currentShowingMenu;
 
 
-	protected override void OnSceneChanged(Scene oldScee, Scene newScene) {
+	protected override void OnSceneLoaded(Scene newScene) {
 		_isLockOnSpotEnable = false;
 		_isPlayingBurstPopup = false;
 		_isFadingWithBlack = false;

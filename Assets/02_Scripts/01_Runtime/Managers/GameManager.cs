@@ -33,7 +33,7 @@ public class GameManager : Singleton<GameManager> {
 	}
 	
 	
-	protected override void OnSceneChanged(Scene oldScene, Scene newScene) {
+	protected override void OnSceneLoaded(Scene newScene) {
 		
 		Debug.Log("Scene Changed To '" + newScene.name + "'. \n Is This World Scene = " + WorldUtility.IsWorldScene(newScene));
 		

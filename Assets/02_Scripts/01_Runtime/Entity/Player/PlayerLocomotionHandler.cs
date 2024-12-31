@@ -1,5 +1,6 @@
 using System.Collections;
 using MinD.Runtime.DataBase;
+using MinD.Runtime.Managers;
 using MinD.Utility;
 using UnityEngine;
 using UnityEngine.AI;
@@ -48,11 +49,11 @@ public class PlayerLocomotionHandler : EntityOwnedHandler {
 		HandleGravity();
 		
 		HandleRotation();
-
+		
 		HandleMovement();
 		HandleSprint();
 		HandleJump();
-
+		
 	}
 
 	void HandleRotation() {
@@ -173,6 +174,9 @@ public class PlayerLocomotionHandler : EntityOwnedHandler {
 		if (owner.isDeath) {
 			return;
 		}
+		if (PlayerHUDManager.Instance.currentShowingMenu != null) {
+			return;
+		}
 
 		if (((Player)owner).isPerformingAction)
 			return;
@@ -244,6 +248,9 @@ public class PlayerLocomotionHandler : EntityOwnedHandler {
 		if (((Player)owner).isPerformingAction) {
 			return;
 		}
+		if (PlayerHUDManager.Instance.currentShowingMenu != null) {
+			return;
+		}
 
 		
 		// GET BLINK DIRECTION
@@ -295,8 +302,8 @@ public class PlayerLocomotionHandler : EntityOwnedHandler {
 		
 		// HANDLE MOVE DIRECTION PARAMETER IN ANIMATOR DURING BLINK
 		Vector3 localBlinkDirx = transform.InverseTransformDirection(blinkPoint);
-		owner.animator.SetFloat("MoveHorizontal", localBlinkDirx.x);
-		owner.animator.SetFloat("MoveVertical", localBlinkDirx.z);
+		owner.animator.SetFloat("Horizontal", localBlinkDirx.x);
+		owner.animator.SetFloat("Vertical", localBlinkDirx.z);
 		
 		
 		// BEFORE BLINK DELAY

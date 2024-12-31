@@ -28,13 +28,8 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 	private AsyncOperation _currentReloadSceneAsync;
 	public AsyncOperation currentReloadSceneAsync => _currentReloadSceneAsync;
 
-
-	protected override void OnSceneChanged(Scene oldScene, Scene newScene) {
-		if (WorldUtility.IsWorldScene(newScene)) {
-			FindGuffinsAnchorOnWorld();
-			FindPlacedItemOnWorld();
-		}
-	}
+	
+	
 	private void FindGuffinsAnchorOnWorld() {
 		GuffinsAnchor[] _searchedAnchors = FindObjectsOfType<GuffinsAnchor>();
 		// Find anchors on world by key(anchor information id)
@@ -83,8 +78,12 @@ public class WorldDataManager : Singleton<WorldDataManager> {
 
 	public void LoadGameData() {
 		
-		if (!WorldUtility.IsThisWorldScene()) {
-			throw new UnityException("This is not world scene. Can't save data");
+		if (WorldUtility.IsThisWorldScene()) {
+			FindGuffinsAnchorOnWorld();
+			FindPlacedItemOnWorld();
+				
+		} else {
+			throw new UnityException("This is not world scene. Can't load data");
 		}
 		
 		LoadGuffinsAnchorData();

@@ -7,7 +7,7 @@ namespace MinD.Runtime.Entity {
 
 public class PlayerCamera : MonoBehaviour {
 	
-	private const float lockOnInputPoint = 3.5f; // MINIMUM DELTA MOUSE MOVEMENT 
+	private const float VALUE_LockOnInputPoint = 0.95f; // MINIMUM DELTA MOUSE MOVEMENT 
 
 	[HideInInspector] public Player owner; 
 	private Camera _camera;
@@ -166,9 +166,9 @@ public class PlayerCamera : MonoBehaviour {
 					SetLockOnTarget();
 				}
 				
-			} else if (PlayerInputManager.Instance.rotationInput.x < -3.5) {
+			} else if (PlayerInputManager.Instance.rotationInput.x < -VALUE_LockOnInputPoint) {
 				MoveLockOnToLeftTarget();
-			} else if (PlayerInputManager.Instance.rotationInput.x > 3.5) {
+			} else if (PlayerInputManager.Instance.rotationInput.x > VALUE_LockOnInputPoint) {
 				MoveLockOnToRightTarget();
 				
 			} else {
