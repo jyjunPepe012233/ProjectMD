@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using MinD.Enums;
 using MinD.Runtime.Entity;
 using MinD.Runtime.UI;
+using MinD.SO.Item;
 using UnityEngine;
 
 public class EquipmentUI : MonoBehaviour
@@ -246,4 +247,72 @@ public class EquipmentUI : MonoBehaviour
             Debug.Log($"Slot action triggered: Category {equipmentSlot.categoryId}, Index {equipmentSlot.slotIndex}");
         }
     }
+    public void UpdateEquipmentSlots()
+    {
+        if (playerInventory == null)
+        {
+            Debug.LogError("PlayerInventoryHandler is not assigned.");
+            return;
+        }
+
+        for (int panelIndex = 0; panelIndex < EquipmentPanels.Count; panelIndex++)
+        {
+            Transform panel = EquipmentPanels[panelIndex];
+            foreach (Transform slotTransform in panel)
+            {
+                EquipmentSlot equipmentSlot = slotTransform.GetComponent<EquipmentSlot>();
+                if (equipmentSlot != null)
+                {
+                    UpdateSlot(equipmentSlot);
+                }
+            }
+        }
+    }
+
+    private void UpdateSlot(EquipmentSlot slot)
+    {
+        Equipment equipment = null;
+
+        // 슬롯의 카테고리와 인덱스에 따라 장비를 가져옴
+        switch (slot.categoryId)
+        {
+            case 0: // Talisman
+                if (slot.slotIndex < playerInventory.talismanSlots.Length)
+                {
+                    equipment = playerInventory.talismanSlots[slot.slotIndex];
+                }
+                break;
+
+            case 1: // Tool
+                if (slot.slotIndex < playerInventory.toolSlots.Length)
+                {
+                    equipment = playerInventory.toolSlots[slot.slotIndex];
+                }
+                break;
+
+            case 2: // Protection
+                if (slot.slotIndex == 0) // Protection은 단일 슬롯
+                {
+                    equipment = playerInventory.protectionSlot;
+                }
+                break;
+
+            case 3: // Weapon
+                if (slot.slotIndex == 0) // Weapon은 단일 슬롯
+                {
+                    equipment = playerInventory.weaponSlot;
+                }
+                break;
+        }
+
+        if (equipment != null)
+        {
+            slot.UpdateSlot(equipment);
+        }
+        else
+        {
+            slot.ClearSlot();
+        }
+    }
+
 }

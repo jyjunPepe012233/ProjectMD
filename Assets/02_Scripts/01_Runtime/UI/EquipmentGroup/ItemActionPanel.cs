@@ -20,6 +20,7 @@ namespace MinD.Runtime.UI
         private PlayerInventoryHandler playerInventoryHandler;
         private InventoryMenu _inventoryMenu;
         private QuickSlotUIManager QuickSlotUIManager;
+        private EquipmentUI equipment;
 
         public Button[] actionButtons;
         public int selectedButtonIndex = 0;
@@ -46,12 +47,16 @@ namespace MinD.Runtime.UI
             playerInventoryHandler = FindObjectOfType<PlayerInventoryHandler>();
             _inventoryMenu = FindObjectOfType<InventoryMenu>();
             QuickSlotUIManager = FindObjectOfType<QuickSlotUIManager>();
+            equipment = FindObjectOfType<EquipmentUI>();
 
             if (playerInventoryHandler == null)
                 Debug.LogError("PlayerInventoryHandler not found in the scene!");
 
             if (_inventoryMenu == null)
                 Debug.LogError("InventoryUI not found in the scene!");
+            
+            if (equipment == null)
+                Debug.LogError("EquipmentUI not found in the scene!");
         }
 
         void Update()
@@ -143,6 +148,7 @@ namespace MinD.Runtime.UI
             }
             HidePanel();
             _inventoryMenu.UpdateInventoryUI();
+            this.equipment.UpdateEquipmentSlots();
             QuickSlotUIManager.InitializeQuickSlots();
         }
 
@@ -160,6 +166,7 @@ namespace MinD.Runtime.UI
                     EquipProtection(equipment);
                     break;
                 case 3:
+                    EquipWeapon(equipment);
                     break;
                 default:
                     Debug.LogWarning("Unknown equipment category!");
@@ -255,8 +262,8 @@ namespace MinD.Runtime.UI
                     HidePanel();
                 }
             }
-
             _inventoryMenu.UpdateInventoryUI();
+            equipment.UpdateEquipmentSlots();
         }
 
         private void UpdateEquipmentSlotCount()
@@ -286,8 +293,8 @@ namespace MinD.Runtime.UI
                     HidePanel();
                 }
             }
-
             _inventoryMenu.UpdateInventoryUI();
+            equipment.UpdateEquipmentSlots();
         }
 
         public bool IsActive()
