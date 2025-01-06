@@ -251,10 +251,10 @@ public class EquipmentUI : MonoBehaviour
     {
         if (playerInventory == null)
         {
-            Debug.LogError("PlayerInventoryHandler is not assigned.");
-            return;
+            playerInventory = FindObjectOfType<PlayerInventoryHandler>();
         }
-
+        
+        Debug.Log("님아 갱신 안됨"); // 지우기
         for (int panelIndex = 0; panelIndex < EquipmentPanels.Count; panelIndex++)
         {
             Transform panel = EquipmentPanels[panelIndex];

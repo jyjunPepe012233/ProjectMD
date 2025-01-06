@@ -78,7 +78,8 @@ public class PlayerInventoryHandler : EntityOwnedHandler {
 		magicSlots = inventoryData.magics ?? magicSlots;
 		playerItemList = inventoryData.allItems ?? new Item[ItemDataBase.Instance.GetAllItemsCount()];
 
-//		FindObjectOfType<QuickSlotUIManager>().UpdateToolQuickSlot(currentToolSlot);
+		PlayerHUDManager.playerHUD.inventoryMenu.UpdateInventoryUI();
+		PlayerHUDManager.playerHUD.inventoryMenu.equipmentUI.UpdateEquipmentSlots();
 	}
 
 

@@ -25,7 +25,16 @@ namespace MinD.Runtime.UI
 
     private int selectedSlotIndex = 0;
     private int inventoryWidth = 5;
-    [SerializeField] PlayerInventoryHandler playerInventory;
+    [SerializeField] PlayerInventoryHandler _playerInventory;
+
+    private PlayerInventoryHandler playerInventory {
+        get {
+            if (_playerInventory == null) {
+                _playerInventory = FindObjectOfType<PlayerInventoryHandler>();
+            }
+            return _playerInventory;
+        }
+    }
     private ItemSoList itemSoList;
 
     private int currentCategoryIndex = 0;
@@ -34,11 +43,28 @@ namespace MinD.Runtime.UI
     public bool isInventoryActive = false;
     private bool isInteractingWithEquipmentPanel = false;
     private bool isSlotCreated = false;
-    private EquipmentUI equipmentUI;
-    void OnEnable()
+    [SerializeField] private EquipmentUI _equipmentUI;
+
+    public EquipmentUI equipmentUI
     {
-        equipmentUI = FindObjectOfType<EquipmentUI>();
-        playerInventory = FindObjectOfType<PlayerInventoryHandler>();
+        get
+        {
+            if (_equipmentUI == null)
+            {
+                _equipmentUI = FindObjectOfType<EquipmentUI>();
+            }
+            return _equipmentUI;
+        }
+    }
+
+    private bool hasBeenSetup = false;
+
+    void Awake() {
+        Setup();
+    }
+    
+    void Setup() {
+        hasBeenSetup = true;
 
         if (isSlotCreated == false)
         {
@@ -366,6 +392,9 @@ namespace MinD.Runtime.UI
     }
     public void UpdateInventoryUI()
     {
+        if (!hasBeenSetup) {
+            Setup();
+        }
         Item[] playerItems = playerInventory.playerItemList;
         var slots = categorySlots[currentCategoryIndex];
         int slotIndex = 0;
