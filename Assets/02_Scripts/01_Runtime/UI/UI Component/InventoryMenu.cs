@@ -86,6 +86,7 @@ namespace MinD.Runtime.UI
     
     public override void Open() // 인벤토리 열고 닫을때를 Open, Close로 변경
     {
+        equipmentUI.UpdateEquipmentSlots();
         UpdateCategory();
         UpdateSelectionImage();
         UpdateItemDetails();
@@ -260,7 +261,6 @@ namespace MinD.Runtime.UI
     {
         if (equipmentUI.isInteractingWithEquipmentPanel)
         {
-            Debug.Log("무시");
             return;
         }
         

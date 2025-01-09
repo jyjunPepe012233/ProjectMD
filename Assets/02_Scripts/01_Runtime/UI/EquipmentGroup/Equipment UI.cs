@@ -18,12 +18,16 @@ public class EquipmentUI : MonoBehaviour
     
     public bool isInteractingWithEquipmentPanel = false;
     public bool isEquipmentPanelActive = true;
+    private bool isCreateEquipmentSlots = false;
 
-    void Start()
+    void OnEnable()
     {
         _inventoryMenu = FindObjectOfType<InventoryMenu>();
         playerInventory = FindObjectOfType<PlayerInventoryHandler>();
-        CreateEquipmentSlots();
+        if (!isCreateEquipmentSlots)
+        {
+            CreateEquipmentSlots();
+        }
         UpdateSelectedSlot(false);
     }
 
@@ -76,7 +80,6 @@ public class EquipmentUI : MonoBehaviour
             isInteractingWithEquipmentPanel = false;
             currentPanelIndex = -1;
             
-            Debug.Log($"Equipment Panels deactivated. Returning to inventory selection at index {currentSlotIndex}.");
         }
         else
         {
@@ -87,7 +90,6 @@ public class EquipmentUI : MonoBehaviour
 
             ResetSlotIndex();
             UpdateSelectedSlot(false);
-            Debug.Log("Equipment Panels activated.");
         }
     }
     private void ToggleEquipmentPanel()
@@ -185,6 +187,8 @@ public class EquipmentUI : MonoBehaviour
                 }
             }
         }
+
+        isCreateEquipmentSlots = true;
     }
 
     private void ResetSlotIndex()
@@ -230,7 +234,6 @@ public class EquipmentUI : MonoBehaviour
         {
             equipmentSlot.ClearSlot();
             playerInventory.UnequipEquipment((EquipmentSlots)equipmentSlot.slotIndex);
-            Debug.Log($"Slot cleared: Category {equipmentSlot.categoryId}, Index {equipmentSlot.slotIndex}");
         }
     }
 
@@ -244,7 +247,6 @@ public class EquipmentUI : MonoBehaviour
 
         if (equipmentSlot != null)
         {
-            Debug.Log($"Slot action triggered: Category {equipmentSlot.categoryId}, Index {equipmentSlot.slotIndex}");
         }
     }
     public void UpdateEquipmentSlots()
@@ -253,12 +255,11 @@ public class EquipmentUI : MonoBehaviour
         {
             playerInventory = FindObjectOfType<PlayerInventoryHandler>();
         }
-        
-        Debug.Log("님아 갱신 안됨"); // 지우기
+
         for (int panelIndex = 0; panelIndex < EquipmentPanels.Count; panelIndex++)
         {
             Transform panel = EquipmentPanels[panelIndex];
-            foreach (Transform slotTransform in panel)
+            foreach (Transform slotTransform in panel.GetComponentsInChildren<Transform>(true))
             {
                 EquipmentSlot equipmentSlot = slotTransform.GetComponent<EquipmentSlot>();
                 if (equipmentSlot != null)
@@ -268,6 +269,7 @@ public class EquipmentUI : MonoBehaviour
             }
         }
     }
+
 
     private void UpdateSlot(EquipmentSlot slot)
     {
@@ -291,14 +293,14 @@ public class EquipmentUI : MonoBehaviour
                 break;
 
             case 2: // Protection
-                if (slot.slotIndex == 0) // Protection은 단일 슬롯
+                if (slot.slotIndex == 0)
                 {
                     equipment = playerInventory.protectionSlot;
                 }
                 break;
 
             case 3: // Weapon
-                if (slot.slotIndex == 0) // Weapon은 단일 슬롯
+                if (slot.slotIndex == 0)
                 {
                     equipment = playerInventory.weaponSlot;
                 }
