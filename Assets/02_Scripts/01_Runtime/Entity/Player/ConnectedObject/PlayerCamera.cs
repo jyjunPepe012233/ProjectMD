@@ -132,6 +132,11 @@ public class PlayerCamera : MonoBehaviour {
 		if (PlayerInputManager.Instance.lockOnInput) {
 			PlayerInputManager.Instance.lockOnInput = false;
 
+			if (PlayerHUDManager.Instance.currentShowingMenu != null)
+			{
+				return; 
+			}
+
 			if (owner.isLockOn) {
 				RemoveLockOnTarget();
 			} else {

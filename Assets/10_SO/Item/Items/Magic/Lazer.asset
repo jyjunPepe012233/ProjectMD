@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c134be9d927cf472188679fe2e28c972, type: 3}
   m_Name: Lazer
   m_EditorClassIdentifier: 
-  itemId: 0
+  itemId: 10
   itemName: "\uD3EC\uD1A4\uCE90\uB10C"
-  itemDescription: "\uD788\uD788 \uAD11\uC120\uBC1C\uC0AC"
+  itemDescription: "\uD798\uC774 \uBD80\uC5EC\uB41C \uAD11\uC790\uB97C\n\uC804\uBC29\uC73C\uB85C
+    \uC3D8\uC544\uB300\uB294 \uB9C8\uBC95\uC774\uB2E4.\n\n\uAD11\uC18D\uC758 \uC874\uC7AC\uB294\n\uC9C8\uB7C9\uC774
+    \uC874\uC7AC\uD568\uC73C\uB85C\uC11C \uD30C\uAD34\uC758 \uC815\uC218\uAC00 \uB41C\uB2E4."
   itemImage: {fileID: 21300000, guid: 13e72b6832a7e4af98516a979ca1abdd, type: 3}
   itemRarity: 0
   itemMaxCount: 1
