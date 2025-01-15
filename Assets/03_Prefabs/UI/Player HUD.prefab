@@ -1919,7 +1919,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9024919274283479678}
   m_HandleRect: {fileID: 2007383196746267296}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2113,7 +2113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -577.1085, y: -119.27711}
+  m_AnchoredPosition: {x: -569, y: -34}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2905312329907943917
@@ -3511,9 +3511,10 @@ MonoBehaviour:
   - {fileID: 1347301523414457994}
   - {fileID: 3370948818066918484}
   - {fileID: 519079593633153118}
-  playerInventory: {fileID: 0}
+  _playerInventory: {fileID: 0}
   inventoryPanel: {fileID: 5823757165177562288}
   isInventoryActive: 0
+  _equipmentUI: {fileID: 0}
 --- !u!225 &5205240865038081086
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3593,7 +3594,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 06c91851663a345f88680f95b986d781, type: 3}
-    m_FontSize: 36
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -3603,9 +3604,9 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
-    m_LineSpacing: 1
+    m_LineSpacing: 1.05
   m_Text: "\uC624\uB798\uC804\uC5D0 \uD568\uAED8 \uC2F8\uC6B0\uB358 \uBB34\uAE30\uAC00
-    \uB358\uC804\uC5D0\uC11C \uB0B4\uAC8C \uC6B0\uD604\uD788 \uBCF4\uC0C1\uC774\uB41C\uAC83\uAC19\uC740
+    \uB358\uC804\uC5D0\uC11C \uB0B4\uAC8C \uC6B0\uC5F0\uD788 \uBCF4\uC0C1\uC774\uB41C\uAC83\uAC19\uC740
     \uBB34\uAE30\uC774\uB2E4."
 --- !u!1 &4032103809476727178
 GameObject:
