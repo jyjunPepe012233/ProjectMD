@@ -37,28 +37,6 @@ public class EquipmentUI : MonoBehaviour
         {
             ToggleAllEquipmentPanels();
         }
-
-        
-        if (isEquipmentPanelActive && Input.GetKeyDown(KeyCode.C))
-        {
-            ToggleEquipmentPanel();
-        }
-        
-        if (isInteractingWithEquipmentPanel)
-        {
-            
-            
-            HandleSlotSelection();
-
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                TriggerSlotAction();
-            }
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                ClearSelectedSlot();
-            }
-        }
     }
     
     private void ToggleAllEquipmentPanels()
@@ -92,82 +70,6 @@ public class EquipmentUI : MonoBehaviour
             UpdateSelectedSlot(false);
         }
     }
-    private void ToggleEquipmentPanel()
-    {
-        if (currentPanelIndex >= 0 && currentPanelIndex < EquipmentPanels.Count)
-        {
-            UpdateSelectedSlot(false);
-        }
-
-        if (currentPanelIndex == -1)
-        {
-            currentPanelIndex = 0;
-        }
-        else
-        {
-            currentPanelIndex++;
-        }
-
-        if (currentPanelIndex > EquipmentPanels.Count - 1)
-        {
-            currentPanelIndex = -1;
-        }
-
-        isInteractingWithEquipmentPanel = (currentPanelIndex != -1);
-
-        if (isInteractingWithEquipmentPanel)
-        {
-            ResetSlotIndex();
-            UpdateSelectedSlot(true);
-            _inventoryMenu.DisableSelectionImage();
-        }
-        else
-        {
-            _inventoryMenu.EnableSelectionImage(_inventoryMenu.SelectedSlotIndex);
-        }
-    }
-
-
-
-    private void HandleSlotSelection()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-        {
-            MoveSelection(-1);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-        {
-            MoveSelection(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-        {
-            MoveSelection(-columns);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-            MoveSelection(columns);
-        }
-    }
-
-    private void MoveSelection(int direction)
-    {
-        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return;
-
-        Transform currentPanel = EquipmentPanels[currentPanelIndex];
-        int slotCount = currentPanel.childCount;
-
-        UpdateSelectedSlot(false);
-        currentSlotIndex += direction;
-
-        if (currentSlotIndex % columns < 0) currentSlotIndex += columns;
-        else if (currentSlotIndex % columns >= columns) currentSlotIndex -= columns;
-
-        if (currentSlotIndex < 0) currentSlotIndex = slotCount - 1;
-        else if (currentSlotIndex >= slotCount) currentSlotIndex = 0;
-
-        UpdateSelectedSlot(true);
-    }
-
     public void CreateEquipmentSlots()
     {
         int[] slotCounts = { 1, 1, 5, 10 };
@@ -237,18 +139,6 @@ public class EquipmentUI : MonoBehaviour
         }
     }
 
-    private void TriggerSlotAction()
-    {
-        if (currentPanelIndex < 0 || currentPanelIndex >= EquipmentPanels.Count) return;
-
-        Transform currentPanel = EquipmentPanels[currentPanelIndex];
-        Transform selectedSlot = currentPanel.GetChild(currentSlotIndex);
-        EquipmentSlot equipmentSlot = selectedSlot.GetComponent<EquipmentSlot>();
-
-        if (equipmentSlot != null)
-        {
-        }
-    }
     public void UpdateEquipmentSlots()
     {
         if (playerInventory == null)
